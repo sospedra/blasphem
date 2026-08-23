@@ -1,0 +1,619 @@
+use std::{collections::BTreeSet, fs};
+
+use serde_json::{Value, json};
+use blasphem::Language;
+use blasphem_train::{
+    acquisition::{
+        freeze_observation, sha256_digest, source_record_from_request,
+        source_record_from_request_with_download, validate_source_download,
+        validate_source_lock_for_acquisition,
+    },
+    datasets::{DatasetId, SourceSplit, source_id},
+    source_manifest::{parse_frozen_source_lock, parse_source_catalog, parse_source_observation},
+};
+
+const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
+#[test]
+fn frozen_source_lock_rejects_a_missing_hash_and_unknown_dataset() {
+    let mut missing_hash = valid_frozen_lock_json();
+    missing_hash["sources"][0]
+        .as_object_mut()
+        .expect("source object")
+        .remove("file_sha256");
+    let missing_hash = serde_json::to_vec(&missing_hash).expect("JSON");
+    assert!(parse_frozen_source_lock(&missing_hash[..]).is_err());
+
+    let mut unknown = valid_frozen_lock_json();
+    unknown["sources"][0]["dataset"] = json!("other");
+    let unknown = serde_json::to_vec(&unknown).expect("JSON");
+    assert!(parse_frozen_source_lock(&unknown[..]).is_err());
+}
+
+#[test]
+fn source_observation_and_frozen_lock_are_distinct_schemas() {
+    let observation = valid_source_observation_json();
+    let bytes = serde_json::to_vec(&observation).expect("JSON");
+    assert!(parse_frozen_source_lock(&bytes[..]).is_err());
+}
+
+#[test]
+fn old_observation_parses_but_textdetox_without_download_hash_cannot_freeze() {
+    let without_download_hash = parse_source_observation(
+        &serde_json::to_vec(&valid_source_observation_json()).expect("JSON")[..],
+    )
+    .expect("backward-compatible observation");
+    assert_eq!(without_download_hash.sources[0].download_sha256, None);
+    let error = freeze_observation(without_download_hash).expect_err("missing download hash");
+    assert!(error.to_string().contains("download digest"));
+}
+
+#[test]
+fn parquet_download_hash_survives_freezing() {
+    let mut with_download_hash = valid_source_observation_json();
+    with_download_hash["sources"][0]["download_sha256"] = json!(HASH);
+    let observation =
+        parse_source_observation(&serde_json::to_vec(&with_download_hash).expect("JSON")[..])
+            .expect("observation with download hash");
+    let source_lock = freeze_observation(observation).expect("frozen source lock");
+
+    assert_eq!(
+        source_lock.sources[0]
+            .download_sha256
+            .as_ref()
+            .map(ToString::to_string),
+        Some(HASH.to_owned())
+    );
+}
+
+#[test]
+fn acquisition_validation_requires_the_digest_before_any_request() {
+    let source_lock =
+        parse_frozen_source_lock(&serde_json::to_vec(&valid_frozen_lock_json()).expect("JSON")[..])
+            .expect("legacy source lock parses");
+
+    let error = validate_source_lock_for_acquisition(&source_lock).expect_err("missing digest");
+
+    assert!(error.to_string().contains("download digest"));
+}
+
+#[test]
+fn acquisition_validation_rejects_a_parquet_digest_mismatch() {
+    let mut source_lock = valid_frozen_lock_json();
+    source_lock["sources"][0]["download_sha256"] = json!(HASH);
+    let source_lock =
+        parse_frozen_source_lock(&serde_json::to_vec(&source_lock).expect("JSON")[..])
+            .expect("source lock");
+
+    let error = validate_source_download(&source_lock.sources[0], b"different Parquet bytes")
+        .expect_err("digest mismatch");
+
+    assert!(error.to_string().contains("download digest"));
+}
+
+#[test]
+fn source_record_keeps_download_and_canonical_hashes_separate() {
+    let request =
+        parse_source_catalog(&serde_json::to_vec(&valid_source_catalog_json()).expect("JSON")[..])
+            .expect("source catalog")
+            .sources
+            .remove(0);
+    let record = source_record_from_request_with_download(
+        &request,
+        request.requested_url.clone(),
+        request.requested_revision.clone(),
+        b"Parquet bytes",
+        b"source_id\tlanguage\ttoxic\ttext\n",
+        1,
+    )
+    .expect("source record");
+
+    assert_eq!(
+        record.download_sha256,
+        Some(sha256_digest(b"Parquet bytes"))
+    );
+    assert_eq!(
+        record.file_sha256,
+        sha256_digest(b"source_id\tlanguage\ttoxic\ttext\n")
+    );
+    assert_ne!(record.download_sha256.as_ref(), Some(&record.file_sha256));
+}
+
+#[test]
+fn legacy_source_record_path_rejects_textdetox_bytes() {
+    let request =
+        parse_source_catalog(&serde_json::to_vec(&valid_source_catalog_json()).expect("JSON")[..])
+            .expect("source catalog")
+            .sources
+            .remove(0);
+
+    let error = source_record_from_request(
+        &request,
+        request.requested_url.clone(),
+        request.requested_revision.clone(),
+        b"canonical TSV bytes",
+        1,
+    )
+    .expect_err("legacy TextDetox record path");
+
+    assert!(error.to_string().contains("separate Parquet bytes"));
+}
+
+#[test]
+fn textdetox_lock_accepts_only_the_exact_pinned_one_file_url() {
+    let revision = blasphem_train::TEXTDETOX_REVISION;
+    let mut source_lock = valid_frozen_lock_json();
+    source_lock["sources"][0]["revision"] = json!(revision);
+    source_lock["sources"][0]["download_sha256"] = json!(HASH);
+    source_lock["sources"][0]["immutable_source_url"] = json!(format!(
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/{revision}/data/en-00000-of-00001.parquet"
+    ));
+    let accepted = parse_frozen_source_lock(&serde_json::to_vec(&source_lock).expect("JSON")[..])
+        .expect("source lock");
+    validate_source_lock_for_acquisition(&accepted).expect("exact pinned URL");
+
+    source_lock["sources"][0]["immutable_source_url"] = json!(format!(
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/{revision}/data/fr-00000-of-00001.parquet"
+    ));
+    let rejected = parse_frozen_source_lock(&serde_json::to_vec(&source_lock).expect("JSON")[..])
+        .expect("source lock");
+
+    assert!(validate_source_lock_for_acquisition(&rejected).is_err());
+}
+
+#[test]
+fn source_manifest_parsers_require_exact_schema_versions_and_lowercase_hashes() {
+    let mut catalog = valid_source_catalog_json();
+    catalog["schema_version"] = json!("source-catalog-v2");
+    assert!(parse_source_catalog(&serde_json::to_vec(&catalog).expect("JSON")[..]).is_err());
+
+    let mut observation = valid_source_observation_json();
+    observation["schema_version"] = json!("source-observation-v2");
+    assert!(
+        parse_source_observation(&serde_json::to_vec(&observation).expect("JSON")[..]).is_err()
+    );
+
+    let mut lock = valid_frozen_lock_json();
+    lock["sources"][0]["file_sha256"] = json!(HASH.to_ascii_uppercase());
+    assert!(parse_frozen_source_lock(&serde_json::to_vec(&lock).expect("JSON")[..]).is_err());
+}
+
+#[test]
+fn catalog_has_unique_exact_source_identities_and_paths() {
+    let path = format!(
+        "{}/../../resources/datasets/source-catalog-v1.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let catalog =
+        parse_source_catalog(fs::File::open(path).expect("catalog")).expect("catalog parses");
+
+    assert_eq!(catalog.sources.len(), 37);
+    let unique_ids: BTreeSet<_> = catalog
+        .sources
+        .iter()
+        .map(|source| source.source_file_id.as_str())
+        .collect();
+    assert_eq!(unique_ids.len(), catalog.sources.len());
+
+    let expected = [
+        (
+            "textdetox-en",
+            DatasetId::TextDetox,
+            Language::En,
+            "textdetox/en.tsv",
+        ),
+        (
+            "textdetox-zh",
+            DatasetId::TextDetox,
+            Language::Zh,
+            "textdetox/zh.tsv",
+        ),
+        (
+            "textdetox-ar",
+            DatasetId::TextDetox,
+            Language::Ar,
+            "textdetox/ar.tsv",
+        ),
+        (
+            "textdetox-fr",
+            DatasetId::TextDetox,
+            Language::Fr,
+            "textdetox/fr.tsv",
+        ),
+        (
+            "textdetox-hi",
+            DatasetId::TextDetox,
+            Language::Hi,
+            "textdetox/hi.tsv",
+        ),
+        (
+            "textdetox-ru",
+            DatasetId::TextDetox,
+            Language::Ru,
+            "textdetox/ru.tsv",
+        ),
+        (
+            "textdetox-ja",
+            DatasetId::TextDetox,
+            Language::Ja,
+            "textdetox/ja.tsv",
+        ),
+        (
+            "textdetox-de",
+            DatasetId::TextDetox,
+            Language::De,
+            "textdetox/de.tsv",
+        ),
+        (
+            "textdetox-it",
+            DatasetId::TextDetox,
+            Language::It,
+            "textdetox/it.tsv",
+        ),
+        (
+            "ibrohim-budi-re-dataset",
+            DatasetId::IbrohimBudi,
+            Language::Ms,
+            "datasets/ibrohim-budi-re-dataset/re_dataset.csv",
+        ),
+        (
+            "told-br-alpha",
+            DatasetId::ToldBr,
+            Language::Pt,
+            "datasets/told-br-alpha/ToLD-BR_alpha.csv",
+        ),
+        (
+            "offenseval-tr-training",
+            DatasetId::OffensEvalTr,
+            Language::Tr,
+            "datasets/offenseval-tr-training/offenseval-tr-training-v1.tsv",
+        ),
+        (
+            "offenseval-tr-test",
+            DatasetId::OffensEvalTr,
+            Language::Tr,
+            "datasets/offenseval-tr-test/offenseval-tr-testset-v1.tsv",
+        ),
+        (
+            "offenseval-tr-test-labels",
+            DatasetId::OffensEvalTr,
+            Language::Tr,
+            "datasets/offenseval-tr-test-labels/offenseval-tr-labela-v1.tsv",
+        ),
+        (
+            "vihos-train",
+            DatasetId::ViHos,
+            Language::Vi,
+            "datasets/vihos-train/train.csv",
+        ),
+        (
+            "vihos-development",
+            DatasetId::ViHos,
+            Language::Vi,
+            "datasets/vihos-development/dev.csv",
+        ),
+        (
+            "vihos-test",
+            DatasetId::ViHos,
+            Language::Vi,
+            "datasets/vihos-test/test.csv",
+        ),
+        (
+            "kmhas-train",
+            DatasetId::KMHas,
+            Language::Ko,
+            "datasets/kmhas-train/kmhas_train.txt",
+        ),
+        (
+            "kmhas-validation",
+            DatasetId::KMHas,
+            Language::Ko,
+            "datasets/kmhas-validation/kmhas_valid.txt",
+        ),
+        (
+            "kmhas-test",
+            DatasetId::KMHas,
+            Language::Ko,
+            "datasets/kmhas-test/kmhas_test.txt",
+        ),
+        (
+            "germeval-2018-training",
+            DatasetId::GermEval2018,
+            Language::De,
+            "datasets/germeval-2018-training/germeval2018.training.txt",
+        ),
+        (
+            "germeval-2018-test",
+            DatasetId::GermEval2018,
+            Language::De,
+            "datasets/germeval-2018-test/germeval2018.test.txt",
+        ),
+        (
+            "hurtlex-en-1.2",
+            DatasetId::HurtLex,
+            Language::En,
+            "hurtlex/EN/1.2/hurtlex_EN.tsv",
+        ),
+        (
+            "hurtlex-zh-1.2",
+            DatasetId::HurtLex,
+            Language::Zh,
+            "hurtlex/ZH/1.2/hurtlex_ZH.tsv",
+        ),
+        (
+            "hurtlex-es-1.2",
+            DatasetId::HurtLex,
+            Language::Es,
+            "hurtlex/ES/1.2/hurtlex_ES.tsv",
+        ),
+        (
+            "hurtlex-ar-1.2",
+            DatasetId::HurtLex,
+            Language::Ar,
+            "hurtlex/AR/1.2/hurtlex_AR.tsv",
+        ),
+        (
+            "hurtlex-id-1.2",
+            DatasetId::HurtLex,
+            Language::Ms,
+            "hurtlex/ID/1.2/hurtlex_ID.tsv",
+        ),
+        (
+            "hurtlex-pt-1.2",
+            DatasetId::HurtLex,
+            Language::Pt,
+            "hurtlex/PT/1.2/hurtlex_PT.tsv",
+        ),
+        (
+            "hurtlex-fr-1.2",
+            DatasetId::HurtLex,
+            Language::Fr,
+            "hurtlex/FR/1.2/hurtlex_FR.tsv",
+        ),
+        (
+            "hurtlex-hi-1.2",
+            DatasetId::HurtLex,
+            Language::Hi,
+            "hurtlex/HI/1.2/hurtlex_HI.tsv",
+        ),
+        (
+            "hurtlex-ru-1.2",
+            DatasetId::HurtLex,
+            Language::Ru,
+            "hurtlex/RU/1.2/hurtlex_RU.tsv",
+        ),
+        (
+            "hurtlex-ja-1.2",
+            DatasetId::HurtLex,
+            Language::Ja,
+            "hurtlex/JA/1.2/hurtlex_JA.tsv",
+        ),
+        (
+            "hurtlex-de-1.2",
+            DatasetId::HurtLex,
+            Language::De,
+            "hurtlex/DE/1.2/hurtlex_DE.tsv",
+        ),
+        (
+            "hurtlex-tr-1.2",
+            DatasetId::HurtLex,
+            Language::Tr,
+            "hurtlex/TR/1.2/hurtlex_TR.tsv",
+        ),
+        (
+            "hurtlex-vi-1.2",
+            DatasetId::HurtLex,
+            Language::Vi,
+            "hurtlex/VI/1.2/hurtlex_VI.tsv",
+        ),
+        (
+            "hurtlex-ko-1.2",
+            DatasetId::HurtLex,
+            Language::Ko,
+            "hurtlex/KO/1.2/hurtlex_KO.tsv",
+        ),
+        (
+            "hurtlex-it-1.2",
+            DatasetId::HurtLex,
+            Language::It,
+            "hurtlex/IT/1.2/hurtlex_IT.tsv",
+        ),
+    ];
+
+    for (source_file_id, dataset, language, file_path) in expected {
+        let source = catalog
+            .sources
+            .iter()
+            .find(|source| source.source_file_id == source_file_id)
+            .expect("expected source");
+        assert_eq!(source.dataset, dataset, "{source_file_id}");
+        assert_eq!(source.detector_language, language, "{source_file_id}");
+        assert_eq!(source.file_path, file_path, "{source_file_id}");
+    }
+
+    let textdetox = catalog
+        .sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::TextDetox)
+        .count();
+    let hurtlex = catalog
+        .sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::HurtLex)
+        .count();
+    assert_eq!(textdetox, 9);
+    assert_eq!(hurtlex, 15);
+
+    let textdetox_revision = "01907546324b0330d2d8b7669648cc18823323e5";
+    for source in catalog
+        .sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::TextDetox)
+    {
+        let source_code = source
+            .source_file_id
+            .strip_prefix("textdetox-")
+            .expect("TextDetox source code");
+        assert_eq!(
+            source.requested_revision.as_deref(),
+            Some(textdetox_revision)
+        );
+        assert_eq!(source.revision_url, None);
+        assert_eq!(
+            source.requested_url,
+            format!(
+                "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/{textdetox_revision}/data/{source_code}-00000-of-00001.parquet"
+            )
+        );
+    }
+    assert_eq!(
+        catalog
+            .sources
+            .iter()
+            .filter(|source| source.dataset == DatasetId::IbrohimBudi)
+            .count(),
+        1
+    );
+    assert_eq!(
+        catalog
+            .sources
+            .iter()
+            .filter(|source| source.dataset == DatasetId::ToldBr)
+            .count(),
+        1
+    );
+    assert_eq!(
+        catalog
+            .sources
+            .iter()
+            .filter(|source| source.dataset == DatasetId::OffensEvalTr)
+            .count(),
+        3
+    );
+    assert_eq!(
+        catalog
+            .sources
+            .iter()
+            .filter(|source| source.dataset == DatasetId::ViHos)
+            .count(),
+        3
+    );
+    assert_eq!(
+        catalog
+            .sources
+            .iter()
+            .filter(|source| source.dataset == DatasetId::KMHas)
+            .count(),
+        3
+    );
+    let germeval_revision = "9877472d39523effd54cd079b4c61157ed141508";
+    let germeval = catalog
+        .sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::GermEval2018)
+        .collect::<Vec<_>>();
+    assert_eq!(germeval.len(), 2);
+    for source in germeval {
+        assert_eq!(
+            source.requested_revision.as_deref(),
+            Some(germeval_revision)
+        );
+        assert_eq!(source.revision_url, None);
+        assert_eq!(source.archive_member, None);
+        let source_name = match source.source_file_id.as_str() {
+            "germeval-2018-training" => "germeval2018.training.txt",
+            "germeval-2018-test" => "germeval2018.test.txt",
+            other => panic!("unexpected GermEval source: {other}"),
+        };
+        assert_eq!(
+            source.requested_url,
+            format!(
+                "https://raw.githubusercontent.com/uds-lsv/GermEval-2018-Data/{germeval_revision}/{source_name}"
+            )
+        );
+    }
+}
+
+#[test]
+fn source_identifiers_use_the_dataset_revision_split_and_native_id() {
+    assert_eq!(
+        source_id(DatasetId::TextDetox, "019075", SourceSplit::Unsplit, "42"),
+        "textdetox@019075/unsplit/42"
+    );
+}
+
+fn valid_source_catalog_json() -> Value {
+    json!({
+        "schema_version": "source-catalog-v1",
+        "sources": [source_request_json()],
+    })
+}
+
+fn valid_source_observation_json() -> Value {
+    json!({
+        "schema_version": "source-observation-v1",
+        "sources": [source_record_json()],
+    })
+}
+
+fn valid_frozen_lock_json() -> Value {
+    json!({
+        "schema_version": "source-lock-v1",
+        "sources": [frozen_source_json()],
+    })
+}
+
+fn source_request_json() -> Value {
+    json!({
+        "dataset": "textdetox",
+        "detector_language": "EN",
+        "source_file_id": "textdetox-en",
+        "requested_url": "https://example.test/rows",
+        "revision_url": "https://example.test/revision",
+        "requested_revision": "abc123",
+        "archive_member": null,
+        "file_path": "textdetox/en.tsv",
+        "license_id": "CC-BY-4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "citation": "Example citation",
+        "upstream_lineage": ["example"],
+        "lineage_status": "resolved",
+    })
+}
+
+fn source_record_json() -> Value {
+    json!({
+        "dataset": "textdetox",
+        "detector_language": "EN",
+        "source_file_id": "textdetox-en",
+        "immutable_source_url": "https://example.test/rows",
+        "archive_member": null,
+        "revision": "abc123",
+        "file_path": "textdetox/en.tsv",
+        "file_sha256": HASH,
+        "acquired_at_unix_seconds": 1,
+        "license_id": "CC-BY-4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "citation": "Example citation",
+        "upstream_lineage": ["example"],
+        "lineage_status": "resolved",
+    })
+}
+
+fn frozen_source_json() -> Value {
+    json!({
+        "dataset": "textdetox",
+        "detector_language": "EN",
+        "source_file_id": "textdetox-en",
+        "immutable_source_url": "https://example.test/rows",
+        "archive_member": null,
+        "revision": "abc123",
+        "file_path": "textdetox/en.tsv",
+        "file_sha256": HASH,
+        "license_id": "CC-BY-4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "citation": "Example citation",
+        "upstream_lineage": ["example"],
+        "lineage_status": "resolved",
+    })
+}

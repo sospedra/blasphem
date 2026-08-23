@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+EN-T01	EN	true	threat	EN-P01	none	authored	authored-v1#user-en-toxic	When I find you, I will break every bone in your hand
+EN-T02	EN	true	threat	EN-P02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/004466	I'll beat the shit out of you and send you back to the fields, boy.
+EN-T03	EN	true	harm_wish	EN-P03	none	authored	authored-v1#plan-en-harm-wish	I hope you die
+EN-T04	EN	true	harm_wish	EN-P04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/003672	Son of all your fucking mother, I hope you die stupid, chinga Your mother
+EN-T05	EN	true	self_harm_command	EN-P05	none	authored	authored-v1#plan-en-self-harm	kill yourself
+EN-T06	EN	true	self_harm_command	EN-P06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/003215	Lmao your fucking retarded kill yourself.
+EN-T07	EN	true	directed_insult	EN-P07	none	authored	authored-v1#plan-en-insult	you are a piece of shit
+EN-T08	EN	true	directed_insult	EN-P08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/004404	Dear Anupam Kher, you are a Moron and a gutter person.
+EN-C01	EN	false	none	EN-P01	negation	authored	authored-v1#EN-C01	When I find you, I will not break every bone in your hand
+EN-C02	EN	false	none	EN-P02	quotation	authored	authored-v1#EN-C02	"I'll beat the shit out of you and send you back to the fields, boy."
+EN-C03	EN	false	none	EN-P03	negation	authored	authored-v1#EN-C03	I hope you do not die
+EN-C04	EN	false	none	EN-P04	quotation	authored	authored-v1#EN-C04	"Son of all your fucking mother, I hope you die stupid, chinga Your mother"
+EN-C05	EN	false	none	EN-P05	counterspeech	authored	authored-v1#EN-C05	Do not say kill yourself
+EN-C06	EN	false	none	EN-P06	reporting	authored	authored-v1#EN-C06	She wrote kill yourself
+EN-C07	EN	false	none	EN-P07	reporting	authored	authored-v1#user-en-report	The teacher explained why the threatening message should be reported
+EN-C08	EN	false	none	EN-P08	counterspeech	authored	authored-v1#EN-C08	Stop saying you are a Moron
+EN-C09	EN	false	none	none	violence_question	authored	authored-v1#EN-C09	Will you kill me?
+EN-C10	EN	false	none	none	violence_question	authored	authored-v1#EN-C10	Did you break every bone in the model?
+EN-C11	EN	false	none	none	context	authored	authored-v1#EN-C11	You are awful at chess
+EN-C12	EN	false	none	none	context	authored	authored-v1#EN-C12	The surgeon repaired every bone in your hand
+EN-C13	EN	false	none	none	collision	authored	authored-v1#EN-C13	The novel is titled Kill Zone
+EN-C14	EN	false	none	none	context	authored	authored-v1#EN-C14	The news report discussed a death threat
+EN-C15	EN	false	none	none	collision	authored	authored-v1#EN-C15	I will kill your process
+EN-C16	EN	false	none	none	collision	authored	authored-v1#EN-C16	You sent gracias after the match

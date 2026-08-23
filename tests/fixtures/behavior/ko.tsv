@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+ko-t01	KO	true	threat	ko-p01	none	authored	authored-v1#KO-T01	너를 죽이겠다
+ko-t02	KO	true	threat	ko-p02	none	dataset	k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/11842	달창남들아 진짜 작작좀해라. 30대남들 죽여버린다
+ko-t03	KO	true	harm_wish	ko-p03	none	authored	authored-v1#KO-T03	오늘 밤 네가 다시는 깨어나지 않기를 바란다
+ko-t04	KO	true	harm_wish	ko-p04	none	dataset	k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/27924	북괴돼지새끼 뒤졌으면 좋겠네
+ko-t05	KO	true	self_harm_command	ko-p05	none	authored	authored-v1#KO-T05	자 살 해
+ko-t06	KO	true	self_harm_command	ko-p06	none	dataset	k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/33268	동성애는 사회악입니다 자살해주세요
+ko-t07	KO	true	directed_insult	ko-p07	none	authored	authored-v1#KO-T07	넌 쓰레기야
+ko-t08	KO	true	directed_insult	ko-p08	none	dataset	k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/29609	넌늙은 🐕🐕🐕🐕새끼
+ko-c01	KO	false	none	none	negation	authored	authored-v1#KO-C01	너를 죽이지 않겠다
+ko-c02	KO	false	none	none	negation	authored	authored-v1#KO-C02	네가 죽지 않았으면 좋겠다
+ko-c03	KO	false	none	ko-p01	quotation	authored	authored-v1#KO-C03	"너를 죽이겠다"
+ko-c04	KO	false	none	ko-p03	quotation	authored	authored-v1#KO-C04	“오늘 밤 네가 다시는 깨어나지 않기를 바란다”
+ko-c05	KO	false	none	none	reporting	authored	authored-v1#KO-C05	관리자가 다른 사용자를 협박한 메시지를 삭제했다
+ko-c06	KO	false	none	ko-p07	reporting	authored	authored-v1#KO-C06	관리자가 신고했다 넌 쓰레기야
+ko-c07	KO	false	none	ko-p05	counterspeech	authored	authored-v1#KO-C07	그렇게 말하지 마 자살해
+ko-c08	KO	false	none	ko-p08	counterspeech	authored	authored-v1#KO-C08	그 말은 잘못됐다 넌 쓰레기야
+ko-c09	KO	false	none	none	violence_question	authored	authored-v1#KO-C09	너를 죽일 거야?
+ko-c10	KO	false	none	ko-p02	violence_question	authored	authored-v1#KO-C10	30대 남들을 죽이겠다는 뜻이야?
+ko-c11	KO	false	none	none	collision	authored	authored-v1#KO-C11	김 씨가 왔다
+ko-c12	KO	false	none	ko-p04	replacement	authored	authored-v1#KO-C12	북괴돼지새끼 살아있으면 좋겠네
+ko-c13	KO	false	none	none	replacement	authored	authored-v1#KO-C13	kill switch를 눌러 테스트를 멈췄다
+ko-c14	KO	false	none	ko-p06	replacement	authored	authored-v1#KO-C14	동성애는 사회악입니다 상담해주세요
+ko-c15	KO	false	none	none	context	authored	authored-v1#KO-C15	너는 가도 된다. 하지만 나무를 부순다
+ko-c16	KO	false	none	none	context	authored	authored-v1#KO-C16	뉴스가 협박 메시지 삭제를 보도했다

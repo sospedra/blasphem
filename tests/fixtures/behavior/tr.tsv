@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+TR-T01	TR	true	threat	TR-P01	none	authored	authored-v1#user-tr-toxic	Seni bulunca bütün dişlerini kıracağım
+TR-T02	TR	true	threat	TR-P02	none	dataset	offenseval-tr@official-v1/train/16626	hayır kedim de ben de ondan ne kadar haz etmediğimizi anlattık ısrarla sevmeye çalışıyor. kafanı kırarım senin yer biti.
+TR-T03	TR	true	harm_wish	TR-P03	none	authored	authored-v1#plan-tr-harm-wish	umarım ölürsün
+TR-T04	TR	true	harm_wish	TR-P04	none	dataset	offenseval-tr@official-v1/train/44700	@USER En yakın zamanda geber orospu
+TR-T05	TR	true	self_harm_command	TR-P05	none	authored	authored-v1#plan-tr-self-harm	kendini öldür
+TR-T06	TR	true	self_harm_command	TR-P06	none	dataset	offenseval-tr@official-v1/train/36405	@USER @USER Çok salaksın aq yapıyor olanilirsin gayet normal  herkes yapabilir de hem bir instagramer ve yayıncı olarak bunu sosyal medyada paylaşıyorsun sonra intihar ederim nolcak et hadi madem
+TR-T07	TR	true	directed_insult	TR-P07	none	authored	authored-v1#plan-tr-insult	sen şerefsizsin
+TR-T08	TR	true	directed_insult	TR-P08	none	dataset	offenseval-tr@official-v1/train/35659	@USER Geri zekalı. 18 yaş salaklığı bunlar tabii normal.
+TR-C01	TR	false	none	TR-P01	negation	authored	authored-v1#TR-C01	Seni bulunca dişlerini kırmayacağım
+TR-C02	TR	false	none	TR-P02	quotation	authored	authored-v1#TR-C02	"kafanı kırarım senin yer biti"
+TR-C03	TR	false	none	TR-P03	negation	authored	authored-v1#TR-C03	Umarım ölmezsin
+TR-C04	TR	false	none	TR-P04	quotation	authored	authored-v1#TR-C04	"@USER En yakın zamanda geber orospu"
+TR-C05	TR	false	none	TR-P05	counterspeech	authored	authored-v1#TR-C05	Bunu söyleme kendini öldür
+TR-C06	TR	false	none	TR-P06	reporting	authored	authored-v1#TR-C06	O yazdı intihar ederim nolcak et hadi madem
+TR-C07	TR	false	none	TR-P07	reporting	authored	authored-v1#user-tr-report	Moderatör başka bir oyuncuyu tehdit eden mesajı sildi
+TR-C08	TR	false	none	TR-P08	counterspeech	authored	authored-v1#TR-C08	Şunu söylemeyi bırak sen şerefsizsin
+TR-C09	TR	false	none	none	violence_question	authored	authored-v1#TR-C09	Seni öldüreceğim mi?
+TR-C10	TR	false	none	none	violence_question	authored	authored-v1#TR-C10	Kafanı kırarım diye kim yazdı?
+TR-C11	TR	false	none	none	context	authored	authored-v1#TR-C11	Sen kötü bir satranç oyuncususun
+TR-C12	TR	false	none	none	context	authored	authored-v1#TR-C12	Doktor kırık çeneyi tedavi etti
+TR-C13	TR	false	none	none	collision	authored	authored-v1#TR-C13	Romanın adı Öldürme Zamanı
+TR-C14	TR	false	none	none	context	authored	authored-v1#TR-C14	Haber tehdit mesajını anlattı
+TR-C15	TR	false	none	none	collision	authored	authored-v1#TR-C15	Özgeçmişin hazır
+TR-C16	TR	false	none	none	collision	authored	authored-v1#TR-C16	Sen thank you yazdın

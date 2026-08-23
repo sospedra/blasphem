@@ -1,0 +1,4 @@
+Tweet,HS,Abusive,HS_Individual,HS_Group,HS_Religion,HS_Race,HS_Physical,HS_Gender,HS_Other,HS_Weak,HS_Moderate,HS_Strong
+hello,0,0,0,0,0,0,0,0,0,0,0,0
+hate,1,0,1,0,0,0,0,0,0,0,1,0
+curse,0,1,0,0,0,0,0,0,0,0,0,0

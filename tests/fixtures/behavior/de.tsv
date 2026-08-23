@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+DE-T01	DE	true	threat	DE-P01	none	authored	authored-v1#plan-de-threat	ich werde dich töten
+DE-T02	DE	true	threat	DE-P02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/de/000787	  Dikka du hurensohn Hater deine Mutter ficke ich im Schlaf wenn ich nachts von einem Nachtisch träume wie ich den mit deiner fetten Mutter auf ihrem Balkon fresse. Du hurensohn Bastard hater. Komm mal ran junge. Dann breche ich dir die Nase.
+DE-T03	DE	true	harm_wish	DE-P03	none	authored	authored-v1#user-de-toxic	Ich hoffe, du wachst morgen nicht mehr auf
+DE-T04	DE	true	harm_wish	DE-P04	none	dataset	germeval-2018@9877472d39523effd54cd079b4c61157ed141508/unsplit/test-001983	#Soros Du Reisen Arschloch !!!! Verrecke elendig!!!!
+DE-T05	DE	true	self_harm_command	DE-P05	none	authored	authored-v1#plan-de-self-harm	bring dich um
+DE-T06	DE	true	self_harm_command	DE-P06	none	authored	authored-v1#de-self-harm-2	töte dich selbst
+DE-T07	DE	true	directed_insult	DE-P07	none	authored	authored-v1#plan-de-insult	du bist ein Arschloch
+DE-T08	DE	true	directed_insult	DE-P08	none	dataset	germeval-2018@9877472d39523effd54cd079b4c61157ed141508/unsplit/test-001359	#Tagesschau Ihr seit solche verlogenen Arschlöcher !!!
+DE-C01	DE	false	none	DE-P01	negation	authored	authored-v1#DE-C01	Ich werde dich nicht töten
+DE-C02	DE	false	none	DE-P02	quotation	authored	authored-v1#DE-C02	"Dikka du hurensohn Hater deine Mutter ficke ich im Schlaf wenn ich nachts von einem Nachtisch träume wie ich den mit deiner fetten Mutter auf ihrem Balkon fresse. Du hurensohn Bastard hater. Komm mal ran junge. Dann breche ich dir die Nase."
+DE-C03	DE	false	none	DE-P03	negation	authored	authored-v1#DE-C03	Ich hoffe, dass du nicht stirbst
+DE-C04	DE	false	none	DE-P04	quotation	authored	authored-v1#DE-C04	"Verrecke elendig"
+DE-C05	DE	false	none	DE-P05	counterspeech	authored	authored-v1#DE-C05	Sag nicht bring dich um
+DE-C06	DE	false	none	DE-P06	reporting	authored	authored-v1#DE-C06	Er schrieb töte dich selbst
+DE-C07	DE	false	none	DE-P07	reporting	authored	authored-v1#user-de-report	Die Moderatorin löschte die Nachricht mit der Drohung
+DE-C08	DE	false	none	DE-P08	counterspeech	authored	authored-v1#DE-C08	Hör auf zu sagen du bist ein Arschloch
+DE-C09	DE	false	none	none	violence_question	authored	authored-v1#DE-C09	Wirst du mich töten?
+DE-C10	DE	false	none	none	violence_question	authored	authored-v1#DE-C10	Warum sagte er breche ich dir die Nase?
+DE-C11	DE	false	none	none	context	authored	authored-v1#DE-C11	Du bist schlecht im Schach
+DE-C12	DE	false	none	none	context	authored	authored-v1#DE-C12	Der Arzt behandelt eine gebrochene Nase
+DE-C13	DE	false	none	none	collision	authored	authored-v1#DE-C13	Der Roman heißt Töten auf Zeit
+DE-C14	DE	false	none	none	context	authored	authored-v1#DE-C14	Die Nachrichten berichteten über eine Drohung
+DE-C15	DE	false	none	none	collision	authored	authored-v1#DE-C15	Dein Résumé ist fertig
+DE-C16	DE	false	none	none	collision	authored	authored-v1#DE-C16	Du hast thank you geschrieben

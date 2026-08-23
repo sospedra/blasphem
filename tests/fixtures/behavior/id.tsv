@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+ID-T01	ID	true	threat	ID-P01	none	authored	authored-v1#user-id-toxic	Kalau bertemu lagi, akan kupatahkan rahangmu
+ID-T02	ID	true	threat	ID-P02	none	dataset	ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/005554	USER gaya bgt lo kampang mau gue tendang gak'
+ID-T03	ID	true	harm_wish	ID-P03	none	authored	authored-v1#plan-id-harm-wish	semoga kamu mati
+ID-T04	ID	true	harm_wish	ID-P04	none	dataset	ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/000382	perempuan kaya lo mending mati aja deh, jelek aja, gausa sok jadi make up artist!
+ID-T05	ID	true	self_harm_command	ID-P05	none	authored	authored-v1#plan-id-self-harm	mati saja kau
+ID-T06	ID	true	self_harm_command	ID-P06	none	authored	authored-v1#id-self-harm-2	bunuh diri saja
+ID-T07	ID	true	directed_insult	ID-P07	none	authored	authored-v1#plan-id-insult	kamu bajingan
+ID-T08	ID	true	directed_insult	ID-P08	none	dataset	ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/010172	USER USER Iri ae lu tolol'
+ID-C01	ID	false	none	ID-P01	negation	authored	authored-v1#ID-C01	Kalau bertemu lagi, aku tidak akan kupatahkan rahangmu
+ID-C02	ID	false	none	ID-P02	quotation	authored	authored-v1#ID-C02	"USER gaya bgt lo kampang mau gue tendang gak'"
+ID-C03	ID	false	none	ID-P03	negation	authored	authored-v1#ID-C03	Semoga kamu tidak mati
+ID-C04	ID	false	none	ID-P04	quotation	authored	authored-v1#ID-C04	"perempuan kaya lo mending mati aja deh, jelek aja, gausa sok jadi make up artist!"
+ID-C05	ID	false	none	ID-P05	counterspeech	authored	authored-v1#ID-C05	Jangan katakan mati saja kau
+ID-C06	ID	false	none	ID-P06	reporting	authored	authored-v1#ID-C06	Dia menulis bunuh diri saja
+ID-C07	ID	false	none	ID-P07	reporting	authored	authored-v1#user-id-report	Saya melaporkan pesan yang mengancam pemain lain
+ID-C08	ID	false	none	ID-P08	counterspeech	authored	authored-v1#ID-C08	Berhenti mengatakan kamu bajingan
+ID-C09	ID	false	none	none	violence_question	authored	authored-v1#ID-C09	Apakah kamu akan kupatahkan ranting itu?
+ID-C10	ID	false	none	none	violence_question	authored	authored-v1#ID-C10	Siapa yang menendang bola itu?
+ID-C11	ID	false	none	none	context	authored	authored-v1#ID-C11	Kamu buruk dalam permainan ini
+ID-C12	ID	false	none	none	context	authored	authored-v1#ID-C12	Dokter merawat rahangmu yang patah
+ID-C13	ID	false	none	none	collision	authored	authored-v1#ID-C13	Novel itu berjudul Pembunuh
+ID-C14	ID	false	none	none	context	authored	authored-v1#ID-C14	Berita itu membahas sebuah ancaman
+ID-C15	ID	false	none	none	collision	authored	authored-v1#ID-C15	Kamu mengirim résumé kemarin
+ID-C16	ID	false	none	none	collision	authored	authored-v1#ID-C16	Kamu berkata thank you setelah pertandingan

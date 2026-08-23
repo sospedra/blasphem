@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+IT-T01	IT	true	threat	IT-P01	none	authored	authored-v1#user-it-toxic	Quando ti vedo, ti rompo tutti i denti
+IT-T02	IT	true	threat	IT-P02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000396	82.56.106.201: se ti becco a san siro ti ammazzo a coltellate, lurido figlio di puttana bastardo comunista. ESTREMA DESTRA MILAN
+IT-T03	IT	true	harm_wish	IT-P03	none	authored	authored-v1#plan-it-harm-wish	spero che tu muoia
+IT-T04	IT	true	harm_wish	IT-P04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000462	MATTEO SALVINI SEI UN PEZZO DI MERDA SEI LA VERGOGNA D ITALIA! IO MI VERGOGNO AD AVERE PEZZI DI MERDA AL POTERE COME TE! MUORI PEZZENTE!
+IT-T05	IT	true	self_harm_command	IT-P05	none	authored	authored-v1#plan-it-self-harm	ammazzati
+IT-T06	IT	true	self_harm_command	IT-P06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000613	Per valerio79: Senti piccolo nerd figlio di puttana senza, che cazzo vuoi tu per cancellare una voce fatta da me? Nessuno l aveva fatta prima, io la creo e tu ti permetti di dire che è scarna? Ma ammazzati brutto rotto in culo.
+IT-T07	IT	true	directed_insult	IT-P07	none	authored	authored-v1#plan-it-insult	sei una merda
+IT-T08	IT	true	directed_insult	IT-P08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000030	Hellis sei un cretino. Chi ti da il diritto di decidere per gli altri? Per me questa lista è molto utile.
+IT-C01	IT	false	none	IT-P01	negation	authored	authored-v1#IT-C01	Quando ti vedo, non ti rompo tutti i denti
+IT-C02	IT	false	none	IT-P02	quotation	authored	authored-v1#IT-C02	"se ti becco a san siro ti ammazzo a coltellate"
+IT-C03	IT	false	none	IT-P03	negation	authored	authored-v1#IT-C03	Spero che tu non muoia
+IT-C04	IT	false	none	IT-P04	quotation	authored	authored-v1#IT-C04	"MUORI PEZZENTE"
+IT-C05	IT	false	none	IT-P05	counterspeech	authored	authored-v1#IT-C05	Non dire ammazzati
+IT-C06	IT	false	none	IT-P06	reporting	authored	authored-v1#IT-C06	Ha scritto ammazzati
+IT-C07	IT	false	none	IT-P07	reporting	authored	authored-v1#user-it-report	La moderatrice ha cancellato il messaggio che minacciava un altro giocatore
+IT-C08	IT	false	none	IT-P08	counterspeech	authored	authored-v1#IT-C08	Smetti di dire sei una merda
+IT-C09	IT	false	none	none	violence_question	authored	authored-v1#IT-C09	Chi ha scritto ammazzo?
+IT-C10	IT	false	none	none	violence_question	authored	authored-v1#IT-C10	Ti hanno chiesto di rompere il ghiaccio?
+IT-C11	IT	false	none	none	context	authored	authored-v1#IT-C11	Tu sei orribile a scacchi
+IT-C12	IT	false	none	none	context	authored	authored-v1#IT-C12	Il medico cura un dente rotto
+IT-C13	IT	false	none	none	collision	authored	authored-v1#IT-C13	Il romanzo si intitola Uccidere il tempo
+IT-C14	IT	false	none	none	context	authored	authored-v1#IT-C14	Il notiziario descrive una minaccia
+IT-C15	IT	false	none	none	collision	authored	authored-v1#IT-C15	Il résumé è pronto
+IT-C16	IT	false	none	none	collision	authored	authored-v1#IT-C16	Tu hai scritto thank you

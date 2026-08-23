@@ -1,0 +1,7 @@
+/target/
+/data/prepared-v1/
+/data/prepared-draft-v1/
+/.superpowers/
+/packages/blasphem/dist/
+/packages/blasphem/node_modules/
+/packages/blasphem/*.tgz

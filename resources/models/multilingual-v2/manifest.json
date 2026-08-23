@@ -1,0 +1,784 @@
+{
+  "schema_version": 2,
+  "entries": [
+    {
+      "language": "EN",
+      "artifact_relative_path": "en-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-en",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "9d17c991b87c4b43ea5f69c9950f3ad852c26a0a7b1aa4a5849323a1ae738988"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "83f12c208705486045927869c1adc40d5987064de60cc5665bb24e5ee20f1bd3",
+      "hurtlex_sha256": "a734820a63c87994781d182692e6dc7ec262c402016971a7fa31946ced0d470c",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "b2029ca2ab1d588acd670e6bf61e1bb8775e4cd0d18e149c5babe7a27e29b13b",
+      "development_rows": 3424,
+      "validation_rows": 746,
+      "test_rows": 721,
+      "duplicate_rows": 105,
+      "conflict_rows": 0,
+      "excluded_rows": 109,
+      "boundary": 11454,
+      "score_scale": 32198,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 220,
+        "true_negative": 379,
+        "false_positive": 0,
+        "false_negative": 147
+      },
+      "validation_metrics": {
+        "accuracy": 0.8029490616621984,
+        "precision": 1.0,
+        "recall": 0.5994550408719346,
+        "specificity": 1.0,
+        "f1": 0.7495741056218058
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "cb37986703724b067c82207c07e9208b8ebd6d13deb1537504baed0d1f2c0a98"
+    },
+    {
+      "language": "ZH",
+      "artifact_relative_path": "zh-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-zh",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "3d83b661e3c1cad1de3c8e80273296312708781cece582efc2e4747c41b5e1e9"
+        }
+      ],
+      "feature_profile": "Char25V2",
+      "normalization_profile": "ChineseV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "6faedfcb637f60f23a58ff24e3473023a2484707774fe90277cb217c9b3d7941",
+      "hurtlex_sha256": "e37f5ae1c799fc9f135d27e6965459df13d594385ff6358304b2fe9c51782dd3",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "85fbea842e3aeeddaea53bc4cfbae35de8bfd32174baae07523c72624b996a9b",
+      "development_rows": 3501,
+      "validation_rows": 754,
+      "test_rows": 741,
+      "duplicate_rows": 0,
+      "conflict_rows": 0,
+      "excluded_rows": 4,
+      "boundary": 3946,
+      "score_scale": 6622,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 13,
+        "true_negative": 381,
+        "false_positive": 1,
+        "false_negative": 359
+      },
+      "validation_metrics": {
+        "accuracy": 0.5225464190981433,
+        "precision": 0.9285714285714286,
+        "recall": 0.03494623655913978,
+        "specificity": 0.9973821989528796,
+        "f1": 0.06735751295336788
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "ca0098bc453def36abc9069995819a0cdda575d13b4456fafa4dc8bbc9ea9c05"
+    },
+    {
+      "language": "ES",
+      "artifact_relative_path": "es-chargram-v1.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-es-legacy",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9"
+        }
+      ],
+      "feature_profile": "EsLegacyWordChar35V1",
+      "normalization_profile": "EsLegacyCharabiaV1",
+      "feature_schema": "EsLegacyV1",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "8bb5ad315f8abe69611cb192bfdf3712d8005cd331565547ec87573720a48246",
+      "hurtlex_sha256": "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba",
+      "clean_control_rows": 0,
+      "clean_control_sha256": null,
+      "development_rows": 3418,
+      "validation_rows": 762,
+      "test_rows": 819,
+      "duplicate_rows": 1,
+      "conflict_rows": 0,
+      "excluded_rows": 1,
+      "boundary": 10962,
+      "score_scale": 27695,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 159,
+        "true_negative": 382,
+        "false_positive": 18,
+        "false_negative": 203
+      },
+      "validation_metrics": {
+        "accuracy": 0.7099737532808399,
+        "precision": 0.8983050847457628,
+        "recall": 0.43922651933701656,
+        "specificity": 0.955,
+        "f1": 0.5899814471243042
+      },
+      "validation_gates": null,
+      "artifact_bytes": 131104,
+      "artifact_sha256": "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36"
+    },
+    {
+      "language": "AR",
+      "artifact_relative_path": "ar-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-ar",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "07e17f8bb673e5bfb5559e608291e9cd80b9d7a4d0167fa082e9805c8c510405"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "ArabicV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 2,
+      "rule_pack_sha256": "a882fa77392de6d327db51fc15a97729d63378df59b9ae564360e9b86aaff7ef",
+      "hurtlex_sha256": "02bef4384f6e365a2f52d1ea993de218252a75caad2a08f030b9401e8e6facf4",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "02932403be8fd716ffb8c5fe28fdc1c451290ffcb3562ebd78ee91928c52a98f",
+      "development_rows": 3478,
+      "validation_rows": 750,
+      "test_rows": 759,
+      "duplicate_rows": 9,
+      "conflict_rows": 0,
+      "excluded_rows": 13,
+      "boundary": 4928,
+      "score_scale": 12894,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 144,
+        "true_negative": 355,
+        "false_positive": 10,
+        "false_negative": 241
+      },
+      "validation_metrics": {
+        "accuracy": 0.6653333333333333,
+        "precision": 0.935064935064935,
+        "recall": 0.37402597402597404,
+        "specificity": 0.9726027397260274,
+        "f1": 0.5343228200371057
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "04a2de1e4c85b27f4c86dd5284ca19407421f5b9062dd4fefa7aeec3290d69fc"
+    },
+    {
+      "language": "MS",
+      "artifact_relative_path": "id-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "ibrohim-budi",
+          "source_file_id": "ibrohim-budi-re-dataset",
+          "revision": "be98de98e974b65838d2b5145ee2c89e9bf53a6b",
+          "file_sha256": "44c04e31ad4b7ee4a95f1884e7af4da2c44b69762143eb2de0ede7f90502735e"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "32b05ecb070b353590ed6b2f29e4d6a13023ec4b33cfa7f48679f16475182861",
+      "hurtlex_sha256": "947d3fa9f7ffb1fc65aabf73278c9484fa1769c32349ba6ff23727825b69e9b8",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "2098fde9e287b0e83ceaac0071d26ccb7a7c603d1acf62a526718a970d5917b0",
+      "development_rows": 8990,
+      "validation_rows": 1968,
+      "test_rows": 1988,
+      "duplicate_rows": 185,
+      "conflict_rows": 35,
+      "excluded_rows": 223,
+      "boundary": 18460,
+      "score_scale": 50371,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 443,
+        "true_negative": 879,
+        "false_positive": 24,
+        "false_negative": 622
+      },
+      "validation_metrics": {
+        "accuracy": 0.6717479674796748,
+        "precision": 0.9486081370449678,
+        "recall": 0.415962441314554,
+        "specificity": 0.973421926910299,
+        "f1": 0.5783289817232375
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "9b207f1b85a9a8da31554258dd5ccb49509119dc8db715149c467b2df6116cf8"
+    },
+    {
+      "language": "PT",
+      "artifact_relative_path": "pt-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "told-br",
+          "source_file_id": "told-br-alpha",
+          "revision": "6b325d26a9d25b321a3e9ba98ef98832b56729f5",
+          "file_sha256": "1129593be5e5277e30c018246aab621187d0c936a60efd28a1cf373e6c55e94e"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "76b8c7927042582bee11d3c4444e1cf61c199782a223d1f95e60ea536c2a69aa",
+      "hurtlex_sha256": "157ed297e7f0f9dcf5ab69e8ad7e231dad64473e516d168bda1c9582c372c16d",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "e978498ec367a683908742458908820d8182ab0fa8229d7488b3ca0a59288646",
+      "development_rows": 11189,
+      "validation_rows": 2416,
+      "test_rows": 2440,
+      "duplicate_rows": 101,
+      "conflict_rows": 29,
+      "excluded_rows": 4955,
+      "boundary": 4849,
+      "score_scale": 14049,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 209,
+        "true_negative": 1771,
+        "false_positive": 23,
+        "false_negative": 413
+      },
+      "validation_metrics": {
+        "accuracy": 0.8195364238410596,
+        "precision": 0.9008620689655172,
+        "recall": 0.3360128617363344,
+        "specificity": 0.9871794871794872,
+        "f1": 0.4894613583138173
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "7543698f1daa28fb72c7a84c90d161f756d778d7f1165fb437ec5d296df6c33c"
+    },
+    {
+      "language": "FR",
+      "artifact_relative_path": "fr-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-fr",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "6ed1a85c725fd437e5df908fcbcab279ddde0194b27fb47c581ff967f6b7cc76"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "d944d890212aefb86324d2d6dd4518a724f0e6de6daefee2706fb7be0e3fabc6",
+      "hurtlex_sha256": "8405124a1374b65d777cba39020f817e047598c6c8cf455fb9c106ee4cad4625",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "6da3366a47150596d0ea225e27e3aa2362999182c4136bc36747eb7499212664",
+      "development_rows": 3390,
+      "validation_rows": 675,
+      "test_rows": 681,
+      "duplicate_rows": 251,
+      "conflict_rows": 0,
+      "excluded_rows": 254,
+      "boundary": 3006,
+      "score_scale": 20220,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 291,
+        "true_negative": 327,
+        "false_positive": 9,
+        "false_negative": 48
+      },
+      "validation_metrics": {
+        "accuracy": 0.9155555555555556,
+        "precision": 0.97,
+        "recall": 0.8584070796460177,
+        "specificity": 0.9732142857142857,
+        "f1": 0.9107981220657277
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "1aa9bde78833bb330d7f4852373ab9566144563aa8f2d1b56389e3b701d62694"
+    },
+    {
+      "language": "HI",
+      "artifact_relative_path": "hi-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-hi",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "19103044a07ff34ceb1dfa32859a92a8fe814e4b3a3cccf1ed89a78bd86ea3fa"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "HindiV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 2,
+      "rule_pack_sha256": "eed30552d88d22ecc5cb33da64aaa4786299b78f046c3ff5fd0a1f744f6fb275",
+      "hurtlex_sha256": "12678d085fbac5d15a52e574e82a9937f05cb119804af56657698655c8036f02",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "d2919c363be4c6773105d039a1fc802e962ed31cdd77f16de936c49d5a885086",
+      "development_rows": 3499,
+      "validation_rows": 764,
+      "test_rows": 690,
+      "duplicate_rows": 43,
+      "conflict_rows": 0,
+      "excluded_rows": 47,
+      "boundary": 18244,
+      "score_scale": 61484,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 229,
+        "true_negative": 380,
+        "false_positive": 11,
+        "false_negative": 144
+      },
+      "validation_metrics": {
+        "accuracy": 0.7971204188481675,
+        "precision": 0.9541666666666667,
+        "recall": 0.613941018766756,
+        "specificity": 0.9718670076726342,
+        "f1": 0.7471451876019576
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "84a9b478e45236509882c8b524cf1e08070c7f255804dceb7118ea55d0789547"
+    },
+    {
+      "language": "RU",
+      "artifact_relative_path": "ru-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-ru",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "098477b141e4a7b2856f9760a28728454cb32940b8fec006074debdd3999f2d5"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "2d3f7288619d2e801eeb2a52ea7243207752c08ee49c54098c70fb294c059b01",
+      "hurtlex_sha256": "c0f022f03c10a1097f96ef5d346dedf9899083a4d6bc2e6c96112c6444943384",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "7f1841bd7f5c4cf1889b7568e79c147676cfad29f2fe4e5e864d089f857c1641",
+      "development_rows": 3487,
+      "validation_rows": 754,
+      "test_rows": 734,
+      "duplicate_rows": 22,
+      "conflict_rows": 0,
+      "excluded_rows": 25,
+      "boundary": 4839,
+      "score_scale": 17278,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 302,
+        "true_negative": 354,
+        "false_positive": 3,
+        "false_negative": 95
+      },
+      "validation_metrics": {
+        "accuracy": 0.870026525198939,
+        "precision": 0.9901639344262295,
+        "recall": 0.760705289672544,
+        "specificity": 0.9915966386554622,
+        "f1": 0.8603988603988604
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "3706ce98e530e9d6830c80195baad420c0fa0877990bcf8d21bedd618eab18a4"
+    },
+    {
+      "language": "JA",
+      "artifact_relative_path": "ja-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-ja",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "061aa1dd637abcbc887581fc27e33eb095499528e6474e138703a5253c2d28b8"
+        }
+      ],
+      "feature_profile": "Char25V2",
+      "normalization_profile": "JapaneseV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "8474720d2e8e0e85ba97e3a08f949dfa9b429b1538bff6a7b593bd32d6c9b2a1",
+      "hurtlex_sha256": "98a2dd994ccba6bce296668d6d17914cb397da1848718d530394648dcab7aac1",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "a530589b207456f89d9ff5ed77434d1f6305841b94956f5a53e591398950e1ad",
+      "development_rows": 3382,
+      "validation_rows": 756,
+      "test_rows": 674,
+      "duplicate_rows": 0,
+      "conflict_rows": 184,
+      "excluded_rows": 188,
+      "boundary": 6670,
+      "score_scale": 16552,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 91,
+        "true_negative": 359,
+        "false_positive": 10,
+        "false_negative": 296
+      },
+      "validation_metrics": {
+        "accuracy": 0.5952380952380952,
+        "precision": 0.900990099009901,
+        "recall": 0.2351421188630491,
+        "specificity": 0.9728997289972899,
+        "f1": 0.3729508196721312
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "ea688b3ec5848a14cfca0ac634abe631f8bd759312d1439773e2fc178c32738f"
+    },
+    {
+      "language": "DE",
+      "artifact_relative_path": "de-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-de",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "41aa3fda656655cd1343ce5a6b7f8a1f5ff79e992a7df04d7628312ec5e14f2b"
+        },
+        {
+          "dataset": "germeval-2018",
+          "source_file_id": "germeval-2018-test",
+          "revision": "9877472d39523effd54cd079b4c61157ed141508",
+          "file_sha256": "45f31510b305d080a933d4087b8d34f7a5e4087141718955b90357ca730074f2"
+        },
+        {
+          "dataset": "germeval-2018",
+          "source_file_id": "germeval-2018-training",
+          "revision": "9877472d39523effd54cd079b4c61157ed141508",
+          "file_sha256": "0f88c63a344e1ab69c5407aa539d1612cd82a96b51ebd6bd613dc70ff9fef03e"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "b48d46b1d9a84a9cf4781cd32d16f08acbeef426811919bdb6f870d52b837f96",
+      "hurtlex_sha256": "5eb7f5e38ae33c182f99be27c72af3a5ab8b9620dc33a6efbde0c1e34c539aa1",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "8a2e3c4c3a32d3634cd1c20c0b212d78dc606214d5564581dad7e2a7f5717426",
+      "development_rows": 8878,
+      "validation_rows": 1971,
+      "test_rows": 1865,
+      "duplicate_rows": 824,
+      "conflict_rows": 0,
+      "excluded_rows": 827,
+      "boundary": 8743,
+      "score_scale": 21243,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 301,
+        "true_negative": 1186,
+        "false_positive": 33,
+        "false_negative": 451
+      },
+      "validation_metrics": {
+        "accuracy": 0.7544393708777271,
+        "precision": 0.9011976047904192,
+        "recall": 0.4002659574468085,
+        "specificity": 0.9729286300246104,
+        "f1": 0.5543278084714549
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "9f8e110db887b1e452a75d067d64796a1bba4575ba5076c58d17af2c63bd1649"
+    },
+    {
+      "language": "TR",
+      "artifact_relative_path": "tr-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "offenseval-tr",
+          "source_file_id": "offenseval-tr-test",
+          "revision": null,
+          "file_sha256": "9052784e13248e58658e34a4f86a3463ef8b2594d2feb289e4b29bba2866b437"
+        },
+        {
+          "dataset": "offenseval-tr",
+          "source_file_id": "offenseval-tr-test-labels",
+          "revision": null,
+          "file_sha256": "ae9b0837e948c3d9c3a147d2a415989a4940a7756d5821b3289276574941c9e3"
+        },
+        {
+          "dataset": "offenseval-tr",
+          "source_file_id": "offenseval-tr-training",
+          "revision": null,
+          "file_sha256": "8509c01c4bf387d9e387c4637829585431cc045adaf7d0413c0022bf2bcd4baa"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "TurkishV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "1ead20c976e68da4fdb683cdebbe680e40d7561bed08b807f595925fe663a932",
+      "hurtlex_sha256": "518abd34e82fe58aa25bb7c24e35b8e17eac814b2a23766490cf32e3c1c32346",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "3474df8d0b53d6c06b7c2a34f40072d83747f62d81e921c9726b42c25018fee4",
+      "development_rows": 27103,
+      "validation_rows": 4607,
+      "test_rows": 3528,
+      "duplicate_rows": 38,
+      "conflict_rows": 4,
+      "excluded_rows": 46,
+      "boundary": 31350,
+      "score_scale": 45004,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 24,
+        "true_negative": 3701,
+        "false_positive": 2,
+        "false_negative": 880
+      },
+      "validation_metrics": {
+        "accuracy": 0.8085522031690905,
+        "precision": 0.9230769230769231,
+        "recall": 0.02654867256637168,
+        "specificity": 0.9994598973805023,
+        "f1": 0.05161290322580645
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "258fb502126105c02e1ce97998e7c95d3fdc8f6dfc44cb2ab384a8a3448c54a3"
+    },
+    {
+      "language": "VI",
+      "artifact_relative_path": "vi-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "vihos",
+          "source_file_id": "vihos-development",
+          "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+          "file_sha256": "cbc682a6fd6750de2fc79e211b07a4be63ac355110a35bd2f1a8922239534712"
+        },
+        {
+          "dataset": "vihos",
+          "source_file_id": "vihos-test",
+          "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+          "file_sha256": "0c8d09f1e9d649ac206619a717610e805001c4e74d13325f16b931ddd43c3cd8"
+        },
+        {
+          "dataset": "vihos",
+          "source_file_id": "vihos-train",
+          "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+          "file_sha256": "b225cf257b5ce7c77e275ba900ffc6fee490ae0a1936afc98e250040e418adac"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "VietnameseV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "13fcb5ae0b82f081bd942acd347469290b369e39a159287a646ebcb4a835ff64",
+      "hurtlex_sha256": "633a1f116b8ec2462eacec56f9a498d4387b4df10ef7e1c8ef47a076f6bf6914",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "1aa372dac98b48e6ce75c34bd1204c0ee1c09fbf43dc169da64eedf31a910e0c",
+      "development_rows": 8736,
+      "validation_rows": 1103,
+      "test_rows": 1102,
+      "duplicate_rows": 94,
+      "conflict_rows": 18,
+      "excluded_rows": 115,
+      "boundary": 8636,
+      "score_scale": 22835,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 228,
+        "true_negative": 552,
+        "false_positive": 14,
+        "false_negative": 309
+      },
+      "validation_metrics": {
+        "accuracy": 0.7071622846781505,
+        "precision": 0.9421487603305785,
+        "recall": 0.4245810055865922,
+        "specificity": 0.9752650176678446,
+        "f1": 0.5853658536585366
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "f289b02c024075825706be7e3e0ecdfb60e73ecc2dc9604c74638a832f13b2ab"
+    },
+    {
+      "language": "KO",
+      "artifact_relative_path": "ko-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "k-mhas",
+          "source_file_id": "kmhas-test",
+          "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+          "file_sha256": "9eaf470ee12c445817301d58672349500d6759516a730e879d36d6de17a2051a"
+        },
+        {
+          "dataset": "k-mhas",
+          "source_file_id": "kmhas-train",
+          "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+          "file_sha256": "ca9145afc5fd70a2222094daa427e57a08b309cb42dcce7986528b44eb0e7008"
+        },
+        {
+          "dataset": "k-mhas",
+          "source_file_id": "kmhas-validation",
+          "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+          "file_sha256": "cb0df9e3cd665125b554d4c5e6f48b0801d5535ead51269134de5b85ae469c18"
+        }
+      ],
+      "feature_profile": "Char25V2",
+      "normalization_profile": "KoreanV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 1,
+      "rule_pack_sha256": "51f02655fed2ffe57b000f4f557cf88ff03ee15fd5cb1e9b356b0fffae879a35",
+      "hurtlex_sha256": "64fec4779ec7808ba08912a7a4fb022e6821ed4f701c0da64a1e360db528c47e",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "0302508bd35c72b9f8f3a0e89adf456a87c51a0656c282553f282ad0fef3ce9e",
+      "development_rows": 78049,
+      "validation_rows": 8726,
+      "test_rows": 21888,
+      "duplicate_rows": 997,
+      "conflict_rows": 28,
+      "excluded_rows": 1029,
+      "boundary": 1755,
+      "score_scale": 4480,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 1598,
+        "true_negative": 4754,
+        "false_positive": 121,
+        "false_negative": 2253
+      },
+      "validation_metrics": {
+        "accuracy": 0.7279394911757965,
+        "precision": 0.9296102385107621,
+        "recall": 0.41495715398597766,
+        "specificity": 0.9751794871794872,
+        "f1": 0.5737881508078995
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "41627c430b64247febed8ca16c5c4297df23fbb1d4e30913f301be5775ab7fd3"
+    },
+    {
+      "language": "IT",
+      "artifact_relative_path": "it-sparse-v2.bin",
+      "dataset_inputs": [
+        {
+          "dataset": "textdetox",
+          "source_file_id": "textdetox-it",
+          "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+          "file_sha256": "71a1ba1636b22dfa5cdd6d1a42318c3c3a4d0d4581e6c197f096839af33ded89"
+        }
+      ],
+      "feature_profile": "WordChar35V2",
+      "normalization_profile": "GenericV2",
+      "feature_schema": "SparseV2",
+      "rule_pack_version": 2,
+      "rule_pack_sha256": "c1e8cf9f3612964383114fe3108d5ae08c2d98c3662dceb24f56219c9dc8129e",
+      "hurtlex_sha256": "043fb72213c2158b9c2b75651e7193bad249b8dc577c1f1e6c71a2b69d415eef",
+      "clean_control_rows": 16,
+      "clean_control_sha256": "682f799e0f9c8abdff759fac5de0c78d666a16eb15b2c0220a525b482908360a",
+      "development_rows": 3479,
+      "validation_rows": 742,
+      "test_rows": 732,
+      "duplicate_rows": 43,
+      "conflict_rows": 0,
+      "excluded_rows": 47,
+      "boundary": 21988,
+      "score_scale": 43955,
+      "false_warning_limit_basis_points": 300,
+      "validation": {
+        "true_positive": 88,
+        "true_negative": 363,
+        "false_positive": 9,
+        "false_negative": 282
+      },
+      "validation_metrics": {
+        "accuracy": 0.6078167115902965,
+        "precision": 0.9072164948453608,
+        "recall": 0.23783783783783785,
+        "specificity": 0.9758064516129032,
+        "f1": 0.37687366167023556
+      },
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
+      "artifact_bytes": 131112,
+      "artifact_sha256": "49b2e3fc9a4aea801d70bc84f96b90db13bc66ec8149dd4907f6437ce7bcfb85"
+    }
+  ]
+}

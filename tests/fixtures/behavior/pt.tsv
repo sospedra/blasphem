@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+PT-T01	PT	true	threat	PT-P01	none	authored	authored-v1#plan-pt-threat	vou te matar
+PT-T02	PT	true	threat	PT-P02	none	dataset	told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/010555	@user porra porto, te bato se fizer qualquer tatuagem
+PT-T03	PT	true	harm_wish	PT-P03	none	authored	authored-v1#user-pt-toxic	Espero que você nunca mais acorde
+PT-T04	PT	true	harm_wish	PT-P04	none	dataset	told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/011588	fale uma musica ruim do 21 pilots, e morra fdp
+PT-T05	PT	true	self_harm_command	PT-P05	none	authored	authored-v1#plan-pt-self-harm	mate-se
+PT-T06	PT	true	self_harm_command	PT-P06	none	dataset	told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/015135	não acredito q eu li isso, sério kkkkkkkkkkkkkkkkkkk se mata pqp
+PT-T07	PT	true	directed_insult	PT-P07	none	authored	authored-v1#plan-pt-insult	você é um filho da puta
+PT-T08	PT	true	directed_insult	PT-P08	none	dataset	told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/017596	@user sla voce e burro
+PT-C01	PT	false	none	PT-P01	negation	authored	authored-v1#PT-C01	não vou te matar
+PT-C02	PT	false	none	PT-P02	quotation	authored	authored-v1#PT-C02	"@user porra porto, te bato se fizer qualquer tatuagem"
+PT-C03	PT	false	none	PT-P03	negation	authored	authored-v1#PT-C03	Espero que você não morra
+PT-C04	PT	false	none	PT-P04	quotation	authored	authored-v1#PT-C04	"fale uma musica ruim do 21 pilots, e morra fdp"
+PT-C05	PT	false	none	PT-P05	counterspeech	authored	authored-v1#PT-C05	Não diga mate-se
+PT-C06	PT	false	none	PT-P06	reporting	authored	authored-v1#PT-C06	Ela escreveu se mata
+PT-C07	PT	false	none	PT-P07	reporting	authored	authored-v1#user-pt-report	Denunciei a mensagem que ameaçava outro jogador
+PT-C08	PT	false	none	PT-P08	counterspeech	authored	authored-v1#PT-C08	Pare de dizer você é um filho da puta
+PT-C09	PT	false	none	none	violence_question	authored	authored-v1#PT-C09	Você vai matar alguém?
+PT-C10	PT	false	none	none	violence_question	authored	authored-v1#PT-C10	Quem disse matar você?
+PT-C11	PT	false	none	none	context	authored	authored-v1#PT-C11	Você é ruim no xadrez
+PT-C12	PT	false	none	none	context	authored	authored-v1#PT-C12	O médico explicou por que o paciente não acorda
+PT-C13	PT	false	none	none	collision	authored	authored-v1#PT-C13	O romance se chama Matar o Tempo
+PT-C14	PT	false	none	none	context	authored	authored-v1#PT-C14	A notícia descreveu uma ameaça
+PT-C15	PT	false	none	none	collision	authored	authored-v1#PT-C15	Seu currículo está pronto
+PT-C16	PT	false	none	none	collision	authored	authored-v1#PT-C16	Você escreveu thank you

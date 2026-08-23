@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+ja-t01	JA	true	threat	ja-p01	none	authored	authored-v1#JA-T01	今度会ったら顔が分からなくなるまで殴る
+ja-t02	JA	true	threat	ja-p02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000533	もう、めんどくさいから   老人とガキを見たら殺そうぜ   殺し続けてればそのうち必ず黙る日が来るのは確実だろ？
+ja-t03	JA	true	harm_wish	ja-p03	none	authored	authored-v1#JA-T03	死ねばいい
+ja-t04	JA	true	harm_wish	ja-p04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000848	やさしいなぁ   おれは黙って死んで欲しいと思うわ
+ja-t05	JA	true	self_harm_command	ja-p05	none	authored	authored-v1#JA-T05	自 殺 し ろ
+ja-t06	JA	true	self_harm_command	ja-p06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000351	７０年も前のことをグダグダと五月蝿い馬鹿だね。   とっとと死ね。
+ja-t07	JA	true	directed_insult	ja-p07	none	authored	authored-v1#JA-T07	お前はクズだ
+ja-t08	JA	true	directed_insult	ja-p08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000861	安心したお前のようなバカがいる限り朝鮮人は、戦後保障蒸し返す。
+ja-c01	JA	false	none	none	negation	authored	authored-v1#JA-C01	お前を殺さない
+ja-c02	JA	false	none	ja-p03	negation	authored	authored-v1#JA-C02	死んでほしくない
+ja-c03	JA	false	none	ja-p01	quotation	authored	authored-v1#JA-C03	「今度会ったら顔が分からなくなるまで殴る」
+ja-c04	JA	false	none	ja-p05	quotation	authored	authored-v1#JA-C04	「自殺しろ」
+ja-c05	JA	false	none	none	reporting	authored	authored-v1#JA-C05	管理者は他の利用者を脅す投稿を削除した
+ja-c06	JA	false	none	none	reporting	authored	authored-v1#JA-C06	管理者が報告したお前はクズだ
+ja-c07	JA	false	none	ja-p07	counterspeech	authored	authored-v1#JA-C07	そう言うなお前はクズだ
+ja-c08	JA	false	none	ja-p08	counterspeech	authored	authored-v1#JA-C08	そんなことを言うなお前はクズだ
+ja-c09	JA	false	none	none	violence_question	authored	authored-v1#JA-C09	殺すのか、お前を？
+ja-c10	JA	false	none	ja-p02	violence_question	authored	authored-v1#JA-C10	お前を殴るの？
+ja-c11	JA	false	none	none	collision	authored	authored-v1#JA-C11	問題：この課題は難しい
+ja-c12	JA	false	none	ja-p04	replacement	authored	authored-v1#JA-C12	やさしいなぁおれは黙って生きて欲しいと思うわ
+ja-c13	JA	false	none	none	replacement	authored	authored-v1#JA-C13	kill switch を押してテストを止めた
+ja-c14	JA	false	none	ja-p06	replacement	authored	authored-v1#JA-C14	とっとと帰れ
+ja-c15	JA	false	none	none	context	authored	authored-v1#JA-C15	お前は帰っていい。しかし、木を殴るな
+ja-c16	JA	false	none	none	context	authored	authored-v1#JA-C16	ニュースは脅迫メッセージの削除を報じた
