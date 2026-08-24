@@ -157,6 +157,7 @@ pub fn source_record_from_request_with_download(
     Ok(SourceRecord {
         dataset: request.dataset,
         detector_language: request.detector_language,
+        source_role: request.source_role,
         source_file_id: request.source_file_id.clone(),
         immutable_source_url,
         archive_member: request.archive_member.clone(),
@@ -178,6 +179,7 @@ pub fn frozen_source_from_record(record: &SourceRecord) -> FrozenSource {
     FrozenSource {
         dataset: record.dataset,
         detector_language: record.detector_language,
+        source_role: record.source_role,
         source_file_id: record.source_file_id.clone(),
         immutable_source_url: record.immutable_source_url.clone(),
         archive_member: record.archive_member.clone(),
@@ -477,6 +479,7 @@ pub fn write_acquired_sources(
         records.push(SourceRecord {
             dataset: source.dataset,
             detector_language: source.detector_language,
+            source_role: source.source_role,
             source_file_id: source.source_file_id.clone(),
             immutable_source_url: source.immutable_source_url.clone(),
             archive_member: source.archive_member.clone(),

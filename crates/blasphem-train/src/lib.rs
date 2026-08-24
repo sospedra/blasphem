@@ -10,6 +10,7 @@ pub mod model_manifest;
 pub mod prepared_input;
 pub mod publication;
 pub mod source_manifest;
+pub mod source_role;
 pub mod textdetox_http;
 pub mod verification;
 

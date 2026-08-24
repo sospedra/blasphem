@@ -890,6 +890,7 @@ mod tests {
         acquisition::{frozen_source_from_record, source_record_from_request_with_download},
         datasets::{DatasetId, LineageStatus},
         source_manifest::SourceRequest,
+        source_role::SourceRole,
     };
 
     use super::{TextDetoxDownloadBoundary, acquire_textdetox_source, observe_textdetox_source};
@@ -903,6 +904,7 @@ mod tests {
         let request = SourceRequest {
             dataset: DatasetId::TextDetox,
             detector_language: Language::En,
+            source_role: SourceRole::Baseline,
             source_file_id: "textdetox-en".to_owned(),
             requested_url: url.clone(),
             revision_url: None,

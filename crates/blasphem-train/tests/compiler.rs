@@ -25,6 +25,7 @@ use blasphem_train::{
     prepared_input::load_prepared_language,
     publication::PREPARED_MANIFEST_SCHEMA_VERSION,
     source_manifest::SourceRecord,
+    source_role::SourceRole,
 };
 
 #[test]
@@ -688,6 +689,7 @@ fn source_record(
     SourceRecord {
         dataset,
         detector_language: language,
+        source_role: SourceRole::Baseline,
         source_file_id: source_file_id.to_owned(),
         immutable_source_url: format!("https://example.invalid/{source_file_id}"),
         archive_member: None,

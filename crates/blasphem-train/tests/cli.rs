@@ -589,13 +589,13 @@ fn one_source_catalog(url: &str) -> String {
 
 fn one_source_lock(url: &str) -> String {
     format!(
-        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_file_id":"ibrohim-budi-re-dataset","immutable_source_url":"{url}","archive_member":null,"revision":"revision","file_path":"source.csv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
+        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_role":"baseline","source_file_id":"ibrohim-budi-re-dataset","immutable_source_url":"{url}","archive_member":null,"revision":"revision","file_path":"source.csv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
     )
 }
 
 fn one_textdetox_source_lock(url: &str, revision: &str) -> String {
     format!(
-        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"textdetox","detector_language":"EN","source_file_id":"textdetox-en","immutable_source_url":"{url}","archive_member":null,"revision":"{revision}","file_path":"textdetox/en.tsv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
+        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"textdetox","detector_language":"EN","source_role":"baseline","source_file_id":"textdetox-en","immutable_source_url":"{url}","archive_member":null,"revision":"{revision}","file_path":"textdetox/en.tsv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
     )
 }
 
@@ -616,6 +616,7 @@ fn write_catalog_observation(path: &std::path::Path) {
             .map(|source| blasphem_train::source_manifest::SourceRecord {
                 dataset: source.dataset,
                 detector_language: source.detector_language,
+                source_role: source.source_role,
                 source_file_id: source.source_file_id,
                 immutable_source_url: source.requested_url,
                 archive_member: source.archive_member,
@@ -654,6 +655,7 @@ fn write_prepare_fixture(
         datasets::{DatasetId, LineageStatus},
         evidence::Sha256Digest,
         source_manifest::{FrozenSource, FrozenSourceLock, SourceObservation, SourceRecord},
+        source_role::SourceRole,
     };
 
     let raw_root = root.join("raw");
@@ -667,6 +669,7 @@ fn write_prepare_fixture(
         records.push(SourceRecord {
             dataset,
             detector_language: language,
+            source_role: SourceRole::Baseline,
             source_file_id: id.to_owned(),
             immutable_source_url: format!("https://example.test/{id}"),
             archive_member: None,
@@ -902,6 +905,7 @@ fn write_prepare_fixture(
             .map(|source| FrozenSource {
                 dataset: source.dataset,
                 detector_language: source.detector_language,
+                source_role: source.source_role,
                 source_file_id: source.source_file_id,
                 immutable_source_url: source.immutable_source_url,
                 archive_member: source.archive_member,

@@ -14,6 +14,7 @@ use blasphem_train::{
     evidence::Sha256Digest,
     publication::publish_prepared,
     source_manifest::{SOURCE_OBSERVATION_SCHEMA_VERSION, SourceObservation, SourceRecord},
+    source_role::SourceRole,
 };
 
 const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
@@ -449,6 +450,7 @@ fn fixture_source(language: Language) -> SourceRecord {
     SourceRecord {
         dataset: DatasetId::TextDetox,
         detector_language: language,
+        source_role: SourceRole::Baseline,
         source_file_id: format!("fixture-{code}"),
         immutable_source_url: "https://example.invalid/source".to_owned(),
         archive_member: None,

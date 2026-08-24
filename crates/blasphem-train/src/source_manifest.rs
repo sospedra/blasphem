@@ -7,6 +7,7 @@ use blasphem::Language;
 use crate::{
     datasets::{DatasetId, LineageStatus},
     evidence::Sha256Digest,
+    source_role::SourceRole,
 };
 
 pub const SOURCE_CATALOG_SCHEMA_VERSION: &str = "source-catalog-v1";
@@ -18,6 +19,7 @@ pub const SOURCE_LOCK_SCHEMA_VERSION: &str = "source-lock-v1";
 pub struct SourceRequest {
     pub dataset: DatasetId,
     pub detector_language: Language,
+    pub source_role: SourceRole,
     pub source_file_id: String,
     pub requested_url: String,
     pub revision_url: Option<String>,
@@ -36,6 +38,7 @@ pub struct SourceRequest {
 pub struct FrozenSource {
     pub dataset: DatasetId,
     pub detector_language: Language,
+    pub source_role: SourceRole,
     pub source_file_id: String,
     pub immutable_source_url: String,
     pub archive_member: Option<String>,
@@ -57,6 +60,7 @@ pub struct SourceRecord {
     pub dataset: DatasetId,
     #[serde(serialize_with = "serialize_storage_code")]
     pub detector_language: Language,
+    pub source_role: SourceRole,
     pub source_file_id: String,
     pub immutable_source_url: String,
     pub archive_member: Option<String>,

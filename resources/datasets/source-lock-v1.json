@@ -4,6 +4,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "EN",
+      "source_role": "baseline",
       "source_file_id": "textdetox-en",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/en-00000-of-00001.parquet",
       "archive_member": null,
@@ -22,6 +23,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "ZH",
+      "source_role": "baseline",
       "source_file_id": "textdetox-zh",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/zh-00000-of-00001.parquet",
       "archive_member": null,
@@ -40,6 +42,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "AR",
+      "source_role": "baseline",
       "source_file_id": "textdetox-ar",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ar-00000-of-00001.parquet",
       "archive_member": null,
@@ -58,6 +61,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "FR",
+      "source_role": "baseline",
       "source_file_id": "textdetox-fr",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/fr-00000-of-00001.parquet",
       "archive_member": null,
@@ -76,6 +80,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "HI",
+      "source_role": "baseline",
       "source_file_id": "textdetox-hi",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/hi-00000-of-00001.parquet",
       "archive_member": null,
@@ -94,6 +99,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "RU",
+      "source_role": "baseline",
       "source_file_id": "textdetox-ru",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ru-00000-of-00001.parquet",
       "archive_member": null,
@@ -112,6 +118,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "JA",
+      "source_role": "baseline",
       "source_file_id": "textdetox-ja",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ja-00000-of-00001.parquet",
       "archive_member": null,
@@ -130,6 +137,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "DE",
+      "source_role": "baseline",
       "source_file_id": "textdetox-de",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/de-00000-of-00001.parquet",
       "archive_member": null,
@@ -148,6 +156,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "IT",
+      "source_role": "baseline",
       "source_file_id": "textdetox-it",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/it-00000-of-00001.parquet",
       "archive_member": null,
@@ -166,6 +175,7 @@
     {
       "dataset": "textdetox",
       "detector_language": "ES",
+      "source_role": "baseline",
       "source_file_id": "textdetox-es",
       "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/es-00000-of-00001.parquet",
       "archive_member": null,
@@ -183,6 +193,7 @@
     {
       "dataset": "germeval-2018",
       "detector_language": "DE",
+      "source_role": "baseline",
       "source_file_id": "germeval-2018-training",
       "immutable_source_url": "https://raw.githubusercontent.com/uds-lsv/GermEval-2018-Data/9877472d39523effd54cd079b4c61157ed141508/germeval2018.training.txt",
       "archive_member": null,
@@ -200,6 +211,7 @@
     {
       "dataset": "germeval-2018",
       "detector_language": "DE",
+      "source_role": "baseline",
       "source_file_id": "germeval-2018-test",
       "immutable_source_url": "https://raw.githubusercontent.com/uds-lsv/GermEval-2018-Data/9877472d39523effd54cd079b4c61157ed141508/germeval2018.test.txt",
       "archive_member": null,
@@ -217,6 +229,7 @@
     {
       "dataset": "ibrohim-budi",
       "detector_language": "ID",
+      "source_role": "baseline",
       "source_file_id": "ibrohim-budi-re-dataset",
       "immutable_source_url": "https://raw.githubusercontent.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection/be98de98e974b65838d2b5145ee2c89e9bf53a6b/re_dataset.csv",
       "archive_member": null,
@@ -234,6 +247,7 @@
     {
       "dataset": "told-br",
       "detector_language": "PT",
+      "source_role": "baseline",
       "source_file_id": "told-br-alpha",
       "immutable_source_url": "https://raw.githubusercontent.com/joaoaleite/ToLD-Br/6b325d26a9d25b321a3e9ba98ef98832b56729f5/ToLD-BR_alpha.csv",
       "archive_member": null,
@@ -251,6 +265,7 @@
     {
       "dataset": "offenseval-tr",
       "detector_language": "TR",
+      "source_role": "baseline",
       "source_file_id": "offenseval-tr-training",
       "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
       "archive_member": "offenseval2020-turkish/offenseval-tr-training-v1/offenseval-tr-training-v1.tsv",
@@ -268,6 +283,7 @@
     {
       "dataset": "offenseval-tr",
       "detector_language": "TR",
+      "source_role": "baseline",
       "source_file_id": "offenseval-tr-test",
       "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
       "archive_member": "offenseval2020-turkish/offenseval-tr-testset-v1/offenseval-tr-testset-v1.tsv",
@@ -285,6 +301,7 @@
     {
       "dataset": "offenseval-tr",
       "detector_language": "TR",
+      "source_role": "baseline",
       "source_file_id": "offenseval-tr-test-labels",
       "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
       "archive_member": "offenseval2020-turkish/offenseval-tr-testset-v1/offenseval-tr-labela-v1.tsv",
@@ -302,6 +319,7 @@
     {
       "dataset": "vihos",
       "detector_language": "VI",
+      "source_role": "baseline",
       "source_file_id": "vihos-train",
       "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Span_Extraction_based_version/train.csv",
       "archive_member": null,
@@ -319,6 +337,7 @@
     {
       "dataset": "vihos",
       "detector_language": "VI",
+      "source_role": "baseline",
       "source_file_id": "vihos-development",
       "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Span_Extraction_based_version/dev.csv",
       "archive_member": null,
@@ -336,6 +355,7 @@
     {
       "dataset": "vihos",
       "detector_language": "VI",
+      "source_role": "baseline",
       "source_file_id": "vihos-test",
       "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Test_data/test.csv",
       "archive_member": null,
@@ -353,6 +373,7 @@
     {
       "dataset": "k-mhas",
       "detector_language": "KO",
+      "source_role": "baseline",
       "source_file_id": "kmhas-train",
       "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_train.txt",
       "archive_member": null,
@@ -370,6 +391,7 @@
     {
       "dataset": "k-mhas",
       "detector_language": "KO",
+      "source_role": "baseline",
       "source_file_id": "kmhas-validation",
       "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_valid.txt",
       "archive_member": null,
@@ -387,6 +409,7 @@
     {
       "dataset": "k-mhas",
       "detector_language": "KO",
+      "source_role": "baseline",
       "source_file_id": "kmhas-test",
       "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_test.txt",
       "archive_member": null,
@@ -404,6 +427,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "EN",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-en-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/EN/1.2/hurtlex_EN.tsv",
       "archive_member": null,
@@ -421,6 +445,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "ZH",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-zh-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/ZH/1.2/hurtlex_ZH.tsv",
       "archive_member": null,
@@ -438,6 +463,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "ES",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-es-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/ES/1.2/hurtlex_ES.tsv",
       "archive_member": null,
@@ -455,6 +481,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "AR",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-ar-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/AR/1.2/hurtlex_AR.tsv",
       "archive_member": null,
@@ -472,6 +499,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "ID",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-id-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/ID/1.2/hurtlex_ID.tsv",
       "archive_member": null,
@@ -489,6 +517,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "PT",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-pt-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/PT/1.2/hurtlex_PT.tsv",
       "archive_member": null,
@@ -506,6 +535,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "FR",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-fr-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/FR/1.2/hurtlex_FR.tsv",
       "archive_member": null,
@@ -523,6 +553,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "HI",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-hi-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/HI/1.2/hurtlex_HI.tsv",
       "archive_member": null,
@@ -540,6 +571,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "RU",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-ru-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/RU/1.2/hurtlex_RU.tsv",
       "archive_member": null,
@@ -557,6 +589,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "JA",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-ja-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/JA/1.2/hurtlex_JA.tsv",
       "archive_member": null,
@@ -574,6 +607,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "DE",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-de-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/DE/1.2/hurtlex_DE.tsv",
       "archive_member": null,
@@ -591,6 +625,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "TR",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-tr-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/TR/1.2/hurtlex_TR.tsv",
       "archive_member": null,
@@ -608,6 +643,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "VI",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-vi-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/VI/1.2/hurtlex_VI.tsv",
       "archive_member": null,
@@ -625,6 +661,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "KO",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-ko-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/KO/1.2/hurtlex_KO.tsv",
       "archive_member": null,
@@ -642,6 +679,7 @@
     {
       "dataset": "hurtlex",
       "detector_language": "IT",
+      "source_role": "baseline",
       "source_file_id": "hurtlex-it-1.2",
       "immutable_source_url": "https://raw.githubusercontent.com/valeriobasile/hurtlex/d4d5cf1199c09868486f978fcea58af0e8936a1e/lexica/IT/1.2/hurtlex_IT.tsv",
       "archive_member": null,

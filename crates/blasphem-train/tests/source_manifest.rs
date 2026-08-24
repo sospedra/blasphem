@@ -11,6 +11,25 @@ use blasphem_train::{
     datasets::{DatasetId, SourceSplit, source_id},
     source_manifest::{parse_frozen_source_lock, parse_source_catalog, parse_source_observation},
 };
+use blasphem_train::source_role::SourceRole;
+
+#[test]
+fn every_current_source_declares_the_baseline_role() {
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../resources/datasets/source-lock-v1.json");
+    let file = std::fs::File::open(path).expect("readable source lock");
+    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(file)
+        .expect("valid source lock");
+    assert_eq!(lock.sources.len(), 38);
+    for source in &lock.sources {
+        assert_eq!(
+            source.source_role,
+            SourceRole::Baseline,
+            "{} must keep its frozen partition",
+            source.source_file_id
+        );
+    }
+}
 
 const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 
@@ -590,6 +609,7 @@ fn source_request_json() -> Value {
     json!({
         "dataset": "textdetox",
         "detector_language": "EN",
+        "source_role": "baseline",
         "source_file_id": "textdetox-en",
         "requested_url": "https://example.test/rows",
         "revision_url": "https://example.test/revision",
@@ -608,6 +628,7 @@ fn source_record_json() -> Value {
     json!({
         "dataset": "textdetox",
         "detector_language": "EN",
+        "source_role": "baseline",
         "source_file_id": "textdetox-en",
         "immutable_source_url": "https://example.test/rows",
         "archive_member": null,
@@ -627,6 +648,7 @@ fn frozen_source_json() -> Value {
     json!({
         "dataset": "textdetox",
         "detector_language": "EN",
+        "source_role": "baseline",
         "source_file_id": "textdetox-en",
         "immutable_source_url": "https://example.test/rows",
         "archive_member": null,

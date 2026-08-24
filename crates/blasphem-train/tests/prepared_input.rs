@@ -10,6 +10,7 @@ use blasphem_train::{
     prepared_input::{load_prepared_language, parse_prepared_manifest},
     publication::PREPARED_MANIFEST_SCHEMA_VERSION,
     source_manifest::SourceRecord,
+    source_role::SourceRole,
 };
 
 const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
@@ -321,6 +322,7 @@ fn fixture_manifest() -> PreparedManifest {
         sources.push(SourceRecord {
             dataset: DatasetId::TextDetox,
             detector_language: language,
+            source_role: SourceRole::Baseline,
             source_file_id,
             immutable_source_url: "https://example.invalid/source".to_owned(),
             archive_member: None,
