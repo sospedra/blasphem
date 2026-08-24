@@ -505,12 +505,7 @@ fn help_exposes_the_task_four_command_contract() {
         .output()
         .expect("run check help");
     let compile_help = String::from_utf8(compile.stdout).expect("UTF-8 help");
-    for argument in [
-        "--prepared-root",
-        "--hurtlex-root",
-        "--spanish-legacy",
-        "--output",
-    ] {
+    for argument in ["--prepared-root", "--hurtlex-root", "--output"] {
         assert!(compile_help.contains(argument), "missing {argument}");
     }
     assert!(!compile_help.contains("--development"));
@@ -695,6 +690,7 @@ fn write_prepare_fixture(
     let textdetox = [
         ("en", Language::En),
         ("zh", Language::Zh),
+        ("es", Language::Es),
         ("ar", Language::Ar),
         ("fr", Language::Fr),
         ("hi", Language::Hi),

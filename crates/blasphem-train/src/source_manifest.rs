@@ -55,6 +55,7 @@ pub struct FrozenSource {
 #[serde(deny_unknown_fields)]
 pub struct SourceRecord {
     pub dataset: DatasetId,
+    #[serde(serialize_with = "serialize_storage_code")]
     pub detector_language: Language,
     pub source_file_id: String,
     pub immutable_source_url: String,
@@ -70,6 +71,13 @@ pub struct SourceRecord {
     pub citation: String,
     pub upstream_lineage: Vec<String>,
     pub lineage_status: LineageStatus,
+}
+
+fn serialize_storage_code<S>(language: &Language, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    serializer.serialize_str(language.storage_code())
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

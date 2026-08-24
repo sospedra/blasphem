@@ -173,6 +173,24 @@
       "lineage_status": "resolved"
     },
     {
+      "dataset": "textdetox",
+      "detector_language": "ES",
+      "source_file_id": "textdetox-es",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/es-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/es.tsv",
+      "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
       "dataset": "germeval-2018",
       "detector_language": "DE",
       "source_file_id": "germeval-2018-training",

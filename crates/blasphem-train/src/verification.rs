@@ -106,7 +106,7 @@ impl LanguageEvaluation {
             split,
             matrix,
             metrics: VerificationMetrics::from_matrix(matrix),
-            gates: (language != Language::Es).then(|| gates(matrix)),
+            gates: Some(gates(matrix)),
         }
     }
 }
@@ -124,7 +124,7 @@ pub struct EvaluationEvidence {
 }
 
 impl EvaluationEvidence {
-    /// Builds one complete 14-language validation evidence record.
+    /// Builds one complete 15-language validation evidence record.
     ///
     /// # Errors
     ///
@@ -136,14 +136,12 @@ impl EvaluationEvidence {
     ) -> Result<Self, VerificationError> {
         let expected = Language::ALL
             .into_iter()
-            .filter(|language| *language != Language::Es)
             .map(|language| language.code().to_owned())
             .collect::<BTreeSet<_>>();
         let mut languages = BTreeMap::new();
         let mut pooled_matrix = ConfusionMatrix::default();
         for evaluation in evaluations {
-            if evaluation.language == Language::Es
-                || evaluation.split != DatasetSplit::Validation
+            if evaluation.split != DatasetSplit::Validation
                 || languages
                     .insert(evaluation.language.code().to_owned(), evaluation.clone())
                     .is_some()
@@ -223,7 +221,7 @@ pub struct BehaviorEvidence {
 }
 
 impl BehaviorEvidence {
-    /// Builds a typed 14-language behavior contract record.
+    /// Builds a typed 15-language behavior contract record.
     ///
     /// # Errors
     ///
@@ -233,11 +231,11 @@ impl BehaviorEvidence {
         prepared_manifest_sha256: Sha256Digest,
         results: Vec<LanguageBehaviorResult>,
     ) -> Result<Self, VerificationError> {
-        let expected_languages = new_language_codes();
+        let expected_languages = all_language_codes();
         let mut languages = BTreeMap::new();
         let mut case_ids = BTreeSet::new();
         for result in results {
-            if result.language == Language::Es || result.cases.len() != 24 {
+            if result.cases.len() != 24 {
                 return Err(VerificationError::BehaviorEvidenceShape);
             }
             for case in &result.cases {
@@ -258,7 +256,7 @@ impl BehaviorEvidence {
             }
         }
         if languages.keys().cloned().collect::<BTreeSet<_>>() != expected_languages
-            || case_ids.len() != 336
+            || case_ids.len() != 360
         {
             return Err(VerificationError::BehaviorEvidenceShape);
         }
@@ -884,7 +882,7 @@ pub enum VerificationError {
     BehaviorEvidenceNotAuditOnly(String),
     #[error("behavior evidence reference has the wrong language: {0}")]
     BehaviorEvidenceWrongLanguage(String),
-    #[error("behavior evidence must contain 14 languages and 336 valid cases")]
+    #[error("behavior evidence must contain 15 languages and 360 valid cases")]
     BehaviorEvidenceShape,
     #[error("native smoke evidence must contain 15 languages and the 60 fixed cases")]
     CliSmokeEvidenceShape,
@@ -930,9 +928,6 @@ pub fn validate_class_counts(
     split: DatasetSplit,
     rows: &[PreparedRow],
 ) -> Result<(), VerificationError> {
-    if language == Language::Es {
-        return Ok(());
-    }
     let clean_rows = rows
         .iter()
         .filter(|row| row.label == EvalLabel::Clean)
@@ -997,11 +992,8 @@ pub fn evaluate_validation(
     hurtlex_root: &Path,
 ) -> Result<EvaluationEvidence, VerificationError> {
     let inputs = load_evidence_inputs(prepared_root, model_manifest_path)?;
-    let mut evaluations = Vec::with_capacity(Language::ALL.len() - 1);
+    let mut evaluations = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         let entry = manifest_entry(&inputs.model_manifest, language)?;
         let detector = load_detector(language, entry, hurtlex_root)?;
         let prepared = load_prepared_validation(prepared_root, language)?;
@@ -1018,7 +1010,7 @@ pub fn evaluate_validation(
     )
 }
 
-/// Evaluates all new-language behavior panels through the product path.
+/// Evaluates all 15 behavior panels through the product path.
 ///
 /// # Errors
 ///
@@ -1032,9 +1024,6 @@ pub fn evaluate_behavior(
     let inputs = load_evidence_inputs(prepared_root, model_manifest_path)?;
     let mut panels = BTreeMap::new();
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         let rows = load_panel(fixture_root, language)?;
         validate_event_distribution(&rows)?;
         panels.insert(language, rows);
@@ -1252,10 +1241,9 @@ fn header_index(
         .ok_or(VerificationError::ProvenanceHeader(name))
 }
 
-fn new_language_codes() -> BTreeSet<String> {
+fn all_language_codes() -> BTreeSet<String> {
     Language::ALL
         .into_iter()
-        .filter(|language| *language != Language::Es)
         .map(|language| language.code().to_owned())
         .collect()
 }

@@ -112,8 +112,6 @@ struct CompileArgs {
     #[arg(long, default_value = "tests/fixtures/behavior")]
     behavior_root: PathBuf,
     #[arg(long)]
-    spanish_legacy: PathBuf,
-    #[arg(long)]
     output: PathBuf,
 }
 
@@ -213,7 +211,6 @@ fn compile_models(arguments: &CompileArgs) -> Result<()> {
         prepared_root: arguments.prepared_root.clone(),
         hurtlex_root: arguments.hurtlex_root.clone(),
         behavior_root: Some(arguments.behavior_root.clone()),
-        spanish_legacy: arguments.spanish_legacy.clone(),
         output: arguments.output.clone(),
     })
     .context("cannot compile the multilingual model set")?;
@@ -271,7 +268,7 @@ fn behavior_evidence(arguments: &BehaviorArgs) -> Result<()> {
     write_canonical_json(&arguments.output, &evidence)
         .context("cannot write behavior contract evidence")?;
     println!(
-        "status=behavior_contract_evidence cases=336 output={}",
+        "status=behavior_contract_evidence cases=360 output={}",
         one_line(&arguments.output.to_string_lossy()),
     );
     Ok(())
@@ -433,9 +430,6 @@ fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
     }
     let mut prepared = Vec::new();
     for language in blasphem::Language::ALL {
-        if language == blasphem::Language::Es {
-            continue;
-        }
         let rows = by_language
             .remove(&language)
             .ok_or_else(|| anyhow::anyhow!("prepared input misses language {}", language.code()))?;

@@ -4,8 +4,8 @@ use sha2::{Digest, Sha256};
 use tempfile::tempdir;
 use blasphem::{
     ConfusionMatrix, FeatureProfile, FeatureSchema, Language, Metrics, NormalizationProfile,
-    SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules, encode_sparse_v2,
-    word_rules,
+    SparseV1Input, SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules,
+    encode_sparse_v1, encode_sparse_v2, word_rules,
 };
 use blasphem_train::{
     calibration::CalibrationResult,
@@ -15,9 +15,8 @@ use blasphem_train::{
     evidence::Sha256Digest,
     model_manifest::{
         DatasetInput, MODEL_MANIFEST_SCHEMA_VERSION, ManifestInputs, ModelManifest,
-        ModelManifestEntry, ModelSetError, SPANISH_LEGACY_SCHEMA_VERSION, artifact_relative_path,
-        build_manifest_entry, load_spanish_legacy, parse_model_manifest,
-        parse_spanish_legacy_input, validate_model_set,
+        ModelManifestEntry, ModelSetError, artifact_relative_path, build_manifest_entry,
+        parse_model_manifest, validate_model_set,
     },
 };
 
@@ -102,37 +101,6 @@ fn artifact_paths_cover_every_language_in_runtime_order() {
     let actual = Language::ALL.map(artifact_relative_path);
 
     assert_eq!(actual, expected);
-}
-
-#[test]
-fn spanish_legacy_input_rejects_an_unknown_schema() {
-    let mut value = spanish_legacy_fixture();
-    value["schema_version"] = serde_json::Value::from(2);
-    let bytes = serde_json::to_vec(&value).expect("serialize fixture");
-
-    let error = parse_spanish_legacy_input(bytes.as_slice()).expect_err("unknown schema");
-
-    assert!(matches!(
-        error,
-        ModelSetError::InvalidSpanishLegacySchema {
-            expected: SPANISH_LEGACY_SCHEMA_VERSION,
-            actual: 2,
-        }
-    ));
-}
-
-#[test]
-fn spanish_legacy_input_rejects_an_unknown_nested_field() {
-    let mut value = spanish_legacy_fixture();
-    value["artifact"]
-        .as_object_mut()
-        .expect("artifact object")
-        .insert("extra".to_owned(), serde_json::Value::Bool(true));
-    let bytes = serde_json::to_vec(&value).expect("serialize fixture");
-
-    let error = parse_spanish_legacy_input(bytes.as_slice()).expect_err("unknown nested field");
-
-    assert!(matches!(error, ModelSetError::SpanishLegacyJson(_)));
 }
 
 #[test]
@@ -221,65 +189,6 @@ fn rule_version(language: Language) -> u16 {
             .expect("language rule pack")
             .version
     }
-}
-
-#[test]
-fn spanish_legacy_declaration_matches_the_frozen_contract() {
-    let project_root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let bytes = fs::read(project_root.join("resources/models/es-legacy-input-v1.json"))
-        .expect("read Spanish legacy declaration");
-
-    let input = parse_spanish_legacy_input(bytes.as_slice()).expect("Spanish legacy declaration");
-
-    assert_eq!(input.dataset, DatasetId::TextDetox);
-    assert_eq!(input.source_file_id, "textdetox-es-legacy");
-    assert_eq!(
-        input.dataset_revision,
-        "01907546324b0330d2d8b7669648cc18823323e5"
-    );
-    assert_eq!(input.source_rows, 5_000);
-    assert_eq!(input.development_rows, 3_418);
-    assert_eq!(input.validation_rows, 762);
-    assert_eq!(input.test_rows, 819);
-    assert_eq!(input.duplicate_rows, 1);
-    assert_eq!(input.conflict_rows, 0);
-    assert_eq!(input.excluded_rows, 1);
-    assert_eq!(input.boundary, 10_962);
-    assert_eq!(input.score_scale, 27_695);
-    assert_eq!(input.false_warning_limit_basis_points, 300);
-    assert_eq!(
-        input.validation,
-        ConfusionMatrix {
-            true_positive: 159,
-            true_negative: 382,
-            false_positive: 18,
-            false_negative: 203,
-        }
-    );
-}
-
-#[test]
-fn verified_spanish_legacy_builds_the_complete_manifest_entry() {
-    let declaration = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../resources/models/es-legacy-input-v1.json");
-
-    let verified = load_spanish_legacy(&declaration).expect("verified Spanish legacy input");
-
-    assert_eq!(verified.artifact.len(), 131_104);
-    assert_eq!(verified.entry.language, Language::Es);
-    assert_eq!(verified.entry.artifact_relative_path, "es-chargram-v1.bin");
-    assert_eq!(verified.entry.dataset_inputs.len(), 1);
-    assert_eq!(
-        verified.entry.dataset_inputs[0].source_file_id,
-        "textdetox-es-legacy"
-    );
-    assert_eq!(verified.entry.boundary, 10_962);
-    assert_eq!(verified.entry.score_scale, 27_695);
-    assert_eq!(verified.entry.validation_gates, None);
-    assert_eq!(
-        verified.entry.artifact_sha256.as_str(),
-        "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36"
-    );
 }
 
 #[test]
@@ -481,7 +390,7 @@ fn model_set_rejects_an_artifact_digest_mismatch() {
 fn model_set_rejects_changed_header_metadata_after_digest_update() {
     let directory = tempdir().expect("temporary directory");
     let mut manifest = complete_manifest_stub();
-    let artifact = version_two_artifact(Language::En, 0, 2, 300);
+    let artifact = fixture_artifact(Language::En, 0, 2, 300);
     let entry = &mut manifest.entries[0];
     entry.artifact_bytes = artifact.len();
     entry.artifact_sha256 = sha256(&artifact);
@@ -499,7 +408,7 @@ fn model_set_rejects_changed_header_metadata_after_digest_update() {
 fn model_set_rejects_a_nonstandard_false_warning_limit() {
     let directory = tempdir().expect("temporary directory");
     let mut manifest = complete_manifest_stub();
-    let artifact = version_two_artifact(Language::En, 0, 1, 301);
+    let artifact = fixture_artifact(Language::En, 0, 1, 301);
     let entry = &mut manifest.entries[0];
     entry.false_warning_limit_basis_points = 301;
     entry.artifact_bytes = artifact.len();
@@ -522,21 +431,9 @@ fn complete_manifest_stub() -> ModelManifest {
 }
 
 fn write_complete_model_set(root: &Path) -> ModelManifest {
-    let declaration = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../resources/models/es-legacy-input-v1.json");
-    let spanish = load_spanish_legacy(&declaration).expect("verified Spanish fixture");
     let mut entries = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
-        if language == Language::Es {
-            fs::write(
-                root.join(artifact_relative_path(language)),
-                &spanish.artifact,
-            )
-            .expect("write Spanish fixture artifact");
-            entries.push(spanish.entry.clone());
-            continue;
-        }
-        let artifact = version_two_artifact(language, 0, 1, 300);
+        let artifact = fixture_artifact(language, 0, 1, 300);
         fs::write(root.join(artifact_relative_path(language)), &artifact)
             .expect("write fixture artifact");
         let mut entry = manifest_entry_stub(language);
@@ -569,9 +466,9 @@ fn manifest_entry_stub(language: Language) -> ModelManifestEntry {
         feature_schema,
         rule_pack_version: rule_version(language),
         rule_pack_sha256: sha256(&canonical_rule_identity(language)),
-        hurtlex_sha256: (language != Language::Es).then(digest),
-        clean_control_rows: usize::from(language != Language::Es),
-        clean_control_sha256: (language != Language::Es).then(digest),
+        hurtlex_sha256: Some(hurtlex_digest(language)),
+        clean_control_rows: 1,
+        clean_control_sha256: Some(digest()),
         development_rows: 1,
         validation_rows: 2,
         test_rows: 1,
@@ -583,10 +480,21 @@ fn manifest_entry_stub(language: Language) -> ModelManifestEntry {
         false_warning_limit_basis_points: 300,
         validation,
         validation_metrics: validation.metrics(),
-        validation_gates: (language != Language::Es).then(|| gates(validation)),
+        validation_gates: Some(gates(validation)),
         artifact_bytes: 1,
         artifact_sha256: digest(),
     }
+}
+
+/// Spanish manifest entries pin the frozen HurtLex ES digest.
+fn hurtlex_digest(language: Language) -> Sha256Digest {
+    if language == Language::Es {
+        return "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba"
+            .to_owned()
+            .try_into()
+            .expect("frozen Spanish HurtLex digest");
+    }
+    digest()
 }
 
 fn digest() -> Sha256Digest {
@@ -611,12 +519,22 @@ fn sha256(bytes: &[u8]) -> Sha256Digest {
         .expect("fixture digest")
 }
 
-fn version_two_artifact(
+fn fixture_artifact(
     language: Language,
     boundary: i32,
     score_scale: u32,
     false_warning_limit_basis_points: u16,
 ) -> Vec<u8> {
+    if language == Language::Es {
+        return encode_sparse_v1(&SparseV1Input {
+            bias: 0,
+            decision_boundary: boundary,
+            score_scale,
+            max_false_warning_basis_points: false_warning_limit_basis_points,
+            weights: &vec![0; 65_536],
+        })
+        .expect("fixture artifact");
+    }
     let (feature_profile, normalization_profile, feature_schema) = language.profiles();
     encode_sparse_v2(&SparseV2Input {
         language,
@@ -630,45 +548,4 @@ fn version_two_artifact(
         weights: &vec![0; 65_536],
     })
     .expect("fixture artifact")
-}
-
-fn spanish_legacy_fixture() -> serde_json::Value {
-    let digest = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
-    let file = |relative_path| {
-        serde_json::json!({
-            "relative_path": relative_path,
-            "sha256": digest,
-        })
-    };
-    let matrix = serde_json::json!({
-        "true_positive": 1,
-        "true_negative": 1,
-        "false_positive": 0,
-        "false_negative": 0,
-    });
-    serde_json::json!({
-        "schema_version": 1,
-        "artifact": file("resources/models/es-chargram-v1.bin"),
-        "metadata": file("resources/models/es-chargram-v1.json"),
-        "source": file("data/textdetox/es-source.tsv"),
-        "hurtlex": file("data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv"),
-        "proof_report": file("docs/spanish-proof-report.md"),
-        "behavior_panel": file("samples/spanish-audit.tsv"),
-        "dataset": "textdetox",
-        "source_file_id": "textdetox-es-legacy",
-        "dataset_revision": "revision",
-        "source_rows": 2,
-        "development_rows": 2,
-        "validation_rows": 2,
-        "test_rows": 2,
-        "duplicate_rows": 0,
-        "conflict_rows": 0,
-        "excluded_rows": 0,
-        "boundary": 0,
-        "score_scale": 1,
-        "false_warning_limit_basis_points": 300,
-        "validation": matrix,
-        "test": matrix,
-        "behavior": matrix,
-    })
 }

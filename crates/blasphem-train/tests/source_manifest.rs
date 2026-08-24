@@ -187,7 +187,7 @@ fn catalog_has_unique_exact_source_identities_and_paths() {
     let catalog =
         parse_source_catalog(fs::File::open(path).expect("catalog")).expect("catalog parses");
 
-    assert_eq!(catalog.sources.len(), 37);
+    assert_eq!(catalog.sources.len(), 38);
     let unique_ids: BTreeSet<_> = catalog
         .sources
         .iter()
@@ -249,6 +249,12 @@ fn catalog_has_unique_exact_source_identities_and_paths() {
             DatasetId::TextDetox,
             Language::It,
             "textdetox/it.tsv",
+        ),
+        (
+            "textdetox-es",
+            DatasetId::TextDetox,
+            Language::Es,
+            "textdetox/es.tsv",
         ),
         (
             "ibrohim-budi-re-dataset",
@@ -441,7 +447,7 @@ fn catalog_has_unique_exact_source_identities_and_paths() {
         .iter()
         .filter(|source| source.dataset == DatasetId::HurtLex)
         .count();
-    assert_eq!(textdetox, 9);
+    assert_eq!(textdetox, 10);
     assert_eq!(hurtlex, 15);
 
     let textdetox_revision = "01907546324b0330d2d8b7669648cc18823323e5";
@@ -540,6 +546,23 @@ fn source_identifiers_use_the_dataset_revision_split_and_native_id() {
         source_id(DatasetId::TextDetox, "019075", SourceSplit::Unsplit, "42"),
         "textdetox@019075/unsplit/42"
     );
+}
+
+#[test]
+fn the_source_lock_registers_spanish_as_the_thirty_eighth_input() {
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../resources/datasets/source-lock-v1.json");
+    let file = std::fs::File::open(path).expect("readable source lock");
+    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(file)
+        .expect("valid source lock");
+    assert_eq!(lock.sources.len(), 38);
+    let spanish = lock
+        .sources
+        .iter()
+        .find(|source| source.source_file_id == "textdetox-es")
+        .expect("Spanish source entry");
+    assert_eq!(spanish.file_path, "textdetox/es.tsv");
+    assert_eq!(spanish.detector_language, blasphem::Language::Es);
 }
 
 fn valid_source_catalog_json() -> Value {

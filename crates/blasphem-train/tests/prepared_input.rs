@@ -296,33 +296,27 @@ fn fixture_manifest() -> PreparedManifest {
         language_sources.insert(code.to_owned(), vec![source_file_id.clone()]);
         language_counts.insert(
             code.to_owned(),
-            if language == Language::Es {
-                PreparedCounts::default()
-            } else {
-                PreparedCounts {
-                    development: 2,
-                    validation: 2,
-                    test: 2,
-                    duplicates: 0,
-                    conflicts: 0,
-                    excluded: 0,
-                }
+            PreparedCounts {
+                development: 2,
+                validation: 2,
+                test: 2,
+                duplicates: 0,
+                conflicts: 0,
+                excluded: 0,
             },
         );
-        if language != Language::Es {
-            for split in ["development", "validation", "test"] {
-                let relative_path = format!("{code}/{split}.tsv");
-                prepared_files.insert(
-                    relative_path.clone(),
-                    PreparedFileIdentity {
-                        relative_path,
-                        sha256: digest(),
-                        rows: 2,
-                        clean_rows: 1,
-                        toxic_rows: 1,
-                    },
-                );
-            }
+        for split in ["development", "validation", "test"] {
+            let relative_path = format!("{code}/{split}.tsv");
+            prepared_files.insert(
+                relative_path.clone(),
+                PreparedFileIdentity {
+                    relative_path,
+                    sha256: digest(),
+                    rows: 2,
+                    clean_rows: 1,
+                    toxic_rows: 1,
+                },
+            );
         }
         sources.push(SourceRecord {
             dataset: DatasetId::TextDetox,

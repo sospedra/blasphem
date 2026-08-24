@@ -15,6 +15,10 @@ The importer accepts only files with these SHA-256 digests.
 | `eld_tolower.h` | `97722a4d9765e609631ce527ff42b27a4e589d7e673d17e8bf1da68068da1d2b` |
 | `eld_unicode.h` | `26b6b645823f81796dcdafdf8eedb41299d769d8c06579eab9ec4ffa3e519cf0` |
 
+The repository vendors these four files under
+`crates/blasphem-language/vendor/a0301db809ff2e48a418018aa5359fb0c4354eb8`.
+The build reads them from that directory. It downloads nothing.
+
 The generated artifact contains only these upstream language indexes.
 
 `1 9 11 12 17 20 25 26 29 36 42 44 54 57 59`

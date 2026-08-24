@@ -89,7 +89,7 @@ fn import_source(
             source_id: row_source_id,
             source_language_code: "id".to_owned(),
             detector_language: Some(Language::Ms),
-            detector_language_code: Some(Language::Ms.code().to_owned()),
+            detector_language_code: Some(Language::Ms.storage_code().to_owned()),
             source_label: format!("HS={hs};Abusive={abusive}"),
             text: String::from_utf8_lossy(
                 record

@@ -77,8 +77,6 @@ pub enum PreparedPublicationError {
     Csv(#[from] csv::Error),
     #[error("cannot write prepared manifest JSON: {0}")]
     Json(#[from] serde_json::Error),
-    #[error("prepared publication includes Spanish")]
-    SpanishPreparedData,
     #[error("prepared publication misses language {0}")]
     MissingPreparedLanguage(String),
     #[error("prepared publication repeats language {0}")]
@@ -382,9 +380,6 @@ fn prepared_language_index(
 ) -> Result<BTreeMap<Language, PreparedLanguage>, PreparedPublicationError> {
     let mut values = BTreeMap::new();
     for language in languages {
-        if language.language == Language::Es {
-            return Err(PreparedPublicationError::SpanishPreparedData);
-        }
         if values.insert(language.language, language.clone()).is_some() {
             return Err(PreparedPublicationError::DuplicatePreparedLanguage(
                 language.language.code().to_owned(),
@@ -392,7 +387,7 @@ fn prepared_language_index(
         }
     }
     for language in Language::ALL {
-        if language != Language::Es && !values.contains_key(&language) {
+        if !values.contains_key(&language) {
             return Err(PreparedPublicationError::MissingPreparedLanguage(
                 language.code().to_owned(),
             ));
@@ -417,7 +412,7 @@ fn hydrate_language(
 ) -> Result<(), PreparedPublicationError> {
     for row in &mut language.provenance {
         validate_required_provenance_fields(row)?;
-        if row.detector_language_code.as_deref() != Some(language.language.code()) {
+        if row.detector_language_code.as_deref() != Some(language.language.storage_code()) {
             return Err(PreparedPublicationError::UnknownOrMismatchedSource(
                 row.source_id.clone(),
             ));
@@ -446,7 +441,7 @@ fn hydrate_language(
         if let Some(label) = row.detector_label {
             increment(
                 detector_label_counts,
-                format!("{}/{}", language.language.code(), label_name(label)),
+                format!("{}/{}", language.language.storage_code(), label_name(label)),
             );
         }
         increment(
@@ -456,7 +451,7 @@ fn hydrate_language(
         if let Some(split) = row.detector_split {
             increment(
                 detector_split_counts,
-                format!("{}/{}", language.language.code(), split_name(split)),
+                format!("{}/{}", language.language.storage_code(), split_name(split)),
             );
         }
         increment(
@@ -679,7 +674,7 @@ fn write_prepared_tsv(
     let mut toxic_rows = 0;
     for row in rows {
         writer.write_record([
-            row.detector_language.code(),
+            row.detector_language.storage_code(),
             label_name(row.label),
             row.source_id.as_str(),
             row.text.as_str(),

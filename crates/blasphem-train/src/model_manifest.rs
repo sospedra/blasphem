@@ -2,7 +2,7 @@ use std::{
     collections::BTreeSet,
     fs,
     io::Read,
-    path::{Component, Path, PathBuf},
+    path::{Path, PathBuf},
 };
 
 use serde::{Deserialize, Serialize};
@@ -22,7 +22,6 @@ use crate::{
 };
 
 pub const MODEL_MANIFEST_SCHEMA_VERSION: u16 = 2;
-pub const SPANISH_LEGACY_SCHEMA_VERSION: u16 = 1;
 const SPANISH_HURTLEX_SHA256: &str =
     "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba";
 
@@ -76,81 +75,11 @@ pub struct ManifestInputs {
     pub clean_control_sha256: Option<Sha256Digest>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
-pub struct FrozenFileReference {
-    pub relative_path: String,
-    pub sha256: Sha256Digest,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[serde(deny_unknown_fields)]
-pub struct SpanishLegacyInput {
-    pub schema_version: u16,
-    pub artifact: FrozenFileReference,
-    pub metadata: FrozenFileReference,
-    pub source: FrozenFileReference,
-    pub hurtlex: FrozenFileReference,
-    pub proof_report: FrozenFileReference,
-    pub behavior_panel: FrozenFileReference,
-    pub dataset: DatasetId,
-    pub source_file_id: String,
-    pub dataset_revision: String,
-    pub source_rows: usize,
-    pub development_rows: usize,
-    pub validation_rows: usize,
-    pub test_rows: usize,
-    pub duplicate_rows: usize,
-    pub conflict_rows: usize,
-    pub excluded_rows: usize,
-    pub boundary: i32,
-    pub score_scale: u32,
-    pub false_warning_limit_basis_points: u16,
-    pub validation: ConfusionMatrix,
-    pub test: ConfusionMatrix,
-    pub behavior: ConfusionMatrix,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct ModelManifest {
     pub schema_version: u16,
     pub entries: Vec<ModelManifestEntry>,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct VerifiedSpanishLegacy {
-    pub artifact: Vec<u8>,
-    pub entry: ModelManifestEntry,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct SpanishLegacyMetadata {
-    format: String,
-    language: String,
-    artifact: String,
-    artifact_bytes: usize,
-    artifact_sha256: Sha256Digest,
-    dataset: String,
-    dataset_revision: String,
-    source_rows: usize,
-    evaluation_rows: usize,
-    duplicate_rows: usize,
-    conflict_rows: usize,
-    split_method: String,
-    development_rows: usize,
-    validation_rows: usize,
-    test_rows: usize,
-    algorithm: String,
-    feature_bins: usize,
-    features: Vec<String>,
-    minimum_document_frequency: u32,
-    weight_scale: u16,
-    decision_boundary: i32,
-    score_scale: u32,
-    maximum_validation_false_positive_basis_points: u16,
-    sparse_validation: ConfusionMatrix,
 }
 
 #[derive(Debug, Error)]
@@ -167,10 +96,6 @@ pub enum ModelSetError {
     InvalidModelManifestSchema { expected: u16, actual: u16 },
     #[error("invalid clean-control metadata for {}", .0.code())]
     CleanControlMetadataMismatch(Language),
-    #[error("cannot parse Spanish legacy declaration JSON: {0}")]
-    SpanishLegacyJson(serde_json::Error),
-    #[error("invalid Spanish legacy schema: expected {expected}, got {actual}")]
-    InvalidSpanishLegacySchema { expected: u16, actual: u16 },
     #[error("cannot parse prepared manifest JSON: {0}")]
     PreparedManifestJson(serde_json::Error),
     #[error("invalid prepared manifest schema: {actual}")]
@@ -217,8 +142,6 @@ pub enum ModelSetError {
         declared: usize,
         file_rows: usize,
     },
-    #[error("Spanish has no prepared version-two input")]
-    SpanishPreparedInput,
     #[error("cannot read prepared file {}: {source}", path.display())]
     PreparedFileIo {
         path: PathBuf,
@@ -267,8 +190,6 @@ pub enum ModelSetError {
     },
     #[error("prepared development and validation repeat source identifier {0}")]
     DuplicatePreparedSourceId(String),
-    #[error("Spanish manifest entries must use the frozen legacy declaration")]
-    SpanishCompiledEntry,
     #[error(
         "compiled validation predictions for {} have length {actual}; expected {expected}",
         language.code()
@@ -329,30 +250,6 @@ pub enum ModelSetError {
     },
     #[error("validation matrix total overflows for {}", .0.code())]
     ValidationMatrixTotalOverflow(Language),
-    #[error("invalid Spanish legacy declaration path: {}", .0.display())]
-    InvalidSpanishDeclarationPath(PathBuf),
-    #[error("cannot read Spanish legacy declaration {}: {source}", path.display())]
-    SpanishDeclarationIo {
-        path: PathBuf,
-        #[source]
-        source: std::io::Error,
-    },
-    #[error("Spanish legacy declaration mismatch: {0}")]
-    SpanishDeclarationMismatch(&'static str),
-    #[error("unsafe frozen file path: {0}")]
-    UnsafeFrozenPath(String),
-    #[error("cannot read frozen file {relative_path}: {source}")]
-    FrozenFileIo {
-        relative_path: String,
-        #[source]
-        source: std::io::Error,
-    },
-    #[error("frozen file digest mismatch: {0}")]
-    FrozenFileDigestMismatch(String),
-    #[error("cannot parse Spanish legacy metadata JSON: {0}")]
-    SpanishMetadataJson(serde_json::Error),
-    #[error("Spanish legacy metadata mismatch: {0}")]
-    SpanishMetadataMismatch(&'static str),
     #[error("{} has {actual} HurtLex source records; expected one", language.code())]
     HurtlexSourceCount { language: Language, actual: usize },
     #[error("unsafe HurtLex path for {}: {path}", language.code())]
@@ -411,277 +308,11 @@ pub fn parse_model_manifest(reader: impl Read) -> Result<ModelManifest, ModelSet
     Ok(manifest)
 }
 
-pub fn parse_spanish_legacy_input(reader: impl Read) -> Result<SpanishLegacyInput, ModelSetError> {
-    let input: SpanishLegacyInput =
-        serde_json::from_reader(reader).map_err(ModelSetError::SpanishLegacyJson)?;
-    if input.schema_version != SPANISH_LEGACY_SCHEMA_VERSION {
-        return Err(ModelSetError::InvalidSpanishLegacySchema {
-            expected: SPANISH_LEGACY_SCHEMA_VERSION,
-            actual: input.schema_version,
-        });
-    }
-    Ok(input)
-}
-
-pub fn load_spanish_legacy(
-    declaration_path: &Path,
-) -> Result<VerifiedSpanishLegacy, ModelSetError> {
-    let canonical = fs::canonicalize(declaration_path).map_err(|source| {
-        ModelSetError::SpanishDeclarationIo {
-            path: declaration_path.to_owned(),
-            source,
-        }
-    })?;
-    if !canonical.ends_with("resources/models/es-legacy-input-v1.json") {
-        return Err(ModelSetError::InvalidSpanishDeclarationPath(canonical));
-    }
-    let project_root = canonical
-        .ancestors()
-        .nth(3)
-        .ok_or_else(|| ModelSetError::InvalidSpanishDeclarationPath(canonical.clone()))?;
-    let declaration_bytes =
-        fs::read(&canonical).map_err(|source| ModelSetError::SpanishDeclarationIo {
-            path: canonical.clone(),
-            source,
-        })?;
-    let input = parse_spanish_legacy_input(declaration_bytes.as_slice())?;
-    validate_spanish_declaration(&input)?;
-
-    let artifact = read_frozen_file(project_root, &input.artifact)?;
-    let metadata_bytes = read_frozen_file(project_root, &input.metadata)?;
-    read_frozen_file(project_root, &input.source)?;
-    read_frozen_file(project_root, &input.hurtlex)?;
-    read_frozen_file(project_root, &input.proof_report)?;
-    read_frozen_file(project_root, &input.behavior_panel)?;
-    validate_spanish_metadata(&metadata_bytes, &input)?;
-    let model =
-        SparseModel::from_bytes(&artifact).map_err(|source| ModelSetError::ArtifactParse {
-            language: Language::Es,
-            source,
-        })?;
-    let profiles = Language::Es.profiles();
-    if model.language() != Language::Es
-        || (
-            model.feature_profile(),
-            model.normalization_profile(),
-            model.feature_schema(),
-        ) != profiles
-        || model.raw_boundary() != input.boundary
-        || model.score_scale() != input.score_scale
-        || model.max_false_warning_basis_points() != input.false_warning_limit_basis_points
-    {
-        return Err(ModelSetError::ArtifactMetadataMismatch(Language::Es));
-    }
-
-    let validation = input.validation;
-    let entry = ModelManifestEntry {
-        language: Language::Es,
-        artifact_relative_path: artifact_relative_path(Language::Es).to_owned(),
-        dataset_inputs: vec![DatasetInput {
-            dataset: input.dataset,
-            source_file_id: input.source_file_id,
-            revision: Some(input.dataset_revision),
-            file_sha256: input.source.sha256,
-        }],
-        feature_profile: profiles.0,
-        normalization_profile: profiles.1,
-        feature_schema: profiles.2,
-        rule_pack_version: 1,
-        rule_pack_sha256: sha256(&canonical_rule_identity(Language::Es)),
-        hurtlex_sha256: Some(input.hurtlex.sha256),
-        clean_control_rows: 0,
-        clean_control_sha256: None,
-        development_rows: input.development_rows,
-        validation_rows: input.validation_rows,
-        test_rows: input.test_rows,
-        duplicate_rows: input.duplicate_rows,
-        conflict_rows: input.conflict_rows,
-        excluded_rows: input.excluded_rows,
-        boundary: input.boundary,
-        score_scale: input.score_scale,
-        false_warning_limit_basis_points: input.false_warning_limit_basis_points,
-        validation,
-        validation_metrics: validation.metrics(),
-        validation_gates: None,
-        artifact_bytes: artifact.len(),
-        artifact_sha256: sha256(&artifact),
-    };
-    Ok(VerifiedSpanishLegacy { artifact, entry })
-}
-
-fn validate_spanish_declaration(input: &SpanishLegacyInput) -> Result<(), ModelSetError> {
-    let expected_files = [
-        (
-            &input.artifact,
-            "resources/models/es-chargram-v1.bin",
-            "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36",
-        ),
-        (
-            &input.metadata,
-            "resources/models/es-chargram-v1.json",
-            "b5c334f79334b20843409ef9bbebdd4fcbce9580239ae6f9f496f14bcf4ba582",
-        ),
-        (
-            &input.source,
-            "data/textdetox/es-source.tsv",
-            "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9",
-        ),
-        (
-            &input.hurtlex,
-            "data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv",
-            "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba",
-        ),
-        (
-            &input.proof_report,
-            "docs/spanish-proof-report.md",
-            "7634a66dfd43e22aac8d729ce5d06cbd1384aafe5f4ddb24c77a087039337d42",
-        ),
-        (
-            &input.behavior_panel,
-            "samples/spanish-audit.tsv",
-            "8313713f8e18e5c066f6f320efb6ee340b7580cba4739fc4612e1dfe4a8a7575",
-        ),
-    ];
-    for (reference, path, digest) in expected_files {
-        if reference.relative_path != path || reference.sha256.as_str() != digest {
-            return Err(ModelSetError::SpanishDeclarationMismatch("frozen file"));
-        }
-    }
-    let expected_validation = ConfusionMatrix {
-        true_positive: 159,
-        true_negative: 382,
-        false_positive: 18,
-        false_negative: 203,
-    };
-    let expected_test = ConfusionMatrix {
-        true_positive: 177,
-        true_negative: 386,
-        false_positive: 14,
-        false_negative: 242,
-    };
-    let expected_behavior = ConfusionMatrix {
-        true_positive: 39,
-        true_negative: 46,
-        false_positive: 0,
-        false_negative: 3,
-    };
-    if input.dataset != DatasetId::TextDetox
-        || input.source_file_id != "textdetox-es-legacy"
-        || input.dataset_revision != "01907546324b0330d2d8b7669648cc18823323e5"
-        || (
-            input.source_rows,
-            input.development_rows,
-            input.validation_rows,
-            input.test_rows,
-        ) != (5_000, 3_418, 762, 819)
-        || (
-            input.duplicate_rows,
-            input.conflict_rows,
-            input.excluded_rows,
-        ) != (1, 0, 1)
-        || (
-            input.boundary,
-            input.score_scale,
-            input.false_warning_limit_basis_points,
-        ) != (10_962, 27_695, 300)
-        || input.validation != expected_validation
-        || input.test != expected_test
-        || input.behavior != expected_behavior
-    {
-        return Err(ModelSetError::SpanishDeclarationMismatch("metadata"));
-    }
-    Ok(())
-}
-
-fn read_frozen_file(
-    project_root: &Path,
-    reference: &FrozenFileReference,
-) -> Result<Vec<u8>, ModelSetError> {
-    let path = Path::new(&reference.relative_path);
-    if path
-        .components()
-        .any(|component| !matches!(component, Component::Normal(_)))
-    {
-        return Err(ModelSetError::UnsafeFrozenPath(
-            reference.relative_path.clone(),
-        ));
-    }
-    let bytes =
-        fs::read(project_root.join(path)).map_err(|source| ModelSetError::FrozenFileIo {
-            relative_path: reference.relative_path.clone(),
-            source,
-        })?;
-    if sha256(&bytes) != reference.sha256 {
-        return Err(ModelSetError::FrozenFileDigestMismatch(
-            reference.relative_path.clone(),
-        ));
-    }
-    Ok(bytes)
-}
-
-fn validate_spanish_metadata(
-    bytes: &[u8],
-    input: &SpanishLegacyInput,
-) -> Result<(), ModelSetError> {
-    let metadata: SpanishLegacyMetadata =
-        serde_json::from_slice(bytes).map_err(ModelSetError::SpanishMetadataJson)?;
-    let expected_sparse = ConfusionMatrix {
-        true_positive: 152,
-        true_negative: 388,
-        false_positive: 12,
-        false_negative: 210,
-    };
-    let expected_features = [
-        "normalized word unigrams",
-        "normalized word bigrams",
-        "normalized character 3-grams",
-        "normalized character 4-grams",
-        "normalized character 5-grams",
-    ];
-    if metadata.format != "TOXSPRS1"
-        || metadata.language != "ES"
-        || metadata.artifact != "es-chargram-v1.bin"
-        || metadata.artifact_bytes != 131_104
-        || metadata.artifact_sha256 != input.artifact.sha256
-        || metadata.dataset != "textdetox/multilingual_toxicity_dataset"
-        || metadata.dataset_revision != input.dataset_revision
-        || metadata.source_rows != input.source_rows
-        || metadata.evaluation_rows != input.source_rows - input.excluded_rows
-        || metadata.duplicate_rows != input.duplicate_rows
-        || metadata.conflict_rows != input.conflict_rows
-        || metadata.split_method != "FNV-1a over detector language and normalized text"
-        || metadata.development_rows != input.development_rows
-        || metadata.validation_rows != input.validation_rows
-        || metadata.test_rows != input.test_rows
-        || metadata.algorithm != "Bernoulli log-odds with fixed feature hashing"
-        || metadata.feature_bins != 65_536
-        || metadata
-            .features
-            .iter()
-            .map(String::as_str)
-            .collect::<Vec<_>>()
-            != expected_features
-        || metadata.minimum_document_frequency != 2
-        || metadata.weight_scale != 256
-        || metadata.decision_boundary != input.boundary
-        || metadata.score_scale != input.score_scale
-        || metadata.maximum_validation_false_positive_basis_points
-            != input.false_warning_limit_basis_points
-        || metadata.sparse_validation != expected_sparse
-    {
-        return Err(ModelSetError::SpanishMetadataMismatch("frozen metadata"));
-    }
-    Ok(())
-}
-
 pub fn build_manifest_entry(
     compiled: &CompiledLanguage,
     mut inputs: ManifestInputs,
 ) -> Result<ModelManifestEntry, ModelSetError> {
     let language = compiled.calibration.language;
-    if language == Language::Es {
-        return Err(ModelSetError::SpanishCompiledEntry);
-    }
     if compiled.validation_predictions.len() != inputs.prepared_counts.validation {
         return Err(ModelSetError::ValidationPredictionCountMismatch {
             language,
@@ -848,15 +479,9 @@ fn validate_entry_metadata(entry: &ModelManifestEntry) -> Result<(), ModelSetErr
     if entry.validation_metrics != expected_metrics {
         return Err(ModelSetError::ValidationMetricsMismatch(entry.language));
     }
-    if entry.language == Language::Es {
-        if entry.validation_gates.is_some() {
-            return Err(ModelSetError::ValidationGatesMismatch(entry.language));
-        }
-    } else {
-        let expected = gates(entry.validation);
-        if entry.validation_gates != Some(expected) || !expected.passed() {
-            return Err(ModelSetError::ValidationGatesMismatch(entry.language));
-        }
+    let expected_gates = gates(entry.validation);
+    if entry.validation_gates != Some(expected_gates) || !expected_gates.passed() {
+        return Err(ModelSetError::ValidationGatesMismatch(entry.language));
     }
     Ok(())
 }

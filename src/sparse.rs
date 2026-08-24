@@ -43,6 +43,15 @@ pub struct SparseV2Input<'a> {
     pub weights: &'a [i16],
 }
 
+/// The complete input for one version-one Spanish sparse artifact.
+pub struct SparseV1Input<'a> {
+    pub bias: i32,
+    pub decision_boundary: i32,
+    pub score_scale: u32,
+    pub max_false_warning_basis_points: u16,
+    pub weights: &'a [i16],
+}
+
 /// Errors from a compiled sparse artifact.
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum SparseModelError {
@@ -202,6 +211,43 @@ pub fn encode_sparse_v2(input: &SparseV2Input<'_>) -> Result<Vec<u8>, SparseMode
     output.push(input.normalization_profile as u8);
     output.extend_from_slice(&(input.feature_schema as u16).to_le_bytes());
     output.extend_from_slice(&(PAYLOAD_LENGTH as u32).to_le_bytes());
+    for weight in input.weights {
+        output.extend_from_slice(&weight.to_le_bytes());
+    }
+    Ok(output)
+}
+
+/// Encodes one validated version-one Spanish sparse artifact.
+///
+/// # Errors
+///
+/// Returns an error when the weight table or calibration is invalid.
+pub fn encode_sparse_v1(input: &SparseV1Input<'_>) -> Result<Vec<u8>, SparseModelError> {
+    if input.weights.len() != BIN_COUNT {
+        return Err(SparseModelError::InvalidLength {
+            expected: BIN_COUNT,
+            actual: input.weights.len(),
+        });
+    }
+    if input.score_scale == 0 {
+        return Err(SparseModelError::ZeroScoreScale);
+    }
+    if input.max_false_warning_basis_points > 10_000 {
+        return Err(SparseModelError::InvalidFalseWarningLimit(
+            input.max_false_warning_basis_points,
+        ));
+    }
+
+    let mut output = Vec::with_capacity(V1_HEADER_LENGTH + PAYLOAD_LENGTH);
+    output.extend_from_slice(V1_MAGIC);
+    output.extend_from_slice(&V1_FORMAT_VERSION.to_le_bytes());
+    output.extend_from_slice(Language::Es.storage_code().as_bytes());
+    output.extend_from_slice(&(BIN_COUNT as u32).to_le_bytes());
+    output.extend_from_slice(&input.bias.to_le_bytes());
+    output.extend_from_slice(&input.decision_boundary.to_le_bytes());
+    output.extend_from_slice(&input.score_scale.to_le_bytes());
+    output.extend_from_slice(&input.max_false_warning_basis_points.to_le_bytes());
+    output.extend_from_slice(&WEIGHT_SCALE.to_le_bytes());
     for weight in input.weights {
         output.extend_from_slice(&weight.to_le_bytes());
     }
@@ -418,10 +464,61 @@ fn read_i32(bytes: &[u8], start: usize) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use super::score_from_raw;
+    use super::{
+        BIN_COUNT, PAYLOAD_LENGTH, SPANISH_ARTIFACT, SparseV1Input, V1_HEADER_LENGTH,
+        encode_sparse_v1, score_from_raw,
+    };
+    use crate::{FeatureProfile, FeatureSchema, Language, NormalizationProfile, SparseModel};
 
     #[test]
     fn a_raw_score_below_the_boundary_maps_below_the_nudge_threshold() {
         assert_eq!(score_from_raw(999, 1_000, 10_000), 49);
+    }
+
+    #[test]
+    fn a_version_one_artifact_round_trips_through_the_parser() {
+        let weights = vec![7_i16; BIN_COUNT];
+        let bytes = encode_sparse_v1(&SparseV1Input {
+            bias: -13,
+            decision_boundary: 10_962,
+            score_scale: 27_695,
+            max_false_warning_basis_points: 300,
+            weights: &weights,
+        })
+        .expect("encodes");
+        assert_eq!(bytes.len(), V1_HEADER_LENGTH + PAYLOAD_LENGTH);
+        assert_eq!(&bytes[..8], b"TOXSPRS1");
+        let model = SparseModel::from_bytes(&bytes).expect("parses");
+        assert_eq!(model.language(), Language::Es);
+        assert_eq!(model.feature_schema(), FeatureSchema::EsLegacyV1);
+        assert_eq!(model.raw_boundary(), 10_962);
+        assert_eq!(model.score_scale(), 27_695);
+        assert_eq!(
+            model.feature_profile(),
+            FeatureProfile::EsLegacyWordChar35V1
+        );
+        assert_eq!(
+            model.normalization_profile(),
+            NormalizationProfile::EsLegacyCharabiaV1
+        );
+        assert_eq!(model.max_false_warning_basis_points(), 300);
+        assert_eq!(model.bias, -13);
+        assert_eq!(model.weights.as_ref(), weights.as_slice());
+    }
+
+    #[test]
+    fn re_encoding_a_parsed_version_one_artifact_reproduces_its_bytes() {
+        let model = SparseModel::from_bytes(SPANISH_ARTIFACT).expect("frozen Spanish artifact");
+
+        let bytes = encode_sparse_v1(&SparseV1Input {
+            bias: model.bias,
+            decision_boundary: model.decision_boundary,
+            score_scale: model.score_scale,
+            max_false_warning_basis_points: model.max_false_warning_basis_points,
+            weights: &model.weights,
+        })
+        .expect("encodes");
+
+        assert_eq!(bytes, SPANISH_ARTIFACT);
     }
 }

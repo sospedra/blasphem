@@ -49,9 +49,6 @@ pub fn load_prepared_language(
     root: &Path,
     language: Language,
 ) -> Result<PreparedLanguageInput, ModelSetError> {
-    if language == Language::Es {
-        return Err(ModelSetError::SpanishPreparedInput);
-    }
     let manifest_path = root.join("manifest.json");
     let bytes = fs::read(&manifest_path).map_err(|source| ModelSetError::PreparedFileIo {
         path: manifest_path,
@@ -82,14 +79,11 @@ pub fn load_prepared_language(
 ///
 /// # Errors
 ///
-/// Returns an error for Spanish or any malformed prepared manifest or validation file.
+/// Returns an error for any malformed prepared manifest or validation file.
 pub fn load_prepared_validation(
     root: &Path,
     language: Language,
 ) -> Result<PreparedValidationInput, ModelSetError> {
-    if language == Language::Es {
-        return Err(ModelSetError::SpanishPreparedInput);
-    }
     let manifest_path = root.join("manifest.json");
     let bytes = fs::read(&manifest_path).map_err(|source| ModelSetError::PreparedFileIo {
         path: manifest_path,
@@ -141,9 +135,6 @@ pub(crate) fn validate_manifest_structure(
 
     let mut expected_files = BTreeSet::new();
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         for split in ["development", "validation", "test"] {
             expected_files.insert(format!("{}/{split}.tsv", language.storage_code()));
         }
@@ -211,9 +202,6 @@ fn validate_source_joins(manifest: &PreparedManifest) -> Result<(), ModelSetErro
 
 fn validate_split_counts(manifest: &PreparedManifest) -> Result<(), ModelSetError> {
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         let counts = manifest
             .language_counts
             .get(language.storage_code())

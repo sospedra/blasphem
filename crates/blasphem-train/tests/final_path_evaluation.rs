@@ -190,7 +190,7 @@ fn validation_evidence_matches_each_canonical_manifest_matrix() {
 }
 
 #[test]
-fn behavior_evidence_scores_all_336_cases_through_the_public_path() {
+fn behavior_evidence_scores_all_360_cases_through_the_public_path() {
     let project = project_root();
 
     let evidence = evaluate_behavior(
@@ -214,14 +214,14 @@ fn behavior_evidence_scores_all_336_cases_through_the_public_path() {
         })
         .collect::<Vec<_>>();
     assert!(failures.is_empty(), "{}", failures.join("\n"));
-    assert_eq!(evidence.languages.len(), 14);
+    assert_eq!(evidence.languages.len(), 15);
     assert_eq!(
         evidence
             .languages
             .values()
             .map(|language| language.cases.len())
             .sum::<usize>(),
-        336,
+        360,
     );
 }
 
@@ -436,7 +436,6 @@ fn canonical_writer_adds_no_trailing_newline() {
 fn validation_evidence_has_all_new_languages_and_an_informational_pool() {
     let evaluations = Language::ALL
         .into_iter()
-        .filter(|language| *language != Language::Es)
         .map(|language| {
             LanguageEvaluation::from_matrix(
                 language,
@@ -458,12 +457,12 @@ fn validation_evidence_has_all_new_languages_and_an_informational_pool() {
         evidence.evidence_status,
         EvidenceStatus::CalibrationEvidence
     );
-    assert_eq!(evidence.languages.len(), 14);
-    assert!(!evidence.languages.contains_key("ES"));
-    assert_eq!(evidence.pooled_matrix.true_positive, 3_780);
-    assert_eq!(evidence.pooled_matrix.false_positive, 140);
-    assert_eq!(evidence.pooled_matrix.true_negative, 5_460);
-    assert_eq!(evidence.pooled_matrix.false_negative, 420);
+    assert_eq!(evidence.languages.len(), 15);
+    assert!(evidence.languages.contains_key("ES"));
+    assert_eq!(evidence.pooled_matrix.true_positive, 4_050);
+    assert_eq!(evidence.pooled_matrix.false_positive, 150);
+    assert_eq!(evidence.pooled_matrix.true_negative, 5_850);
+    assert_eq!(evidence.pooled_matrix.false_negative, 450);
     assert!(evidence.languages.values().all(|result| result.gates
         == Some(GateResult {
             false_warning_passed: true,
@@ -603,7 +602,6 @@ fn dataset_behavior_refs_are_final_audit_only_provenance_rows() {
     let fixture_root = project_root().join("tests/fixtures/behavior");
     let panels = Language::ALL
         .into_iter()
-        .filter(|language| *language != Language::Es)
         .map(|language| {
             let rows = load_panel(&fixture_root, language).expect("behavior panel");
             (language, rows)
@@ -653,10 +651,9 @@ fn native_smoke_inputs_cover_two_pairs_per_language() {
 }
 
 #[test]
-fn behavior_evidence_requires_14_languages_and_336_cases() {
+fn behavior_evidence_requires_15_languages_and_360_cases() {
     let results = Language::ALL
         .into_iter()
-        .filter(|language| *language != Language::Es)
         .map(|language| {
             let cases = (0..24)
                 .map(|index| BehaviorCaseResult {
@@ -683,14 +680,14 @@ fn behavior_evidence_requires_14_languages_and_336_cases() {
     let evidence = BehaviorEvidence::new(digest('a'), digest('b'), results)
         .expect("complete behavior evidence");
 
-    assert_eq!(evidence.languages.len(), 14);
+    assert_eq!(evidence.languages.len(), 15);
     assert_eq!(
         evidence
             .languages
             .values()
             .map(|language| language.cases.len())
             .sum::<usize>(),
-        336,
+        360,
     );
 }
 

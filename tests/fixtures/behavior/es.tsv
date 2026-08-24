@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+ES-T01	ES	true	threat	ES-P01	none	authored	authored-v1#ES-T01	Cuando te vea voy a romperte la cara
+ES-T02	ES	true	threat	ES-P02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000254	No te metas con mi familia, cabrón, o te parto la cara, puto.
+ES-T03	ES	true	harm_wish	ES-P03	none	authored	authored-v1#ES-T03	espero que te mueras
+ES-T04	ES	true	harm_wish	ES-P04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000590	Sos un hijo de puta chino, te odio con toda mi alma, ojala te mueras pronto y sufras mucho
+ES-T05	ES	true	self_harm_command	ES-P05	none	authored	authored-v1#ES-T05	mátate
+ES-T06	ES	true	self_harm_command	ES-P06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000534	Callate la boca, pelotudo, no sabés nada de nada, sos un nabo, un gil, un salame, hacete un favor y cortate la lengua, la concha de tu abuela
+ES-T07	ES	true	directed_insult	ES-P07	none	authored	authored-v1#ES-T07	eres una mierda
+ES-T08	ES	true	directed_insult	ES-P08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/001918	Tu eres un gilipollas. Un gilipollas de manual.
+ES-C01	ES	false	none	ES-P01	negation	authored	authored-v1#ES-C01	Cuando te vea no voy a romperte la cara
+ES-C02	ES	false	none	ES-P02	quotation	authored	authored-v1#ES-C02	"o te parto la cara"
+ES-C03	ES	false	none	ES-P03	negation	authored	authored-v1#ES-C03	Espero que no te mueras
+ES-C04	ES	false	none	ES-P04	quotation	authored	authored-v1#ES-C04	"ojala te mueras pronto"
+ES-C05	ES	false	none	ES-P05	counterspeech	authored	authored-v1#ES-C05	No digas mátate
+ES-C06	ES	false	none	ES-P06	reporting	authored	authored-v1#ES-C06	Ella dijo cortate la lengua
+ES-C07	ES	false	none	ES-P07	reporting	authored	authored-v1#ES-C07	El moderador dijo eres una mierda
+ES-C08	ES	false	none	ES-P08	counterspeech	authored	authored-v1#ES-C08	No le llames gilipollas
+ES-C09	ES	false	none	none	violence_question	authored	authored-v1#ES-C09	¿Quién escribió te mato?
+ES-C10	ES	false	none	none	violence_question	authored	authored-v1#ES-C10	¿Te pidieron romper el hielo?
+ES-C11	ES	false	none	none	context	authored	authored-v1#ES-C11	Eres horrible jugando al ajedrez
+ES-C12	ES	false	none	none	context	authored	authored-v1#ES-C12	El dentista me arregló un diente roto
+ES-C13	ES	false	none	none	collision	authored	authored-v1#ES-C13	La novela se titula Matar el tiempo
+ES-C14	ES	false	none	none	context	authored	authored-v1#ES-C14	El noticiero describe una amenaza
+ES-C15	ES	false	none	none	collision	authored	authored-v1#ES-C15	La policía cortó la calle por un accidente
+ES-C16	ES	false	none	none	collision	authored	authored-v1#ES-C16	El gato negro cruzó la calle

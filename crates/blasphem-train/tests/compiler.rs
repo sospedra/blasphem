@@ -13,8 +13,8 @@ use blasphem::{
 };
 use blasphem_train::{
     compiler::{
-        BatchCompileOptions, CompileError, CompileRequest, compile_language, compile_model_set,
-        train_weights, validation_score_scale,
+        BatchCompileOptions, CompileError, CompileRequest, CompiledLanguage, compile_language,
+        compile_model_set, train_weights, validation_score_scale,
     },
     datasets::{
         DatasetId, LineageStatus, PreparedCounts, PreparedFileIdentity, PreparedManifest,
@@ -22,6 +22,7 @@ use blasphem_train::{
     },
     evidence::Sha256Digest,
     model_manifest::{ModelSetError, parse_model_manifest, validate_model_set},
+    prepared_input::load_prepared_language,
     publication::PREPARED_MANIFEST_SCHEMA_VERSION,
     source_manifest::SourceRecord,
 };
@@ -38,7 +39,6 @@ fn compile_help_exposes_only_batch_inputs() {
     assert!(stdout.contains("--prepared-root"));
     assert!(stdout.contains("--hurtlex-root"));
     assert!(stdout.contains("--behavior-root"));
-    assert!(stdout.contains("--spanish-legacy"));
     assert!(stdout.contains("--output"));
     assert!(!stdout.contains("--test"));
     assert!(!stdout.contains("--development"));
@@ -311,13 +311,6 @@ fn serialized_version_two_model_matches_final_validation_predictions() {
 }
 
 #[test]
-fn version_two_compiler_rejects_spanish() {
-    let error = compile_language(&fixture_request(Language::Es)).expect_err("Spanish V2 input");
-
-    assert_eq!(error, CompileError::SpanishVersionTwoInput);
-}
-
-#[test]
 fn version_two_compiler_reports_a_missing_validation_class() {
     let mut request = fixture_request(Language::En);
     request
@@ -410,6 +403,44 @@ fn prepared_row(language: Language, label: EvalLabel, source_id: &str, text: &st
 }
 
 #[test]
+fn spanish_compiles_deterministically_from_prepared_input() {
+    let directory = tempdir().expect("temporary directory");
+    let prepared = write_batch_fixture(directory.path()).prepared_root;
+
+    let first = compile_prepared_language_for(&prepared, Language::Es);
+    let second = compile_prepared_language_for(&prepared, Language::Es);
+
+    assert_eq!(
+        first.artifact, second.artifact,
+        "training must be deterministic"
+    );
+    assert_eq!(&first.artifact[..8], b"TOXSPRS1");
+    let model = SparseModel::from_bytes(&first.artifact).expect("parses");
+    assert_eq!(model.language(), Language::Es);
+    assert_eq!(
+        (
+            model.feature_profile(),
+            model.normalization_profile(),
+            model.feature_schema()
+        ),
+        Language::Es.profiles()
+    );
+}
+
+fn compile_prepared_language_for(prepared_root: &Path, language: Language) -> CompiledLanguage {
+    let prepared =
+        load_prepared_language(prepared_root, language).expect("load the prepared language");
+    compile_language(&CompileRequest {
+        language,
+        development: prepared.development,
+        validation: prepared.validation,
+        rule_channel: RuleChannel::from_hurtlex_bytes(language, None).expect("rule channel"),
+        clean_controls: Vec::new(),
+    })
+    .expect("compile the prepared language")
+}
+
+#[test]
 fn batch_compiler_publishes_a_complete_model_set_without_test_files() {
     let directory = tempdir().expect("temporary directory");
     let options = write_batch_fixture(directory.path());
@@ -419,23 +450,15 @@ fn batch_compiler_publishes_a_complete_model_set_without_test_files() {
     assert_eq!(manifest.entries.len(), Language::ALL.len());
     assert_eq!(manifest.entries[0].language, Language::En);
     assert_eq!(manifest.entries[2].language, Language::Es);
-    assert!(
-        manifest
-            .entries
-            .iter()
-            .filter(|entry| entry.language != Language::Es)
-            .all(|entry| entry.test_rows == 7)
-    );
+    assert!(manifest.entries.iter().all(|entry| entry.test_rows == 7));
     for language in Language::ALL {
-        if language != Language::Es {
-            assert!(
-                !options
-                    .prepared_root
-                    .join(language.storage_code())
-                    .join("test.tsv")
-                    .exists()
-            );
-        }
+        assert!(
+            !options
+                .prepared_root
+                .join(language.storage_code())
+                .join("test.tsv")
+                .exists()
+        );
     }
     let parsed = parse_model_manifest(
         fs::File::open(options.output.join("manifest.json")).expect("published manifest"),
@@ -532,20 +555,14 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
     let mut prepared_files = BTreeMap::new();
     for language in Language::ALL {
         let code = language.storage_code();
-        if language == Language::Es {
-            language_sources.insert(code.to_owned(), Vec::new());
-            language_counts.insert(code.to_owned(), PreparedCounts::default());
-            continue;
-        }
-
         let dataset_source_id = format!("dataset-{}", code.to_ascii_lowercase());
         let hurtlex_source_id = format!("hurtlex-{}", code.to_ascii_lowercase());
         let hurtlex_relative_path = format!("hurtlex/{code}/1.2/hurtlex_{code}.tsv");
-        let hurtlex_bytes = b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n";
+        let hurtlex_bytes = hurtlex_fixture_bytes(language);
         let hurtlex_path = hurtlex_root.join(format!("{code}/1.2/hurtlex_{code}.tsv"));
         fs::create_dir_all(hurtlex_path.parent().expect("HurtLex parent"))
             .expect("HurtLex language directory");
-        fs::write(&hurtlex_path, hurtlex_bytes).expect("HurtLex fixture");
+        fs::write(&hurtlex_path, &hurtlex_bytes).expect("HurtLex fixture");
 
         sources.push(source_record(
             language,
@@ -559,7 +576,7 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
             DatasetId::HurtLex,
             &hurtlex_source_id,
             &hurtlex_relative_path,
-            sha256_digest(hurtlex_bytes),
+            sha256_digest(&hurtlex_bytes),
         ));
         language_sources.insert(code.to_owned(), vec![dataset_source_id, hurtlex_source_id]);
         language_counts.insert(
@@ -648,9 +665,17 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
         prepared_root,
         hurtlex_root,
         behavior_root: None,
-        spanish_legacy: project_root().join("resources/models/es-legacy-input-v1.json"),
         output,
     }
+}
+
+/// Spanish manifest entries pin the frozen HurtLex ES digest, so the fixture uses the real file.
+fn hurtlex_fixture_bytes(language: Language) -> Vec<u8> {
+    if language == Language::Es {
+        return fs::read(project_root().join("data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv"))
+            .expect("Spanish HurtLex data");
+    }
+    b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n".to_vec()
 }
 
 fn source_record(

@@ -42,7 +42,9 @@ pub use rules::{
     canonical_rule_identity, canonical_rule_identity_for, cjk_rules, word_rules,
 };
 pub use runtime::{NudgeDetector, RuntimeInitError};
-pub use sparse::{SparseModel, SparseModelError, SparseV2Input, encode_sparse_v2};
+pub use sparse::{
+    SparseModel, SparseModelError, SparseV1Input, SparseV2Input, encode_sparse_v1, encode_sparse_v2,
+};
 pub use text::{CandidateView, CandidateViewKind, TextDocument, TextSpan};
 pub use workflow::{
     EvaluationReport, LevelSelection, WorkflowError, evaluate, evaluate_policy, load_lexica,

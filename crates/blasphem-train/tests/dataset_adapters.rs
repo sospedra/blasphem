@@ -28,7 +28,7 @@ fn textdetox_importer_keeps_pinned_identity_and_raw_labels() {
     );
     assert_eq!(
         TEXTDETOX_CODES,
-        ["en", "zh", "ar", "fr", "hi", "ru", "ja", "de", "it"]
+        ["en", "zh", "es", "ar", "fr", "hi", "ru", "ja", "de", "it"]
     );
     assert_eq!(rows.len(), 2);
     assert_eq!(
@@ -126,7 +126,7 @@ fn indonesian_uses_hate_or_abusive() {
     assert_eq!(rows[0].source_file_id, "ibrohim-budi-re-dataset");
     assert_eq!(rows[0].source_language_code, "id");
     assert_eq!(rows[0].detector_language, Some(Language::Ms));
-    assert_eq!(rows[0].detector_language_code.as_deref(), Some("MS"));
+    assert_eq!(rows[0].detector_language_code.as_deref(), Some("ID"));
     assert_eq!(rows[0].source_label, "HS=0;Abusive=0");
     assert_eq!(rows[0].text, "hello");
     assert_eq!(rows[0].source_split, SourceSplit::Unsplit);

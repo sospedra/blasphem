@@ -168,7 +168,6 @@ cargo run --release --locked -p blasphem-train -- compile \
   --prepared-root data/prepared-v1 \
   --hurtlex-root data/raw-v1/hurtlex \
   --behavior-root tests/fixtures/behavior \
-  --spanish-legacy resources/models/es-legacy-input-v1.json \
   --output resources/models/multilingual-v2
 ```
 

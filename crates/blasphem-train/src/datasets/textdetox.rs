@@ -17,7 +17,7 @@ use blasphem::{EvalLabel, EvalRow, Language, normalize_text};
 use super::{DatasetAdapter, DatasetId, ImportError, ImportedRow, SourceInput};
 
 pub const TEXTDETOX_REVISION: &str = "01907546324b0330d2d8b7669648cc18823323e5";
-pub const TEXTDETOX_CODES: &[&str] = &["en", "zh", "ar", "fr", "hi", "ru", "ja", "de", "it"];
+pub const TEXTDETOX_CODES: &[&str] = &["en", "zh", "es", "ar", "fr", "hi", "ru", "ja", "de", "it"];
 pub const MAX_TEXTDETOX_PARQUET_ROWS: u64 = 100_000;
 pub const MAX_TEXTDETOX_PARQUET_TEXT_BYTES: u64 = 67_108_864;
 
@@ -107,6 +107,7 @@ fn detector_language(source_code: &str) -> Result<Language, ImportError> {
     match source_code {
         "en" => Ok(Language::En),
         "zh" => Ok(Language::Zh),
+        "es" => Ok(Language::Es),
         "ar" => Ok(Language::Ar),
         "fr" => Ok(Language::Fr),
         "hi" => Ok(Language::Hi),

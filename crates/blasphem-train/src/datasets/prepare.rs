@@ -120,7 +120,7 @@ impl RowState {
 #[must_use]
 pub fn split_hash(language: Language, normalized: &str) -> u64 {
     language
-        .code()
+        .storage_code()
         .bytes()
         .chain(std::iter::once(0))
         .chain(normalized.bytes())

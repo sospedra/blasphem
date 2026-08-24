@@ -9,8 +9,8 @@ use sha2::{Digest, Sha256};
 use thiserror::Error;
 use blasphem::{
     ConfusionMatrix, EvalLabel, FeatureError, FeatureProfile, Language, NormalizationProfile,
-    ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV2Input,
-    canonical_rule_identity, encode_sparse_v2, extract_feature_bins,
+    ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV1Input, SparseV2Input,
+    canonical_rule_identity, encode_sparse_v1, encode_sparse_v2, extract_feature_bins,
 };
 
 use crate::{
@@ -22,7 +22,7 @@ use crate::{
     model_manifest::{
         DatasetInput, MODEL_MANIFEST_SCHEMA_VERSION, ManifestInputs, ModelManifest,
         ModelManifestEntry, ModelSetError, artifact_relative_path, build_manifest_entry,
-        load_spanish_legacy, parse_model_manifest, rule_pack_version, validate_model_set,
+        parse_model_manifest, rule_pack_version, validate_model_set,
     },
     prepared_input::{PreparedLanguageInput, load_prepared_language},
     source_manifest::SourceRecord,
@@ -39,7 +39,6 @@ pub struct BatchCompileOptions {
     pub prepared_root: PathBuf,
     pub hurtlex_root: PathBuf,
     pub behavior_root: Option<PathBuf>,
-    pub spanish_legacy: PathBuf,
     pub output: PathBuf,
 }
 
@@ -50,19 +49,10 @@ struct CompiledModel {
 
 pub fn compile_model_set(options: &BatchCompileOptions) -> Result<ModelManifest, ModelSetError> {
     reject_existing_output(&options.output)?;
-    let spanish = load_spanish_legacy(&options.spanish_legacy)?;
-    let mut models = vec![CompiledModel {
-        artifact: spanish.artifact,
-        entry: spanish.entry,
-    }];
-
+    let mut models = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         models.push(compile_prepared_language(options, language)?);
     }
-    models.sort_by_key(|model| model.entry.language.index());
     let manifest = ModelManifest {
         schema_version: MODEL_MANIFEST_SCHEMA_VERSION,
         entries: models.iter().map(|model| model.entry.clone()).collect(),
@@ -369,8 +359,6 @@ pub enum CompileError {
         language: Language,
         source_id: String,
     },
-    #[error("Spanish cannot use a version-two sparse training path")]
-    SpanishVersionTwoInput,
     #[error(
         "the {split} row {source_id} has language {}; expected {}",
         actual.code(),
@@ -436,9 +424,6 @@ pub fn train_weights(
         });
     };
     let language = first.detector_language;
-    if language == Language::Es {
-        return Err(CompileError::SpanishVersionTwoInput);
-    }
     let (expected_profile, expected_normalization, _) = language.profiles();
     if (profile, normalization) != (expected_profile, expected_normalization) {
         return Err(CompileError::ProfileMismatch {
@@ -501,9 +486,6 @@ pub fn train_weights(
 }
 
 pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, CompileError> {
-    if request.language == Language::Es {
-        return Err(CompileError::SpanishVersionTwoInput);
-    }
     if request.rule_channel.language() != request.language {
         return Err(CompileError::RuleChannelLanguageMismatch {
             expected: request.language,
@@ -552,17 +534,27 @@ pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, Co
 
     let calibration = calibrate_at_or_above(request.language, &calibration_rows, minimum_boundary)?;
     let score_scale = validation_score_scale(&raw_scores, calibration.boundary)?;
-    let artifact = encode_sparse_v2(&SparseV2Input {
-        language: request.language,
-        feature_profile,
-        normalization_profile,
-        feature_schema,
-        bias: trained.bias,
-        decision_boundary: calibration.boundary,
-        score_scale,
-        max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
-        weights: &trained.weights,
-    })?;
+    let artifact = if request.language == Language::Es {
+        encode_sparse_v1(&SparseV1Input {
+            bias: trained.bias,
+            decision_boundary: calibration.boundary,
+            score_scale,
+            max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
+            weights: &trained.weights,
+        })?
+    } else {
+        encode_sparse_v2(&SparseV2Input {
+            language: request.language,
+            feature_profile,
+            normalization_profile,
+            feature_schema,
+            bias: trained.bias,
+            decision_boundary: calibration.boundary,
+            score_scale,
+            max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
+            weights: &trained.weights,
+        })?
+    };
     let parsed = SparseModel::from_bytes(&artifact)?;
     let calibrated_predictions = calibration_rows
         .iter()

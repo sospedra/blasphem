@@ -96,12 +96,12 @@ fn publication_builds_complete_stable_manifest() {
         published.manifest.language_counts.len(),
         Language::ALL.len()
     );
-    assert_eq!(published.manifest.prepared_files.len(), 42);
+    assert_eq!(published.manifest.prepared_files.len(), 45);
     assert_eq!(
         published.manifest.language_sources["ES"],
         vec!["fixture-es"]
     );
-    assert!(!output.join("ES").exists());
+    assert!(output.join("ES").exists());
     assert_eq!(
         published.manifest.prepared_files["EN/development.tsv"].rows,
         2
@@ -121,7 +121,7 @@ fn publication_builds_complete_stable_manifest() {
     assert_eq!(published.manifest.detector_label_counts["EN/clean"], 601);
     assert_eq!(
         published.manifest.source_split_counts["textdetox/unsplit"],
-        16_828
+        18_030
     );
     assert_eq!(
         published.manifest.detector_split_counts["EN/validation"],
@@ -129,7 +129,7 @@ fn publication_builds_complete_stable_manifest() {
     );
     assert_eq!(
         published.manifest.inclusion_status_counts["included"],
-        16_828
+        18_030
     );
     assert!(published.manifest.exclusion_reason_counts.is_empty());
 }
@@ -172,9 +172,6 @@ fn publication_writes_the_complete_nested_language_tree() {
     publish_fixture(&output).expect("publish");
 
     for language in Language::ALL {
-        if language == Language::Es {
-            continue;
-        }
         for split in ["development", "validation", "test"] {
             let path = output
                 .join(language.storage_code())
@@ -341,11 +338,7 @@ fn publish_fixture(output: &Path) -> blasphem_train::publication::PreparedPublic
 }
 
 fn fixture_languages() -> Vec<PreparedLanguage> {
-    Language::ALL
-        .into_iter()
-        .filter(|language| *language != Language::Es)
-        .map(fixture_language)
-        .collect()
+    Language::ALL.into_iter().map(fixture_language).collect()
 }
 
 fn fixture_language(language: Language) -> PreparedLanguage {
@@ -397,7 +390,7 @@ fn fixture_language(language: Language) -> PreparedLanguage {
                 upstream_lineage: Vec::new(),
                 lineage_status: LineageStatus::Unresolved,
                 source_language_code: code.to_ascii_lowercase(),
-                detector_language_code: Some(code.to_owned()),
+                detector_language_code: Some(language.storage_code().to_owned()),
                 source_label: match row.label {
                     EvalLabel::Clean => "0",
                     EvalLabel::Toxic => "1",

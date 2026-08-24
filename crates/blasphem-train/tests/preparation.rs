@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use blasphem::{EvalLabel, Language};
 use blasphem_train::datasets::{
     DatasetId, DatasetSplit, ExclusionReason, ImportedRow, PreparationPolicy, RowDisposition,
-    SourceSplit, SplitPolicy, prepare_language, split_for_key,
+    SourceSplit, SplitPolicy, prepare_language, split_for_key, split_hash,
 };
 use blasphem_train::{
     ProvenanceStatus, TextDetoxLanguage, TextDetoxSourceRow, prepare_textdetox,
@@ -602,4 +602,15 @@ fn textdetox_source_row(source_id: &str, toxic: u8, text: &str) -> TextDetoxSour
         },
         text: text.to_owned(),
     }
+}
+
+#[test]
+fn malay_split_hashing_uses_the_frozen_storage_code() {
+    let text = "contoh teks untuk pembagian";
+    let malay = split_hash(Language::Ms, text);
+    let mut expected = 0xcbf2_9ce4_8422_2325_u64;
+    for byte in b"ID\0".iter().chain(text.as_bytes()) {
+        expected = (expected ^ u64::from(*byte)).wrapping_mul(0x0000_0100_0000_01b3);
+    }
+    assert_eq!(malay, expected, "Malay must hash the ID storage code");
 }
