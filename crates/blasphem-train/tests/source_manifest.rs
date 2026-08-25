@@ -1,7 +1,7 @@
 use std::{collections::BTreeSet, fs};
 
-use serde_json::{Value, json};
 use blasphem::Language;
+use blasphem_train::source_role::SourceRole;
 use blasphem_train::{
     acquisition::{
         freeze_observation, sha256_digest, source_record_from_request,
@@ -11,15 +11,15 @@ use blasphem_train::{
     datasets::{DatasetId, SourceSplit, source_id},
     source_manifest::{parse_frozen_source_lock, parse_source_catalog, parse_source_observation},
 };
-use blasphem_train::source_role::SourceRole;
+use serde_json::{Value, json};
 
 #[test]
 fn every_current_source_declares_the_baseline_role() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../resources/datasets/source-lock-v1.json");
     let file = std::fs::File::open(path).expect("readable source lock");
-    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(file)
-        .expect("valid source lock");
+    let lock =
+        blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
     assert_eq!(lock.sources.len(), 38);
     for source in &lock.sources {
         assert_eq!(
@@ -572,8 +572,8 @@ fn the_source_lock_registers_spanish_as_the_thirty_eighth_input() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../resources/datasets/source-lock-v1.json");
     let file = std::fs::File::open(path).expect("readable source lock");
-    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(file)
-        .expect("valid source lock");
+    let lock =
+        blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
     assert_eq!(lock.sources.len(), 38);
     let spanish = lock
         .sources

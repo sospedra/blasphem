@@ -22,8 +22,14 @@ fn the_canonical_schema_imports_three_rows() {
     let rows = adapter.import(&mut inputs).expect("imports the fixture");
     assert_eq!(rows.len(), 3);
     assert_eq!(rows[0].source_id, "community-es-demo/row-000001");
-    assert_eq!(rows[0].disposition, RowDisposition::Candidate(EvalLabel::Toxic));
-    assert_eq!(rows[1].disposition, RowDisposition::Candidate(EvalLabel::Clean));
+    assert_eq!(
+        rows[0].disposition,
+        RowDisposition::Candidate(EvalLabel::Toxic)
+    );
+    assert_eq!(
+        rows[1].disposition,
+        RowDisposition::Candidate(EvalLabel::Clean)
+    );
 }
 
 #[test]

@@ -1,17 +1,17 @@
 use std::{io::Cursor, sync::Arc};
 
+use blasphem::EvalLabel;
+use blasphem_train::{
+    TextDetoxError, TextDetoxLanguage, TextDetoxParquetLimits, TextDetoxSourceRow,
+    parse_textdetox_page, parse_textdetox_parquet, parse_textdetox_parquet_with_limits,
+    parse_textdetox_rows, textdetox_rows_url, write_textdetox_source_tsv,
+};
 use parquet::{
     basic::Compression,
     data_type::{ByteArray, ByteArrayType, Int64Type},
     file::properties::WriterProperties,
     file::writer::SerializedFileWriter,
     schema::parser::parse_message_type,
-};
-use blasphem::EvalLabel;
-use blasphem_train::{
-    TextDetoxError, TextDetoxLanguage, TextDetoxParquetLimits, TextDetoxSourceRow,
-    parse_textdetox_page, parse_textdetox_parquet, parse_textdetox_parquet_with_limits,
-    parse_textdetox_rows, textdetox_rows_url, write_textdetox_source_tsv,
 };
 
 #[test]

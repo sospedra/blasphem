@@ -7,10 +7,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use blasphem::Language;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use thiserror::Error;
-use blasphem::Language;
 
 mod auto;
 mod benchmark;
@@ -28,8 +28,8 @@ pub use benchmark::{
     AutoTimingEvidence, AutoTimingRejection, AutoTimingSummary, BenchmarkEvidence, TimingSummary,
     latency_gate, peak_rss_bytes, run_auto_timing, run_benchmark,
 };
-pub use size::{FileSizeRecord, SizeError, SizeEvidence, collect_size_evidence, record_file};
 pub use blasphem::{LanguageDetection, LanguageIdentifier, LanguageResolution, LanguageSource};
+pub use size::{FileSizeRecord, SizeError, SizeEvidence, collect_size_evidence, record_file};
 
 pub const BINARY_SIZE_LIMIT_BYTES: u64 = 7_340_032;
 pub const ARTIFACT_SIZE_LIMIT_BYTES: u64 = 262_144;

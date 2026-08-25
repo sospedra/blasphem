@@ -1,7 +1,5 @@
 use std::{collections::BTreeMap, fs, path::Path};
 
-use sha2::{Digest, Sha256};
-use tempfile::tempdir;
 use blasphem::{EvalLabel, Language};
 use blasphem_train::{
     datasets::{DatasetId, LineageStatus, PreparedCounts, PreparedFileIdentity, PreparedManifest},
@@ -12,6 +10,8 @@ use blasphem_train::{
     source_manifest::SourceRecord,
     source_role::SourceRole,
 };
+use sha2::{Digest, Sha256};
+use tempfile::tempdir;
 
 const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 const HEADER: &str = "detector_language\tlabel\tsource_id\ttext\n";

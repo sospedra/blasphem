@@ -18,7 +18,10 @@ fn committed_lock() -> blasphem_train::evaluation_lock::EvaluationLock {
 fn the_lock_seals_fifteen_languages() {
     let lock = committed_lock();
     assert_eq!(lock.languages.len(), 15);
-    assert!(lock.languages.contains_key("ID"), "Malay seals under its storage code");
+    assert!(
+        lock.languages.contains_key("ID"),
+        "Malay seals under its storage code"
+    );
     assert!(lock.languages.contains_key("ES"));
 }
 
@@ -40,7 +43,10 @@ fn a_moved_test_row_fails_verification() {
 
     let error = verify_sealed_partitions(&root, &committed_lock())
         .expect_err("a changed sealed file must fail");
-    assert!(matches!(error, EvaluationLockError::SealedHashChanged { .. }));
+    assert!(matches!(
+        error,
+        EvaluationLockError::SealedHashChanged { .. }
+    ));
 }
 
 fn copy_tree(from: &std::path::Path, to: &std::path::Path) {

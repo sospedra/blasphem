@@ -1,8 +1,8 @@
-use std::ops::Range;
 use blasphem::{
     FeatureProfile, FeatureSchema, Language, NormalizationProfile, SparseModel, SparseModelError,
     SparseV2Input, encode_sparse_v2,
 };
+use std::ops::Range;
 
 fn fixture_v2_input(language: Language, weights: &[i16]) -> SparseV2Input<'_> {
     let (feature_profile, normalization_profile, feature_schema) = language.profiles();

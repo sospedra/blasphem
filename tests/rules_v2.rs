@@ -1,10 +1,10 @@
-use sha2::{Digest, Sha256};
 use blasphem::{
     DIRECT_THREAT_SCORE, DIRECTED_INSULT_SCORE, HARM_WISH_SCORE, Language, LanguageRules,
     NEGATIVE_SENTIMENT_SCORE, PhraseSet, ReplyTarget, RuleId, RuleMatchProfile,
     SELF_HARM_COMMAND_SCORE, analyze_with_rules, arabic_hindi_rules, canonical_rule_identity_for,
     cjk_rules, word_rules,
 };
+use sha2::{Digest, Sha256};
 
 fn fixture_rules() -> LanguageRules {
     fixture_rules_with(PhraseSet::new(&["it is wrong to say"]))

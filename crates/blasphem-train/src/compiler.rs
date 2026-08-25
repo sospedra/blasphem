@@ -5,13 +5,13 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-use sha2::{Digest, Sha256};
-use thiserror::Error;
 use blasphem::{
     ConfusionMatrix, EvalLabel, FeatureError, FeatureProfile, Language, NormalizationProfile,
     ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV1Input, SparseV2Input,
     canonical_rule_identity, encode_sparse_v1, encode_sparse_v2, extract_feature_bins,
 };
+use sha2::{Digest, Sha256};
+use thiserror::Error;
 
 use crate::{
     atomic_publish::{AtomicPublishError, atomic_publish_noreplace},

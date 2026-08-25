@@ -4,9 +4,9 @@ use std::{
     path::{Component, Path, PathBuf},
 };
 
+use blasphem::Language;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use blasphem::Language;
 
 use crate::{check_artifact_size, check_binary_size, sha256_hex};
 

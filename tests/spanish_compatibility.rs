@@ -1,7 +1,7 @@
-use sha2::{Digest, Sha256};
 use blasphem::{
     AnalysisContext, Detector, Language, MatchLevel, NudgeDetector, ReplyTarget, parse_hurtlex,
 };
+use sha2::{Digest, Sha256};
 
 fn sha256_hex(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))

@@ -1,8 +1,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use blasphem::{EvalLabel, Language, normalize_text};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use blasphem::{EvalLabel, Language, normalize_text};
 
 use crate::source_role::SourceRole;
 

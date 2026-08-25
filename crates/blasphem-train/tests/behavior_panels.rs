@@ -1,7 +1,6 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use tempfile::TempDir;
 use blasphem::{
     CandidateViewKind, EvalLabel, Language, ReplyTarget, RuleId, TextDocument, analyze_with_rules,
     arabic_hindi_rules, cjk_rules, word_rules,
@@ -9,6 +8,7 @@ use blasphem::{
 use blasphem_train::{
     BehaviorPanelError, ControlKind, EventType, load_panel, validate_event_distribution,
 };
+use tempfile::TempDir;
 
 const WORD_LANGUAGES: [Language; 9] = [
     Language::En,

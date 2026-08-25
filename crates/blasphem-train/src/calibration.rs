@@ -1,7 +1,7 @@
 use std::cmp::Reverse;
 
-use serde::{Deserialize, Serialize};
 use blasphem::{ConfusionMatrix, EvalLabel, Language};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CalibrationRow {

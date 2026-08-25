@@ -6,9 +6,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use blasphem::{EvalLabel, Language};
 use sha2::{Digest, Sha256};
 use thiserror::Error;
-use blasphem::{EvalLabel, Language};
 
 use crate::atomic_publish::{AtomicPublishError, atomic_publish_noreplace};
 use crate::datasets::textdetox::{
@@ -906,8 +906,8 @@ const fn exclusion_reason_name(reason: ExclusionReason) -> &'static str {
 
 #[cfg(test)]
 mod tests {
-    use tempfile::tempdir;
     use blasphem::{EvalLabel, EvalRow};
+    use tempfile::tempdir;
 
     use crate::datasets::textdetox::{PreparedTextDetox, TextDetoxSummary};
 

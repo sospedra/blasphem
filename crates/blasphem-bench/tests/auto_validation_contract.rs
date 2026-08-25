@@ -1,11 +1,11 @@
 use std::{fs, path::Path};
 
+use blasphem::Language;
 use blasphem_bench::{
     BrowserBuildEvidence, LanguageDetection, LanguageIdentifier, LanguageResolution,
     LanguageSource, evaluate_auto_corpus, load_browser_build_evidence, validate_pinned_corpus,
     verify_c_parity_fixture,
 };
-use blasphem::Language;
 
 #[derive(Debug)]
 struct FixtureIdentifier;
@@ -177,8 +177,8 @@ fn pinned_corpus_validation_checks_counts_digests_and_termination() {
 
 #[test]
 fn c_parity_verification_rejects_one_changed_expected_score() {
-    let source =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("../blasphem-language/tests/fixtures/c-parity-v1.jsonl");
+    let source = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../blasphem-language/tests/fixtures/c-parity-v1.jsonl");
     let first = fs::read_to_string(source)
         .expect("C parity fixture")
         .lines()

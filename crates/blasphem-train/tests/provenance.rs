@@ -1,4 +1,6 @@
-use blasphem_train::{DatasetSplit, ProvenanceRow, ProvenanceStatus, write_textdetox_provenance_tsv};
+use blasphem_train::{
+    DatasetSplit, ProvenanceRow, ProvenanceStatus, write_textdetox_provenance_tsv,
+};
 
 #[test]
 fn provenance_tsv_sorts_source_ids_and_writes_lowercase_values() {

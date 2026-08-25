@@ -1,9 +1,9 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
+use blasphem::{EvalLabel, Language};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use blasphem::{EvalLabel, Language};
 
 const PANEL_HEADER: [&str; 9] = [
     "case_id",

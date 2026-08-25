@@ -1,12 +1,17 @@
 use std::{fs, path::PathBuf, process::Command};
 
 use anyhow::{Context, Result, bail};
+use blasphem_bench::{
+    AutoValidationConfig, collect_size_evidence, run_auto_validation, run_benchmark,
+};
 use clap::{Parser, Subcommand};
 use serde::Serialize;
-use blasphem_bench::{AutoValidationConfig, collect_size_evidence, run_auto_validation, run_benchmark};
 
 #[derive(Debug, Parser)]
-#[command(name = "blasphem-bench", about = "Experimental blasphem runtime evidence")]
+#[command(
+    name = "blasphem-bench",
+    about = "Experimental blasphem runtime evidence"
+)]
 struct Cli {
     #[command(subcommand)]
     command: EvidenceCommand,

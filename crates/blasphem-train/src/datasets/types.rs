@@ -1,8 +1,8 @@
 use std::{collections::BTreeMap, fmt};
 
+use blasphem::{EvalLabel, Language};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use blasphem::{EvalLabel, Language};
 
 use crate::evidence::Sha256Digest;
 use crate::source_manifest::SourceRecord;

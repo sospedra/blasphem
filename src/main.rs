@@ -1,13 +1,13 @@
 use std::{fs, path::PathBuf};
 
 use anyhow::{Context, Result};
-use clap::{Args, Parser, Subcommand, ValueEnum};
 use blasphem::{
     CandidateViewKind, Language, LanguageDetection, LanguageResolution, LanguageSelection,
     LanguageSource, MatchLevel, NudgeDetector, PolicyCategory, ReplyTarget,
 };
 #[cfg(feature = "language-detection")]
 use blasphem::{LanguageDetector, resolve_language};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 
 #[derive(Debug, Parser)]
 #[command(

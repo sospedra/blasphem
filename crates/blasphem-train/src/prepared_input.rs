@@ -5,8 +5,8 @@ use std::{
     path::Path,
 };
 
-use sha2::{Digest, Sha256};
 use blasphem::{EvalLabel, Language};
+use sha2::{Digest, Sha256};
 
 use crate::{
     datasets::{PreparedCounts, PreparedFileIdentity, PreparedManifest, PreparedRow},

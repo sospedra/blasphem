@@ -4,11 +4,11 @@ use std::{
     path::Path,
 };
 
-use serde::{Deserialize, Serialize};
-use thiserror::Error;
 use blasphem::{
     ConfusionMatrix, EvalLabel, Language, NudgeDetector, ReplyTarget, RuntimeInitError,
 };
+use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
 use crate::{
     behavior_panel::{

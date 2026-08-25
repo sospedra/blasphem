@@ -1,11 +1,11 @@
 use std::{collections::VecDeque, fmt::Write as _, fs, fs::File, process::Command};
 
-use tempfile::tempdir;
 use blasphem_train::{
     TextDetoxAcquisitionError, TextDetoxFetchError, TextDetoxHttpClient, TextDetoxHttpResponse,
     TextDetoxTransportError, acquire_textdetox, datasets::textdetox::TextDetoxError,
     fetch_textdetox, textdetox_rows_url,
 };
+use tempfile::tempdir;
 
 #[test]
 fn observe_reads_the_catalog_and_refuses_overwrite() {
@@ -271,10 +271,13 @@ fn prepare_textdetox_publishes_all_files_after_deduplication() {
 
     let rows = blasphem_train::parse_textdetox_rows(File::open(&input_path).expect("open source"))
         .expect("parse source");
-    let prepared =
-        blasphem_train::prepare_textdetox(&rows, &std::collections::BTreeSet::from(["EN".to_owned()]))
-            .expect("prepare source");
-    blasphem_train::publish_prepared_textdetox(&output_directory, &prepared).expect("publish source");
+    let prepared = blasphem_train::prepare_textdetox(
+        &rows,
+        &std::collections::BTreeSet::from(["EN".to_owned()]),
+    )
+    .expect("prepare source");
+    blasphem_train::publish_prepared_textdetox(&output_directory, &prepared)
+        .expect("publish source");
     for name in [
         "development.tsv",
         "validation.tsv",

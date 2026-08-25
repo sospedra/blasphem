@@ -6,10 +6,10 @@ use std::{
     time::Instant,
 };
 
-use serde::{Deserialize, Serialize};
 use blasphem::{
     Language, LanguageDetection, LanguageIdentifier, LanguageResolution, NudgeDetector, ReplyTarget,
 };
+use serde::{Deserialize, Serialize};
 
 use crate::{
     BenchmarkError, BenchmarkFixture, FixtureLength, assert_unique_dimensions, calculate_rates,

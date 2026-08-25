@@ -1,8 +1,8 @@
-use sha2::{Digest, Sha256};
-use std::path::Path;
 use blasphem::{
     HURTLEX_SCORE, Language, ReplyTarget, RuleChannel, RuleId, canonical_rule_identity,
 };
+use sha2::{Digest, Sha256};
+use std::path::Path;
 
 fn hurtlex(language: Language, rows: &[(&str, &str)]) -> Vec<u8> {
     let mut contents = String::from("id\tpos\tcategory\tstereotype\tlemma\tlevel\n");

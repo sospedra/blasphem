@@ -6,9 +6,9 @@ use std::{
     time::Instant,
 };
 
+use blasphem::{Language, LanguageDetector, LanguageIdentifier, LanguageResolution};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use blasphem::{Language, LanguageDetector, LanguageIdentifier, LanguageResolution};
 
 use crate::{
     AutoTimingEvidence, BenchmarkError, FileSizeRecord, SizeError, record_file, run_auto_timing,

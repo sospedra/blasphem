@@ -1,7 +1,5 @@
 use std::{collections::BTreeMap, fs};
 
-use serde::{Deserialize, Serialize};
-use tempfile::tempdir;
 use blasphem::{ConfusionMatrix, EvalLabel, Language, NudgeDetector};
 use blasphem_train::prepared_input::load_prepared_validation;
 use blasphem_train::{
@@ -22,6 +20,8 @@ use blasphem_train::{
         load_evidence_inputs, validate_behavior_provenance, validate_class_counts,
     },
 };
+use serde::{Deserialize, Serialize};
+use tempfile::tempdir;
 
 fn assert_close(actual: Option<f64>, expected: f64) {
     let actual = actual.expect("defined metric");

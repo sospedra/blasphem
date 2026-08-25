@@ -1,8 +1,8 @@
 use std::io::Read;
 
+use blasphem::EvalRow;
 use serde::Deserialize;
 use thiserror::Error;
-use blasphem::EvalRow;
 
 #[derive(Debug, Error)]
 pub enum ParseEvaluationError {

@@ -1,7 +1,9 @@
 use std::{fs, hint::black_box, path::Path, time::Instant};
 
-use blasphem_bench::{FixtureKind, FixtureLength, latency_gate, load_benchmark_fixtures, nearest_rank};
 use blasphem::{Language, NudgeDetector, ReplyTarget};
+use blasphem_bench::{
+    FixtureKind, FixtureLength, latency_gate, load_benchmark_fixtures, nearest_rank,
+};
 
 const EXPECTED_DENSE_FIXTURES: usize = 30;
 const SAMPLES: usize = 64;

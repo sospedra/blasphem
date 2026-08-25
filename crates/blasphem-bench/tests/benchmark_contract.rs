@@ -1,6 +1,8 @@
 use std::path::Path;
 
-use blasphem_bench::{FixtureLength, assert_unique_dimensions, load_benchmark_fixtures, sha256_hex};
+use blasphem_bench::{
+    FixtureLength, assert_unique_dimensions, load_benchmark_fixtures, sha256_hex,
+};
 
 #[test]
 fn benchmark_fixture_matrix_is_complete_and_exact() {

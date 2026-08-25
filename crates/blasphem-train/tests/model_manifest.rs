@@ -1,7 +1,5 @@
 use std::{fs, path::Path};
 
-use sha2::{Digest, Sha256};
-use tempfile::tempdir;
 use blasphem::{
     ConfusionMatrix, FeatureProfile, FeatureSchema, Language, Metrics, NormalizationProfile,
     SparseV1Input, SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules,
@@ -19,6 +17,8 @@ use blasphem_train::{
         parse_model_manifest, validate_model_set,
     },
 };
+use sha2::{Digest, Sha256};
+use tempfile::tempdir;
 
 #[test]
 fn model_manifest_rejects_an_unknown_schema() {

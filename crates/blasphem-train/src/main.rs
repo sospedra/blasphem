@@ -1,41 +1,33 @@
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeSet,
     fs::{self, File},
     io::Read,
-    path::{Path, PathBuf},
-    str::FromStr,
+    path::PathBuf,
 };
 
 use anyhow::{Context, Result, bail};
-use clap::{Args, Parser, Subcommand, ValueEnum};
-use reqwest::blocking::Client;
 use blasphem::{
     ConfusionMatrix, LevelSelection, Metrics, PolicyAction, evaluate_policy, load_lexica,
 };
 use blasphem_train::acquisition::{
     MAX_SOURCE_DOWNLOAD_BYTES, current_unix_seconds, extract_archive_member, freeze_observation,
     source_record_from_request_with_download, validate_catalog,
-    validate_observation_matches_catalog, validate_observation_matches_lock,
-    validate_source_download, validate_source_lock_for_acquisition,
-    validate_textdetox_download_identity, write_acquired_sources, write_frozen_source_lock,
-    write_source_observation,
+    validate_observation_matches_catalog, validate_source_download,
+    validate_source_lock_for_acquisition, validate_textdetox_download_identity,
+    write_acquired_sources, write_frozen_source_lock, write_source_observation,
 };
 use blasphem_train::compiler::{BatchCompileOptions, compile_model_set};
-use blasphem_train::datasets::{
-    DatasetAdapter, DatasetId, PreparationPolicy, SourceInput, SplitPolicy,
-    germ_eval_2018::GermEval2018Adapter, ibrohim_budi::IbrohimBudiAdapter, kmhas::KMHasAdapter,
-    offenseval_tr::OffensEvalTrAdapter, prepare_language, textdetox::TextDetoxAdapter,
-    told_br::ToldBrAdapter, vihos::ViHosAdapter,
-};
-use blasphem_train::evaluation_lock::{parse_evaluation_lock, verify_sealed_partitions};
 use blasphem_train::evidence::write_canonical_json;
-use blasphem_train::publication::publish_prepared;
+use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
+use blasphem_train::reproduce::{ReproduceOptions, reproduce};
 use blasphem_train::source_manifest::{
     FrozenSource, SOURCE_OBSERVATION_SCHEMA_VERSION, SourceObservation, parse_frozen_source_lock,
     parse_source_catalog, parse_source_observation,
 };
 use blasphem_train::verification::{evaluate_behavior, evaluate_cli_smoke, evaluate_validation};
 use blasphem_train::{ReqwestTextDetoxClient, TextDetoxHttpClient, parse_eval_rows};
+use clap::{Args, Parser, Subcommand, ValueEnum};
+use reqwest::blocking::Client;
 
 const DEFAULT_LANGUAGES: &str = "EN,ES,FR,DE,IT,PT,RU,AR";
 const ALL_LANGUAGES: &[&str] = &[
@@ -46,7 +38,10 @@ const ALL_LANGUAGES: &[&str] = &[
 ];
 
 #[derive(Debug, Parser)]
-#[command(name = "blasphem-train", about = "Offline multilingual dataset pipeline")]
+#[command(
+    name = "blasphem-train",
+    about = "Offline multilingual dataset pipeline"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -64,6 +59,7 @@ enum Command {
     Behavior(BehaviorArgs),
     CliSmoke(CliSmokeArgs),
     Eval(EvalArgs),
+    Reproduce(ReproduceArgs),
 }
 
 #[derive(Debug, Args)]
@@ -179,6 +175,16 @@ struct EvalArgs {
     minimum_action: MinimumActionArg,
 }
 
+#[derive(Debug, Args)]
+struct ReproduceArgs {
+    /// The directory that holds generated data. Defaults to a temporary directory.
+    #[arg(long)]
+    work_root: Option<PathBuf>,
+    /// Skips the npm and browser checks.
+    #[arg(long)]
+    skip_browser: bool,
+}
+
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum MinimumActionArg {
     Review,
@@ -206,7 +212,35 @@ fn main() -> Result<()> {
         Command::Behavior(arguments) => behavior_evidence(&arguments),
         Command::CliSmoke(arguments) => cli_smoke_evidence(&arguments),
         Command::Eval(arguments) => eval(&arguments),
+        Command::Reproduce(arguments) => reproduce_repository(&arguments),
     }
+}
+
+fn reproduce_repository(arguments: &ReproduceArgs) -> Result<()> {
+    let project_root = std::env::current_dir().context("cannot read the current directory")?;
+    if let Some(work_root) = arguments.work_root.clone() {
+        return report_reproduction(project_root, work_root, arguments.skip_browser);
+    }
+    let temporary = tempfile::tempdir().context("cannot create a reproduction work directory")?;
+    report_reproduction(
+        project_root,
+        temporary.path().to_owned(),
+        arguments.skip_browser,
+    )
+}
+
+fn report_reproduction(
+    project_root: PathBuf,
+    work_root: PathBuf,
+    skip_browser: bool,
+) -> Result<()> {
+    let report = reproduce(&ReproduceOptions {
+        project_root,
+        work_root,
+        skip_browser,
+    })?;
+    println!("status=reproduced steps={}", report.steps.len());
+    Ok(())
 }
 
 fn compile_models(arguments: &CompileArgs) -> Result<()> {
@@ -405,70 +439,13 @@ fn acquire_sources_command(arguments: &AcquireArgs) -> Result<()> {
 }
 
 fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
-    let lock_input = File::open(&arguments.source_lock)
-        .with_context(|| format!("cannot read {}", arguments.source_lock.display()))?;
-    let source_lock = parse_frozen_source_lock(lock_input)?;
-    let observation_input = File::open(arguments.raw_root.join("source-observation-v1.json"))
-        .with_context(|| {
-            format!(
-                "cannot read {}/source-observation-v1.json",
-                arguments.raw_root.display()
-            )
-        })?;
-    let observation = parse_source_observation(observation_input)?;
-    validate_observation_matches_lock(&observation, &source_lock)?;
-    let mut audit_only = match &arguments.audit_exclusions {
-        Some(path) => read_audit_exclusions(path)?,
-        None => BTreeMap::new(),
-    };
-    let source_roles = source_lock
-        .sources
-        .iter()
-        .map(|source| (source.source_file_id.clone(), source.source_role))
-        .collect::<BTreeMap<_, _>>();
-    let mut by_language = BTreeMap::new();
-    for row in import_all_rows(&arguments.raw_root, &source_lock.sources)? {
-        let language = row
-            .detector_language
-            .ok_or_else(|| anyhow::anyhow!("imported row has no detector language"))?;
-        by_language
-            .entry(language)
-            .or_insert_with(Vec::new)
-            .push(row);
-    }
-    let mut prepared = Vec::new();
-    for language in blasphem::Language::ALL {
-        let rows = by_language
-            .remove(&language)
-            .ok_or_else(|| anyhow::anyhow!("prepared input misses language {}", language.code()))?;
-        let policy = PreparationPolicy {
-            language,
-            split_policy: match language {
-                blasphem::Language::Tr => SplitPolicy::TurkishOfficialTest,
-                blasphem::Language::Vi | blasphem::Language::Ko => SplitPolicy::PreserveOfficial,
-                _ => SplitPolicy::Hash70_15_15,
-            },
-            split_version: "fnv1a-uppercase-v1",
-            normalization_version: "runtime-normalize-v2",
-            audit_only_source_ids: audit_only.remove(&language).unwrap_or_default(),
-            source_roles: source_roles.clone(),
-        };
-        prepared.push(prepare_language(rows, &policy)?);
-    }
-    if let Some((language, _)) = audit_only.into_iter().next() {
-        bail!(
-            "audit exclusion has no imported language: {}",
-            language.code()
-        );
-    }
-    let publication = publish_prepared(&arguments.output, &prepared, &observation)?;
-    if let Some(lock_path) = arguments.evaluation_lock.as_ref() {
-        let file = File::open(lock_path)
-            .with_context(|| format!("cannot open {}", lock_path.display()))?;
-        let lock = parse_evaluation_lock(file).context("cannot parse the evaluation lock")?;
-        verify_sealed_partitions(&arguments.output, &lock)
-            .context("the prepared output changes a sealed evaluation partition")?;
-    }
+    let publication = prepare_corpus(&PrepareCorpusOptions {
+        source_lock: arguments.source_lock.clone(),
+        raw_root: arguments.raw_root.clone(),
+        audit_exclusions: arguments.audit_exclusions.clone(),
+        evaluation_lock: arguments.evaluation_lock.clone(),
+        output: arguments.output.clone(),
+    })?;
     println!(
         "status=prepared source_rows={} excluded={} audit_only={} output={}",
         publication.manifest.source_rows,
@@ -487,136 +464,6 @@ fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
         one_line(&arguments.output.to_string_lossy())
     );
     Ok(())
-}
-
-fn read_audit_exclusions(path: &Path) -> Result<BTreeMap<blasphem::Language, BTreeSet<String>>> {
-    let mut reader = csv::ReaderBuilder::new()
-        .delimiter(b'\t')
-        .from_path(path)
-        .with_context(|| format!("cannot read {}", path.display()))?;
-    let header = reader.headers()?.clone();
-    if header
-        .iter()
-        .ne(["detector_language", "source_id", "reason"])
-    {
-        bail!("audit exclusion header must be detector_language\\tsource_id\\treason");
-    }
-    let mut source_ids = BTreeSet::new();
-    let mut output = BTreeMap::<blasphem::Language, BTreeSet<String>>::new();
-    for record in reader.records() {
-        let record = record?;
-        if record.len() != 3 {
-            bail!("audit exclusion row must have three fields");
-        }
-        let language = blasphem::Language::from_str(record.get(0).unwrap_or_default())
-            .map_err(|_| anyhow::anyhow!("audit exclusion has an unknown language"))?;
-        let source_id = record.get(1).unwrap_or_default().trim();
-        let reason = record.get(2).unwrap_or_default();
-        if source_id.is_empty() || reason.trim().is_empty() {
-            bail!("audit exclusion source identifier and reason must be nonblank");
-        }
-        if !source_ids.insert(source_id.to_owned()) {
-            bail!("audit exclusion repeats source identifier: {source_id}");
-        }
-        output
-            .entry(language)
-            .or_default()
-            .insert(source_id.to_owned());
-    }
-    Ok(output)
-}
-
-fn import_all_rows(
-    raw_root: &Path,
-    sources: &[FrozenSource],
-) -> Result<Vec<blasphem_train::datasets::ImportedRow>> {
-    let mut output = Vec::new();
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::TextDetox,
-        &TextDetoxAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::IbrohimBudi,
-        &IbrohimBudiAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::ToldBr,
-        &ToldBrAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::OffensEvalTr,
-        &OffensEvalTrAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::ViHos,
-        &ViHosAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::KMHas,
-        &KMHasAdapter,
-    )?);
-    output.extend(import_inputs(
-        raw_root,
-        sources,
-        DatasetId::GermEval2018,
-        &GermEval2018Adapter,
-    )?);
-    Ok(output)
-}
-
-fn import_inputs(
-    raw_root: &Path,
-    sources: &[FrozenSource],
-    dataset: DatasetId,
-    adapter: &impl DatasetAdapter,
-) -> Result<Vec<blasphem_train::datasets::ImportedRow>> {
-    let selected = sources
-        .iter()
-        .filter(|source| source.dataset == dataset)
-        .collect::<Vec<_>>();
-    if selected.is_empty() {
-        return Ok(Vec::new());
-    }
-    let mut files = selected
-        .iter()
-        .map(|source| File::open(raw_root.join(&source.file_path)))
-        .collect::<std::result::Result<Vec<_>, _>>()?;
-    let mut inputs = selected
-        .iter()
-        .zip(files.iter_mut())
-        .map(|(source, reader)| SourceInput {
-            source_file_id: source.source_file_id.as_str(),
-            source_split: source_split(source.source_file_id.as_str()),
-            reader,
-        })
-        .collect::<Vec<_>>();
-    Ok(adapter.import(&mut inputs)?)
-}
-
-fn source_split(source_file_id: &str) -> blasphem_train::datasets::SourceSplit {
-    match source_file_id {
-        "offenseval-tr-training" | "vihos-train" | "kmhas-train" => {
-            blasphem_train::datasets::SourceSplit::Train
-        }
-        "vihos-development" => blasphem_train::datasets::SourceSplit::Development,
-        "kmhas-validation" => blasphem_train::datasets::SourceSplit::Validation,
-        "offenseval-tr-test" | "offenseval-tr-test-labels" | "vihos-test" | "kmhas-test" => {
-            blasphem_train::datasets::SourceSplit::Test
-        }
-        _ => blasphem_train::datasets::SourceSplit::Unsplit,
-    }
 }
 
 struct CanonicalSource {
@@ -896,17 +743,17 @@ fn display_metric(value: Option<f64>) -> String {
 mod tests {
     use std::sync::Arc;
 
-    use parquet::{
-        data_type::{ByteArray, ByteArrayType, Int64Type},
-        file::writer::SerializedFileWriter,
-        schema::parser::parse_message_type,
-    };
     use blasphem::Language;
     use blasphem_train::{
         acquisition::{frozen_source_from_record, source_record_from_request_with_download},
         datasets::{DatasetId, LineageStatus},
         source_manifest::SourceRequest,
         source_role::SourceRole,
+    };
+    use parquet::{
+        data_type::{ByteArray, ByteArrayType, Int64Type},
+        file::writer::SerializedFileWriter,
+        schema::parser::parse_message_type,
     };
 
     use super::{TextDetoxDownloadBoundary, acquire_textdetox_source, observe_textdetox_source};

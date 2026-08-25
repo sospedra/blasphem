@@ -1,10 +1,10 @@
 use std::fs;
 
-use tempfile::tempdir;
 use blasphem::{
     EvalLabel, EvalRow, LevelSelection, LexiconEntry, MatchLevel, PolicyAction, evaluate,
     evaluate_policy, load_lexica,
 };
+use tempfile::tempdir;
 
 const EN_LEXICON: &str = concat!(
     "id\tpos\tcategory\tstereotype\tlemma\tlevel\n",

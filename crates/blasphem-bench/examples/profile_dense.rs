@@ -1,11 +1,11 @@
 use std::{fs, hint::black_box, path::Path, time::Instant};
 
 use anyhow::{Context, Result};
-use blasphem_bench::{FixtureKind, FixtureLength, load_benchmark_fixtures};
 use blasphem::{
     Detector, Language, MatchLevel, NudgeDetector, ReplyTarget, SparseModel, analyze_with_rules,
     arabic_hindi_rules, cjk_rules, parse_hurtlex, word_rules,
 };
+use blasphem_bench::{FixtureKind, FixtureLength, load_benchmark_fixtures};
 
 fn main() -> Result<()> {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");

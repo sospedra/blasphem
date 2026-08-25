@@ -18,8 +18,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_jcs = "0.2"
 serde_json = { version = "1.0", features = ["float_roundtrip"] }
 sha2 = "0.10"
+tempfile = "3.20"
 thiserror = "2.0"
 zip = { version = "=5.1.1", default-features = false, features = ["deflate"] }
 
-[dev-dependencies]
-tempfile = "3.20"

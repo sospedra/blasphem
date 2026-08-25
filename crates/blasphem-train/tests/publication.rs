@@ -4,7 +4,6 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use tempfile::tempdir;
 use blasphem::{EvalLabel, Language};
 use blasphem_train::{
     datasets::{
@@ -16,6 +15,7 @@ use blasphem_train::{
     source_manifest::{SOURCE_OBSERVATION_SCHEMA_VERSION, SourceObservation, SourceRecord},
     source_role::SourceRole,
 };
+use tempfile::tempdir;
 
 const HASH: &str = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 

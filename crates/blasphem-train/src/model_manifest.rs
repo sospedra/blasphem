@@ -5,14 +5,14 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256};
-use thiserror::Error;
 use blasphem::{
     ConfusionMatrix, FeatureProfile, FeatureSchema, Language, Metrics, NormalizationProfile,
     RuleChannelError, SparseModel, SparseModelError, arabic_hindi_rules, canonical_rule_identity,
     cjk_rules, word_rules,
 };
+use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
+use thiserror::Error;
 
 use crate::{
     calibration::{GateResult, gates},

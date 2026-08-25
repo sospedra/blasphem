@@ -124,7 +124,10 @@ impl Display for ModelError {
         match self {
             Self::InvalidMagic => formatter.write_str("the language model magic is invalid"),
             Self::UnsupportedVersion(version) => {
-                write!(formatter, "the language model version {version} is unsupported")
+                write!(
+                    formatter,
+                    "the language model version {version} is unsupported"
+                )
             }
             Self::InvalidLanguageCount(count) => {
                 write!(
@@ -133,7 +136,10 @@ impl Display for ModelError {
                 )
             }
             Self::InvalidTableLength(length) => {
-                write!(formatter, "the language model table length {length} is invalid")
+                write!(
+                    formatter,
+                    "the language model table length {length} is invalid"
+                )
             }
             Self::InvalidLetterTableLength(length) => {
                 write!(
@@ -142,7 +148,10 @@ impl Display for ModelError {
                 )
             }
             Self::InvalidCjkTableLength(length) => {
-                write!(formatter, "the language model CJK table length {length} is invalid")
+                write!(
+                    formatter,
+                    "the language model CJK table length {length} is invalid"
+                )
             }
             Self::InvalidLowercaseTableLength(length) => {
                 write!(
@@ -150,12 +159,20 @@ impl Display for ModelError {
                     "the language model lowercase table length {length} is invalid"
                 )
             }
-            Self::InvalidSourceCommit => formatter.write_str("the language model source commit is invalid"),
+            Self::InvalidSourceCommit => {
+                formatter.write_str("the language model source commit is invalid")
+            }
             Self::InvalidEmptySlot { slot } => {
-                write!(formatter, "the language model empty slot {slot} has metadata")
+                write!(
+                    formatter,
+                    "the language model empty slot {slot} has metadata"
+                )
             }
             Self::InvalidBlobRange { slot } => {
-                write!(formatter, "the language model slot {slot} has an invalid blob range")
+                write!(
+                    formatter,
+                    "the language model slot {slot} has an invalid blob range"
+                )
             }
             Self::InvalidLanguageIndex { index } => {
                 write!(

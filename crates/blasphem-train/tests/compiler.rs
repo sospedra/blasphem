@@ -5,8 +5,6 @@ use std::{
     process::Command,
 };
 
-use sha2::{Digest, Sha256};
-use tempfile::tempdir;
 use blasphem::{
     EvalLabel, FeatureProfile, FeatureSchema, Language, NormalizationProfile, ReplyTarget,
     RuleChannel, SparseModel, SparseV2Input, encode_sparse_v2,
@@ -27,6 +25,8 @@ use blasphem_train::{
     source_manifest::SourceRecord,
     source_role::SourceRole,
 };
+use sha2::{Digest, Sha256};
+use tempfile::tempdir;
 
 #[test]
 fn compile_help_exposes_only_batch_inputs() {

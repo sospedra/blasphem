@@ -43,7 +43,9 @@ fn is_scanned(relative: &str) -> bool {
     if relative.starts_with("docs/") || relative.starts_with("reports/") {
         return false;
     }
-    let extension = Path::new(relative).extension().and_then(|value| value.to_str());
+    let extension = Path::new(relative)
+        .extension()
+        .and_then(|value| value.to_str());
     matches!(
         extension,
         Some("rs" | "toml" | "md" | "json" | "mjs" | "js" | "ts" | "sh" | "yml" | "html")
