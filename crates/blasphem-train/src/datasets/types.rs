@@ -27,6 +27,8 @@ pub enum DatasetId {
     KMHas,
     #[serde(rename = "germeval-2018")]
     GermEval2018,
+    #[serde(rename = "community")]
+    Community,
 }
 
 impl fmt::Display for DatasetId {
@@ -40,6 +42,7 @@ impl fmt::Display for DatasetId {
             Self::ViHos => "vihos",
             Self::KMHas => "k-mhas",
             Self::GermEval2018 => "germeval-2018",
+            Self::Community => "community",
         })
     }
 }
@@ -103,6 +106,7 @@ pub enum ExclusionReason {
     Duplicate,
     EmptyText,
     LabelConflict,
+    SealedBaselineDuplicate,
     UnsupportedLanguage,
 }
 

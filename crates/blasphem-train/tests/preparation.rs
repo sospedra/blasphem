@@ -1,10 +1,11 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use blasphem::{EvalLabel, Language};
 use blasphem_train::datasets::{
     DatasetId, DatasetSplit, ExclusionReason, ImportedRow, PreparationPolicy, RowDisposition,
     SourceSplit, SplitPolicy, prepare_language, split_for_key, split_hash,
 };
+use blasphem_train::source_role::SourceRole;
 use blasphem_train::{
     ProvenanceStatus, TextDetoxLanguage, TextDetoxSourceRow, prepare_textdetox,
     split_for_key as textdetox_split_for_key,
@@ -394,6 +395,7 @@ fn turkish_policy_reserves_official_test_and_hashes_training_rows() {
         split_version: "split-v1",
         normalization_version: "normalization-v1",
         audit_only_source_ids: BTreeSet::new(),
+        source_roles: BTreeMap::new(),
     };
     let rows = vec![
         candidate_for(
@@ -428,6 +430,7 @@ fn preserve_policy_keeps_official_vietnamese_and_korean_splits() {
             split_version: "split-v1",
             normalization_version: "normalization-v1",
             audit_only_source_ids: BTreeSet::new(),
+            source_roles: BTreeMap::new(),
         };
         let rows = vec![
             candidate_for(
@@ -505,6 +508,45 @@ fn validates_included_and_excluded_provenance_rows() {
     assert_eq!(prepared.counts.excluded, 1);
 }
 
+#[test]
+fn a_training_only_source_never_enters_validation_or_test() {
+    let mut roles = std::collections::BTreeMap::new();
+    roles.insert("community-es-demo".to_owned(), SourceRole::TrainingOnly);
+    let policy = PreparationPolicy {
+        language: Language::Es,
+        split_policy: SplitPolicy::Hash70_15_15,
+        split_version: "fnv1a-uppercase-v1",
+        normalization_version: "runtime-normalize-v2",
+        audit_only_source_ids: Default::default(),
+        source_roles: roles,
+    };
+    let rows = community_rows(40);
+    let prepared = prepare_language(rows, &policy).expect("prepares the community rows");
+    assert_eq!(prepared.validation.len(), 0);
+    assert_eq!(prepared.test.len(), 0);
+    assert_eq!(prepared.development.len(), 40);
+}
+
+fn community_rows(count: usize) -> Vec<ImportedRow> {
+    (0..count)
+        .map(|index| {
+            let source_id = format!("community-es-demo/row-{index:06}");
+            ImportedRow {
+                dataset: DatasetId::Community,
+                source_file_id: "community-es-demo".to_owned(),
+                source_id,
+                source_language_code: "es".to_owned(),
+                detector_language: Some(Language::Es),
+                detector_language_code: Some(Language::Es.code().to_owned()),
+                source_label: "clean".to_owned(),
+                text: format!("mensaje comunitario numero {index}"),
+                source_split: SourceSplit::Unsplit,
+                disposition: RowDisposition::Candidate(EvalLabel::Clean),
+            }
+        })
+        .collect()
+}
+
 fn hash_policy() -> PreparationPolicy {
     PreparationPolicy {
         language: Language::En,
@@ -512,6 +554,7 @@ fn hash_policy() -> PreparationPolicy {
         split_version: "split-v1",
         normalization_version: "normalization-v1",
         audit_only_source_ids: BTreeSet::new(),
+        source_roles: BTreeMap::new(),
     }
 }
 
@@ -522,6 +565,7 @@ fn turkish_policy() -> PreparationPolicy {
         split_version: "split-v1",
         normalization_version: "normalization-v1",
         audit_only_source_ids: BTreeSet::new(),
+        source_roles: BTreeMap::new(),
     }
 }
 
@@ -532,6 +576,7 @@ fn preserve_official() -> PreparationPolicy {
         split_version: "split-v1",
         normalization_version: "normalization-v1",
         audit_only_source_ids: BTreeSet::new(),
+        source_roles: BTreeMap::new(),
     }
 }
 

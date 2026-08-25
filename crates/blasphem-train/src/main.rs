@@ -27,6 +27,7 @@ use blasphem_train::datasets::{
     offenseval_tr::OffensEvalTrAdapter, prepare_language, textdetox::TextDetoxAdapter,
     told_br::ToldBrAdapter, vihos::ViHosAdapter,
 };
+use blasphem_train::evaluation_lock::{parse_evaluation_lock, verify_sealed_partitions};
 use blasphem_train::evidence::write_canonical_json;
 use blasphem_train::publication::publish_prepared;
 use blasphem_train::source_manifest::{
@@ -99,6 +100,8 @@ struct PrepareArgs {
     raw_root: PathBuf,
     #[arg(long)]
     audit_exclusions: Option<PathBuf>,
+    #[arg(long)]
+    evaluation_lock: Option<PathBuf>,
     #[arg(long)]
     output: PathBuf,
 }
@@ -418,6 +421,11 @@ fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
         Some(path) => read_audit_exclusions(path)?,
         None => BTreeMap::new(),
     };
+    let source_roles = source_lock
+        .sources
+        .iter()
+        .map(|source| (source.source_file_id.clone(), source.source_role))
+        .collect::<BTreeMap<_, _>>();
     let mut by_language = BTreeMap::new();
     for row in import_all_rows(&arguments.raw_root, &source_lock.sources)? {
         let language = row
@@ -443,6 +451,7 @@ fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
             split_version: "fnv1a-uppercase-v1",
             normalization_version: "runtime-normalize-v2",
             audit_only_source_ids: audit_only.remove(&language).unwrap_or_default(),
+            source_roles: source_roles.clone(),
         };
         prepared.push(prepare_language(rows, &policy)?);
     }
@@ -453,6 +462,13 @@ fn prepare_sources_command(arguments: &PrepareArgs) -> Result<()> {
         );
     }
     let publication = publish_prepared(&arguments.output, &prepared, &observation)?;
+    if let Some(lock_path) = arguments.evaluation_lock.as_ref() {
+        let file = File::open(lock_path)
+            .with_context(|| format!("cannot open {}", lock_path.display()))?;
+        let lock = parse_evaluation_lock(file).context("cannot parse the evaluation lock")?;
+        verify_sealed_partitions(&arguments.output, &lock)
+            .context("the prepared output changes a sealed evaluation partition")?;
+    }
     println!(
         "status=prepared source_rows={} excluded={} audit_only={} output={}",
         publication.manifest.source_rows,

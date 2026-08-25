@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use blasphem::{EvalLabel, Language, normalize_text};
 
+use crate::source_role::SourceRole;
+
 use super::{
     DatasetSplit, ExclusionReason, ImportedRow, InclusionStatus, ProvenanceRow, RowDisposition,
     SourceSplit, SplitPolicy,
@@ -50,6 +52,7 @@ pub struct PreparationPolicy {
     pub split_version: &'static str,
     pub normalization_version: &'static str,
     pub audit_only_source_ids: BTreeSet<String>,
+    pub source_roles: BTreeMap<String, SourceRole>,
 }
 
 #[derive(Debug, Error)]
@@ -172,7 +175,7 @@ pub fn prepare_language(
     }
 
     for group in groups.values() {
-        classify_group(group, &mut states, policy.language);
+        classify_group(group, &mut states, policy);
     }
 
     let mut prepared = PreparedLanguage {
@@ -186,7 +189,9 @@ pub fn prepare_language(
     for state in states {
         if let Some(reason) = state.exclusion_reason {
             prepared.counts.excluded += 1;
-            if reason == ExclusionReason::Duplicate {
+            if reason == ExclusionReason::Duplicate
+                || reason == ExclusionReason::SealedBaselineDuplicate
+            {
                 prepared.counts.duplicates += 1;
             }
             if reason == ExclusionReason::LabelConflict {
@@ -303,6 +308,13 @@ fn split_for_source(
     policy: &PreparationPolicy,
     normalized: &str,
 ) -> Result<DatasetSplit, PreparationError> {
+    if policy
+        .source_roles
+        .get(&row.source_file_id)
+        .is_some_and(|role| role.is_development_only())
+    {
+        return Ok(DatasetSplit::Development);
+    }
     let unsupported = || PreparationError::UnsupportedSourceSplit {
         source_id: row.source_id.clone(),
         source_split: row.source_split,
@@ -331,7 +343,7 @@ fn split_for_source(
     }
 }
 
-fn classify_group(group: &[usize], states: &mut [RowState], language: Language) {
+fn classify_group(group: &[usize], states: &mut [RowState], policy: &PreparationPolicy) {
     let has_clean = group
         .iter()
         .any(|index| states[*index].label == Some(EvalLabel::Clean));
@@ -342,7 +354,7 @@ fn classify_group(group: &[usize], states: &mut [RowState], language: Language) 
         .normalized
         .as_deref()
         .expect("grouped row has normalized text");
-    let canonical_group_id = format!("{:016x}", split_hash(language, normalized));
+    let canonical_group_id = format!("{:016x}", split_hash(policy.language, normalized));
 
     if has_clean && has_toxic {
         for index in group {
@@ -353,7 +365,49 @@ fn classify_group(group: &[usize], states: &mut [RowState], language: Language) 
         return;
     }
 
-    let representative = *group
+    let representative = select_representative(group, states, policy);
+    let representative_source_id = states[representative].row.source_id.clone();
+    let representative_split = states[representative]
+        .split
+        .expect("grouped row has a split");
+    let representative_is_baseline =
+        source_role_of(&states[representative].row, policy) == Some(SourceRole::Baseline);
+
+    for index in group {
+        let index = *index;
+        let exclusion_reason = duplicate_exclusion_reason(
+            index == representative,
+            representative_is_baseline,
+            source_role_of(&states[index].row, policy),
+        );
+        let state = &mut states[index];
+        state.canonical_group_id = Some(canonical_group_id.clone());
+        state.representative_source_id = Some(representative_source_id.clone());
+        state.split = Some(representative_split);
+        state.exclusion_reason = exclusion_reason;
+    }
+}
+
+/// Picks the row that anchors a duplicate group's split and text.
+///
+/// A `Baseline` source always outranks every other role; ties among rows of
+/// equal rank fall back to the original highest-split, smallest-source-id rule.
+fn select_representative(
+    group: &[usize],
+    states: &[RowState],
+    policy: &PreparationPolicy,
+) -> usize {
+    let baseline_rows = group
+        .iter()
+        .copied()
+        .filter(|index| source_role_of(&states[*index].row, policy) == Some(SourceRole::Baseline))
+        .collect::<Vec<_>>();
+    let candidates = if baseline_rows.is_empty() {
+        group
+    } else {
+        &baseline_rows
+    };
+    *candidates
         .iter()
         .min_by(|left, right| {
             split_priority(states[**right].split.expect("grouped row has a split"))
@@ -367,21 +421,25 @@ fn classify_group(group: &[usize], states: &mut [RowState], language: Language) 
                         .cmp(&states[**right].row.source_id)
                 })
         })
-        .expect("group has one row");
-    let representative_source_id = states[representative].row.source_id.clone();
-    let representative_split = states[representative]
-        .split
-        .expect("grouped row has a split");
+        .expect("group has one row")
+}
 
-    for index in group {
-        let state = &mut states[*index];
-        state.canonical_group_id = Some(canonical_group_id.clone());
-        state.representative_source_id = Some(representative_source_id.clone());
-        state.split = Some(representative_split);
-        if *index != representative {
-            state.exclusion_reason = Some(ExclusionReason::Duplicate);
-        }
+fn source_role_of(row: &ImportedRow, policy: &PreparationPolicy) -> Option<SourceRole> {
+    policy.source_roles.get(&row.source_file_id).copied()
+}
+
+fn duplicate_exclusion_reason(
+    is_representative: bool,
+    representative_is_baseline: bool,
+    role: Option<SourceRole>,
+) -> Option<ExclusionReason> {
+    if is_representative {
+        return None;
     }
+    if representative_is_baseline && role == Some(SourceRole::TrainingOnly) {
+        return Some(ExclusionReason::SealedBaselineDuplicate);
+    }
+    Some(ExclusionReason::Duplicate)
 }
 
 const fn split_priority(split: DatasetSplit) -> u8 {

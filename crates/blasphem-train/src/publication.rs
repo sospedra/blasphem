@@ -474,7 +474,9 @@ fn hydrate_language(
         }
         if row.inclusion_status == InclusionStatus::Excluded {
             counts.excluded += 1;
-            if row.exclusion_reason == Some(ExclusionReason::Duplicate) {
+            if row.exclusion_reason == Some(ExclusionReason::Duplicate)
+                || row.exclusion_reason == Some(ExclusionReason::SealedBaselineDuplicate)
+            {
                 counts.duplicates += 1;
             }
             if row.exclusion_reason == Some(ExclusionReason::LabelConflict) {
@@ -557,6 +559,7 @@ fn label_conversion_version(dataset: DatasetId) -> Option<&'static str> {
         DatasetId::ViHos => Some("vihos-span-presence-v1"),
         DatasetId::KMHas => Some("k-mhas-clean-8-toxic-0-7-v1"),
         DatasetId::GermEval2018 => Some("germeval-2018-coarse-v1"),
+        DatasetId::Community => Some("community-binary-v1"),
         DatasetId::HurtLex => None,
     }
 }
@@ -896,6 +899,7 @@ const fn exclusion_reason_name(reason: ExclusionReason) -> &'static str {
         ExclusionReason::Duplicate => "duplicate",
         ExclusionReason::EmptyText => "empty_text",
         ExclusionReason::LabelConflict => "label_conflict",
+        ExclusionReason::SealedBaselineDuplicate => "sealed_baseline_duplicate",
         ExclusionReason::UnsupportedLanguage => "unsupported_language",
     }
 }
