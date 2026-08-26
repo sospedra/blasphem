@@ -2,13 +2,14 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use thiserror::Error;
 
+use crate::policy::category_scores_from_evidence;
 use crate::rule_pack::{
     RulePack, for_language, lexical_collision_excluded, lexical_collision_exclusions,
     lexical_collision_reactivation_phrase,
 };
 use crate::{
-    Detection, Detector, DetectorError, Language, MatchLevel, ParseLexiconError, PolicyCategory,
-    ReplyTarget, RuleEvidence, RuleId, TextDocument, normalize_text, parse_hurtlex,
+    CategoryScores, Detection, Detector, DetectorError, Language, MatchLevel, ParseLexiconError,
+    PolicyCategory, ReplyTarget, RuleEvidence, RuleId, TextDocument, normalize_text, parse_hurtlex,
 };
 
 use super::{
@@ -48,6 +49,8 @@ pub struct RuleChannel {
 pub(crate) struct RuleChannelAnalysis {
     pub outcome: RuleOutcome,
     pub lexical: Detection,
+    /// The category scores the producing path computed, not a rebuild of them.
+    pub scores: CategoryScores,
 }
 
 #[derive(Debug, Error)]
@@ -146,7 +149,11 @@ impl RuleChannel {
 
     #[must_use]
     pub fn analyze(&self, text: &str, reply_target: ReplyTarget) -> RuleOutcome {
-        let RuleChannelAnalysis { outcome, lexical } = self.analyze_full(text, reply_target);
+        let RuleChannelAnalysis {
+            outcome,
+            lexical,
+            scores: _,
+        } = self.analyze_full(text, reply_target);
         drop(lexical);
         outcome
     }
@@ -187,6 +194,7 @@ impl RuleChannel {
                 evidence: result.evidence,
             },
             lexical: result.lexical,
+            scores: result.scores,
         }
     }
 
@@ -209,7 +217,12 @@ impl RuleChannel {
         outcome.score = outcome.score.max(lexical_score);
         outcome.should_nudge = outcome.score >= RULE_NUDGE_THRESHOLD;
 
-        RuleChannelAnalysis { outcome, lexical }
+        let scores = category_scores_from_evidence(&outcome.evidence);
+        RuleChannelAnalysis {
+            outcome,
+            lexical,
+            scores,
+        }
     }
 }
 

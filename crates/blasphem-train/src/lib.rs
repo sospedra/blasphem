@@ -12,6 +12,7 @@ pub mod model_manifest;
 pub mod preparation;
 pub mod prepared_input;
 pub mod publication;
+pub mod regenerate;
 pub mod reproduce;
 pub mod source_manifest;
 pub mod source_role;

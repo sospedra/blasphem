@@ -5,7 +5,7 @@ use std::{
     process::Command,
 };
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use crate::{
@@ -108,25 +108,42 @@ pub struct ReproduceError {
 type StepResult = Result<String, ReproduceError>;
 type Step = fn(&ReproduceOptions) -> StepResult;
 
+const STEPS: [Step; 9] = [
+    verify_raw_inputs,
+    generate_prepared_data,
+    verify_prepared_partitions,
+    compile_model_artifacts,
+    rebuild_language_artifact,
+    compare_model_manifest,
+    build_native_binary,
+    build_wasm_modules,
+    run_checks,
+];
+
+/// The leading steps that write generated artifacts into the work root.
+pub const GENERATION_STEPS: usize = 5;
+
 /// Runs the nine reproduction steps in order and stops at the first failure.
 ///
 /// # Errors
 ///
 /// Returns the first failing step, naming the file or artifact that failed.
 pub fn reproduce(options: &ReproduceOptions) -> Result<ReproduceReport, ReproduceError> {
-    let steps: [Step; 9] = [
-        verify_raw_inputs,
-        generate_prepared_data,
-        verify_prepared_partitions,
-        compile_model_artifacts,
-        rebuild_language_artifact,
-        compare_model_manifest,
-        build_native_binary,
-        build_wasm_modules,
-        run_checks,
-    ];
-    let mut outcomes = Vec::with_capacity(STEP_NAMES.len());
-    for (name, step) in STEP_NAMES.iter().zip(steps) {
+    run_steps(options, STEPS.len())
+}
+
+/// Runs the five generating steps and stops before the comparison steps.
+///
+/// # Errors
+///
+/// Returns the first failing step, naming the file or artifact that failed.
+pub fn generate_artifacts(options: &ReproduceOptions) -> Result<ReproduceReport, ReproduceError> {
+    run_steps(options, GENERATION_STEPS)
+}
+
+fn run_steps(options: &ReproduceOptions, count: usize) -> Result<ReproduceReport, ReproduceError> {
+    let mut outcomes = Vec::with_capacity(count);
+    for (name, step) in STEP_NAMES.iter().zip(STEPS).take(count) {
         let detail = step(options)?;
         outcomes.push(StepOutcome {
             name: (*name).to_owned(),
@@ -387,25 +404,30 @@ fn run_checks(options: &ReproduceOptions) -> StepResult {
     Ok("ran the Rust checks, the JavaScript checks, and the browser smoke".to_owned())
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-struct LanguageArtifactLock {
-    schema_version: String,
-    artifact_relative_path: String,
-    artifact_bytes: usize,
-    artifact_sha256: Sha256Digest,
-    source_commit: String,
-    source_headers: Vec<LanguageArtifactHeader>,
+pub struct LanguageArtifactLock {
+    pub schema_version: String,
+    pub artifact_relative_path: String,
+    pub artifact_bytes: usize,
+    pub artifact_sha256: Sha256Digest,
+    pub source_commit: String,
+    pub source_headers: Vec<LanguageArtifactHeader>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-struct LanguageArtifactHeader {
-    file_name: String,
-    sha256: Sha256Digest,
+pub struct LanguageArtifactHeader {
+    pub file_name: String,
+    pub sha256: Sha256Digest,
 }
 
-fn read_language_artifact_lock(
+/// Reads the pinned language-artifact lock from one checked-out repository.
+///
+/// # Errors
+///
+/// Returns an error for an unreadable, malformed, or wrongly versioned lock.
+pub fn read_language_artifact_lock(
     project_root: &Path,
 ) -> Result<LanguageArtifactLock, ReproduceError> {
     const STEP: &str = STEP_NAMES[4];
@@ -482,13 +504,16 @@ fn compare_language_artifact(
     Ok(())
 }
 
-struct ProgramCall<'a> {
-    program: &'a str,
-    arguments: Vec<OsString>,
-    directory: &'a Path,
+pub(crate) struct ProgramCall<'a> {
+    pub(crate) program: &'a str,
+    pub(crate) arguments: Vec<OsString>,
+    pub(crate) directory: &'a Path,
 }
 
-fn run_program(step: &'static str, call: &ProgramCall<'_>) -> Result<(), ReproduceError> {
+pub(crate) fn run_program(
+    step: &'static str,
+    call: &ProgramCall<'_>,
+) -> Result<(), ReproduceError> {
     let status = Command::new(call.program)
         .args(&call.arguments)
         .current_dir(call.directory)
@@ -513,19 +538,19 @@ fn describe(call: &ProgramCall<'_>) -> String {
     line
 }
 
-fn words(values: &[&str]) -> Vec<OsString> {
+pub(crate) fn words(values: &[&str]) -> Vec<OsString> {
     values.iter().map(|value| OsString::from(*value)).collect()
 }
 
-fn cargo_program() -> String {
+pub(crate) fn cargo_program() -> String {
     std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_owned())
 }
 
-fn prepared_root(options: &ReproduceOptions) -> PathBuf {
+pub(crate) fn prepared_root(options: &ReproduceOptions) -> PathBuf {
     options.work_root.join("prepared")
 }
 
-fn model_root(options: &ReproduceOptions) -> PathBuf {
+pub(crate) fn model_root(options: &ReproduceOptions) -> PathBuf {
     options.work_root.join("models")
 }
 
@@ -544,6 +569,6 @@ fn file_digest(step: &'static str, path: &Path) -> Result<Sha256Digest, Reproduc
     Ok(sha256_digest(&bytes))
 }
 
-fn failure(step: &'static str, message: String) -> ReproduceError {
+pub(crate) fn failure(step: &'static str, message: String) -> ReproduceError {
     ReproduceError { step, message }
 }

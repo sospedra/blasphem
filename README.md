@@ -198,7 +198,7 @@ The report records each language matrix, precision, recall, specificity, F1, and
 
 It also projects precision at one-percent and five-percent toxic message prevalence.
 
-Write the 336-case behavior contract evidence:
+Write the 360-case behavior contract evidence:
 
 ```bash
 cargo run --release --locked -p blasphem-train -- behavior \

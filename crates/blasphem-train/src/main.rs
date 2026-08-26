@@ -19,6 +19,7 @@ use blasphem_train::acquisition::{
 use blasphem_train::compiler::{BatchCompileOptions, compile_model_set};
 use blasphem_train::evidence::write_canonical_json;
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
+use blasphem_train::regenerate::{RegenerateOptions, regenerate};
 use blasphem_train::reproduce::{ReproduceOptions, reproduce};
 use blasphem_train::source_manifest::{
     FrozenSource, SOURCE_OBSERVATION_SCHEMA_VERSION, SourceObservation, parse_frozen_source_lock,
@@ -60,6 +61,7 @@ enum Command {
     CliSmoke(CliSmokeArgs),
     Eval(EvalArgs),
     Reproduce(ReproduceArgs),
+    Regenerate(RegenerateArgs),
 }
 
 #[derive(Debug, Args)]
@@ -185,6 +187,13 @@ struct ReproduceArgs {
     skip_browser: bool,
 }
 
+#[derive(Debug, Args)]
+struct RegenerateArgs {
+    /// The directory that holds generated data. Defaults to a temporary directory.
+    #[arg(long)]
+    work_root: Option<PathBuf>,
+}
+
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum MinimumActionArg {
     Review,
@@ -213,6 +222,7 @@ fn main() -> Result<()> {
         Command::CliSmoke(arguments) => cli_smoke_evidence(&arguments),
         Command::Eval(arguments) => eval(&arguments),
         Command::Reproduce(arguments) => reproduce_repository(&arguments),
+        Command::Regenerate(arguments) => regenerate_repository(&arguments),
     }
 }
 
@@ -240,6 +250,35 @@ fn report_reproduction(
         skip_browser,
     })?;
     println!("status=reproduced steps={}", report.steps.len());
+    Ok(())
+}
+
+fn regenerate_repository(arguments: &RegenerateArgs) -> Result<()> {
+    let project_root = std::env::current_dir().context("cannot read the current directory")?;
+    if let Some(work_root) = arguments.work_root.clone() {
+        return report_regeneration(project_root, work_root);
+    }
+    let temporary = tempfile::tempdir().context("cannot create a regeneration work directory")?;
+    report_regeneration(project_root, temporary.path().to_owned())
+}
+
+fn report_regeneration(project_root: PathBuf, work_root: PathBuf) -> Result<()> {
+    let report = regenerate(&RegenerateOptions {
+        project_root,
+        work_root,
+    })?;
+    for file in report.files.iter().filter(|file| file.changed) {
+        println!(
+            "status=rewrote path={} sha256={}",
+            one_line(&file.relative_path),
+            file.sha256
+        );
+    }
+    println!(
+        "status=regenerated files={} changed={}",
+        report.files.len(),
+        report.changed()
+    );
     Ok(())
 }
 

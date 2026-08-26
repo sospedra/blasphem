@@ -77,13 +77,14 @@ impl NudgeDetector {
     pub fn analyze(&self, text: &str, reply_target: ReplyTarget) -> PolicyResult {
         let analysis = self.rule_channel.analyze_full(text, reply_target);
         let mut sparse_score = self.model.score(text);
-        if self.language != Language::Es && analysis.outcome.suppresses_sparse_channel() {
+        if analysis.outcome.suppresses_sparse_channel() {
             sparse_score = sparse_score.min(RULE_NUDGE_THRESHOLD - 1);
         }
         policy_result_from_rule_channel(
             text,
             analysis.lexical,
             analysis.outcome,
+            analysis.scores,
             Some(sparse_score),
         )
     }

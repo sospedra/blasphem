@@ -100,7 +100,7 @@ fn check_prints_the_prediction_and_match() {
 fn check_prints_the_sparse_channel_status() {
     let stdout = stdout(run("ES", "La gente del pueblo habló con la policía."));
 
-    assert!(stdout.contains("sparse_score=15"));
+    assert!(stdout.contains("sparse_score=12"));
 }
 
 #[test]
@@ -123,11 +123,11 @@ fn spanish_check_nudges_harm_and_preserves_safe_context() {
         ),
         (
             "No te voy a matar",
-            "ok=true score=24 threshold=50 should_nudge=false",
+            "ok=true score=20 threshold=50 should_nudge=false",
         ),
         (
             "Te voy a matar de risa",
-            "ok=true score=24 threshold=50 should_nudge=false",
+            "ok=true score=20 threshold=50 should_nudge=false",
         ),
     ] {
         let stdout = stdout(run("ES", text));

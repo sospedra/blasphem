@@ -224,7 +224,7 @@ static REGISTRY_ENTRIES: [RegistryEntry; 15] = [
     RegistryEntry::new(
         Language::Es,
         include_bytes!("../resources/models/multilingual-v2/es-chargram-v1.bin"),
-        digest("3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36"),
+        digest("e06d2039147fa4a5c88451bef6d62d614d3659adcf7ae575cc8ab1cb2cfe59f6"),
         1,
         digest("8bb5ad315f8abe69611cb192bfdf3712d8005cd331565547ec87573720a48246"),
         Some(digest(

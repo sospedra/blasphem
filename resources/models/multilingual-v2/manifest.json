@@ -105,7 +105,7 @@
       "dataset_inputs": [
         {
           "dataset": "textdetox",
-          "source_file_id": "textdetox-es-legacy",
+          "source_file_id": "textdetox-es",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9"
         }
@@ -116,33 +116,37 @@
       "rule_pack_version": 1,
       "rule_pack_sha256": "8bb5ad315f8abe69611cb192bfdf3712d8005cd331565547ec87573720a48246",
       "hurtlex_sha256": "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba",
-      "clean_control_rows": 0,
-      "clean_control_sha256": null,
-      "development_rows": 3418,
+      "clean_control_rows": 16,
+      "clean_control_sha256": "651119ba21a627b1816688f00f9fb581c20af476aad7c18749005542653f808a",
+      "development_rows": 3414,
       "validation_rows": 762,
       "test_rows": 819,
       "duplicate_rows": 1,
       "conflict_rows": 0,
-      "excluded_rows": 1,
-      "boundary": 10962,
-      "score_scale": 27695,
+      "excluded_rows": 5,
+      "boundary": 16408,
+      "score_scale": 33063,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 159,
-        "true_negative": 382,
-        "false_positive": 18,
-        "false_negative": 203
+        "true_positive": 100,
+        "true_negative": 389,
+        "false_positive": 11,
+        "false_negative": 262
       },
       "validation_metrics": {
-        "accuracy": 0.7099737532808399,
-        "precision": 0.8983050847457628,
-        "recall": 0.43922651933701656,
-        "specificity": 0.955,
-        "f1": 0.5899814471243042
+        "accuracy": 0.6417322834645669,
+        "precision": 0.9009009009009009,
+        "recall": 0.27624309392265195,
+        "specificity": 0.9725,
+        "f1": 0.42283298097251587
       },
-      "validation_gates": null,
+      "validation_gates": {
+        "false_warning_passed": true,
+        "precision_passed": true,
+        "has_true_positive": true
+      },
       "artifact_bytes": 131104,
-      "artifact_sha256": "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36"
+      "artifact_sha256": "e06d2039147fa4a5c88451bef6d62d614d3659adcf7ae575cc8ab1cb2cfe59f6"
     },
     {
       "language": "AR",
@@ -211,7 +215,7 @@
       "rule_pack_sha256": "32b05ecb070b353590ed6b2f29e4d6a13023ec4b33cfa7f48679f16475182861",
       "hurtlex_sha256": "947d3fa9f7ffb1fc65aabf73278c9484fa1769c32349ba6ff23727825b69e9b8",
       "clean_control_rows": 16,
-      "clean_control_sha256": "2098fde9e287b0e83ceaac0071d26ccb7a7c603d1acf62a526718a970d5917b0",
+      "clean_control_sha256": "6afc00046169cb1417f31eab43920488cb5c66e2f32dbcfbccf65fb42917bfcc",
       "development_rows": 8990,
       "validation_rows": 1968,
       "test_rows": 1988,

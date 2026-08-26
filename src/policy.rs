@@ -242,14 +242,24 @@ pub(crate) fn analyze_without_sparse_with_pack(
     )
 }
 
-pub(crate) fn policy_result_from_rule_channel(
-    text: &str,
-    lexical: Detection,
-    outcome: RuleOutcome,
-    sparse_score: Option<u8>,
-) -> PolicyResult {
+/// Reads one category score.
+const fn category_score(scores: &CategoryScores, category: PolicyCategory) -> u8 {
+    match category {
+        PolicyCategory::Profanity => scores.profanity,
+        PolicyCategory::TargetedAbuse => scores.targeted_abuse,
+        PolicyCategory::IdentityAttack => scores.identity_attack,
+        PolicyCategory::ThreatLanguage => scores.threat_language,
+        PolicyCategory::SentimentSupport => scores.sentiment_support,
+    }
+}
+
+/// Rebuilds the category scores of a rule channel that keeps the highest point of each category.
+///
+/// The clause rules of the fourteen v2 languages combine with `max`. The legacy Spanish policy
+/// accumulates instead, at `score_lexical` and `score_threats`, so it reports its own scores.
+pub(crate) fn category_scores_from_evidence(evidence: &[RuleEvidence]) -> CategoryScores {
     let mut scores = CategoryScores::default();
-    for item in &outcome.evidence {
+    for item in evidence {
         let score = match item.category {
             PolicyCategory::Profanity => &mut scores.profanity,
             PolicyCategory::TargetedAbuse => &mut scores.targeted_abuse,
@@ -259,6 +269,16 @@ pub(crate) fn policy_result_from_rule_channel(
         };
         *score = (*score).max(item.points);
     }
+    scores
+}
+
+pub(crate) fn policy_result_from_rule_channel(
+    text: &str,
+    lexical: Detection,
+    outcome: RuleOutcome,
+    scores: CategoryScores,
+    sparse_score: Option<u8>,
+) -> PolicyResult {
     debug_assert_eq!(
         outcome.score,
         [
@@ -271,6 +291,13 @@ pub(crate) fn policy_result_from_rule_channel(
         .into_iter()
         .max()
         .unwrap_or(0),
+    );
+    debug_assert!(
+        outcome
+            .evidence
+            .iter()
+            .all(|item| item.points <= category_score(&scores, item.category)),
+        "a rule channel reports an evidence point above its own category score",
     );
     let action = select_action(scores);
 

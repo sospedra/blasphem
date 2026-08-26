@@ -1,0 +1,109 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  canonical:
+    name: canonical (x86_64-unknown-linux-gnu)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show the pinned toolchain
+        run: |
+          rustc --version
+          cargo --version
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.13.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version 0.2.127 --locked
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      - name: Generate the prepared draft corpus
+        run: |
+          cargo run --release --locked -p blasphem-train -- prepare \
+            --source-lock resources/datasets/source-lock-v1.json \
+            --raw-root data/raw-v1 \
+            --output data/prepared-draft-v1
+
+      - name: Reproduce
+        run: cargo run --release --locked -p blasphem-train -- reproduce
+
+      - name: Upload the evidence reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: reports/
+
+  macos:
+    name: optional native bytes (aarch64-apple-darwin)
+    runs-on: macos-15
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show the pinned toolchain
+        run: |
+          rustc --version
+          cargo --version
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version 0.2.127 --locked
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      - name: Generate the prepared draft corpus
+        run: |
+          cargo run --release --locked -p blasphem-train -- prepare \
+            --source-lock resources/datasets/source-lock-v1.json \
+            --raw-root data/raw-v1 \
+            --output data/prepared-draft-v1
+
+      - name: Reproduce without the browser
+        run: cargo run --release --locked -p blasphem-train -- reproduce --skip-browser
+
+      - name: Record the native binary digest
+        run: shasum -a 256 target/release/blasphem

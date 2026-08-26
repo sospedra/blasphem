@@ -8,12 +8,27 @@ fn sha256_hex(bytes: &[u8]) -> String {
 }
 
 #[test]
-fn spanish_assets_are_frozen() {
+fn spanish_assets_match_the_published_manifest() {
     let model = include_bytes!("../resources/models/es-chargram-v1.bin");
     let audit = include_bytes!("../samples/spanish-audit.tsv");
+    let manifest: serde_json::Value = serde_json::from_str(include_str!(
+        "../resources/models/multilingual-v2/manifest.json"
+    ))
+    .expect("model manifest");
+    let published = manifest["entries"]
+        .as_array()
+        .expect("manifest entries")
+        .iter()
+        .find(|entry| entry["language"] == "ES")
+        .expect("Spanish manifest entry");
+
     assert_eq!(
-        sha256_hex(model),
-        "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36"
+        published["artifact_sha256"].as_str(),
+        Some(sha256_hex(model).as_str())
+    );
+    assert_eq!(
+        published["artifact_bytes"].as_u64(),
+        Some(model.len() as u64)
     );
     assert_eq!(
         sha256_hex(audit),
@@ -47,7 +62,7 @@ fn spanish_product_results_are_frozen() {
         check("Te voy a matar").starts_with("ok=false score=95 threshold=50 should_nudge=true")
     );
     assert!(
-        check("No te voy a matar").starts_with("ok=true score=24 threshold=50 should_nudge=false")
+        check("No te voy a matar").starts_with("ok=true score=20 threshold=50 should_nudge=false")
     );
 }
 

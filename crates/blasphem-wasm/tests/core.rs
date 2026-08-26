@@ -8,7 +8,7 @@ const AUTO_CASES: &[(Language, &str, u8)] = &[
     (
         Language::Es,
         "Was ist das? A ship. Todo bien en la costa.",
-        20,
+        17,
     ),
     (Language::Ar, "هل تحب الكتب؟", 11),
     (

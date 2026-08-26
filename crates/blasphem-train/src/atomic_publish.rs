@@ -2,8 +2,9 @@ use std::path::Path;
 
 use thiserror::Error;
 
+/// The failure of one atomic publication.
 #[derive(Debug, Error)]
-pub(crate) enum AtomicPublishError {
+pub enum AtomicPublishError {
     #[error("the publication destination exists")]
     DestinationExists,
     #[allow(dead_code)]
@@ -26,6 +27,28 @@ pub(crate) fn atomic_publish_noreplace(
     let publication = (|| {
         sync_directory(staged).map_err(AtomicPublishError::StagingSync)?;
         rename_noreplace(staged, output)?;
+        let parent = output.parent().unwrap_or_else(|| Path::new("."));
+        sync_directory(parent).map_err(AtomicPublishError::ParentSync)?;
+        Ok(())
+    })();
+    if publication.is_ok() {
+        return Ok(());
+    }
+
+    if staged.exists() {
+        remove_staged(staged).map_err(AtomicPublishError::Cleanup)?;
+    }
+    publication
+}
+
+/// Publishes one staged path over an existing destination.
+pub(crate) fn atomic_publish_replacing(
+    staged: &Path,
+    output: &Path,
+) -> Result<(), AtomicPublishError> {
+    let publication = (|| {
+        sync_directory(staged).map_err(AtomicPublishError::StagingSync)?;
+        std::fs::rename(staged, output).map_err(AtomicPublishError::Rename)?;
         let parent = output.parent().unwrap_or_else(|| Path::new("."));
         sync_directory(parent).map_err(AtomicPublishError::ParentSync)?;
         Ok(())

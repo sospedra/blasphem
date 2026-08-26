@@ -10,7 +10,7 @@ The runtime uses deterministic rules, HurtLex, and fixed sparse integer tables. 
 
 All 30 supplied messages pass through the native CLI and an actual Chrome WASM run.
 
-The 14 new languages meet the selected validation limits. Spanish keeps its frozen legacy behavior and metrics.
+All 15 languages meet the selected validation limits.
 
 ## Current final-path validation
 
@@ -24,7 +24,7 @@ Therefore, this table is calibration evidence. It is not an independent producti
 | --- | ---: | ---: | ---: | ---: |
 | EN | 746 | 100.0% | 59.9% | 0.00% |
 | ZH | 754 | 92.9% | 3.5% | 0.26% |
-| ES | 762 | 89.8% | 43.9% | 4.50% |
+| ES | 762 | 90.1% | 27.6% | 2.75% |
 | AR | 750 | 93.5% | 37.4% | 2.74% |
 | ID | 1,968 | 94.9% | 41.6% | 2.66% |
 | PT | 2,416 | 90.1% | 33.6% | 1.28% |
@@ -38,15 +38,15 @@ Therefore, this table is calibration evidence. It is not an independent producti
 | KO | 8,726 | 93.0% | 41.5% | 2.48% |
 | IT | 742 | 90.7% | 23.8% | 2.42% |
 
-Every new language has precision at or above 90 percent. Each new-language clean-warning rate is at or below three percent.
+Every language has precision at or above 90 percent. Each clean-warning rate is at or below three percent.
 
-Spanish predates those gates. Its frozen validation precision is 89.8 percent, and its clean-warning rate is 4.5 percent.
+Spanish now meets those gates. Its validation precision is 90.1 percent, and its clean-warning rate is 2.75 percent.
 
 Chinese and Turkish have very low recall. This result follows the selected precision-first policy.
 
 ## Behavior evidence
 
-The 14 new-language behavior panels pass 336 of 336 authored contract cases.
+The 15 behavior panels pass 360 of 360 authored contract cases.
 
 The native smoke set passes 60 of 60 cases. It includes the 30 supplied messages and 30 separate context cases.
 
@@ -66,7 +66,7 @@ Each language uses one pinned HurtLex 1.2 file. The runtime uses conservative Hu
 
 Development rows fit the sparse weights. Validation rows select the highest-recall boundary that passes the precision limits.
 
-Sixteen frozen clean controls set a minimum boundary for each new language. Those controls do not enter the accuracy metrics.
+Sixteen frozen clean controls set a minimum boundary for each language. Those controls do not enter the accuracy metrics.
 
 The final work did not reopen any prepared test split. The older test report remains `previously_evaluated` experimental evidence.
 
