@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { createReadStream, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { dirname, extname, resolve, sep } from "node:path";
 import { createRequire } from "node:module";
@@ -19,11 +19,33 @@ const gluePath = resolve(fullOutput, "blasphem.js");
 const explicitWasmPath = resolve(explicitOutput, "blasphem_bg.wasm");
 const explicitGluePath = resolve(explicitOutput, "blasphem.js");
 const require = createRequire(import.meta.url);
-const playwrightModule = process.env.PLAYWRIGHT_MODULE
-  ?? "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules/playwright";
-const chromePath = process.env.CHROME_PATH
-  ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const { chromium } = require(playwrightModule);
+
+const CHROMIUM_HINT = "Run `npx playwright install chromium`.";
+
+function loadPlaywright() {
+  try {
+    return require("playwright");
+  } catch (error) {
+    const hint = "Install it with `npm install playwright`.";
+    throw new Error(`cannot resolve the playwright module: ${error.message}. ${hint}`);
+  }
+}
+
+function pinnedChromiumPath(chromium) {
+  let path;
+  try {
+    path = chromium.executablePath();
+  } catch (error) {
+    throw new Error(`playwright reports no pinned chromium: ${error.message}. ${CHROMIUM_HINT}`);
+  }
+  if (!path || !existsSync(path)) {
+    throw new Error(`playwright has no installed chromium. ${CHROMIUM_HINT}`);
+  }
+  return path;
+}
+
+const { chromium } = loadPlaywright();
+const chromePath = pinnedChromiumPath(chromium);
 
 function contentType(path) {
   switch (extname(path)) {

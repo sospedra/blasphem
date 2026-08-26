@@ -3,12 +3,12 @@ set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
-FULL_TARGET="$PROJECT_ROOT/target/task7-wasm-full"
+FULL_TARGET="$PROJECT_ROOT/target/wasm-full"
 FULL_INPUT="$FULL_TARGET/wasm32-unknown-unknown/release/blasphem_wasm.wasm"
-FULL_OUTPUT="$PROJECT_ROOT/target/task7-wasm-full-web"
-EXPLICIT_TARGET="$PROJECT_ROOT/target/task7-wasm-explicit"
+FULL_OUTPUT="$PROJECT_ROOT/target/wasm-full-web"
+EXPLICIT_TARGET="$PROJECT_ROOT/target/wasm-explicit"
 EXPLICIT_INPUT="$EXPLICIT_TARGET/wasm32-unknown-unknown/release/blasphem_wasm.wasm"
-EXPLICIT_OUTPUT="$PROJECT_ROOT/target/task7-wasm-explicit-web"
+EXPLICIT_OUTPUT="$PROJECT_ROOT/target/wasm-explicit-web"
 REPORT_OUTPUT="$PROJECT_ROOT/reports/multilingual-wasm.json"
 
 CARGO_TARGET_DIR="$FULL_TARGET" cargo build --release --locked --target wasm32-unknown-unknown -p blasphem-wasm --manifest-path "$PROJECT_ROOT/Cargo.toml"

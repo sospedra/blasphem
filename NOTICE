@@ -1,0 +1,81 @@
+# Third-party data notices
+
+Copyright 2026 Rubén Sospedra
+
+Blasphem first-party code uses the Apache License 2.0. See LICENSE.
+
+The corpora and lexica below keep their own recorded licenses.
+
+## germeval-2018
+
+- License: NOASSERTION
+- License URL: https://github.com/uds-lsv/GermEval-2018-Data
+- Citation: Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.
+- Sources: 2
+- Status: the upstream license is unresolved. This record claims no permission.
+
+## hurtlex
+
+- License: CC-BY-SA-4.0
+- License URL: https://creativecommons.org/licenses/by-sa/4.0/
+- Citation: Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.
+- Sources: 15
+- Status: share-alike. This repository redistributes all 15 HurtLex files
+  under `data/raw-v1/hurtlex/` and embeds them via `include_bytes!` in
+  `crates/blasphem-wasm/src/lib.rs`. Any redistribution of this repository,
+  or of a derivative lexicon built from these files, must carry the
+  CC-BY-SA-4.0 license and attribution.
+
+## ibrohim-budi
+
+- License: CC-BY-4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- Citation: Ibrohim and Budi, 2019. Multi-label Hate Speech and Abusive Language Detection in Indonesian Twitter.
+- Sources: 1
+
+## k-mhas
+
+- License: CC-BY-NC-4.0
+- License URL: https://creativecommons.org/licenses/by-nc/4.0/
+- Citation: Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.
+- Sources: 3
+- Status: noncommercial terms. Downstream users must check their own use.
+
+## offenseval-tr
+
+- License: CC-BY-4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- Citation: Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.
+- Sources: 3
+
+## textdetox
+
+- License: CC-BY-4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- Citation: TextDetox multilingual toxicity dataset
+- Sources: 10
+
+## told-br
+
+- License: CC-BY-4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- Citation: Leite et al., 2020. Toxic Language Detection in Social Media for Brazilian Portuguese.
+- Sources: 1
+
+## vihos
+
+- License: CC-BY-4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- Citation: ViHOS: Vietnamese Hate Speech Detection.
+- Sources: 3
+
+## Model artifacts
+
+The model artifacts under `resources/models/` are weight tables trained on
+the corpora above. They contain no corpus text, but each is a derivative
+work of its training data and inherits that data's license.
+
+The Korean artifact, `resources/models/multilingual-v2/ko-sparse-v2.bin`,
+trains in part on k-mhas data (CC-BY-NC-4.0, noncommercial, see above). This
+artifact is encumbered by that noncommercial restriction. This repository
+does not license it, or any artifact trained on k-mhas, for commercial use.

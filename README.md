@@ -1,4 +1,16 @@
-# HurtLex Rust spike
+# Blasphem
+
+Blasphem is a deterministic pre-send toxicity nudge. It checks a message before send, across 15 languages. It runs no neural model and no AI runtime.
+
+It ships a native CLI and a browser WASM build. The evidence status is experimental.
+
+Build the native CLI:
+
+```bash
+cargo build --release --locked --bin blasphem
+```
+
+See `CONTRIBUTING.md` to add training data, `LICENSE` for the first-party license, and `NOTICE` for third-party data licenses.
 
 This CLI applies deterministic multilingual moderation rules. It does not run an AI model or translate text.
 
@@ -7,6 +19,39 @@ The runtime uses [HurtLex](https://github.com/valeriobasile/hurtlex), fixed dict
 Each language uses one independent 128 KiB sparse integer table. Offline labeled corpora produced these tables.
 
 The runtime does not load TextDetox rows. It does not need Python, ONNX, TensorFlow, or a network connection.
+
+## Reproduce every artifact
+
+This form passes today:
+
+```bash
+cargo run --release --locked -p blasphem-train -- reproduce --skip-browser
+```
+
+It verifies raw inputs, rebuilds every model and language artifact, builds
+the native and WASM binaries, and runs the Rust tests and Clippy.
+
+The spec's canonical command omits the flag:
+
+```bash
+cargo run --release --locked -p blasphem-train -- reproduce
+```
+
+The unflagged form additionally runs the npm package checks and the browser
+smoke test through `pnpm`. It needs the JavaScript workspace, which lives on
+a branch not yet merged here.
+
+Both forms read only committed inputs. Neither downloads a corpus, lexicon,
+or model source. Both write generated data to a temporary directory and
+return a nonzero status after any mismatch.
+
+## Licensing
+
+Blasphem first-party code uses the Apache License 2.0. See `LICENSE`.
+
+The corpora and lexica in this repository keep their own recorded licenses,
+including one unresolved license and one noncommercial license. See `NOTICE`
+for the full accounting.
 
 ## Setup
 

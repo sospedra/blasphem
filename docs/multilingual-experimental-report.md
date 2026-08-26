@@ -116,7 +116,7 @@ result.free();
 detector.free();
 ```
 
-Run `./crates/toxcheck-wasm/verify-browser.sh` to rebuild the module and repeat the actual Chrome check.
+Run `./crates/blasphem-wasm/verify-browser.sh` to rebuild the module and repeat the actual Chrome check.
 
 ## Limits
 

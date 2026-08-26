@@ -109,13 +109,12 @@ Each next language needs its own fixed panel, sparse table, collision audit, and
 ```bash
 cargo test --all-targets
 cargo clippy --all-targets --all-features -- -D warnings
-cargo build --release --bin toxcheck
 
-target/release/toxcheck eval \
+cargo run --release -p blasphem-train -- eval \
   --input samples/spanish-audit.tsv \
   --minimum-action review
 
-target/release/toxcheck eval \
+cargo run --release -p blasphem-train -- eval \
   --input data/textdetox/es-prepared/test.tsv \
   --minimum-action review
 ```

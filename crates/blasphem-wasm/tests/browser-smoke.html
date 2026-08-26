@@ -7,10 +7,10 @@
   <body data-status="running">
     <pre id="result">running</pre>
     <script type="module">
-      import init, { BlasphemDetector } from "/target/task7-wasm-full-web/blasphem.js";
+      import init, { BlasphemDetector } from "/target/wasm-full-web/blasphem.js";
       import initExplicit, {
         BlasphemDetector as ExplicitWasmDetector,
-      } from "/target/task7-wasm-explicit-web/blasphem.js";
+      } from "/target/wasm-explicit-web/blasphem.js";
 
       const cases = [
         ["supplied-en-toxic", "EN", "When I find you, I will break every bone in your hand", true],

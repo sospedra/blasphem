@@ -9,6 +9,7 @@ use anyhow::{Context, Result, bail};
 use blasphem::Language;
 
 use crate::{
+    community_corpus::CommunityCorpusAdapter,
     datasets::{
         DatasetAdapter, DatasetId, ImportedRow, PreparationPolicy, SourceInput, SourceSplit,
         SplitPolicy, germ_eval_2018::GermEval2018Adapter, ibrohim_budi::IbrohimBudiAdapter,
@@ -208,6 +209,28 @@ fn import_all_rows(raw_root: &Path, sources: &[FrozenSource]) -> Result<Vec<Impo
         DatasetId::GermEval2018,
         &GermEval2018Adapter,
     )?);
+    output.extend(import_community_inputs(raw_root, sources)?);
+    Ok(output)
+}
+
+fn import_community_inputs(raw_root: &Path, sources: &[FrozenSource]) -> Result<Vec<ImportedRow>> {
+    let mut output = Vec::new();
+    for source in sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::Community)
+    {
+        let path = raw_root.join(&source.file_path);
+        let mut reader =
+            File::open(&path).with_context(|| format!("cannot read {}", path.display()))?;
+        let mut inputs = [SourceInput {
+            source_file_id: source.source_file_id.as_str(),
+            source_split: source_split(source.source_file_id.as_str()),
+            reader: &mut reader,
+        }];
+        let adapter =
+            CommunityCorpusAdapter::new(source.detector_language, source.source_file_id.clone());
+        output.extend(adapter.import(&mut inputs)?);
+    }
     Ok(output)
 }
 

@@ -37,6 +37,7 @@ pub struct SourceRequest {
 #[serde(deny_unknown_fields)]
 pub struct FrozenSource {
     pub dataset: DatasetId,
+    #[serde(serialize_with = "serialize_storage_code")]
     pub detector_language: Language,
     pub source_role: SourceRole,
     pub source_file_id: String,

@@ -2,7 +2,7 @@
 set -eu
 
 # Build the temporary fixture oracle against the audited ELDC snapshot.
-# Usage: crates/eldc/tools/build-c-oracle.sh /tmp/eldc-c-oracle
+# Usage: crates/blasphem-language/tools/build-c-oracle.sh /tmp/eldc-c-oracle
 
 output=${1:?"pass a temporary output path"}
 upstream_dir=${ELDC_UPSTREAM_DIR:-/private/tmp/eldc-audit-20260902/src/eldc}
