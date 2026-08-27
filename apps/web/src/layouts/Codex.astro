@@ -1,0 +1,42 @@
+---
+import "@fontsource/pirata-one/400.css";
+import "@fontsource/cinzel/400.css";
+import "@fontsource/cinzel/700.css";
+import "@fontsource/eb-garamond/400.css";
+import "@fontsource/eb-garamond/400-italic.css";
+import "@fontsource/eb-garamond/500.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/archivo/800.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/codex.css";
+import Frame from "../components/Frame.astro";
+import Glyphs from "../components/Glyphs.astro";
+import Head from "../components/Head.astro";
+import RailRight from "../components/RailRight.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head title={title} description={description} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Glyphs />
+    <Frame />
+    <main id="main" class="codex">
+      <div class="gutter" aria-hidden="true"></div>
+      <div class="rule-l" aria-hidden="true"></div>
+      <div class="rule-r" aria-hidden="true"></div>
+      <RailRight />
+      <slot />
+    </main>
+  </body>
+</html>

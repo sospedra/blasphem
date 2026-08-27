@@ -1,0 +1,41 @@
+---
+interface Props {
+  caption: string;
+  columns: readonly string[];
+  rows: readonly (readonly (string | number)[])[];
+  evidence?: string;
+}
+const { caption, columns, rows, evidence } = Astro.props;
+---
+<div class="ledger-wrap">
+  <table class="ledger">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>{columns.map((column, index) => <th class:list={{ mine: index > 0 }} scope="col">{column}</th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>{row.map((cell, index) => (index === 0 ? <th scope="row">{cell}</th> : <td class="us">{cell}</td>))}</tr>
+      ))}
+    </tbody>
+  </table>
+  {evidence && <p class="evidence">{evidence}</p>}
+</div>
+
+<style>
+  .ledger-wrap {
+    margin: 0 0 34px;
+    overflow-x: auto;
+  }
+  tbody th {
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--taupe-ink);
+    font-weight: 400;
+    text-align: left;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--hair);
+  }
+</style>

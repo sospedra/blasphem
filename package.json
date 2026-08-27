@@ -1,0 +1,19 @@
+{
+  "name": "blasphem-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.13.0",
+  "engines": {
+    "node": "24.18.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "check": "turbo run check",
+    "reproduce": "cargo run --release --locked -p blasphem-train -- reproduce",
+    "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate"
+  },
+  "devDependencies": {
+    "turbo": "2.10.12"
+  }
+}

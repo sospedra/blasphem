@@ -15,6 +15,7 @@ language-detection = ["blasphem/language-detection"]
 
 [dependencies]
 blasphem = { path = "../..", default-features = false }
+js-sys = "0.3"
 wasm-bindgen = "=0.2.127"
 
 [lints.clippy]

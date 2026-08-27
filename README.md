@@ -12,13 +12,61 @@ cargo build --release --locked --bin blasphem
 
 See `CONTRIBUTING.md` to add training data, `LICENSE` for the first-party license, and `NOTICE` for third-party data licenses.
 
-This CLI applies deterministic multilingual moderation rules. It does not run an AI model or translate text.
+Blasphem is an experimental multilingual pre-send toxicity nudge. It applies deterministic moderation rules. It does not run an AI model or translate text.
+
+There are three clients: a Rust library, a TypeScript package, and this CLI.
 
 The runtime uses [HurtLex](https://github.com/valeriobasile/hurtlex), fixed dictionaries, deterministic context rules, and sparse integer tables.
 
 Each language uses one independent 128 KiB sparse integer table. Offline labeled corpora produced these tables.
 
 The runtime does not load TextDetox rows. It does not need Python, ONNX, TensorFlow, or a network connection.
+
+## Rust
+
+```rust
+use blasphem::{Judge, JudgeOptions, Language};
+
+let judge = Judge::new(JudgeOptions {
+    locales: vec![Language::En, Language::Es],
+    detect_language: true,
+    grawlix: true,
+})?;
+
+let verdict = judge.judge("you are a stupid loser");
+
+assert!(!verdict.safe);
+assert_eq!(verdict.score, 0.64);
+assert_eq!(verdict.locale, Some(Language::En));
+assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! loser"));
+```
+
+`JudgeOptions::default()` loads all 15 languages, detects the language, and returns no grawlix.
+
+`score` is an ordinal value from 0.0 through 1.0. It is not a probability, and it is not calibrated across languages.
+
+Text that no loaded locale routes returns `locale: None`, `score: 0.0`, and `safe: true`. The nudge fails open.
+
+`Judge` is a struct rather than a free function because each locale carries its own lexicon and sparse table. Build one judge and reuse it.
+
+The lexica are compiled into the binary. `blasphem::embedded_detector` exposes the same data for a single language.
+
+## TypeScript
+
+```ts
+import { judge } from "blasphem";
+
+const v = judge("you are a stupid loser", {
+  locales: ["en", "es"],
+  detectLanguage: true,
+  grawlix: true,
+});
+
+v.safe;  // false
+v.score; // 0.64
+```
+
+The package is isomorphic and runs the same in Node and the browser. Every option is optional. See `packages/blasphem/README.md`.
 
 ## Reproduce every artifact
 
@@ -38,8 +86,8 @@ cargo run --release --locked -p blasphem-train -- reproduce
 ```
 
 The unflagged form additionally runs the npm package checks and the browser
-smoke test through `pnpm`. It needs the JavaScript workspace, which lives on
-a branch not yet merged here.
+smoke test through `pnpm`. It needs the `test:browser` script in
+`packages/blasphem`, which is not yet added.
 
 Both forms read only committed inputs. Neither downloads a corpus, lexicon,
 or model source. Both write generated data to a temporary directory and

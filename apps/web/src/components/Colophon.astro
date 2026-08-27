@@ -1,0 +1,141 @@
+---
+const repository = "https://github.com/sospedra/blasphem";
+const links = [
+  { href: repository, label: "github" },
+  { href: `${repository}/blob/main/CONTRIBUTING.md`, label: "contributing" },
+  { href: `${repository}/blob/main/LICENSE`, label: "apache-2.0" },
+  { href: `${repository}/blob/main/docs/superpowers/specs/2026-09-02-blasphem-public-package-and-corpus-design.md`, label: "design spec" },
+];
+const bars = [0, 4, 8, 14, 18, 23, 30, 34, 39, 43, 50, 54, 59, 66, 70, 75, 79, 85, 90, 94, 101, 105, 110, 116, 120, 125, 129, 136, 140, 145];
+const widths = [2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2, 3, 1, 2, 1, 4, 1, 2, 3];
+---
+<footer id="colophon" class="spread colophon" aria-labelledby="colophon-title">
+  <div class="rail" aria-hidden="true"><span>the colophon</span></div>
+  <div class="page l">
+    <p class="rubric">contribute</p>
+    <h2 id="colophon-title" class="title">Add a tongue, a row, a rule</h2>
+    <h3 class="sub">Corpus rows</h3>
+    <p class="copy">A contribution is a TSV with three columns: <code>native_id</code>, <code>label</code>, <code>text</code>. The label is <code>toxic</code> or <code>clean</code>. Each source declares one role: <code>baseline</code>, <code>training_only</code>, or <code>sealed_evaluation</code>. New community corpora default to <code>training_only</code> and enter only the development partition. Sealed validation and test rows never move; the preparation command rejects a change to any sealed hash.</p>
+    <p class="copy">Record the language, the source identity, the license, and a citation. Pull request checks read only committed raw inputs and pinned dependencies. They fetch no contributor URL.</p>
+    <h3 class="sub">Code</h3>
+    <p class="copy">Rust lives in the Cargo workspace. JavaScript lives in the pnpm workspace under <code>apps/web</code> and <code>packages/blasphem</code>. The data-offline reproduction command rebuilds every artifact from the committed inputs and stops on any mismatch: <code>cargo run --release --locked -p blasphem-train -- reproduce</code>.</p>
+    <p class="copy">Any row that shapes a rule becomes audit-only and leaves the quality evidence. The <a href={`${repository}/blob/main/CONTRIBUTING.md`}>contribution guide</a> describes both paths.</p>
+  </div>
+  <div class="page r">
+    <nav class="links" aria-label="Repository links">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <svg class="barcode" width="140" height="22" viewBox="0 0 150 26" aria-hidden="true">
+      <g fill="#ece7de">{bars.map((x, index) => <rect x={x} width={widths[index]} height="26"></rect>)}</g>
+    </svg>
+    <p class="credits">set in pirata one, cinzel, eb garamond, ibm plex mono, archivo. self-hosted.</p>
+    <p class="credits">plate: marble portrait bust of a woman with a scroll, the metropolitan museum of art, cc0.</p>
+    <p class="credits">hurtlex lexica cc by-nc-sa 4.0. language tables apache-2.0. notices ship in the package.</p>
+    <p class="credits">apache licensed. experimental. scores are ordinal.</p>
+  </div>
+  <div class="skyline" aria-hidden="true">
+    <svg viewBox="0 0 900 90">
+      <path d="M0 82 L130 82 L150 46 L160 22 L170 46 L190 82 L250 82 L300 50 L316 18 L316 2 L316 8 L310 8 L322 8 L316 8 L316 18 L332 50 L352 82 L410 82 L410 56 L450 30 L450 44 A14 14 0 1 0 450 72 A14 14 0 1 0 450 44 L450 30 L490 56 L490 82 L560 82 L580 40 L590 14 L600 40 L620 82 L900 82"></path>
+    </svg>
+  </div>
+  <div class="motto-wrap" aria-hidden="true"><p class="motto">nihil profanum</p></div>
+</footer>
+
+<style>
+  .colophon {
+    border-bottom: 0;
+  }
+  .colophon .page {
+    padding-top: 96px;
+    padding-bottom: 40px;
+  }
+  .sub {
+    font-family: var(--font-goth);
+    font-weight: 400;
+    font-size: 24px;
+    margin: 26px 0 8px;
+    color: var(--bone);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .links a {
+    color: var(--taupe-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hair);
+    padding: 6px 0;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .links a:hover {
+      color: var(--blood-ink);
+      border-color: var(--blood-ink);
+    }
+  }
+  .barcode {
+    display: block;
+    margin-top: 22px;
+    opacity: 0.45;
+  }
+  .credits {
+    margin: 14px 0 0;
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--taupe-ink);
+    line-height: 2;
+  }
+  .skyline {
+    grid-column: 2 / 4;
+    padding: 0 var(--inset);
+    position: relative;
+    z-index: 2;
+  }
+  .skyline svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    stroke: var(--bone);
+    stroke-opacity: 0.75;
+    fill: none;
+    stroke-width: 1;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .motto-wrap {
+    grid-column: 1 / 5;
+    font-size: 14vw;
+    height: 0.865em;
+    overflow: hidden;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .motto {
+    font-family: var(--font-goth);
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 1;
+    margin: 0;
+    color: var(--blood);
+    white-space: nowrap;
+  }
+  @media (max-width: 1023px) {
+    .colophon .page {
+      padding: 56px var(--inset) 24px;
+    }
+    .skyline,
+    .motto-wrap {
+      grid-column: 1;
+    }
+    .motto-wrap {
+      font-size: 17vw;
+    }
+  }
+</style>

@@ -44,6 +44,33 @@ An unknown route returns `evaluated = false` and does not run a toxicity detecto
 
 Explicit and unknown routes return no `languageScore` value.
 
+## The judge binding
+
+`BlasphemJudge` returns a plain object. The caller never frees it.
+
+```js
+import init, { BlasphemJudge } from "./blasphem_wasm.js";
+
+await init();
+const judge = new BlasphemJudge(["en", "es"], true, true);
+const verdict = judge.judge("you are a stupid loser");
+
+console.log(verdict.safe, verdict.score, verdict.locale, verdict.grawlix);
+// false 0.64 "en" "you are a @#$%&! loser"
+```
+
+The constructor takes lowercase locale codes, a detect-language flag, and a grawlix flag.
+
+An empty locale list loads all 15 languages.
+
+`score` is an ordinal value from 0.0 through 1.0. It is not a probability.
+
+`safe` is true when no nudge is due. Text that no locale routes returns `locale: null` and `safe: true`.
+
+`grawlix` holds the masked text when the flag is set. It is `null` otherwise.
+
+Prefer the `blasphem` npm package over this binding. It wraps `BlasphemJudge` and loads the module for you.
+
 Build an explicit-only module without the language detector:
 
 ```bash
@@ -55,9 +82,11 @@ The explicit-only constructor returns an error for `AUTO`.
 
 The explicit-only build omits the language detector.
 
-The measured explicit-only transfer is 1,630,271 Brotli bytes, including JavaScript glue.
+The measured explicit-only transfer is 1,633,893 Brotli bytes, including JavaScript glue.
 
-The measured default transfer is 9,038,194 Brotli bytes, including JavaScript glue.
+The measured default transfer is 9,041,755 Brotli bytes, including JavaScript glue.
+
+Both figures come from `reports/multilingual-wasm.json`, written by `./crates/blasphem-wasm/verify-browser.sh`.
 
 Both current builds embed all 15 toxicity packs.
 

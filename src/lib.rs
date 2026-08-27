@@ -1,8 +1,11 @@
 //! Experimental multilingual lexical toxicity detector.
 
 mod detector;
+mod embedded;
 mod evaluation;
 mod features;
+mod grawlix;
+mod judge;
 mod language;
 mod language_detection;
 mod lexicon;
@@ -17,8 +20,11 @@ mod text;
 mod workflow;
 
 pub use detector::{Detection, Detector, DetectorError, LexiconMatch, normalize_text};
+pub use embedded::{embedded_detector, embedded_hurtlex_bytes};
 pub use evaluation::{ConfusionMatrix, EvalLabel, EvalRow, Metrics};
 pub use features::{FeatureError, extract_feature_bins};
+pub use grawlix::{apply_grawlix, masked_spans};
+pub use judge::{Judge, JudgeError, JudgeOptions, Judgement};
 pub use language::{
     FeatureProfile, FeatureSchema, Language, NormalizationProfile, UnsupportedLanguage,
 };

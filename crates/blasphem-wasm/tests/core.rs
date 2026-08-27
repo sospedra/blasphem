@@ -139,3 +139,35 @@ fn core_rejects_unknown_language_values() {
         );
     }
 }
+
+#[test]
+fn core_judge_scores_english_and_masks_on_request() {
+    let core = blasphem_wasm::JudgeCore::new(&["en".to_owned(), "es".to_owned()], true, true)
+        .expect("judge core builds");
+    let verdict = core.judge("you are a stupid loser");
+
+    assert!(!verdict.safe);
+    assert!(verdict.score > 0.0 && verdict.score <= 1.0);
+    assert_eq!(verdict.locale.as_deref(), Some("en"));
+    assert!(
+        verdict
+            .grawlix
+            .is_some_and(|masked| !masked.contains("stupid"))
+    );
+}
+
+#[test]
+fn core_judge_omits_grawlix_when_not_requested() {
+    let core =
+        blasphem_wasm::JudgeCore::new(&["en".to_owned()], true, false).expect("judge core builds");
+
+    assert_eq!(core.judge("you are a stupid loser").grawlix, None);
+}
+
+#[test]
+fn core_judge_rejects_an_unknown_locale() {
+    let error = blasphem_wasm::JudgeCore::new(&["xx".to_owned()], true, false)
+        .expect_err("unknown locale fails");
+
+    assert!(error.contains("xx"), "got {error}");
+}

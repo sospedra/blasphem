@@ -1,0 +1,53 @@
+---
+const words = ["profanity", "targeted abuse", "identity attack", "threat language", "harm wish", "self-harm command", "negation", "quotation", "counterspeech"];
+const run = Array.from({ length: 4 }, () => words).flat();
+---
+<aside class="rail-r" aria-hidden="true">
+  <div class="track">
+    <span>{run.map((word) => <Fragment>{word}<i>&#10022;</i></Fragment>)}</span>
+    <span>{run.map((word) => <Fragment>{word}<i>&#10022;</i></Fragment>)}</span>
+  </div>
+</aside>
+
+<style>
+  .rail-r {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--rail);
+    overflow: hidden;
+    z-index: 4;
+    background: var(--pitch);
+  }
+  .track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: climb 90s linear infinite;
+  }
+  span {
+    display: block;
+    writing-mode: vertical-rl;
+    font-family: var(--font-goth);
+    font-size: 20px;
+    line-height: var(--rail);
+    color: var(--blood);
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+  i {
+    font-style: normal;
+    color: var(--bone);
+    opacity: 0.45;
+    padding: 14px 0;
+  }
+  @keyframes climb {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+  @media (max-width: 1023px) {
+    .rail-r { display: none; }
+  }
+</style>

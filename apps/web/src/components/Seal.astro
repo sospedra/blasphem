@@ -1,0 +1,41 @@
+<svg class="seal" viewBox="0 0 190 190" aria-hidden="true">
+  <circle cx="95" cy="95" r="88" fill="none" stroke="#ece7de" stroke-opacity=".7"></circle>
+  <circle cx="95" cy="95" r="54" fill="none" stroke="#ece7de" stroke-opacity=".7"></circle>
+  <text><textPath href="#sealPath">in principio erat verbum &#10022; </textPath></text>
+  <g transform="translate(83,83)" fill="#a8862e"><use href="#star"></use></g>
+</svg>
+
+<style>
+  .seal {
+    position: absolute;
+    left: calc(50% + var(--inset));
+    top: calc(72px + 50vh);
+    transform: translate(-50%, -50%);
+    width: 190px;
+    height: 190px;
+    z-index: 5;
+  }
+  .seal text {
+    font-family: var(--font-goth);
+    font-size: 13.5px;
+    letter-spacing: 0.16em;
+    fill: var(--bone);
+    transform-origin: 95px 95px;
+    animation: turn 120s linear infinite;
+  }
+  @keyframes turn {
+    to { transform: rotate(360deg); }
+  }
+  @media (max-width: 1023px) {
+    .seal {
+      position: relative;
+      order: 4;
+      left: auto;
+      top: auto;
+      transform: none;
+      width: 120px;
+      height: 120px;
+      margin: -60px 0 0 calc(100% - var(--inset) - 76% - 60px);
+    }
+  }
+</style>

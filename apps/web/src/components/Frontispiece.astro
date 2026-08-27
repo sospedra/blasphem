@@ -1,0 +1,342 @@
+---
+import { Image } from "astro:assets";
+import bust from "../assets/bust.jpg";
+import manifest from "../../../../packages/blasphem/package.json";
+import Seal from "./Seal.astro";
+
+const links = [
+  { href: "#detector", label: "detector" },
+  { href: "#rite", label: "rite" },
+  { href: "#credo", label: "credo" },
+  { href: "#vows", label: "vows" },
+  { href: "#reckoning", label: "reckoning" },
+  { href: "#colophon", label: "colophon" },
+  { href: "https://github.com/sospedra/blasphem", label: "github" },
+];
+const words = ["profanity", "targeted abuse", "identity attack", "threat language", "harm wish", "self-harm command", "counterspeech"];
+---
+<section id="front" class="spread front" aria-labelledby="front-title">
+  <div class="rail" aria-hidden="true"></div>
+  <header class="stamp">
+    <svg width="12" height="16" viewBox="0 0 24 26" aria-hidden="true"><use href="#cross"></use></svg>
+    <span>blasphem</span>
+    <nav aria-label="Chapters">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+  </header>
+  <div class="meta">
+    <span>v{manifest.version}</span>
+    <span>{manifest.license}</span>
+    <span>experimental</span>
+  </div>
+
+  <div class="arch-plate">
+    <Image src={bust} alt="" widths={[420, 640, 900]} sizes="(max-width: 1023px) 76vw, 31vh" class="photo" loading="eager" />
+    <div class="wash"></div>
+    <svg class="edge" preserveAspectRatio="none" viewBox="0 0 160 220" aria-hidden="true">
+      <path d="M1 219 L1 75 Q1 1 80 1 Q159 1 159 75 L159 219" fill="none" stroke="#e23127" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path d="M11 219 L11 78 Q11 13 80 13 Q149 13 149 78 L149 219" fill="none" stroke="rgba(226,49,39,.35)" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+    </svg>
+  </div>
+
+  <svg class="rose" viewBox="0 0 200 200" aria-hidden="true"><use href="#roseWindow"></use></svg>
+
+  <h1 id="front-title" class="wordmark">blas<span class="brk"></span>phem<i class="sp1"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp2"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp3"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i></h1>
+
+  <Seal />
+
+  <div class="lead">
+    <p class="strap">Catch the hostile message before it sends. In the browser, on the keystroke, in fifteen tongues.</p>
+    <div class="acts">
+      <a class="act" href="#detector">
+        <svg viewBox="0 0 24 26" aria-hidden="true"><use href="#cross"></use></svg>
+        <span>Judge a message</span>
+      </a>
+      <a class="act ghost" href="#rite">Read the rite</a>
+    </div>
+  </div>
+
+  <i class="node" aria-hidden="true"></i>
+</section>
+
+<div class="band" aria-hidden="true">
+  <div class="run">
+    <span>{words.map((word) => <Fragment>{word}<i>&#10022;</i></Fragment>)}</span>
+    <span>{words.map((word) => <Fragment>{word}<i>&#10022;</i></Fragment>)}</span>
+  </div>
+</div>
+
+<style>
+  .front {
+    min-height: 100vh;
+    grid-template-rows: 72px auto 1fr;
+  }
+  .front > .rail {
+    grid-row: 1 / 4;
+  }
+  .stamp {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    padding-left: var(--inset);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-goth);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--blood-ink);
+    position: relative;
+    z-index: 2;
+  }
+  .stamp svg {
+    fill: var(--blood);
+  }
+  .stamp nav {
+    display: flex;
+    gap: 14px;
+    margin-left: 18px;
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .stamp nav a {
+    color: var(--taupe-ink);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .stamp nav a:hover {
+      color: var(--blood-ink);
+      border-color: var(--blood-ink);
+    }
+  }
+  .meta {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+    padding-right: var(--inset);
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--taupe-ink);
+    position: relative;
+    z-index: 2;
+  }
+  .rose {
+    position: absolute;
+    left: 50%;
+    top: 8vh;
+    width: min(74vh, 720px);
+    height: min(74vh, 720px);
+    transform: translateX(-50%);
+    color: var(--bone);
+    opacity: 0.06;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .wordmark {
+    grid-column: 2 / 5;
+    grid-row: 2;
+    position: relative;
+    z-index: 3;
+    margin: calc(23vh - 72px) 0 0 var(--inset);
+    font-family: var(--font-goth);
+    font-weight: 400;
+    font-size: 26vw;
+    line-height: 0.8;
+    color: var(--blood);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    filter: drop-shadow(0 0 44px rgba(226, 49, 39, 0.22));
+  }
+  .wordmark .brk {
+    display: none;
+  }
+  .wordmark i {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    z-index: 4;
+  }
+  .wordmark i::before {
+    content: "";
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236, 231, 222, 0.6), rgba(236, 231, 222, 0) 68%);
+    opacity: 0.35;
+    transform: scale(0.8);
+    animation: halo 3.4s var(--ease-in-out) infinite;
+  }
+  .wordmark i svg {
+    position: relative;
+    fill: var(--bone);
+    display: block;
+    width: 18px;
+    height: 18px;
+    filter: drop-shadow(0 0 5px rgba(236, 231, 222, 0.85));
+  }
+  .wordmark .sp1 { left: 0.24em; top: 0.45em; }
+  .wordmark .sp2 { left: 0.82em; top: 0.58em; }
+  .wordmark .sp3 { left: 2.48em; top: 0.3em; }
+  .wordmark .sp2::before { animation-delay: -1.3s; animation-duration: 3.9s; }
+  .wordmark .sp3::before { animation-delay: -2.4s; animation-duration: 4.5s; }
+  @keyframes halo {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.35); }
+  }
+  .lead {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    padding: 26px var(--inset) 84px;
+    position: relative;
+    z-index: 2;
+  }
+  .strap {
+    font-family: var(--font-goth);
+    font-size: clamp(26px, 2.5vw, 38px);
+    line-height: 1.12;
+    color: var(--bone);
+    margin: 0 0 6px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hair);
+    max-width: 24ch;
+  }
+  .arch-plate {
+    position: absolute;
+    top: 72px;
+    left: calc(50% + var(--inset));
+    height: 46vh;
+    width: calc(46vh * 0.62);
+    z-index: 1;
+  }
+  .arch-plate .edge {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+  }
+  .arch-plate :global(.photo) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    clip-path: url(#archClip);
+    filter: sepia(1) saturate(0.6) contrast(0.72) brightness(0.55) blur(1.4px);
+    opacity: 0.85;
+    z-index: 1;
+  }
+  .arch-plate .wash {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    clip-path: url(#archClip);
+    background: linear-gradient(180deg, rgba(74, 20, 24, 0.18) 0%, rgba(11, 10, 10, 0) 30%, rgba(11, 10, 10, 0.35) 62%, rgba(11, 10, 10, 0.96) 100%);
+  }
+  .band {
+    display: none;
+  }
+  @media (max-width: 1199px) {
+    .meta {
+      display: none;
+    }
+  }
+  @media (max-width: 1023px) {
+    .front {
+      min-height: 0;
+      grid-template-rows: none;
+      padding-bottom: 0;
+    }
+    .stamp {
+      grid-column: 1;
+      grid-row: auto;
+      order: 1;
+      padding: 22px var(--inset) 0;
+      flex-wrap: wrap;
+    }
+    .stamp nav {
+      margin-left: 0;
+      flex-basis: 100%;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+    .meta,
+    .rose {
+      display: none;
+    }
+    .wordmark {
+      grid-column: 1;
+      grid-row: auto;
+      order: 2;
+      margin: 38px 0 0 var(--inset);
+      font-size: 42vw;
+      filter: none;
+    }
+    .wordmark .brk {
+      display: block;
+    }
+    .wordmark .sp3 { left: 0.85em; top: 1.1em; }
+    .arch-plate {
+      position: relative;
+      order: 3;
+      top: auto;
+      left: auto;
+      height: auto;
+      width: 76%;
+      aspect-ratio: 3 / 4.3;
+      margin: 34px var(--inset) 0 auto;
+    }
+    .lead {
+      grid-column: 1;
+      grid-row: auto;
+      order: 5;
+      padding: 30px var(--inset) 56px;
+    }
+    .strap {
+      font-size: 28px;
+      max-width: none;
+    }
+    .band {
+      display: block;
+      width: 100vw;
+      overflow: hidden;
+      border-top: 1px solid var(--blood-hair);
+      border-bottom: 1px solid var(--blood-hair);
+      background: rgba(226, 49, 39, 0.05);
+    }
+    .band .run {
+      display: flex;
+      width: max-content;
+      animation: slide 30s linear infinite;
+    }
+    .band span {
+      font-family: var(--font-goth);
+      font-size: 26px;
+      color: var(--blood);
+      white-space: nowrap;
+      padding: 5px 0;
+    }
+    .band i {
+      font-style: normal;
+      padding: 0 14px;
+      color: var(--bone);
+      opacity: 0.45;
+    }
+  }
+  @keyframes slide {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+</style>

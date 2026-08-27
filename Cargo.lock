@@ -203,6 +203,7 @@ name = "blasphem-wasm"
 version = "0.1.0"
 dependencies = [
  "blasphem",
+ "js-sys",
  "wasm-bindgen",
 ]
 

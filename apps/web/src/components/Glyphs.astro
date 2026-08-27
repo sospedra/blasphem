@@ -1,0 +1,109 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="star" d="M12 0 C13.2 8.4, 15.6 10.8, 24 12 C15.6 13.2, 13.2 15.6, 12 24 C10.8 15.6, 8.4 13.2, 0 12 C8.4 10.8, 10.8 8.4, 12 0 Z"></path>
+    <path id="cross" d="M11 0 H13 V7 H20 V9 H13 V26 H11 V9 H4 V7 H11 Z"></path>
+    <clipPath id="archClip" clipPathUnits="objectBoundingBox"><path d="M0 1 L0 .34 Q0 0 .5 0 Q1 0 1 .34 L1 1 Z"></path></clipPath>
+    <path id="sealPath" d="M95,95 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"></path>
+
+    <symbol id="archFrame" viewBox="0 0 160 220" preserveAspectRatio="none">
+      <path d="M2 218 L2 92 Q2 22 80 2 Q158 22 158 92 L158 218 Z" fill="#0b0a0a" stroke="#e23127" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path d="M12 218 L12 94 Q12 32 80 14 Q148 32 148 94 L148 218" fill="none" stroke="rgba(226,49,39,.35)" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+    </symbol>
+
+    <symbol id="thornRing" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="70" stroke-width="1.5"></circle>
+      <g stroke-width="1.5">
+        <path d="M100 30 L96 14 M100 30 L106 16"></path><path d="M135 39 L138 22 M135 39 L145 28"></path><path d="M161 61 L172 50 M161 61 L176 62"></path><path d="M170 100 L186 96 M170 100 L184 106"></path>
+        <path d="M161 139 L176 138 M161 139 L172 150"></path><path d="M135 161 L145 172 M135 161 L138 178"></path><path d="M100 170 L106 184 M100 170 L96 186"></path><path d="M65 161 L62 178 M65 161 L55 172"></path>
+        <path d="M39 139 L28 150 M39 139 L24 138"></path><path d="M30 100 L14 104 M30 100 L16 94"></path><path d="M39 61 L24 62 M39 61 L28 50"></path><path d="M65 39 L55 28 M65 39 L62 22"></path>
+      </g>
+    </symbol>
+
+    <symbol id="votive" viewBox="0 0 120 152" preserveAspectRatio="none">
+      <path d="M2 149 L2 34 Q2 11 60 3 Q118 11 118 34 L118 149 Z" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path d="M9 149 L9 38 Q9 18 60 11 Q111 18 111 38 L111 149" fill="none" stroke="currentColor" stroke-opacity=".34" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+    </symbol>
+
+    <symbol id="quatrefoil" viewBox="0 0 48 48">
+      <path d="M24 4 A8 8 0 0 1 32 12 A8 8 0 0 1 44 24 A8 8 0 0 1 32 36 A8 8 0 0 1 24 44 A8 8 0 0 1 16 36 A8 8 0 0 1 4 24 A8 8 0 0 1 16 12 A8 8 0 0 1 24 4 Z" fill="none" stroke="currentColor" stroke-width="1.4"></path>
+    </symbol>
+
+    <symbol id="roseWindow" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+      <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1"></circle>
+      <circle cx="100" cy="100" r="30" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+      <circle cx="100" cy="100" r="12" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+      <g stroke="currentColor" stroke-width="1" fill="none" stroke-opacity=".8">
+        <path d="M100 30 A22 22 0 0 1 100 74 A22 22 0 0 1 100 30 Z"></path>
+        <path d="M100 126 A22 22 0 0 1 100 170 A22 22 0 0 1 100 126 Z"></path>
+        <path d="M30 100 A22 22 0 0 1 74 100 A22 22 0 0 1 30 100 Z"></path>
+        <path d="M126 100 A22 22 0 0 1 170 100 A22 22 0 0 1 126 100 Z"></path>
+        <path d="M50 50 A22 22 0 0 1 81 81 A22 22 0 0 1 50 50 Z"></path>
+        <path d="M150 50 A22 22 0 0 1 119 81 A22 22 0 0 1 150 50 Z"></path>
+        <path d="M50 150 A22 22 0 0 1 81 119 A22 22 0 0 1 50 150 Z"></path>
+        <path d="M150 150 A22 22 0 0 1 119 119 A22 22 0 0 1 150 150 Z"></path>
+      </g>
+      <g stroke="currentColor" stroke-width="1" stroke-opacity=".45">
+        <path d="M100 12 V30 M100 170 V188 M12 100 H30 M170 100 H188 M37 37 L58 58 M163 37 L142 58 M37 163 L58 142 M163 163 L142 142"></path>
+      </g>
+    </symbol>
+
+    <symbol id="chalice" viewBox="0 0 64 80">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+        <path d="M12 12 H52 L46 34 Q32 46 18 34 Z"></path>
+        <path d="M32 46 V60"></path>
+        <path d="M18 70 Q32 62 46 70 L46 74 H18 Z"></path>
+        <path d="M14 20 H50"></path>
+      </g>
+    </symbol>
+
+    <symbol id="censer" viewBox="0 0 64 88">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <path d="M32 2 V14"></path>
+        <path d="M14 20 L32 14 L50 20"></path>
+        <path d="M14 20 V34 M50 20 V34 M32 14 V34"></path>
+        <path d="M16 40 H48 L44 62 Q32 74 20 62 Z"></path>
+        <path d="M16 40 Q32 30 48 40"></path>
+        <path d="M24 50 H40 M26 58 H38"></path>
+      </g>
+    </symbol>
+
+    <symbol id="sacredHeart" viewBox="0 0 80 96">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M40 84 C16 64, 6 52, 6 38 C6 24, 16 16, 26 19 C33 21, 38 28, 40 33 C42 28, 47 21, 54 19 C64 16, 74 24, 74 38 C74 52, 64 64, 40 84 Z"></path>
+        <path d="M8 44 Q40 34 72 44" stroke-dasharray="4 5"></path>
+        <path d="M40 16 C33 6, 36 -1, 40 -6"></path>
+        <path d="M40 16 C47 6, 44 -1, 40 -6"></path>
+      </g>
+    </symbol>
+
+    <symbol id="fleur" viewBox="0 0 48 64">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+        <path d="M24 4 C20 14, 20 22, 24 30 C28 22, 28 14, 24 4 Z"></path>
+        <path d="M24 30 C16 24, 8 26, 6 34 C4 42, 12 46, 20 40"></path>
+        <path d="M24 30 C32 24, 40 26, 42 34 C44 42, 36 46, 28 40"></path>
+        <path d="M12 44 H36"></path>
+        <path d="M24 30 V56"></path>
+        <path d="M16 56 Q24 62 32 56"></path>
+      </g>
+    </symbol>
+
+    <symbol id="candle" viewBox="0 0 32 72">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <path d="M16 10 C12 16, 13 22, 16 26 C19 22, 20 16, 16 10 Z"></path>
+        <path d="M16 26 V32"></path>
+        <path d="M10 32 H22 V66 H10 Z"></path>
+        <path d="M6 66 H26"></path>
+      </g>
+    </symbol>
+
+    <symbol id="traceryRule" viewBox="0 0 400 24" preserveAspectRatio="xMidYMid meet">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M0 12 H170 M230 12 H400"></path>
+        <path d="M200 2 L210 12 L200 22 L190 12 Z"></path>
+        <circle cx="200" cy="12" r="3.4"></circle>
+        <path d="M176 12 L184 7 L184 17 Z M224 12 L216 7 L216 17 Z"></path>
+      </g>
+    </symbol>
+  </defs>
+</svg>

@@ -1,0 +1,24 @@
+---
+import Codex from "../layouts/Codex.astro";
+import Frontispiece from "../components/Frontispiece.astro";
+import Claims from "../components/Claims.astro";
+import Credo from "../components/Credo.astro";
+import Detector from "../components/Detector.astro";
+import Rite from "../components/Rite.astro";
+import Vows from "../components/Vows.astro";
+import Reckoning from "../components/Reckoning.astro";
+import Colophon from "../components/Colophon.astro";
+
+const title = "blasphem · catch the hostile message before it sends";
+const description = "Deterministic multilingual toxicity detection compiled to WebAssembly. Fifteen languages, sub-millisecond checks on short messages, no AI runtime, no request after the module loads.";
+---
+<Codex title={title} description={description}>
+  <Frontispiece />
+  <Claims />
+  <Detector />
+  <Rite />
+  <Credo />
+  <Vows />
+  <Reckoning />
+  <Colophon />
+</Codex>

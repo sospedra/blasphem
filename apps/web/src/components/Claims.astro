@@ -1,0 +1,136 @@
+---
+import { CLAIMS } from "../lib/claims";
+---
+<section class="litany" aria-label="What blasphem claims">
+  <svg class="rule" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><use href="#traceryRule"></use></svg>
+  <ul class="plates">
+    {CLAIMS.map((claim) => (
+      <li class="plate grained">
+        <svg class="frame" viewBox="0 0 120 152" preserveAspectRatio="none" aria-hidden="true"><use href="#votive"></use></svg>
+        <svg class="emblem" viewBox="0 0 200 200" aria-hidden="true"><use href={`#${claim.glyph}`}></use></svg>
+        <span class="numeral">{claim.numeral}</span>
+        <p class="value">{claim.value}</p>
+        <p class="label">{claim.label}</p>
+        <p class="evidence-line">{claim.evidence}</p>
+      </li>
+    ))}
+  </ul>
+  <svg class="rule flip" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><use href="#traceryRule"></use></svg>
+</section>
+
+<style>
+  .litany {
+    position: relative;
+    z-index: 1;
+    padding: 56px calc(var(--rail) + var(--inset)) 64px;
+    border-bottom: 1px solid var(--hair);
+    background-image: radial-gradient(120% 100% at 50% 0%, rgba(74, 20, 24, 0.28), rgba(11, 10, 10, 0) 70%);
+  }
+  .rule {
+    display: block;
+    width: 100%;
+    height: 18px;
+    color: var(--blood);
+    opacity: 0.5;
+  }
+  .rule.flip {
+    transform: scaleY(-1);
+  }
+  .plates {
+    list-style: none;
+    margin: 34px 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+  .plate {
+    position: relative;
+    isolation: isolate;
+    padding: 30px 22px 30px;
+    text-align: center;
+    color: var(--blood);
+    min-height: 268px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.5;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .emblem {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    width: 84px;
+    height: 84px;
+    transform: translateX(-50%);
+    z-index: -1;
+    color: var(--blood);
+    opacity: 0.22;
+  }
+  .numeral {
+    font-family: var(--font-rubric);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--blood-ink);
+    opacity: 0.85;
+  }
+  .value {
+    margin: 12px 0 0;
+    font-family: var(--font-goth);
+    font-size: clamp(26px, 2.3vw, 38px);
+    line-height: 1;
+    color: var(--bone);
+    text-shadow: 0 0 26px rgba(226, 49, 39, 0.28);
+  }
+  .label {
+    margin: 6px 0 0;
+    font-family: var(--font-rubric);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--blood-ink);
+  }
+  .evidence-line {
+    margin: 12px 0 76px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--taupe-ink);
+    max-width: 22ch;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .plate:hover .frame {
+      opacity: 1;
+    }
+  }
+  @media (max-width: 1279px) {
+    .plates {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 1023px) {
+    .litany {
+      padding: 40px var(--inset) 48px;
+    }
+    .plates {
+      grid-template-columns: repeat(2, 1fr);
+      margin: 24px 0;
+    }
+    .plate {
+      min-height: 208px;
+      padding: 28px 12px 22px;
+    }
+    .emblem {
+      width: 92px;
+      height: 92px;
+    }
+  }
+</style>

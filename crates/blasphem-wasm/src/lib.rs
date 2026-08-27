@@ -2,7 +2,7 @@
 
 use std::str::FromStr;
 
-use blasphem::{Language, LanguageSelection, NudgeDetector, ReplyTarget};
+use blasphem::{Judge, JudgeOptions, Language, LanguageSelection, NudgeDetector, ReplyTarget};
 #[cfg(feature = "language-detection")]
 use blasphem::{LanguageDetector, LanguageIdentifier, LanguageResolution};
 use wasm_bindgen::prelude::*;
@@ -125,8 +125,7 @@ impl DetectorCore {
 }
 
 fn embedded_detector(language: Language) -> Result<NudgeDetector, String> {
-    NudgeDetector::from_hurtlex_bytes(language, Some(embedded_hurtlex_bytes(language)))
-        .map_err(|error| error.to_string())
+    blasphem::embedded_detector(language).map_err(|error| error.to_string())
 }
 
 fn evaluated_result(
@@ -244,24 +243,105 @@ impl WasmCheckResult {
     }
 }
 
-const fn embedded_hurtlex_bytes(language: Language) -> &'static [u8] {
-    match language {
-        Language::En => include_bytes!("../../../data/raw-v1/hurtlex/EN/1.2/hurtlex_EN.tsv"),
-        Language::Zh => include_bytes!("../../../data/raw-v1/hurtlex/ZH/1.2/hurtlex_ZH.tsv"),
-        Language::Es => include_bytes!("../../../data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv"),
-        Language::Ar => include_bytes!("../../../data/raw-v1/hurtlex/AR/1.2/hurtlex_AR.tsv"),
-        Language::Ms => include_bytes!("../../../data/raw-v1/hurtlex/ID/1.2/hurtlex_ID.tsv"),
-        Language::Pt => include_bytes!("../../../data/raw-v1/hurtlex/PT/1.2/hurtlex_PT.tsv"),
-        Language::Fr => include_bytes!("../../../data/raw-v1/hurtlex/FR/1.2/hurtlex_FR.tsv"),
-        Language::Hi => include_bytes!("../../../data/raw-v1/hurtlex/HI/1.2/hurtlex_HI.tsv"),
-        Language::Ru => include_bytes!("../../../data/raw-v1/hurtlex/RU/1.2/hurtlex_RU.tsv"),
-        Language::Ja => include_bytes!("../../../data/raw-v1/hurtlex/JA/1.2/hurtlex_JA.tsv"),
-        Language::De => include_bytes!("../../../data/raw-v1/hurtlex/DE/1.2/hurtlex_DE.tsv"),
-        Language::Tr => include_bytes!("../../../data/raw-v1/hurtlex/TR/1.2/hurtlex_TR.tsv"),
-        Language::Vi => include_bytes!("../../../data/raw-v1/hurtlex/VI/1.2/hurtlex_VI.tsv"),
-        Language::Ko => include_bytes!("../../../data/raw-v1/hurtlex/KO/1.2/hurtlex_KO.tsv"),
-        Language::It => include_bytes!("../../../data/raw-v1/hurtlex/IT/1.2/hurtlex_IT.tsv"),
+/// A platform-neutral verdict used by the browser binding.
+#[derive(Debug, Clone, PartialEq)]
+pub struct CoreJudgement {
+    pub safe: bool,
+    pub score: f64,
+    pub locale: Option<String>,
+    pub grawlix: Option<String>,
+}
+
+/// A reusable judge behind the wasm boundary.
+#[derive(Debug)]
+pub struct JudgeCore {
+    inner: Judge,
+}
+
+impl JudgeCore {
+    /// Builds a judge for the requested lowercase locale codes.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error for an unsupported locale or invalid embedded data.
+    pub fn new(locales: &[String], detect_language: bool, grawlix: bool) -> Result<Self, String> {
+        let options = JudgeOptions {
+            locales: parse_locales(locales)?,
+            detect_language,
+            grawlix,
+        };
+        Judge::new(options)
+            .map(|inner| Self { inner })
+            .map_err(|error| error.to_string())
     }
+
+    #[must_use]
+    pub fn judge(&self, text: &str) -> CoreJudgement {
+        let verdict = self.inner.judge(text);
+        CoreJudgement {
+            safe: verdict.safe,
+            score: verdict.score,
+            locale: verdict
+                .locale
+                .map(|language| language.code().to_ascii_lowercase()),
+            grawlix: verdict.grawlix,
+        }
+    }
+}
+
+fn parse_locales(codes: &[String]) -> Result<Vec<Language>, String> {
+    codes
+        .iter()
+        .map(|code| Language::from_str(code).map_err(|_| format!("unsupported locale \"{code}\"")))
+        .collect()
+}
+
+/// The browser-facing judge. Returns a plain object, so callers never free it.
+#[wasm_bindgen(js_name = BlasphemJudge)]
+pub struct WasmJudge {
+    core: JudgeCore,
+}
+
+#[wasm_bindgen(js_class = "BlasphemJudge")]
+impl WasmJudge {
+    /// Builds one judge for the requested locales.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error for an unsupported locale or invalid embedded data.
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        locales: Vec<String>,
+        detect_language: bool,
+        grawlix: bool,
+    ) -> Result<WasmJudge, JsValue> {
+        JudgeCore::new(&locales, detect_language, grawlix)
+            .map(|core| Self { core })
+            .map_err(|error| JsValue::from_str(&error))
+    }
+
+    /// Scores one message and returns `{ safe, score, locale, grawlix }`.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the host rejects a property write.
+    pub fn judge(&self, text: &str) -> Result<JsValue, JsValue> {
+        let verdict = self.core.judge(text);
+        let object = js_sys::Object::new();
+        set(&object, "safe", JsValue::from_bool(verdict.safe))?;
+        set(&object, "score", JsValue::from_f64(verdict.score))?;
+        set(&object, "locale", optional_text(verdict.locale))?;
+        set(&object, "grawlix", optional_text(verdict.grawlix))?;
+        Ok(object.into())
+    }
+}
+
+fn optional_text(value: Option<String>) -> JsValue {
+    value.map_or(JsValue::NULL, |text| JsValue::from_str(&text))
+}
+
+fn set(object: &js_sys::Object, key: &str, value: JsValue) -> Result<(), JsValue> {
+    js_sys::Reflect::set(object, &JsValue::from_str(key), &value).map(|_| ())
 }
 
 #[cfg(all(test, feature = "language-detection"))]

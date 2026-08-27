@@ -1,0 +1,8 @@
+---
+interface Props {
+  value: string;
+  class?: string;
+}
+const { value, class: className } = Astro.props;
+---
+<div class:list={["numeral", className]} aria-hidden="true">{value}<i class="spark"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i></div>

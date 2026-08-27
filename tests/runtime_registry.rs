@@ -142,3 +142,92 @@ fn runtime_applies_only_declared_context_suppression_to_sparse_scores() {
         }
     }
 }
+
+#[test]
+fn grawlix_masks_matched_spans() {
+    let detector = detector(Language::En);
+    let result = detector.analyze("you are a stupid loser", ReplyTarget::Person);
+    let spans = blasphem::masked_spans(&result);
+    let masked = blasphem::apply_grawlix(&result.original_text, &spans);
+
+    assert!(!spans.is_empty(), "expected at least one matched span");
+    assert!(masked.starts_with("you are a "), "got {masked}");
+    assert!(!masked.contains("stupid"), "got {masked}");
+    assert_eq!(masked.len(), result.original_text.len());
+}
+
+#[test]
+fn grawlix_leaves_clean_text_untouched() {
+    let detector = detector(Language::En);
+    let result = detector.analyze("good morning everyone", ReplyTarget::Person);
+    let masked = blasphem::apply_grawlix(&result.original_text, &blasphem::masked_spans(&result));
+
+    assert_eq!(masked, "good morning everyone");
+}
+
+#[test]
+fn grawlix_preserves_multibyte_tails() {
+    let detector = detector(Language::Es);
+    let result = detector.analyze("eres un idiota señor", ReplyTarget::Person);
+    let masked = blasphem::apply_grawlix(&result.original_text, &blasphem::masked_spans(&result));
+
+    assert!(masked.ends_with("señor"), "got {masked}");
+}
+
+#[test]
+fn judge_reports_unsafe_with_a_normalized_score() {
+    let judge = blasphem::Judge::new(blasphem::JudgeOptions {
+        locales: vec![Language::En, Language::Es],
+        ..blasphem::JudgeOptions::default()
+    })
+    .expect("judge builds");
+    let verdict = judge.judge("you are a stupid loser");
+
+    // These exact values appear in README.md and in the package README.
+    assert!(!verdict.safe);
+    assert_eq!(verdict.score, 0.64);
+    assert_eq!(verdict.locale, Some(Language::En));
+    assert_eq!(verdict.grawlix, None);
+}
+
+#[test]
+fn judge_returns_grawlix_only_when_requested() {
+    let judge = blasphem::Judge::new(blasphem::JudgeOptions {
+        locales: vec![Language::En],
+        grawlix: true,
+        ..blasphem::JudgeOptions::default()
+    })
+    .expect("judge builds");
+    let masked = judge.judge("you are a stupid loser").grawlix;
+
+    // This exact string appears in README.md and in the package README.
+    assert_eq!(masked.as_deref(), Some("you are a @#$%&! loser"));
+}
+
+#[test]
+fn judge_fails_open_when_the_detected_locale_is_not_loaded() {
+    let judge = blasphem::Judge::new(blasphem::JudgeOptions {
+        locales: vec![Language::Ko],
+        ..blasphem::JudgeOptions::default()
+    })
+    .expect("judge builds");
+    let verdict = judge.judge("you are a stupid loser");
+
+    assert!(verdict.safe);
+    assert_eq!(verdict.score, 0.0);
+    assert_eq!(verdict.locale, None);
+}
+
+#[test]
+fn judge_without_detection_scores_every_loaded_locale() {
+    let judge = blasphem::Judge::new(blasphem::JudgeOptions {
+        locales: vec![Language::En, Language::Es],
+        detect_language: false,
+        ..blasphem::JudgeOptions::default()
+    })
+    .expect("judge builds");
+    let verdict = judge.judge("eres un idiota");
+
+    assert_eq!(verdict.locale, Some(Language::Es));
+    assert!(!verdict.safe);
+}

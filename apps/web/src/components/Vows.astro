@@ -1,0 +1,154 @@
+---
+import { formatKibibytes } from "../lib/format";
+import { browser, sizes, smoke } from "../lib/reports";
+import Numeral from "./Numeral.astro";
+import Spread from "./Spread.astro";
+
+const thresholds = [...new Set(Object.values(smoke.languages).flatMap((language) => language.cases.map((entry) => entry.threshold / 100)))];
+const tableBytes = Math.max(...Object.values(sizes.artifacts).map((artifact) => artifact.bytes));
+const browserChecks = browser.supplied_case_count + browser.auto_case_count + browser.unknown_case_count;
+
+const vows = [
+  {
+    numeral: "I",
+    title: "Nothing leaves the page",
+    body: `Once the module loads it makes no request. The Chromium run recorded ${browser.runtime_network_requests.length} runtime network requests across ${browserChecks} checks.`,
+    glyph: "star",
+  },
+  {
+    numeral: "II",
+    title: "Ordinal, not probability",
+    body: `The score runs from 0 through 1 against one boundary, ${thresholds.join(" or ")}. It ranks evidence. It does not estimate a chance.`,
+    glyph: "scale",
+  },
+  {
+    numeral: "III",
+    title: "Unknown fails open",
+    body: `When the router cannot place a message, nothing is judged: safe stays true and locale is null. ${browser.passed_unknown_case_count} of ${browser.unknown_case_count} unknown-route contracts passed in the browser.`,
+    glyph: "eye",
+  },
+  {
+    numeral: "IV",
+    title: "Fifteen tongues, one table each",
+    body: `Every language carries its own sparse integer table of ${formatKibibytes(tableBytes)}, trained offline. No table reads another.`,
+    glyph: "key",
+  },
+] as const;
+---
+<Spread id="vows" label="the vows" class="vows">
+  <Numeral value="III" class="three" />
+  <h2 id="vows-title" class="visually-hidden">The vows</h2>
+  <div class="arches">
+    {vows.map((vow) => (
+      <figure class="arch">
+        <div class="plate">
+          <svg preserveAspectRatio="none" aria-hidden="true"><use href="#archFrame"></use></svg>
+          <span class="num">{vow.numeral}</span>
+          <svg class="glyph" viewBox="0 0 160 220" aria-hidden="true">
+            {vow.glyph === "star" && <g transform="translate(62,88) scale(1.5)" fill="#e23127"><use href="#star"></use></g>}
+            {vow.glyph === "scale" && <g fill="none" stroke="#e23127" stroke-width="2"><path d="M80 70 V150 M50 150 H110 M44 96 H116 M44 96 L34 124 H54 Z M116 96 L106 124 H126 Z"></path></g>}
+            {vow.glyph === "eye" && <g stroke="#e23127" fill="none" stroke-width="2"><path d="M46 110 Q80 84 114 110 Q80 136 46 110 Z"></path><circle cx="80" cy="110" r="12" fill="#e23127" stroke="none"></circle></g>}
+            {vow.glyph === "key" && <g stroke="#e23127" fill="none" stroke-width="2"><path d="M62 132 L98 96"></path><circle cx="58" cy="136" r="9"></circle><path d="M92 90 L104 102 M84 98 L94 108"></path></g>}
+          </svg>
+        </div>
+        <figcaption>
+          <h3>{vow.title}</h3>
+          <p>{vow.body}</p>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</Spread>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  :global(.vows .numeral.three) {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    margin: 0;
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+  .arches {
+    grid-column: 2 / 4;
+    position: relative;
+    z-index: 2;
+    padding: 96px var(--inset) 120px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 72px 1fr 1fr;
+    gap: 14px;
+  }
+  .arch {
+    margin: 0;
+  }
+  .arch:nth-child(3) {
+    grid-column: 4;
+  }
+  .arch:nth-child(4) {
+    grid-column: 5;
+  }
+  .plate {
+    position: relative;
+    aspect-ratio: 3 / 4;
+  }
+  .plate svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .num {
+    position: absolute;
+    top: 14%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-rubric);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--blood-ink);
+  }
+  h3 {
+    margin: 12px 0 3px;
+    font-family: var(--font-goth);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.05;
+    color: var(--bone);
+  }
+  p {
+    margin: 0;
+    color: var(--taupe-ink);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  @media (max-width: 1023px) {
+    :global(.vows .numeral.three) {
+      top: -8px;
+      font-size: 220px;
+    }
+    .arches {
+      grid-column: 1;
+      grid-template-columns: 1fr 1fr;
+      padding: 150px var(--inset) 72px;
+      gap: 20px 14px;
+    }
+    .arch:nth-child(3) {
+      grid-column: 1;
+    }
+    .arch:nth-child(4) {
+      grid-column: 2;
+    }
+    .num {
+      font-size: 11px;
+    }
+  }
+</style>

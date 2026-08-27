@@ -1,0 +1,31 @@
+:root {
+  --pitch: #0b0a0a;
+  --coal: #111010;
+  --burgundy: #4a1418;
+  --blood: #e23127;
+  --blood-ink: #ff5a50;
+  --bone: #ece7de;
+  --parchment: #cfc7bb;
+  --taupe: #8a7f70;
+  --taupe-ink: #b3a695;
+  --ochre: #a8862e;
+  --hair: rgba(236, 231, 222, 0.14);
+  --blood-hair: rgba(226, 49, 39, 0.42);
+  --rail: 56px;
+  --inset: 72px;
+  --font-goth: "Pirata One", "Cinzel", Georgia, serif;
+  --font-rubric: "Cinzel", Georgia, serif;
+  --font-body: "EB Garamond", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-poster: "Archivo", system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-fast: 160ms;
+  --dur-slow: 260ms;
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --inset: 22px;
+  }
+}

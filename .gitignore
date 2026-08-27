@@ -7,3 +7,11 @@
 /packages/blasphem/dist/
 /packages/blasphem/node_modules/
 /packages/blasphem/*.tgz
+node_modules/
+.turbo/
+/apps/web/dist/
+/apps/web/.astro/
+/packages/blasphem/src/blasphem.js
+/packages/blasphem/src/blasphem.d.ts
+/packages/blasphem/src/blasphem_bg.wasm
+/packages/blasphem/src/blasphem_bg.wasm.d.ts
