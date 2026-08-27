@@ -1,7 +1,7 @@
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
-    path::Path,
+    path::{Path, PathBuf},
 };
 
 use blasphem::{
@@ -16,25 +16,24 @@ use crate::{
         validate_event_distribution,
     },
     calibration::{GateResult, gates},
-    datasets::{DatasetSplit, PreparedManifest, PreparedRow},
+    corpus::{corpus_digest, load_corpus_validation},
+    datasets::{DatasetSplit, PreparedRow},
     evidence::{Sha256Digest, sha256_digest},
     model_manifest::{
         ModelManifest, ModelManifestEntry, ModelSetError, parse_model_manifest, validate_model_set,
     },
-    prepared_input::{
-        load_prepared_validation, parse_prepared_manifest, validate_manifest_structure,
-    },
 };
 
 const MINIMUM_CLASS_ROWS: usize = 300;
-const EVIDENCE_SCHEMA_VERSION: u16 = 1;
+const EVIDENCE_SCHEMA_VERSION: u16 = 2;
+
+pub use crate::behavior_panel::BEHAVIOR_PROVENANCE;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EvidenceInputs {
     pub model_manifest: ModelManifest,
-    pub prepared_manifest: PreparedManifest,
     pub model_manifest_sha256: Sha256Digest,
-    pub prepared_manifest_sha256: Sha256Digest,
+    pub corpus_sha256: Sha256Digest,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -118,7 +117,7 @@ pub struct EvaluationEvidence {
     pub evidence_status: EvidenceStatus,
     pub split: DatasetSplit,
     pub model_manifest_sha256: Sha256Digest,
-    pub prepared_manifest_sha256: Sha256Digest,
+    pub corpus_sha256: Sha256Digest,
     pub languages: BTreeMap<String, LanguageEvaluation>,
     pub pooled_matrix: ConfusionMatrix,
 }
@@ -131,7 +130,7 @@ impl EvaluationEvidence {
     /// Returns an error when the language set or split is wrong.
     pub fn validation(
         model_manifest_sha256: Sha256Digest,
-        prepared_manifest_sha256: Sha256Digest,
+        corpus_sha256: Sha256Digest,
         evaluations: Vec<LanguageEvaluation>,
     ) -> Result<Self, VerificationError> {
         let expected = Language::ALL
@@ -173,7 +172,7 @@ impl EvaluationEvidence {
             evidence_status: EvidenceStatus::CalibrationEvidence,
             split: DatasetSplit::Validation,
             model_manifest_sha256,
-            prepared_manifest_sha256,
+            corpus_sha256,
             languages,
             pooled_matrix,
         })
@@ -216,7 +215,7 @@ pub struct BehaviorEvidence {
     pub schema_version: u16,
     pub evidence_status: EvidenceStatus,
     pub model_manifest_sha256: Sha256Digest,
-    pub prepared_manifest_sha256: Sha256Digest,
+    pub corpus_sha256: Sha256Digest,
     pub languages: BTreeMap<String, LanguageBehaviorResult>,
 }
 
@@ -228,7 +227,7 @@ impl BehaviorEvidence {
     /// Returns an error for a missing language, duplicate case, or invalid summary.
     pub fn new(
         model_manifest_sha256: Sha256Digest,
-        prepared_manifest_sha256: Sha256Digest,
+        corpus_sha256: Sha256Digest,
         results: Vec<LanguageBehaviorResult>,
     ) -> Result<Self, VerificationError> {
         let expected_languages = all_language_codes();
@@ -264,7 +263,7 @@ impl BehaviorEvidence {
             schema_version: EVIDENCE_SCHEMA_VERSION,
             evidence_status: EvidenceStatus::BehaviorContractEvidence,
             model_manifest_sha256,
-            prepared_manifest_sha256,
+            corpus_sha256,
             languages,
         })
     }
@@ -898,6 +897,8 @@ pub enum VerificationError {
     },
     #[error("the model manifest has no parent directory")]
     ModelManifestRoot,
+    #[error("cannot read the corpus: {0}")]
+    Corpus(#[from] crate::corpus::CorpusError),
     #[error("invalid model or prepared input: {0}")]
     ModelSet(#[from] ModelSetError),
     #[error("model manifest misses language {0}")]
@@ -987,17 +988,17 @@ pub fn evaluate_language_validation(
 ///
 /// Returns an error for changed inputs, invalid splits, runtime failures, or parity drift.
 pub fn evaluate_validation(
-    prepared_root: &Path,
+    corpus_root: &Path,
     model_manifest_path: &Path,
     hurtlex_root: &Path,
 ) -> Result<EvaluationEvidence, VerificationError> {
-    let inputs = load_evidence_inputs(prepared_root, model_manifest_path)?;
+    let inputs = load_evidence_inputs(corpus_root, model_manifest_path)?;
     let mut evaluations = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
         let entry = manifest_entry(&inputs.model_manifest, language)?;
         let detector = load_detector(language, entry, hurtlex_root)?;
-        let prepared = load_prepared_validation(prepared_root, language)?;
-        let evaluation = evaluate_language_validation(&detector, &prepared.validation)?;
+        let validation = load_corpus_validation(corpus_root, language)?;
+        let evaluation = evaluate_language_validation(&detector, &validation)?;
         if evaluation.matrix != entry.validation {
             return Err(VerificationError::ValidationManifestMismatch(language));
         }
@@ -1005,7 +1006,7 @@ pub fn evaluate_validation(
     }
     EvaluationEvidence::validation(
         inputs.model_manifest_sha256,
-        inputs.prepared_manifest_sha256,
+        inputs.corpus_sha256,
         evaluations,
     )
 }
@@ -1017,18 +1018,22 @@ pub fn evaluate_validation(
 /// Returns an error for changed inputs, invalid panels, or runtime initialization failures.
 pub fn evaluate_behavior(
     fixture_root: &Path,
-    prepared_root: &Path,
+    corpus_root: &Path,
     model_manifest_path: &Path,
     hurtlex_root: &Path,
 ) -> Result<BehaviorEvidence, VerificationError> {
-    let inputs = load_evidence_inputs(prepared_root, model_manifest_path)?;
+    let inputs = load_evidence_inputs(corpus_root, model_manifest_path)?;
     let mut panels = BTreeMap::new();
     for language in Language::ALL {
         let rows = load_panel(fixture_root, language)?;
         validate_event_distribution(&rows)?;
         panels.insert(language, rows);
     }
-    validate_behavior_provenance(&prepared_root.join("provenance.tsv"), &panels)?;
+    let provenance = corpus_root.parent().map_or_else(
+        || PathBuf::from(BEHAVIOR_PROVENANCE),
+        |root| root.join(BEHAVIOR_PROVENANCE),
+    );
+    validate_behavior_provenance(&provenance, &panels)?;
 
     let mut results = Vec::with_capacity(panels.len());
     for (language, rows) in panels {
@@ -1058,11 +1063,7 @@ pub fn evaluate_behavior(
             cases,
         });
     }
-    BehaviorEvidence::new(
-        inputs.model_manifest_sha256,
-        inputs.prepared_manifest_sha256,
-        results,
-    )
+    BehaviorEvidence::new(inputs.model_manifest_sha256, inputs.corpus_sha256, results)
 }
 
 /// Evaluates all 60 fixed native CLI smoke cases through the product path.
@@ -1115,21 +1116,14 @@ pub fn evaluate_cli_smoke(
 ///
 /// Returns an error for unreadable, malformed, incomplete, or changed inputs.
 pub fn load_evidence_inputs(
-    prepared_root: &Path,
+    corpus_root: &Path,
     model_manifest_path: &Path,
 ) -> Result<EvidenceInputs, VerificationError> {
     let (model_manifest, model_manifest_sha256) = load_model_evidence_input(model_manifest_path)?;
-
-    let prepared_path = prepared_root.join("manifest.json");
-    let prepared_bytes = read_evidence_input(&prepared_path)?;
-    let prepared_manifest = parse_prepared_manifest(prepared_bytes.as_slice())?;
-    validate_manifest_structure(&prepared_manifest)?;
-
     Ok(EvidenceInputs {
         model_manifest,
-        prepared_manifest,
         model_manifest_sha256,
-        prepared_manifest_sha256: sha256_digest(&prepared_bytes),
+        corpus_sha256: corpus_digest(corpus_root)?,
     })
 }
 

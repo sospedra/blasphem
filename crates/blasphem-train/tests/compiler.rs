@@ -14,17 +14,14 @@ use blasphem_train::{
         BatchCompileOptions, CompileError, CompileRequest, CompiledLanguage, compile_language,
         compile_model_set, train_weights, validation_score_scale,
     },
-    datasets::{
-        DatasetId, LineageStatus, PreparedCounts, PreparedFileIdentity, PreparedManifest,
-        PreparedRow,
-    },
+    corpus::load_corpus_language,
+    datasets::{DatasetId, PreparedRow},
     evidence::Sha256Digest,
     model_manifest::{ModelSetError, parse_model_manifest, validate_model_set},
-    prepared_input::load_prepared_language,
-    publication::PREPARED_MANIFEST_SCHEMA_VERSION,
-    source_manifest::SourceRecord,
+    source_manifest::parse_frozen_source_lock,
     source_role::SourceRole,
 };
+use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use tempfile::tempdir;
 
@@ -37,7 +34,8 @@ fn compile_help_exposes_only_batch_inputs() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8(output.stdout).expect("UTF-8 help");
-    assert!(stdout.contains("--prepared-root"));
+    assert!(stdout.contains("--corpus-root"));
+    assert!(stdout.contains("--source-lock"));
     assert!(stdout.contains("--hurtlex-root"));
     assert!(stdout.contains("--behavior-root"));
     assert!(stdout.contains("--output"));
@@ -404,12 +402,12 @@ fn prepared_row(language: Language, label: EvalLabel, source_id: &str, text: &st
 }
 
 #[test]
-fn spanish_compiles_deterministically_from_prepared_input() {
+fn spanish_compiles_deterministically_from_corpus_input() {
     let directory = tempdir().expect("temporary directory");
-    let prepared = write_batch_fixture(directory.path()).prepared_root;
+    let options = write_batch_fixture(directory.path());
 
-    let first = compile_prepared_language_for(&prepared, Language::Es);
-    let second = compile_prepared_language_for(&prepared, Language::Es);
+    let first = compile_corpus_language_for(&options, Language::Es);
+    let second = compile_corpus_language_for(&options, Language::Es);
 
     assert_eq!(
         first.artifact, second.artifact,
@@ -428,9 +426,16 @@ fn spanish_compiles_deterministically_from_prepared_input() {
     );
 }
 
-fn compile_prepared_language_for(prepared_root: &Path, language: Language) -> CompiledLanguage {
-    let prepared =
-        load_prepared_language(prepared_root, language).expect("load the prepared language");
+fn compile_corpus_language_for(
+    options: &BatchCompileOptions,
+    language: Language,
+) -> CompiledLanguage {
+    let lock = parse_frozen_source_lock(
+        fs::File::open(&options.source_lock).expect("open the fixture source lock"),
+    )
+    .expect("parse the fixture source lock");
+    let prepared = load_corpus_language(&options.corpus_root, language, &lock)
+        .expect("load the corpus language");
     compile_language(&CompileRequest {
         language,
         development: prepared.development,
@@ -452,15 +457,12 @@ fn batch_compiler_publishes_a_complete_model_set_without_test_files() {
     assert_eq!(manifest.entries[0].language, Language::En);
     assert_eq!(manifest.entries[2].language, Language::Es);
     assert!(manifest.entries.iter().all(|entry| entry.test_rows == 7));
-    for language in Language::ALL {
-        assert!(
-            !options
-                .prepared_root
-                .join(language.storage_code())
-                .join("test.tsv")
-                .exists()
-        );
-    }
+    assert!(
+        manifest
+            .entries
+            .iter()
+            .all(|entry| entry.development_rows == 4 && entry.validation_rows == 2)
+    );
     let parsed = parse_model_manifest(
         fs::File::open(options.output.join("manifest.json")).expect("published manifest"),
     )
@@ -516,20 +518,18 @@ fn batch_compiler_rejects_a_hurtlex_digest_mismatch() {
 fn batch_compiler_requires_one_hurtlex_source_per_language() {
     let directory = tempdir().expect("temporary directory");
     let options = write_batch_fixture(directory.path());
-    let manifest_path = options.prepared_root.join("manifest.json");
-    let mut manifest: PreparedManifest =
-        serde_json::from_slice(&fs::read(&manifest_path).expect("prepared manifest"))
-            .expect("parse prepared manifest");
-    manifest
-        .language_sources
-        .get_mut("EN")
-        .expect("English sources")
-        .retain(|source_id| source_id != "hurtlex-en");
+    let mut lock: Value =
+        serde_json::from_slice(&fs::read(&options.source_lock).expect("fixture source lock"))
+            .expect("parse fixture source lock");
+    lock["sources"]
+        .as_array_mut()
+        .expect("source array")
+        .retain(|source| source["source_file_id"] != "hurtlex-en");
     fs::write(
-        &manifest_path,
-        serde_json::to_vec(&manifest).expect("serialize changed manifest"),
+        &options.source_lock,
+        serde_json::to_vec(&lock).expect("serialize changed lock"),
     )
-    .expect("write changed manifest");
+    .expect("write changed lock");
 
     let error = compile_model_set(&options).expect_err("missing HurtLex source");
 
@@ -544,16 +544,14 @@ fn batch_compiler_requires_one_hurtlex_source_per_language() {
 }
 
 fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
-    let prepared_root = root.join("prepared");
+    let corpus_root = root.join("corpus");
     let hurtlex_root = root.join("hurtlex");
+    let source_lock = root.join("source-lock.json");
     let output = root.join("models");
-    fs::create_dir(&prepared_root).expect("prepared root");
+    fs::create_dir(&corpus_root).expect("corpus root");
     fs::create_dir(&hurtlex_root).expect("HurtLex root");
 
     let mut sources = Vec::new();
-    let mut language_sources = BTreeMap::new();
-    let mut language_counts = BTreeMap::new();
-    let mut prepared_files = BTreeMap::new();
     for language in Language::ALL {
         let code = language.storage_code();
         let dataset_source_id = format!("dataset-{}", code.to_ascii_lowercase());
@@ -565,109 +563,111 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
             .expect("HurtLex language directory");
         fs::write(&hurtlex_path, &hurtlex_bytes).expect("HurtLex fixture");
 
-        sources.push(source_record(
+        sources.push(frozen_source(
             language,
             DatasetId::TextDetox,
             &dataset_source_id,
             &format!("datasets/{code}.tsv"),
             sha256_digest(format!("dataset-{code}").as_bytes()),
         ));
-        sources.push(source_record(
+        sources.push(frozen_source(
             language,
             DatasetId::HurtLex,
             &hurtlex_source_id,
             &hurtlex_relative_path,
             sha256_digest(&hurtlex_bytes),
         ));
-        language_sources.insert(code.to_owned(), vec![dataset_source_id, hurtlex_source_id]);
-        language_counts.insert(
-            code.to_owned(),
-            PreparedCounts {
-                development: 4,
-                validation: 2,
-                test: 7,
-                duplicates: 0,
-                conflicts: 0,
-                excluded: 0,
-            },
-        );
 
-        let language_root = prepared_root.join(code);
-        fs::create_dir(&language_root).expect("prepared language directory");
-        let development = prepared_tsv(
-            language,
-            &[
-                ("toxic", "development/toxic/1", "toxsignal"),
-                ("toxic", "development/toxic/2", "toxsignal"),
-                ("clean", "development/clean/1", "cleansignal"),
-                ("clean", "development/clean/2", "cleansignal"),
-            ],
-        );
-        let validation = prepared_tsv(
-            language,
-            &[
-                ("toxic", "validation/toxic", "toxsignal"),
-                ("clean", "validation/clean", "cleansignal"),
-            ],
-        );
-        fs::write(language_root.join("development.tsv"), &development)
-            .expect("development fixture");
-        fs::write(language_root.join("validation.tsv"), &validation).expect("validation fixture");
-        for (split, bytes, rows, clean_rows, toxic_rows) in [
-            ("development", development.as_slice(), 4, 2, 2),
-            ("validation", validation.as_slice(), 2, 1, 1),
-        ] {
-            let relative_path = format!("{code}/{split}.tsv");
-            prepared_files.insert(
-                relative_path.clone(),
-                PreparedFileIdentity {
-                    relative_path,
-                    sha256: sha256_digest(bytes),
-                    rows,
-                    clean_rows,
-                    toxic_rows,
-                },
-            );
-        }
-        let relative_path = format!("{code}/test.tsv");
-        prepared_files.insert(
-            relative_path.clone(),
-            PreparedFileIdentity {
-                relative_path,
-                sha256: sha256_digest(format!("unused-test-{code}").as_bytes()),
-                rows: 7,
-                clean_rows: 4,
-                toxic_rows: 3,
-            },
-        );
+        fs::write(corpus_root.join(format!("{code}.tsv")), corpus_tsv()).expect("corpus fixture");
     }
 
-    let manifest = PreparedManifest {
-        schema_version: PREPARED_MANIFEST_SCHEMA_VERSION.to_owned(),
-        sources,
-        language_sources,
-        language_counts,
-        source_rows: 84,
-        source_label_counts: BTreeMap::new(),
-        detector_label_counts: BTreeMap::new(),
-        source_split_counts: BTreeMap::new(),
-        detector_split_counts: BTreeMap::new(),
-        inclusion_status_counts: BTreeMap::new(),
-        exclusion_reason_counts: BTreeMap::new(),
-        prepared_files,
-    };
-    fs::write(
-        prepared_root.join("manifest.json"),
-        serde_json::to_vec(&manifest).expect("serialize prepared manifest"),
-    )
-    .expect("prepared manifest");
+    write_source_lock(&source_lock, &sources);
 
     BatchCompileOptions {
-        prepared_root,
+        corpus_root,
+        source_lock,
         hurtlex_root,
         behavior_root: None,
         output,
     }
+}
+
+/// Four development rows, two validation rows, and seven sealed test rows.
+fn corpus_tsv() -> Vec<u8> {
+    let mut rows = vec![
+        ("development", "clean", "cleansignal"),
+        ("development", "clean", "cleansignal two"),
+        ("development", "toxic", "toxsignal"),
+        ("development", "toxic", "toxsignal two"),
+        ("validation", "clean", "validation cleansignal"),
+        ("validation", "toxic", "validation toxsignal"),
+    ];
+    for text in TEST_CLEAN.iter().copied() {
+        rows.push(("test", "clean", text));
+    }
+    for text in TEST_TOXIC.iter().copied() {
+        rows.push(("test", "toxic", text));
+    }
+
+    let mut lines = Vec::with_capacity(rows.len());
+    for (split, label, text) in rows {
+        lines.push(format!("{split}\t{label}\t{text}"));
+    }
+    lines.sort();
+    let mut value = String::from("split\tlabel\ttext\n");
+    for line in lines {
+        value.push_str(&line);
+        value.push('\n');
+    }
+    value.into_bytes()
+}
+
+const TEST_CLEAN: [&str; 4] = [
+    "test cleansignal one",
+    "test cleansignal two",
+    "test cleansignal three",
+    "test cleansignal four",
+];
+
+const TEST_TOXIC: [&str; 3] = [
+    "test toxsignal one",
+    "test toxsignal two",
+    "test toxsignal three",
+];
+
+fn write_source_lock(path: &Path, sources: &[Value]) {
+    let lock = json!({ "schema_version": "source-lock-v1", "sources": sources });
+    fs::write(
+        path,
+        serde_json::to_vec(&lock).expect("serialize source lock"),
+    )
+    .expect("write source lock");
+}
+
+fn frozen_source(
+    language: Language,
+    dataset: DatasetId,
+    source_file_id: &str,
+    file_path: &str,
+    file_sha256: Sha256Digest,
+) -> Value {
+    json!({
+        "dataset": dataset,
+        "detector_language": language.storage_code(),
+        "source_role": SourceRole::Baseline,
+        "source_file_id": source_file_id,
+        "immutable_source_url": format!("https://example.invalid/{source_file_id}"),
+        "archive_member": Value::Null,
+        "revision": "fixture-v1",
+        "file_path": file_path,
+        "file_sha256": file_sha256.as_str(),
+        "license_id": "CC-BY-4.0",
+        "license_url": "https://example.invalid/license",
+        "license_year": 2024,
+        "citation": "Fixture citation",
+        "upstream_lineage": ["https://example.invalid/source"],
+        "lineage_status": "resolved",
+    })
 }
 
 /// Spanish manifest entries pin the frozen HurtLex ES digest, so the fixture uses the real file.
@@ -677,45 +677,6 @@ fn hurtlex_fixture_bytes(language: Language) -> Vec<u8> {
             .expect("Spanish HurtLex data");
     }
     b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n".to_vec()
-}
-
-fn source_record(
-    language: Language,
-    dataset: DatasetId,
-    source_file_id: &str,
-    file_path: &str,
-    file_sha256: Sha256Digest,
-) -> SourceRecord {
-    SourceRecord {
-        dataset,
-        detector_language: language,
-        source_role: SourceRole::Baseline,
-        source_file_id: source_file_id.to_owned(),
-        immutable_source_url: format!("https://example.invalid/{source_file_id}"),
-        archive_member: None,
-        revision: Some("fixture-v1".to_owned()),
-        file_path: file_path.to_owned(),
-        file_sha256,
-        download_sha256: None,
-        acquired_at_unix_seconds: 1,
-        license_id: "fixture".to_owned(),
-        license_url: "https://example.invalid/license".to_owned(),
-        citation: "fixture".to_owned(),
-        upstream_lineage: Vec::new(),
-        lineage_status: LineageStatus::Resolved,
-    }
-}
-
-fn prepared_tsv(language: Language, rows: &[(&str, &str, &str)]) -> Vec<u8> {
-    let mut value = String::from("detector_language\tlabel\tsource_id\ttext\n");
-    for (label, source_id, text) in rows {
-        value.push_str(&format!(
-            "{}\t{label}\t{}/{source_id}\t{text}\n",
-            language.code(),
-            language.code()
-        ));
-    }
-    value.into_bytes()
 }
 
 fn sha256_digest(bytes: &[u8]) -> Sha256Digest {

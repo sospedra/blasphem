@@ -49,12 +49,27 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
-      - name: Generate the prepared draft corpus
+      - name: Verify the corpus
         run: |
-          cargo run --release --locked -p blasphem-train -- prepare \
-            --source-lock resources/datasets/source-lock-v1.json \
-            --raw-root data/raw-v1 \
-            --output data/prepared-draft-v1
+          cargo run --release --locked -p blasphem-train -- corpus-verify \
+            --corpus-root corpus \
+            --evaluation-lock resources/datasets/evaluation-lock-v1.json
+
+      - name: Install JavaScript dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Read the Playwright version
+        id: playwright
+        run: echo "version=$(pnpm --filter blasphem exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Install Playwright browsers
+        run: pnpm --filter blasphem exec playwright install --with-deps chromium webkit
 
       - name: Reproduce
         run: cargo run --release --locked -p blasphem-train -- reproduce
@@ -95,12 +110,11 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
-      - name: Generate the prepared draft corpus
+      - name: Verify the corpus
         run: |
-          cargo run --release --locked -p blasphem-train -- prepare \
-            --source-lock resources/datasets/source-lock-v1.json \
-            --raw-root data/raw-v1 \
-            --output data/prepared-draft-v1
+          cargo run --release --locked -p blasphem-train -- corpus-verify \
+            --corpus-root corpus \
+            --evaluation-lock resources/datasets/evaluation-lock-v1.json
 
       - name: Reproduce without the browser
         run: cargo run --release --locked -p blasphem-train -- reproduce --skip-browser

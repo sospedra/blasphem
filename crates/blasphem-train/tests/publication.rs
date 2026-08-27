@@ -461,6 +461,7 @@ fn fixture_source(language: Language) -> SourceRecord {
         acquired_at_unix_seconds: 1_700_000_000,
         license_id: "CC-BY-4.0".to_owned(),
         license_url: "https://example.invalid/license".to_owned(),
+        license_year: 2024,
         citation: "Fixture citation".to_owned(),
         upstream_lineage: vec!["fixture-lineage".to_owned()],
         lineage_status: LineageStatus::Resolved,

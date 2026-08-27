@@ -875,31 +875,34 @@ impl PanelFixture {
     }
 
     fn write_development_row(&self, source_id: &str, language: Language, label: &str, text: &str) {
-        let path = self.temporary.path().join("data/prepared-draft-v1/EN");
-        fs::create_dir_all(&path).expect("create prepared data root");
-        fs::write(
-            path.join("development.tsv"),
-            format!(
-                "detector_language\tlabel\tsource_id\ttext\n{}\t{label}\t{source_id}\t{text}\n",
-                language.code()
-            ),
-        )
-        .expect("write prepared development row");
+        self.write_evidence(&[(source_id, language.storage_code(), label, text)]);
     }
 
-    fn write_validation_source(&self, source_id: &str) {
-        self.write_dataset_split("validation", &[source_id]);
+    /// A sealed row is not audit-only evidence, so it never enters the file.
+    fn write_validation_source(&self, _source_id: &str) {
+        self.write_evidence(&[]);
     }
 
-    fn write_dataset_split(&self, split: &str, source_ids: &[&str]) {
-        let path = self.temporary.path().join("data/prepared-draft-v1/EN");
-        fs::create_dir_all(&path).expect("create prepared data root");
-        let mut contents = String::from("detector_language\tlabel\tsource_id\ttext\n");
-        for source_id in source_ids {
-            contents.push_str("EN\ttoxic\t");
-            contents.push_str(source_id);
-            contents.push_str("\tfixture text\n");
+    fn write_dataset_split(&self, _split: &str, source_ids: &[&str]) {
+        let rows = source_ids
+            .iter()
+            .map(|source_id| (*source_id, "EN", "toxic", "fixture text"))
+            .collect::<Vec<_>>();
+        self.write_evidence(&rows);
+    }
+
+    fn write_evidence(&self, rows: &[(&str, &str, &str, &str)]) {
+        let path = self.temporary.path().join("resources/datasets");
+        fs::create_dir_all(&path).expect("create the evidence directory");
+        let mut contents = String::from(
+            "source_id\tdetector_language_code\tlabel\tinclusion_status\texclusion_reason\ttext\n",
+        );
+        for (source_id, code, label, text) in rows {
+            contents.push_str(&format!(
+                "{source_id}\t{code}\t{label}\texcluded\taudit_only\t{text}\n"
+            ));
         }
-        fs::write(path.join(format!("{split}.tsv")), contents).expect("write prepared split");
+        fs::write(path.join("behavior-provenance-v1.tsv"), contents)
+            .expect("write the behavior provenance");
     }
 }

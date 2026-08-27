@@ -1,8 +1,6 @@
 use std::{fs, path::PathBuf};
 
-use blasphem_train::evaluation_lock::{
-    EvaluationLockError, parse_evaluation_lock, verify_sealed_partitions,
-};
+use blasphem_train::evaluation_lock::parse_evaluation_lock;
 
 fn project_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
@@ -27,37 +25,52 @@ fn the_lock_seals_fifteen_languages() {
 
 #[test]
 fn a_moved_test_row_fails_verification() {
-    let source = project_root().join("data/prepared-v1");
-    if !source.exists() {
-        eprintln!("skipped: data/prepared-v1 is derived and not committed");
-        return;
-    }
-    let temporary = tempfile::tempdir().expect("temporary directory");
-    let root = temporary.path().join("prepared");
-    copy_tree(&source, &root);
+    use blasphem::Language;
+    use blasphem_train::corpus::{parse_corpus, split_digest};
+    use blasphem_train::datasets::DatasetSplit;
 
-    let target = root.join("EN/test.tsv");
-    let mut text = fs::read_to_string(&target).expect("readable test split");
-    text.push_str("EN\tclean\tinjected@0/row/000000\tinjected row\n");
-    fs::write(&target, text).expect("writable test split");
+    let path = project_root().join("corpus/EN.tsv");
+    let mut rows = parse_corpus(fs::File::open(&path).expect("English corpus")).unwrap();
+    let sealed = split_digest(&rows, DatasetSplit::Test);
 
-    let error = verify_sealed_partitions(&root, &committed_lock())
-        .expect_err("a changed sealed file must fail");
-    assert!(matches!(
-        error,
-        EvaluationLockError::SealedHashChanged { .. }
-    ));
+    let injected = rows
+        .iter()
+        .find(|row| row.split == DatasetSplit::Development)
+        .cloned()
+        .expect("a development row");
+    rows.push(blasphem_train::corpus::CorpusRow {
+        split: DatasetSplit::Test,
+        ..injected
+    });
+
+    assert_ne!(
+        split_digest(&rows, DatasetSplit::Test),
+        sealed,
+        "moving a row into the sealed test split must change its digest"
+    );
+    let _ = Language::En;
 }
 
-fn copy_tree(from: &std::path::Path, to: &std::path::Path) {
-    fs::create_dir_all(to).expect("creatable directory");
-    for entry in fs::read_dir(from).expect("readable directory") {
-        let entry = entry.expect("readable entry");
-        let target = to.join(entry.file_name());
-        if entry.path().is_dir() {
-            copy_tree(&entry.path(), &target);
-        } else {
-            fs::copy(entry.path(), target).expect("copyable file");
-        }
+#[test]
+fn the_evaluation_lock_seals_the_committed_corpus_rows() {
+    use blasphem::Language;
+    use blasphem_train::corpus::{parse_corpus, split_digest};
+    use blasphem_train::datasets::DatasetSplit;
+
+    let bytes = std::fs::read("../../resources/datasets/evaluation-lock-v1.json").unwrap();
+    let lock = blasphem_train::evaluation_lock::parse_evaluation_lock(bytes.as_slice()).unwrap();
+
+    assert_eq!(lock.languages.len(), 15);
+    for (code, sealed) in &lock.languages {
+        let path = format!("../../corpus/{code}.tsv");
+        let file = std::fs::File::open(&path).unwrap_or_else(|_| panic!("missing {path}"));
+        let rows = parse_corpus(file).unwrap();
+
+        assert_eq!(
+            split_digest(&rows, DatasetSplit::Validation),
+            sealed.validation_sha256
+        );
+        assert_eq!(split_digest(&rows, DatasetSplit::Test), sealed.test_sha256);
     }
+    let _ = Language::En;
 }

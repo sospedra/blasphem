@@ -98,7 +98,7 @@ return a nonzero status after any mismatch.
 Blasphem first-party code uses the Apache License 2.0. See `LICENSE`.
 
 The corpora and lexica in this repository keep their own recorded licenses,
-including one unresolved license and one noncommercial license. See `NOTICE`
+including one unresolved license and two share-alike licenses. See `NOTICE`
 for the full accounting.
 
 ## Setup

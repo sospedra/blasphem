@@ -1,7 +1,6 @@
 use std::{collections::BTreeMap, fs};
 
 use blasphem::{ConfusionMatrix, EvalLabel, Language, NudgeDetector};
-use blasphem_train::prepared_input::load_prepared_validation;
 use blasphem_train::{
     ControlKind, EventType, EvidenceKind,
     calibration::GateResult,
@@ -82,28 +81,19 @@ fn evaluation_accepts_exactly_300_rows_per_new_language_class() {
 
 #[test]
 fn validation_loader_reads_one_declared_validation_split() {
-    let source = project_root().join("data/prepared-v1");
     let directory = tempdir().expect("temporary directory");
-    fs::create_dir_all(directory.path().join("EN")).expect("English directory");
     fs::copy(
-        source.join("manifest.json"),
-        directory.path().join("manifest.json"),
+        project_root().join("corpus/EN.tsv"),
+        directory.path().join("EN.tsv"),
     )
-    .expect("prepared manifest");
-    fs::copy(
-        source.join("EN/validation.tsv"),
-        directory.path().join("EN/validation.tsv"),
-    )
-    .expect("English validation split");
+    .expect("English corpus file");
 
-    let input = load_prepared_validation(directory.path(), Language::En)
-        .expect("English validation input without development or test files");
+    let input = blasphem_train::corpus::load_corpus_validation(directory.path(), Language::En)
+        .expect("English validation rows without development or test rows");
 
-    assert_eq!(input.language, Language::En);
-    assert_eq!(input.validation.len(), input.counts.validation);
+    assert_eq!(input.len(), 746);
     assert!(
         input
-            .validation
             .iter()
             .all(|row| row.detector_language == Language::En)
     );
@@ -163,11 +153,11 @@ fn language_evaluation_rejects_a_row_for_another_language() {
 fn validation_evidence_matches_each_canonical_manifest_matrix() {
     let project = project_root();
     let model_path = project.join("resources/models/multilingual-v2/manifest.json");
-    let inputs = load_evidence_inputs(&project.join("data/prepared-v1"), &model_path)
-        .expect("canonical inputs");
+    let inputs =
+        load_evidence_inputs(&project.join("corpus"), &model_path).expect("canonical inputs");
 
     let evidence = evaluate_validation(
-        &project.join("data/prepared-v1"),
+        &project.join("corpus"),
         &model_path,
         &project.join("data/raw-v1/hurtlex"),
     )
@@ -195,7 +185,7 @@ fn behavior_evidence_scores_all_360_cases_through_the_public_path() {
 
     let evidence = evaluate_behavior(
         &project.join("tests/fixtures/behavior"),
-        &project.join("data/prepared-v1"),
+        &project.join("corpus"),
         &project.join("resources/models/multilingual-v2/manifest.json"),
         &project.join("data/raw-v1/hurtlex"),
     )
@@ -292,10 +282,7 @@ fn published_pretest_reports_are_canonical_and_pass() {
         validation.model_manifest_sha256,
         smoke.model_manifest_sha256
     );
-    assert_eq!(
-        validation.prepared_manifest_sha256,
-        behavior.prepared_manifest_sha256,
-    );
+    assert_eq!(validation.corpus_sha256, behavior.corpus_sha256,);
 }
 
 #[test]
@@ -399,9 +386,8 @@ fn evidence_digest_hashes_the_exact_input_bytes() {
 fn evidence_inputs_hash_exact_typed_manifest_bytes() {
     let project = project_root();
     let model_path = project.join("resources/models/multilingual-v2/manifest.json");
-    let prepared_path = project.join("data/prepared-v1/manifest.json");
 
-    let inputs = load_evidence_inputs(&project.join("data/prepared-v1"), &model_path)
+    let inputs = load_evidence_inputs(&project.join("corpus"), &model_path)
         .expect("verified evidence inputs");
 
     assert_eq!(inputs.model_manifest.entries.len(), 15);
@@ -410,8 +396,8 @@ fn evidence_inputs_hash_exact_typed_manifest_bytes() {
         sha256_digest(&fs::read(model_path).expect("model manifest bytes")),
     );
     assert_eq!(
-        inputs.prepared_manifest_sha256,
-        sha256_digest(&fs::read(prepared_path).expect("prepared manifest bytes")),
+        inputs.corpus_sha256,
+        blasphem_train::corpus::corpus_digest(&project.join("corpus")).expect("corpus digest"),
     );
 }
 
@@ -546,7 +532,7 @@ fn behavior_evidence_keeps_declared_case_provenance() {
         schema_version: 1,
         evidence_status: EvidenceStatus::BehaviorContractEvidence,
         model_manifest_sha256: digest('a'),
-        prepared_manifest_sha256: digest('b'),
+        corpus_sha256: digest('b'),
         languages: BTreeMap::from([(
             "EN".to_owned(),
             LanguageBehaviorResult {
@@ -609,7 +595,7 @@ fn dataset_behavior_refs_are_final_audit_only_provenance_rows() {
         .collect::<BTreeMap<_, _>>();
 
     validate_behavior_provenance(
-        &project_root().join("data/prepared-v1/provenance.tsv"),
+        &project_root().join(blasphem_train::verification::BEHAVIOR_PROVENANCE),
         &panels,
     )
     .expect("final audit-only provenance");

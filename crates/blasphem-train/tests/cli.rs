@@ -508,7 +508,12 @@ fn help_exposes_the_task_four_command_contract() {
         .output()
         .expect("run check help");
     let compile_help = String::from_utf8(compile.stdout).expect("UTF-8 help");
-    for argument in ["--prepared-root", "--hurtlex-root", "--output"] {
+    for argument in [
+        "--corpus-root",
+        "--source-lock",
+        "--hurtlex-root",
+        "--output",
+    ] {
         assert!(compile_help.contains(argument), "missing {argument}");
     }
     assert!(!compile_help.contains("--development"));
@@ -586,19 +591,19 @@ fn repo_root() -> std::path::PathBuf {
 
 fn one_source_catalog(url: &str) -> String {
     format!(
-        r#"{{"schema_version":"source-catalog-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_file_id":"ibrohim-budi-re-dataset","requested_url":"{url}","revision_url":null,"requested_revision":"revision","archive_member":null,"file_path":"source.csv","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
+        r#"{{"schema_version":"source-catalog-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_file_id":"ibrohim-budi-re-dataset","requested_url":"{url}","revision_url":null,"requested_revision":"revision","archive_member":null,"file_path":"source.csv","license_id":"CC-BY-4.0","license_url":"https://example.test/license","license_year":2024,"citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
     )
 }
 
 fn one_source_lock(url: &str) -> String {
     format!(
-        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_role":"baseline","source_file_id":"ibrohim-budi-re-dataset","immutable_source_url":"{url}","archive_member":null,"revision":"revision","file_path":"source.csv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
+        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"ibrohim-budi","detector_language":"ID","source_role":"baseline","source_file_id":"ibrohim-budi-re-dataset","immutable_source_url":"{url}","archive_member":null,"revision":"revision","file_path":"source.csv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","license_year":2024,"citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
     )
 }
 
 fn one_textdetox_source_lock(url: &str, revision: &str) -> String {
     format!(
-        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"textdetox","detector_language":"EN","source_role":"baseline","source_file_id":"textdetox-en","immutable_source_url":"{url}","archive_member":null,"revision":"{revision}","file_path":"textdetox/en.tsv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
+        r#"{{"schema_version":"source-lock-v1","sources":[{{"dataset":"textdetox","detector_language":"EN","source_role":"baseline","source_file_id":"textdetox-en","immutable_source_url":"{url}","archive_member":null,"revision":"{revision}","file_path":"textdetox/en.tsv","file_sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","license_id":"CC-BY-4.0","license_url":"https://example.test/license","license_year":2024,"citation":"Example citation","upstream_lineage":["https://example.test/source"],"lineage_status":"resolved"}}]}}"#
     )
 }
 
@@ -631,6 +636,7 @@ fn write_catalog_observation(path: &std::path::Path) {
                 acquired_at_unix_seconds: 1,
                 license_id: source.license_id,
                 license_url: source.license_url,
+                license_year: source.license_year,
                 citation: source.citation,
                 upstream_lineage: source.upstream_lineage,
                 lineage_status: source.lineage_status,
@@ -687,6 +693,7 @@ fn write_prepare_fixture(
             acquired_at_unix_seconds: 1,
             license_id: "CC-BY-4.0".to_owned(),
             license_url: "https://example.test/license".to_owned(),
+            license_year: 2024,
             citation: "Fixture citation".to_owned(),
             upstream_lineage: vec!["https://example.test/lineage".to_owned()],
             lineage_status: LineageStatus::Resolved,
@@ -918,6 +925,7 @@ fn write_prepare_fixture(
                 download_sha256: source.download_sha256,
                 license_id: source.license_id,
                 license_url: source.license_url,
+                license_year: source.license_year,
                 citation: source.citation,
                 upstream_lineage: source.upstream_lineage,
                 lineage_status: source.lineage_status,
@@ -1069,4 +1077,50 @@ fn write_fixture_file(root: &std::path::Path, path: &str, contents: &str) {
     let path = root.join(path);
     fs::create_dir_all(path.parent().expect("fixture parent")).expect("create fixture parent");
     fs::write(path, contents).expect("write fixture file");
+}
+
+#[test]
+fn corpus_verify_passes_on_the_committed_corpus() {
+    let output = std::process::Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
+        .args(["corpus-verify", "--corpus-root", "../../corpus"])
+        .args([
+            "--evaluation-lock",
+            "../../resources/datasets/evaluation-lock-v1.json",
+        ])
+        .output()
+        .unwrap();
+
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(String::from_utf8_lossy(&output.stdout).contains("languages=15"));
+}
+
+#[test]
+fn corpus_verify_rejects_an_edited_sealed_row() {
+    let directory = tempdir().unwrap();
+    for entry in std::fs::read_dir("../../corpus").unwrap() {
+        let entry = entry.unwrap();
+        std::fs::copy(entry.path(), directory.path().join(entry.file_name())).unwrap();
+    }
+    let path = directory.path().join("EN.tsv");
+    let text = std::fs::read_to_string(&path).unwrap();
+    let edited = text.replacen("\ntest\ttoxic\t", "\ntest\tclean\t", 1);
+    assert_ne!(edited, text, "the fixture must contain a sealed toxic row");
+    std::fs::write(&path, edited).unwrap();
+
+    let output = std::process::Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
+        .args(["corpus-verify", "--corpus-root"])
+        .arg(directory.path())
+        .args([
+            "--evaluation-lock",
+            "../../resources/datasets/evaluation-lock-v1.json",
+        ])
+        .output()
+        .unwrap();
+
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("EN"));
 }

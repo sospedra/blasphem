@@ -14,6 +14,7 @@
       "download_sha256": "6891ad463c73b7591a86046ec79c3978bd62dcedeb7b8efc1a38f53bd5712b69",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -33,6 +34,7 @@
       "download_sha256": "fa988b610450d3dd0031ad3b93fc7284da8e665a1a6558174a767c8edb37c696",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -52,6 +54,7 @@
       "download_sha256": "2e3a3e0bc9956066305d46a4957496cea67a5a0d307a98c574507a787709ded9",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -71,6 +74,7 @@
       "download_sha256": "4d06cdc571f86c3728ea21241b3311d3de6bb9935c89f5e3774ecfd41a347204",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -90,6 +94,7 @@
       "download_sha256": "36800d826a852194a2e3813f387826f4d84200a4151582bc4374c15aedc70402",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -109,6 +114,7 @@
       "download_sha256": "6466a13f4acb2e7c8db799aece2414cad0167f3fb6fe6f1e4e81b4ce7fb3d311",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -128,6 +134,7 @@
       "download_sha256": "d2ff4e0aea1e35120029f71cd972b0a66fcd69b86bbc537e5f3780c9f44eb797",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -147,6 +154,7 @@
       "download_sha256": "47acf7a5d1f172d8b897a6963e4578162595509b38aff3f1b1d1527765ab93ff",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -166,6 +174,7 @@
       "download_sha256": "bbcb183c303777f2c6461b02775f11840c2f6286a89d6dfbf08041e705239058",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -182,8 +191,10 @@
       "revision": "01907546324b0330d2d8b7669648cc18823323e5",
       "file_path": "textdetox/es.tsv",
       "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9",
+      "download_sha256": "1a09e4483fc879c495ac58c891016097ae36ba6c34d16c72b76f13eaf14a0c06",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "TextDetox multilingual toxicity dataset",
       "upstream_lineage": [
         "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -202,6 +213,7 @@
       "file_sha256": "0f88c63a344e1ab69c5407aa539d1612cd82a96b51ebd6bd613dc70ff9fef03e",
       "license_id": "NOASSERTION",
       "license_url": "https://github.com/uds-lsv/GermEval-2018-Data",
+      "license_year": 2018,
       "citation": "Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.",
       "upstream_lineage": [
         "https://github.com/uds-lsv/GermEval-2018-Data"
@@ -220,6 +232,7 @@
       "file_sha256": "45f31510b305d080a933d4087b8d34f7a5e4087141718955b90357ca730074f2",
       "license_id": "NOASSERTION",
       "license_url": "https://github.com/uds-lsv/GermEval-2018-Data",
+      "license_year": 2018,
       "citation": "Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.",
       "upstream_lineage": [
         "https://github.com/uds-lsv/GermEval-2018-Data"
@@ -238,6 +251,7 @@
       "file_sha256": "44c04e31ad4b7ee4a95f1884e7af4da2c44b69762143eb2de0ede7f90502735e",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
       "citation": "Ibrohim and Budi, 2019. Multi-label Hate Speech and Abusive Language Detection in Indonesian Twitter.",
       "upstream_lineage": [
         "https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection"
@@ -256,6 +270,7 @@
       "file_sha256": "1129593be5e5277e30c018246aab621187d0c936a60efd28a1cf373e6c55e94e",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
       "citation": "Leite et al., 2020. Toxic Language Detection in Social Media for Brazilian Portuguese.",
       "upstream_lineage": [
         "https://github.com/joaoaleite/ToLD-Br"
@@ -274,6 +289,7 @@
       "file_sha256": "8509c01c4bf387d9e387c4637829585431cc045adaf7d0413c0022bf2bcd4baa",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
       "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
       "upstream_lineage": [
         "https://coltekin.github.io/offensive-turkish/"
@@ -292,6 +308,7 @@
       "file_sha256": "9052784e13248e58658e34a4f86a3463ef8b2594d2feb289e4b29bba2866b437",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
       "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
       "upstream_lineage": [
         "https://coltekin.github.io/offensive-turkish/"
@@ -310,6 +327,7 @@
       "file_sha256": "ae9b0837e948c3d9c3a147d2a415989a4940a7756d5821b3289276574941c9e3",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
       "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
       "upstream_lineage": [
         "https://coltekin.github.io/offensive-turkish/"
@@ -328,6 +346,7 @@
       "file_sha256": "b225cf257b5ce7c77e275ba900ffc6fee490ae0a1936afc98e250040e418adac",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
       "citation": "ViHOS: Vietnamese Hate Speech Detection.",
       "upstream_lineage": [
         "https://github.com/phusroyal/ViHOS"
@@ -346,6 +365,7 @@
       "file_sha256": "cbc682a6fd6750de2fc79e211b07a4be63ac355110a35bd2f1a8922239534712",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
       "citation": "ViHOS: Vietnamese Hate Speech Detection.",
       "upstream_lineage": [
         "https://github.com/phusroyal/ViHOS"
@@ -364,6 +384,7 @@
       "file_sha256": "0c8d09f1e9d649ac206619a717610e805001c4e74d13325f16b931ddd43c3cd8",
       "license_id": "CC-BY-4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
       "citation": "ViHOS: Vietnamese Hate Speech Detection.",
       "upstream_lineage": [
         "https://github.com/phusroyal/ViHOS"
@@ -380,8 +401,9 @@
       "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
       "file_path": "datasets/kmhas-train/kmhas_train.txt",
       "file_sha256": "ca9145afc5fd70a2222094daa427e57a08b309cb42dcce7986528b44eb0e7008",
-      "license_id": "CC-BY-NC-4.0",
-      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
       "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
       "upstream_lineage": [
         "https://github.com/adlnlp/K-MHaS"
@@ -398,8 +420,9 @@
       "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
       "file_path": "datasets/kmhas-validation/kmhas_valid.txt",
       "file_sha256": "cb0df9e3cd665125b554d4c5e6f48b0801d5535ead51269134de5b85ae469c18",
-      "license_id": "CC-BY-NC-4.0",
-      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
       "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
       "upstream_lineage": [
         "https://github.com/adlnlp/K-MHaS"
@@ -416,8 +439,9 @@
       "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
       "file_path": "datasets/kmhas-test/kmhas_test.txt",
       "file_sha256": "9eaf470ee12c445817301d58672349500d6759516a730e879d36d6de17a2051a",
-      "license_id": "CC-BY-NC-4.0",
-      "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
       "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
       "upstream_lineage": [
         "https://github.com/adlnlp/K-MHaS"
@@ -436,6 +460,7 @@
       "file_sha256": "a734820a63c87994781d182692e6dc7ec262c402016971a7fa31946ced0d470c",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -454,6 +479,7 @@
       "file_sha256": "e37f5ae1c799fc9f135d27e6965459df13d594385ff6358304b2fe9c51782dd3",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -472,6 +498,7 @@
       "file_sha256": "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -490,6 +517,7 @@
       "file_sha256": "02bef4384f6e365a2f52d1ea993de218252a75caad2a08f030b9401e8e6facf4",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -508,6 +536,7 @@
       "file_sha256": "947d3fa9f7ffb1fc65aabf73278c9484fa1769c32349ba6ff23727825b69e9b8",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -526,6 +555,7 @@
       "file_sha256": "157ed297e7f0f9dcf5ab69e8ad7e231dad64473e516d168bda1c9582c372c16d",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -544,6 +574,7 @@
       "file_sha256": "8405124a1374b65d777cba39020f817e047598c6c8cf455fb9c106ee4cad4625",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -562,6 +593,7 @@
       "file_sha256": "12678d085fbac5d15a52e574e82a9937f05cb119804af56657698655c8036f02",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -580,6 +612,7 @@
       "file_sha256": "c0f022f03c10a1097f96ef5d346dedf9899083a4d6bc2e6c96112c6444943384",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -598,6 +631,7 @@
       "file_sha256": "98a2dd994ccba6bce296668d6d17914cb397da1848718d530394648dcab7aac1",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -616,6 +650,7 @@
       "file_sha256": "5eb7f5e38ae33c182f99be27c72af3a5ab8b9620dc33a6efbde0c1e34c539aa1",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -634,6 +669,7 @@
       "file_sha256": "518abd34e82fe58aa25bb7c24e35b8e17eac814b2a23766490cf32e3c1c32346",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -652,6 +688,7 @@
       "file_sha256": "633a1f116b8ec2462eacec56f9a498d4387b4df10ef7e1c8ef47a076f6bf6914",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -670,6 +707,7 @@
       "file_sha256": "64fec4779ec7808ba08912a7a4fb022e6821ed4f701c0da64a1e360db528c47e",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"
@@ -688,6 +726,7 @@
       "file_sha256": "043fb72213c2158b9c2b75651e7193bad249b8dc577c1f1e6c71a2b69d415eef",
       "license_id": "CC-BY-SA-4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2025,
       "citation": "Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.",
       "upstream_lineage": [
         "https://github.com/valeriobasile/hurtlex"

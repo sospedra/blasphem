@@ -4,6 +4,7 @@ pub mod behavior_panel;
 pub mod calibration;
 pub mod community_corpus;
 pub mod compiler;
+pub mod corpus;
 pub mod datasets;
 pub mod evaluation;
 pub mod evaluation_lock;

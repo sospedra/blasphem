@@ -17,6 +17,7 @@ use crate::{
     atomic_publish::{AtomicPublishError, atomic_publish_noreplace},
     behavior_panel::load_panel,
     calibration::{CalibrationError, CalibrationResult, CalibrationRow, calibrate_at_or_above},
+    corpus::load_corpus_language,
     datasets::{DatasetId, PreparedRow},
     evidence::Sha256Digest,
     model_manifest::{
@@ -24,8 +25,8 @@ use crate::{
         ModelManifestEntry, ModelSetError, artifact_relative_path, build_manifest_entry,
         parse_model_manifest, rule_pack_version, validate_model_set,
     },
-    prepared_input::{PreparedLanguageInput, load_prepared_language},
-    source_manifest::SourceRecord,
+    prepared_input::PreparedLanguageInput,
+    source_manifest::{FrozenSourceLock, SourceRecord, parse_frozen_source_lock},
 };
 
 const BIN_COUNT: usize = 65_536;
@@ -36,7 +37,8 @@ static STAGING_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BatchCompileOptions {
-    pub prepared_root: PathBuf,
+    pub corpus_root: PathBuf,
+    pub source_lock: PathBuf,
     pub hurtlex_root: PathBuf,
     pub behavior_root: Option<PathBuf>,
     pub output: PathBuf,
@@ -49,9 +51,10 @@ struct CompiledModel {
 
 pub fn compile_model_set(options: &BatchCompileOptions) -> Result<ModelManifest, ModelSetError> {
     reject_existing_output(&options.output)?;
+    let lock = read_source_lock(&options.source_lock)?;
     let mut models = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
-        models.push(compile_prepared_language(options, language)?);
+        models.push(compile_corpus_language(options, &lock, language)?);
     }
     let manifest = ModelManifest {
         schema_version: MODEL_MANIFEST_SCHEMA_VERSION,
@@ -73,8 +76,20 @@ fn reject_existing_output(output: &Path) -> Result<(), ModelSetError> {
     }
 }
 
-fn compile_prepared_language(
+fn read_source_lock(path: &Path) -> Result<FrozenSourceLock, ModelSetError> {
+    let file = File::open(path).map_err(|source| ModelSetError::CorpusIo {
+        path: path.to_owned(),
+        source,
+    })?;
+    parse_frozen_source_lock(file).map_err(|error| ModelSetError::SourceLock {
+        path: path.to_owned(),
+        reason: error.to_string(),
+    })
+}
+
+fn compile_corpus_language(
     options: &BatchCompileOptions,
+    lock: &FrozenSourceLock,
     language: Language,
 ) -> Result<CompiledModel, ModelSetError> {
     let PreparedLanguageInput {
@@ -83,7 +98,12 @@ fn compile_prepared_language(
         counts,
         sources,
         ..
-    } = load_prepared_language(&options.prepared_root, language)?;
+    } = load_corpus_language(&options.corpus_root, language, lock).map_err(|error| {
+        ModelSetError::Corpus {
+            language,
+            reason: error.to_string(),
+        }
+    })?;
     let hurtlex_sources = sources
         .iter()
         .filter(|source| source.dataset == DatasetId::HurtLex)

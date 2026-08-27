@@ -154,9 +154,12 @@ struct RegistryRow {
 
 #[derive(Debug, Deserialize)]
 struct DevelopmentRow {
+    source_id: String,
+    #[serde(rename = "detector_language_code")]
     detector_language: Language,
     label: EvalLabel,
-    source_id: String,
+    inclusion_status: String,
+    exclusion_reason: String,
     text: String,
 }
 
@@ -294,7 +297,7 @@ fn validate_evidence(
 ) -> Result<(), BehaviorPanelError> {
     let authored = load_registry(&root.join("authored-v1.tsv"))?;
     let native_review = load_registry(&root.join("native-review-v1.tsv"))?;
-    let development = load_development_evidence(root, language)?;
+    let development = load_development_evidence(root)?;
 
     for row in rows {
         if row.evidence_ref.trim().is_empty() {
@@ -390,19 +393,43 @@ fn validate_registered_evidence(
     Ok(())
 }
 
+/// The audit-only rows the panels cite. They are excluded from the corpus, so
+/// this file is their only copy.
+pub const BEHAVIOR_PROVENANCE: &str = "resources/datasets/behavior-provenance-v1.tsv";
+
+fn unescape_evidence(value: &str) -> String {
+    let mut output = String::with_capacity(value.len());
+    let mut characters = value.chars();
+    while let Some(character) = characters.next() {
+        if character != '\\' {
+            output.push(character);
+            continue;
+        }
+        match characters.next() {
+            Some('t') => output.push('\t'),
+            Some('n') => output.push('\n'),
+            Some('r') => output.push('\r'),
+            Some('\\') => output.push('\\'),
+            other => {
+                output.push('\\');
+                if let Some(value) = other {
+                    output.push(value);
+                }
+            }
+        }
+    }
+    output
+}
+
 fn load_development_evidence(
     root: &Path,
-    language: Language,
 ) -> Result<BTreeMap<String, DevelopmentEvidence>, BehaviorPanelError> {
     let project_root = root
         .parent()
         .and_then(Path::parent)
         .and_then(Path::parent)
         .ok_or_else(|| BehaviorPanelError::InvalidFixtureRoot(root.to_owned()))?;
-    let path = project_root
-        .join("data/prepared-draft-v1")
-        .join(language.storage_code())
-        .join("development.tsv");
+    let path = project_root.join(BEHAVIOR_PROVENANCE);
     let mut reader = csv::ReaderBuilder::new()
         .delimiter(b'\t')
         .flexible(false)
@@ -410,6 +437,7 @@ fn load_development_evidence(
     let mut source_ids = BTreeMap::new();
     for result in reader.deserialize::<DevelopmentRow>() {
         let row = result?;
+        let _ = (&row.inclusion_status, &row.exclusion_reason);
         let source_id = row.source_id;
         if source_ids
             .insert(
@@ -417,7 +445,7 @@ fn load_development_evidence(
                 DevelopmentEvidence {
                     language: row.detector_language,
                     label: row.label,
-                    text: row.text,
+                    text: unescape_evidence(&row.text),
                 },
             )
             .is_some()

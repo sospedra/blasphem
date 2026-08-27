@@ -1,12 +1,40 @@
 # Contributing to Blasphem
 
-This document covers two ways to add training data: a simple community
-submission and a custom typed adapter for a new upstream source.
+This document covers three ways to add training data: a direct corpus edit, a
+community submission through an adapter, and a custom typed adapter for a new
+upstream source.
 
 ## Licensing
 
 By submitting a contribution, you agree it can be distributed under this
 project's terms. See `LICENSE` and `NOTICE`.
+
+## The direct path: edit a corpus file
+
+`corpus/{LANGUAGE}.tsv` is the single source of truth for that language. Adding
+a row needs no code and no source record.
+
+1. Read `corpus/README.md` for the three columns, the escape rule, and the sort
+   rule.
+2. To add a row, insert a line in `corpus/{LANGUAGE}.tsv` with `split` set to
+   `development`. Put it in its sorted position by the whole line.
+3. To correct a label, change the `label` column and move the line to its new
+   sorted position.
+4. Never edit a `validation` or `test` row. Those partitions are sealed by
+   `resources/datasets/evaluation-lock-v1.json`.
+5. Run the gate:
+
+   ```bash
+   cargo run --release --locked -p blasphem-train -- corpus-verify \
+     --corpus-root corpus \
+     --evaluation-lock resources/datasets/evaluation-lock-v1.json
+   ```
+
+6. Open a pull request.
+
+`corpus verify` checks the header, the column count, the escape rule, the sort
+order, unique text, unique normalized text, and both sealed digests. It fetches
+nothing.
 
 ## The simple path: a community TSV
 
@@ -23,7 +51,8 @@ Add rows without writing code.
    Each record needs these fields: `dataset`, `detector_language`,
    `source_role`, `source_file_id`, `immutable_source_url`, `file_path`
    (the path under `data/raw-v1`), `file_sha256`, `license_id`,
-   `license_url`, `citation`, `upstream_lineage`, and `lineage_status`.
+   `license_url`, `license_year`, `citation`, `upstream_lineage`, and
+   `lineage_status`.
    The observation record also needs `acquired_at_unix_seconds`; the lock
    record does not.
 
@@ -45,6 +74,7 @@ Add rows without writing code.
      "file_sha256": "9d17c991b87c4b43ea5f69c9950f3ad852c26a0a7b1aa4a5849323a1ae738988",
      "license_id": "CC-BY-4.0",
      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+     "license_year": 2025,
      "citation": "TextDetox multilingual toxicity dataset",
      "upstream_lineage": [
        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
@@ -66,7 +96,12 @@ Add rows without writing code.
      --output data/prepared-draft-v1
    ```
 
-5. Open a pull request.
+5. Merge the prepared rows into `corpus/{LANGUAGE}.tsv` and run `corpus-verify`.
+   The corpus is the only copy the compiler reads.
+6. Open a pull request.
+
+`prepare` needs raw upstream files under `data/raw-v1`. This repository ships
+only the HurtLex lexicon there, so supply your own source files for this path.
 
 ## The custom path: a typed adapter
 
@@ -93,3 +128,4 @@ Add a new upstream source with its own parser.
   evidence.
 - Pull request checks read only committed inputs. They fetch no
   contributor URL.
+- The reproduction path reads `corpus/`. It never regenerates the corpus.

@@ -10,17 +10,17 @@ use thiserror::Error;
 
 use crate::{
     compiler::{BatchCompileOptions, compile_model_set},
-    evaluation_lock::{parse_evaluation_lock, verify_sealed_partitions},
+    corpus::verify_corpus,
+    datasets::DatasetId,
+    evaluation_lock::parse_evaluation_lock,
     evidence::{Sha256Digest, sha256_digest},
     model_manifest::parse_model_manifest,
-    preparation::{PrepareCorpusOptions, prepare_corpus},
     source_manifest::parse_frozen_source_lock,
 };
 
-/// The nine ordered reproduction steps.
-pub const STEP_NAMES: [&str; 9] = [
-    "verify-raw-inputs",
-    "generate-prepared-data",
+/// The eight ordered reproduction steps.
+pub const STEP_NAMES: [&str; 8] = [
+    "verify-corpus",
     "verify-sealed-partitions",
     "compile-model-artifacts",
     "rebuild-language-artifact",
@@ -33,9 +33,11 @@ pub const STEP_NAMES: [&str; 9] = [
 /// Marks every child process of a reproduction run, so a nested run does not recurse.
 pub const REENTRY_GUARD_VARIABLE: &str = "BLASPHEM_REPRODUCE_ACTIVE";
 
+/// The committed corpus: one hand-editable TSV file per language.
+pub const CORPUS_ROOT: &str = "corpus";
+
 const SOURCE_LOCK: &str = "resources/datasets/source-lock-v1.json";
 const RAW_ROOT: &str = "data/raw-v1";
-const AUDIT_EXCLUSIONS: &str = "resources/datasets/rule-audit-v1.tsv";
 const EVALUATION_LOCK: &str = "resources/datasets/evaluation-lock-v1.json";
 const HURTLEX_ROOT: &str = "data/raw-v1/hurtlex";
 const BEHAVIOR_ROOT: &str = "tests/fixtures/behavior";
@@ -59,10 +61,11 @@ const RUST_CHECKS: [&[&str]; 3] = [
     &["fmt", "--all", "--check"],
 ];
 
-const JAVASCRIPT_CHECKS: [&[&str]; 3] = [
+const JAVASCRIPT_CHECKS: [&[&str]; 4] = [
     &["install", "--frozen-lockfile"],
     &["--filter", "blasphem", "run", "build"],
     &["--filter", "blasphem", "run", "pack:check"],
+    &["--filter", "blasphem", "run", "test:node"],
 ];
 
 const BROWSER_SMOKE: &[&str] = &["--filter", "blasphem", "run", "test:browser"];
@@ -108,9 +111,8 @@ pub struct ReproduceError {
 type StepResult = Result<String, ReproduceError>;
 type Step = fn(&ReproduceOptions) -> StepResult;
 
-const STEPS: [Step; 9] = [
-    verify_raw_inputs,
-    generate_prepared_data,
+const STEPS: [Step; 8] = [
+    verify_corpus_step,
     verify_prepared_partitions,
     compile_model_artifacts,
     rebuild_language_artifact,
@@ -121,9 +123,9 @@ const STEPS: [Step; 9] = [
 ];
 
 /// The leading steps that write generated artifacts into the work root.
-pub const GENERATION_STEPS: usize = 5;
+pub const GENERATION_STEPS: usize = 4;
 
-/// Runs the nine reproduction steps in order and stops at the first failure.
+/// Runs the eight reproduction steps in order and stops at the first failure.
 ///
 /// # Errors
 ///
@@ -132,7 +134,7 @@ pub fn reproduce(options: &ReproduceOptions) -> Result<ReproduceReport, Reproduc
     run_steps(options, STEPS.len())
 }
 
-/// Runs the five generating steps and stops before the comparison steps.
+/// Runs the four generating steps and stops before the comparison steps.
 ///
 /// # Errors
 ///
@@ -154,58 +156,65 @@ fn run_steps(options: &ReproduceOptions, count: usize) -> Result<ReproduceReport
     Ok(ReproduceReport { steps: outcomes })
 }
 
-fn verify_raw_inputs(options: &ReproduceOptions) -> StepResult {
+fn verify_corpus_step(options: &ReproduceOptions) -> StepResult {
     const STEP: &str = STEP_NAMES[0];
-    let file = open_project_file(STEP, &options.project_root, SOURCE_LOCK)?;
-    let lock = parse_frozen_source_lock(file).map_err(|error| failure(STEP, error.to_string()))?;
+    let lock =
+        parse_frozen_source_lock(open_project_file(STEP, &options.project_root, SOURCE_LOCK)?)
+            .map_err(|error| failure(STEP, error.to_string()))?;
+    let evaluation = parse_evaluation_lock(open_project_file(
+        STEP,
+        &options.project_root,
+        EVALUATION_LOCK,
+    )?)
+    .map_err(|error| failure(STEP, error.to_string()))?;
+    let report = verify_corpus(&options.project_root.join(CORPUS_ROOT), &evaluation)
+        .map_err(|error| failure(STEP, error.to_string()))?;
+    verify_hurtlex_inputs(STEP, options, &lock)?;
+    Ok(format!(
+        "verified {} corpus rows across {} languages",
+        report.rows, report.languages
+    ))
+}
+
+/// The lexicon still ships as raw upstream files, so the digests stay pinned.
+fn verify_hurtlex_inputs(
+    step: &'static str,
+    options: &ReproduceOptions,
+    lock: &crate::source_manifest::FrozenSourceLock,
+) -> Result<(), ReproduceError> {
     let raw_root = options.project_root.join(RAW_ROOT);
-    for source in &lock.sources {
-        let relative = format!("{RAW_ROOT}/{}", source.file_path);
-        let actual = file_digest(STEP, &raw_root.join(&source.file_path))?;
+    for source in lock
+        .sources
+        .iter()
+        .filter(|source| source.dataset == DatasetId::HurtLex)
+    {
+        let actual = file_digest(step, &raw_root.join(&source.file_path))?;
         if actual != source.file_sha256 {
             return Err(failure(
-                STEP,
+                step,
                 format!(
-                    "{relative} changed: expected {}, got {actual}",
-                    source.file_sha256
+                    "{RAW_ROOT}/{} changed: expected {}, got {actual}",
+                    source.file_path, source.file_sha256
                 ),
             ));
         }
     }
-    Ok(format!("verified {} raw source files", lock.sources.len()))
+    Ok(())
 }
 
-fn generate_prepared_data(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[1];
-    fs::create_dir_all(&options.work_root).map_err(|error| {
-        failure(
-            STEP,
-            format!(
-                "cannot create the work root {}: {error}",
-                options.work_root.display()
-            ),
-        )
-    })?;
-    let publication = prepare_corpus(&PrepareCorpusOptions {
-        source_lock: options.project_root.join(SOURCE_LOCK),
-        raw_root: options.project_root.join(RAW_ROOT),
-        audit_exclusions: Some(options.project_root.join(AUDIT_EXCLUSIONS)),
-        evaluation_lock: None,
-        output: prepared_root(options),
-    })
-    .map_err(|error| failure(STEP, format!("{error:#}")))?;
-    Ok(format!(
-        "prepared {} source rows into {}",
-        publication.manifest.source_rows,
-        publication.path.display()
-    ))
+/// The seal now covers rows in the committed corpus, not whole prepared files.
+fn verify_sealed_partitions_in_corpus(
+    options: &ReproduceOptions,
+    lock: &crate::evaluation_lock::EvaluationLock,
+) -> Result<(), crate::corpus::CorpusError> {
+    verify_corpus(&options.project_root.join(CORPUS_ROOT), lock).map(|_| ())
 }
 
 fn verify_prepared_partitions(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[2];
+    const STEP: &str = STEP_NAMES[1];
     let file = open_project_file(STEP, &options.project_root, EVALUATION_LOCK)?;
     let lock = parse_evaluation_lock(file).map_err(|error| failure(STEP, error.to_string()))?;
-    verify_sealed_partitions(&prepared_root(options), &lock)
+    verify_sealed_partitions_in_corpus(options, &lock)
         .map_err(|error| failure(STEP, error.to_string()))?;
     Ok(format!(
         "verified {} sealed language partitions",
@@ -214,9 +223,10 @@ fn verify_prepared_partitions(options: &ReproduceOptions) -> StepResult {
 }
 
 fn compile_model_artifacts(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[3];
+    const STEP: &str = STEP_NAMES[2];
     let manifest = compile_model_set(&BatchCompileOptions {
-        prepared_root: prepared_root(options),
+        corpus_root: options.project_root.join(CORPUS_ROOT),
+        source_lock: options.project_root.join(SOURCE_LOCK),
         hurtlex_root: options.project_root.join(HURTLEX_ROOT),
         behavior_root: Some(options.project_root.join(BEHAVIOR_ROOT)),
         output: model_root(options),
@@ -229,7 +239,7 @@ fn compile_model_artifacts(options: &ReproduceOptions) -> StepResult {
 }
 
 fn rebuild_language_artifact(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[4];
+    const STEP: &str = STEP_NAMES[3];
     let lock = read_language_artifact_lock(&options.project_root)?;
     let vendor = options
         .project_root
@@ -270,7 +280,7 @@ fn rebuild_language_artifact(options: &ReproduceOptions) -> StepResult {
 }
 
 fn compare_model_manifest(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[5];
+    const STEP: &str = STEP_NAMES[4];
     let file = open_project_file(STEP, &options.project_root, MODEL_MANIFEST)?;
     let manifest = parse_model_manifest(file).map_err(|error| failure(STEP, error.to_string()))?;
     let models = model_root(options);
@@ -313,7 +323,7 @@ fn compare_model_manifest(options: &ReproduceOptions) -> StepResult {
 }
 
 fn build_native_binary(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[6];
+    const STEP: &str = STEP_NAMES[5];
     let cargo = cargo_program();
     run_program(
         STEP,
@@ -327,7 +337,7 @@ fn build_native_binary(options: &ReproduceOptions) -> StepResult {
 }
 
 fn build_wasm_modules(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[7];
+    const STEP: &str = STEP_NAMES[6];
     let cargo = cargo_program();
     for (variant, feature_flag) in WASM_VARIANTS {
         let mut arguments = words(&[
@@ -354,7 +364,7 @@ fn build_wasm_modules(options: &ReproduceOptions) -> StepResult {
 }
 
 fn generate_web_bindings(options: &ReproduceOptions, variant: &str) -> Result<(), ReproduceError> {
-    const STEP: &str = STEP_NAMES[7];
+    const STEP: &str = STEP_NAMES[6];
     let mut arguments = Vec::with_capacity(7);
     arguments.push(OsString::from(options.project_root.join(WASM_MODULE)));
     arguments.extend(words(&[
@@ -376,7 +386,7 @@ fn generate_web_bindings(options: &ReproduceOptions, variant: &str) -> Result<()
 }
 
 fn run_checks(options: &ReproduceOptions) -> StepResult {
-    const STEP: &str = STEP_NAMES[8];
+    const STEP: &str = STEP_NAMES[7];
     let cargo = cargo_program();
     for check in RUST_CHECKS {
         run_program(
@@ -430,7 +440,7 @@ pub struct LanguageArtifactHeader {
 pub fn read_language_artifact_lock(
     project_root: &Path,
 ) -> Result<LanguageArtifactLock, ReproduceError> {
-    const STEP: &str = STEP_NAMES[4];
+    const STEP: &str = STEP_NAMES[3];
     let file = open_project_file(STEP, project_root, LANGUAGE_ARTIFACT_LOCK)?;
     let lock: LanguageArtifactLock = serde_json::from_reader(file).map_err(|error| {
         failure(
@@ -454,7 +464,7 @@ fn verify_vendored_headers(
     vendor: &Path,
     lock: &LanguageArtifactLock,
 ) -> Result<(), ReproduceError> {
-    const STEP: &str = STEP_NAMES[4];
+    const STEP: &str = STEP_NAMES[3];
     for header in &lock.source_headers {
         let path = vendor.join(&header.file_name);
         let actual = file_digest(STEP, &path)?;
@@ -476,7 +486,7 @@ fn compare_language_artifact(
     path: &Path,
     lock: &LanguageArtifactLock,
 ) -> Result<(), ReproduceError> {
-    const STEP: &str = STEP_NAMES[4];
+    const STEP: &str = STEP_NAMES[3];
     let bytes = fs::read(path)
         .map_err(|error| failure(STEP, format!("cannot read {}: {error}", path.display())))?;
     if bytes.len() != lock.artifact_bytes {
@@ -544,10 +554,6 @@ pub(crate) fn words(values: &[&str]) -> Vec<OsString> {
 
 pub(crate) fn cargo_program() -> String {
     std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_owned())
-}
-
-pub(crate) fn prepared_root(options: &ReproduceOptions) -> PathBuf {
-    options.work_root.join("prepared")
 }
 
 pub(crate) fn model_root(options: &ReproduceOptions) -> PathBuf {

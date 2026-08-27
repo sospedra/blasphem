@@ -6,11 +6,12 @@ use std::{
 
 use blasphem_train::reproduce::REENTRY_GUARD_VARIABLE;
 
-const COPIED_ENTRIES: [&str; 9] = [
+const COPIED_ENTRIES: [&str; 10] = [
     "Cargo.toml",
     "Cargo.lock",
     "src",
     "crates",
+    "corpus",
     "data/raw-v1",
     "data/hurtlex",
     "resources",
@@ -27,7 +28,7 @@ fn reproduce_rejects_one_changed_raw_byte() {
     let root = temporary.path().join("clone");
     copy_project(&root);
 
-    let target = root.join("data/raw-v1/textdetox/en.tsv");
+    let target = root.join("data/raw-v1/hurtlex/EN/1.2/hurtlex_EN.tsv");
     let mut bytes = std::fs::read(&target).expect("readable raw source");
     let last = bytes.len() - 1;
     bytes[last] ^= 0x20;
@@ -40,7 +41,10 @@ fn reproduce_rejects_one_changed_raw_byte() {
         .expect("runs reproduce");
     assert!(!output.status.success(), "a changed raw byte must fail");
     let message = String::from_utf8_lossy(&output.stderr);
-    assert!(message.contains("textdetox/en.tsv"), "{message}");
+    assert!(
+        message.contains("hurtlex/EN/1.2/hurtlex_EN.tsv"),
+        "{message}"
+    );
 }
 
 fn copy_project(root: &Path) {
@@ -71,4 +75,12 @@ fn copy_directory(source: &Path, destination: &Path) {
         }
         copy_entry(&entry.path(), &destination.join(name));
     }
+}
+
+#[test]
+fn reproduction_verifies_the_corpus_instead_of_generating_it() {
+    assert_eq!(blasphem_train::reproduce::STEP_NAMES.len(), 8);
+    assert_eq!(blasphem_train::reproduce::STEP_NAMES[0], "verify-corpus");
+    assert!(!blasphem_train::reproduce::STEP_NAMES.contains(&"generate-prepared-data"));
+    assert_eq!(blasphem_train::reproduce::GENERATION_STEPS, 4);
 }

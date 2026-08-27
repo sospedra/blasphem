@@ -10,6 +10,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: NOASSERTION
 - License URL: https://github.com/uds-lsv/GermEval-2018-Data
+- License year: 2018
 - Citation: Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.
 - Sources: 2
 - Status: the upstream license is unresolved. This record claims no permission.
@@ -18,6 +19,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: CC-BY-SA-4.0
 - License URL: https://creativecommons.org/licenses/by-sa/4.0/
+- License year: 2025
 - Citation: Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.
 - Sources: 15
 - Status: share-alike. This repository redistributes all 15 HurtLex files
@@ -30,21 +32,26 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2023
 - Citation: Ibrohim and Budi, 2019. Multi-label Hate Speech and Abusive Language Detection in Indonesian Twitter.
 - Sources: 1
 
 ## k-mhas
 
-- License: CC-BY-NC-4.0
-- License URL: https://creativecommons.org/licenses/by-nc/4.0/
+- License: CC-BY-SA-4.0
+- License URL: https://creativecommons.org/licenses/by-sa/4.0/
+- License year: 2024
 - Citation: Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.
 - Sources: 3
-- Status: noncommercial terms. Downstream users must check their own use.
+- Status: share-alike. Commercial use is permitted. Any redistribution of a
+  derivative built from these files must carry the CC-BY-SA-4.0 license and
+  attribution.
 
 ## offenseval-tr
 
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2020
 - Citation: Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.
 - Sources: 3
 
@@ -52,6 +59,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2025
 - Citation: TextDetox multilingual toxicity dataset
 - Sources: 10
 
@@ -59,6 +67,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2025
 - Citation: Leite et al., 2020. Toxic Language Detection in Social Media for Brazilian Portuguese.
 - Sources: 1
 
@@ -66,6 +75,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2023
 - Citation: ViHOS: Vietnamese Hate Speech Detection.
 - Sources: 3
 
@@ -76,6 +86,7 @@ the corpora above. They contain no corpus text, but each is a derivative
 work of its training data and inherits that data's license.
 
 The Korean artifact, `resources/models/multilingual-v2/ko-sparse-v2.bin`,
-trains in part on k-mhas data (CC-BY-NC-4.0, noncommercial, see above). This
-artifact is encumbered by that noncommercial restriction. This repository
-does not license it, or any artifact trained on k-mhas, for commercial use.
+trains in part on k-mhas data (CC-BY-SA-4.0, share-alike, see above). This
+artifact carries that share-alike obligation. Any redistribution of it, or of
+any artifact trained on k-mhas, must carry the CC-BY-SA-4.0 license and
+attribution.

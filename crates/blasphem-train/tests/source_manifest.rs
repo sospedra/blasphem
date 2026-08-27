@@ -618,6 +618,7 @@ fn source_request_json() -> Value {
         "file_path": "textdetox/en.tsv",
         "license_id": "CC-BY-4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_year": 2024,
         "citation": "Example citation",
         "upstream_lineage": ["example"],
         "lineage_status": "resolved",
@@ -638,6 +639,7 @@ fn source_record_json() -> Value {
         "acquired_at_unix_seconds": 1,
         "license_id": "CC-BY-4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_year": 2024,
         "citation": "Example citation",
         "upstream_lineage": ["example"],
         "lineage_status": "resolved",
@@ -657,8 +659,41 @@ fn frozen_source_json() -> Value {
         "file_sha256": HASH,
         "license_id": "CC-BY-4.0",
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_year": 2024,
         "citation": "Example citation",
         "upstream_lineage": ["example"],
         "lineage_status": "resolved",
     })
+}
+
+#[test]
+fn every_frozen_source_states_the_upstream_license_year() {
+    let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
+    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
+
+    assert_eq!(lock.sources.len(), 38);
+    for source in &lock.sources {
+        assert!(
+            (1990..=2026).contains(&source.license_year),
+            "{} has an implausible license year {}",
+            source.source_file_id,
+            source.license_year
+        );
+    }
+}
+
+#[test]
+fn every_textdetox_lock_entry_carries_a_download_digest() {
+    let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
+    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
+
+    let missing: Vec<&str> = lock
+        .sources
+        .iter()
+        .filter(|source| source.dataset == blasphem_train::datasets::DatasetId::TextDetox)
+        .filter(|source| source.download_sha256.is_none())
+        .map(|source| source.source_file_id.as_str())
+        .collect();
+
+    assert_eq!(missing, Vec::<&str>::new());
 }

@@ -1,7 +1,5 @@
 /target/
 /.turbo/
-/data/prepared-v1/
-/data/prepared-draft-v1/
 /data/textdetox/es-prepared/
 /.superpowers/
 /packages/blasphem/dist/

@@ -17,6 +17,8 @@ use blasphem_train::acquisition::{
     write_acquired_sources, write_frozen_source_lock, write_source_observation,
 };
 use blasphem_train::compiler::{BatchCompileOptions, compile_model_set};
+use blasphem_train::corpus::verify_corpus;
+use blasphem_train::evaluation_lock::parse_evaluation_lock;
 use blasphem_train::evidence::write_canonical_json;
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
 use blasphem_train::regenerate::{RegenerateOptions, regenerate};
@@ -54,6 +56,7 @@ enum Command {
     FreezeSources(FreezeSourcesArgs),
     Acquire(AcquireArgs),
     Prepare(PrepareArgs),
+    CorpusVerify(CorpusVerifyArgs),
     Setup(SetupArgs),
     Compile(CompileArgs),
     Evaluate(EvaluateArgs),
@@ -105,9 +108,19 @@ struct PrepareArgs {
 }
 
 #[derive(Debug, Args)]
+struct CorpusVerifyArgs {
+    #[arg(long)]
+    corpus_root: PathBuf,
+    #[arg(long)]
+    evaluation_lock: PathBuf,
+}
+
+#[derive(Debug, Args)]
 struct CompileArgs {
     #[arg(long)]
-    prepared_root: PathBuf,
+    corpus_root: PathBuf,
+    #[arg(long)]
+    source_lock: PathBuf,
     #[arg(long)]
     hurtlex_root: PathBuf,
     #[arg(long, default_value = "tests/fixtures/behavior")]
@@ -121,7 +134,7 @@ struct EvaluateArgs {
     #[arg(long, value_enum)]
     split: EvaluationSplitArg,
     #[arg(long)]
-    prepared_root: PathBuf,
+    corpus_root: PathBuf,
     #[arg(long)]
     model_manifest: PathBuf,
     #[arg(long)]
@@ -140,7 +153,7 @@ struct BehaviorArgs {
     #[arg(long)]
     fixture_root: PathBuf,
     #[arg(long)]
-    prepared_root: PathBuf,
+    corpus_root: PathBuf,
     #[arg(long)]
     model_manifest: PathBuf,
     #[arg(long)]
@@ -215,6 +228,7 @@ fn main() -> Result<()> {
         Command::FreezeSources(arguments) => freeze_sources_command(&arguments),
         Command::Acquire(arguments) => acquire_sources_command(&arguments),
         Command::Prepare(arguments) => prepare_sources_command(&arguments),
+        Command::CorpusVerify(arguments) => corpus_verify_command(&arguments),
         Command::Setup(arguments) => setup(&arguments),
         Command::Compile(arguments) => compile_models(&arguments),
         Command::Evaluate(arguments) => evaluate_evidence(&arguments),
@@ -284,7 +298,8 @@ fn report_regeneration(project_root: PathBuf, work_root: PathBuf) -> Result<()> 
 
 fn compile_models(arguments: &CompileArgs) -> Result<()> {
     let manifest = compile_model_set(&BatchCompileOptions {
-        prepared_root: arguments.prepared_root.clone(),
+        corpus_root: arguments.corpus_root.clone(),
+        source_lock: arguments.source_lock.clone(),
         hurtlex_root: arguments.hurtlex_root.clone(),
         behavior_root: Some(arguments.behavior_root.clone()),
         output: arguments.output.clone(),
@@ -302,7 +317,7 @@ fn evaluate_evidence(arguments: &EvaluateArgs) -> Result<()> {
     match arguments.split {
         EvaluationSplitArg::Validation => {
             let evidence = evaluate_validation(
-                &arguments.prepared_root,
+                &arguments.corpus_root,
                 &arguments.model_manifest,
                 &arguments.hurtlex_root,
             )
@@ -322,7 +337,7 @@ fn evaluate_evidence(arguments: &EvaluateArgs) -> Result<()> {
 fn behavior_evidence(arguments: &BehaviorArgs) -> Result<()> {
     let evidence = evaluate_behavior(
         &arguments.fixture_root,
-        &arguments.prepared_root,
+        &arguments.corpus_root,
         &arguments.model_manifest,
         &arguments.hurtlex_root,
     )
@@ -417,6 +432,19 @@ fn observe_sources(arguments: &ObserveArgs) -> Result<()> {
         "status=observed sources={} output={}",
         observation.sources.len(),
         one_line(&arguments.output.to_string_lossy())
+    );
+    Ok(())
+}
+
+fn corpus_verify_command(arguments: &CorpusVerifyArgs) -> Result<()> {
+    let evaluation = parse_evaluation_lock(
+        File::open(&arguments.evaluation_lock)
+            .with_context(|| format!("cannot read {}", arguments.evaluation_lock.display()))?,
+    )?;
+    let report = verify_corpus(&arguments.corpus_root, &evaluation)?;
+    println!(
+        "status=verified languages={} rows={}",
+        report.languages, report.rows
     );
     Ok(())
 }
@@ -815,6 +843,7 @@ mod tests {
             file_path: "textdetox/en.tsv".to_owned(),
             license_id: "CC-BY-4.0".to_owned(),
             license_url: "https://example.test/license".to_owned(),
+            license_year: 2024,
             citation: "Fixture citation".to_owned(),
             upstream_lineage: vec!["https://example.test/source".to_owned()],
             lineage_status: LineageStatus::Resolved,

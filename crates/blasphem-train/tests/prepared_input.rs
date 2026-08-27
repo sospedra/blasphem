@@ -333,6 +333,7 @@ fn fixture_manifest() -> PreparedManifest {
             acquired_at_unix_seconds: 1_700_000_000,
             license_id: "CC-BY-4.0".to_owned(),
             license_url: "https://example.invalid/license".to_owned(),
+            license_year: 2024,
             citation: "Fixture citation".to_owned(),
             upstream_lineage: vec!["fixture".to_owned()],
             lineage_status: LineageStatus::Resolved,
@@ -362,4 +363,62 @@ fn sha256(bytes: &[u8]) -> Sha256Digest {
 
 fn digest() -> Sha256Digest {
     HASH.to_owned().try_into().expect("fixture digest")
+}
+
+#[test]
+fn a_corpus_file_round_trips_through_parse_and_write() {
+    use blasphem::EvalLabel;
+    use blasphem_train::corpus::{CorpusRow, parse_corpus, write_corpus};
+    use blasphem_train::datasets::DatasetSplit;
+
+    let rows = vec![
+        CorpusRow {
+            split: DatasetSplit::Development,
+            label: EvalLabel::Clean,
+            text: "una linea\tcon tabulador".to_string(),
+        },
+        CorpusRow {
+            split: DatasetSplit::Test,
+            label: EvalLabel::Toxic,
+            text: "plain".to_string(),
+        },
+    ];
+
+    let mut buffer = Vec::new();
+    write_corpus(&mut buffer, &rows).unwrap();
+    let parsed = parse_corpus(buffer.as_slice()).unwrap();
+
+    assert_eq!(parsed, rows);
+    assert_eq!(buffer.iter().filter(|byte| **byte == b'\n').count(), 3);
+}
+
+#[test]
+fn loading_a_corpus_language_splits_development_from_validation() {
+    use blasphem::{EvalLabel, Language};
+    use blasphem_train::corpus::{CorpusRow, load_corpus_language, write_corpus};
+    use blasphem_train::datasets::DatasetSplit;
+
+    let directory = tempfile::tempdir().unwrap();
+    let rows = vec![
+        CorpusRow {
+            split: DatasetSplit::Development,
+            label: EvalLabel::Clean,
+            text: "one".to_string(),
+        },
+        CorpusRow {
+            split: DatasetSplit::Validation,
+            label: EvalLabel::Toxic,
+            text: "two".to_string(),
+        },
+    ];
+    let file = std::fs::File::create(directory.path().join("EN.tsv")).unwrap();
+    write_corpus(file, &rows).unwrap();
+
+    let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
+    let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
+    let loaded = load_corpus_language(directory.path(), Language::En, &lock).unwrap();
+
+    assert_eq!(loaded.development.len(), 1);
+    assert_eq!(loaded.validation.len(), 1);
+    assert_eq!(loaded.development[0].text, "one");
 }

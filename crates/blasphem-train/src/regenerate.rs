@@ -17,8 +17,8 @@ use crate::{
         parse_model_manifest,
     },
     reproduce::{
-        ProgramCall, ReproduceError, ReproduceOptions, cargo_program, generate_artifacts,
-        model_root, prepared_root, read_language_artifact_lock, run_program, words,
+        CORPUS_ROOT, ProgramCall, ReproduceError, ReproduceOptions, cargo_program,
+        generate_artifacts, model_root, read_language_artifact_lock, run_program, words,
     },
 };
 
@@ -304,8 +304,8 @@ fn evidence_arguments(
         arguments.extend(words(&["--fixture-root", BEHAVIOR_ROOT]));
     }
     if report.prepared {
-        arguments.push("--prepared-root".into());
-        arguments.push(prepared_root(reproduce).into());
+        arguments.push("--corpus-root".into());
+        arguments.push(reproduce.project_root.join(CORPUS_ROOT).into());
     }
     arguments.extend(words(&[
         "--model-manifest",

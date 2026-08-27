@@ -90,6 +90,19 @@ pub enum ModelSetError {
         #[source]
         source: crate::behavior_panel::BehaviorPanelError,
     },
+    #[error("cannot read {path}: {source}")]
+    CorpusIo {
+        path: std::path::PathBuf,
+        #[source]
+        source: std::io::Error,
+    },
+    #[error("cannot parse the source lock {path}: {reason}")]
+    SourceLock {
+        path: std::path::PathBuf,
+        reason: String,
+    },
+    #[error("cannot load the {} corpus: {reason}", language.code())]
+    Corpus { language: Language, reason: String },
     #[error("cannot parse model manifest JSON: {0}")]
     ModelManifestJson(#[from] serde_json::Error),
     #[error("invalid model manifest schema: expected {expected}, got {actual}")]

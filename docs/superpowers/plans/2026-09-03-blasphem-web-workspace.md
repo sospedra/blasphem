@@ -4354,7 +4354,9 @@ Expected: `scan exit=1` (no files), `0` uncommitted changes, and the list of thi
 
 Report to the user: the exact commands and outputs from Steps 1 to 6, the remaining gaps (Vercel build image needs Rust + `wasm-bindgen-cli` 0.2.127 + the `wasm32-unknown-unknown` target, or a prebuilt `packages/blasphem/dist`; the NOTICE license rows for K-MHaS and GermEval await the user's ruling; the browser smoke lands from the other agent's Task 15), and the branch tip.
 
-Send to `blasphem-98` and `blasphem-36`: `DONE blasphem-49` plus the branch name `development`, the tip commit, and the note that the package exposes `init`, `BlasphemDetector`, `BlasphemResult`, and `index.d.ts` types, and does not expose a `judge()` function.
+Send to `blasphem-98` and `blasphem-36`: `DONE blasphem-49` plus the branch name `development`, the tip commit, and the package surface.
+
+The surface this step described is stale. Commits `8e59a07` and `5e4332c` replaced the raw wasm-bindgen classes with the judge client. `packages/blasphem/src/index.ts` exports `judge`, `load`, and the types `JudgeOptions` and `Judgement`. It exports no `init`, no `BlasphemDetector`, and no `BlasphemResult`. Those two class names survive only inside `dist/blasphem.js`, the generated glue, where `packages/blasphem/scripts/build.mjs` asserts them alongside `BlasphemJudge`.
 
 ---
 
