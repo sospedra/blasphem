@@ -9,6 +9,7 @@ pub mod datasets;
 pub mod evaluation;
 pub mod evaluation_lock;
 pub mod evidence;
+pub mod lexicon;
 pub mod model_manifest;
 pub mod preparation;
 pub mod prepared_input;

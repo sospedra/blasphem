@@ -20,6 +20,7 @@ use blasphem_train::compiler::{BatchCompileOptions, compile_model_set};
 use blasphem_train::corpus::verify_corpus;
 use blasphem_train::evaluation_lock::parse_evaluation_lock;
 use blasphem_train::evidence::write_canonical_json;
+use blasphem_train::lexicon::{BuildOptions, HarvestOptions, build, default_wiki, harvest};
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
 use blasphem_train::regenerate::{RegenerateOptions, regenerate};
 use blasphem_train::reproduce::{ReproduceOptions, reproduce};
@@ -65,6 +66,8 @@ enum Command {
     Eval(EvalArgs),
     Reproduce(ReproduceArgs),
     Regenerate(RegenerateArgs),
+    LexiconHarvest(LexiconHarvestArgs),
+    LexiconBuild(LexiconBuildArgs),
 }
 
 #[derive(Debug, Args)]
@@ -207,6 +210,26 @@ struct RegenerateArgs {
     work_root: Option<PathBuf>,
 }
 
+#[derive(Debug, Args)]
+struct LexiconHarvestArgs {
+    #[arg(long)]
+    language_name: String,
+    #[arg(long)]
+    storage_code: String,
+    #[arg(long)]
+    output: PathBuf,
+}
+
+#[derive(Debug, Args)]
+struct LexiconBuildArgs {
+    #[arg(long)]
+    harvest: PathBuf,
+    #[arg(long)]
+    storage_code: String,
+    #[arg(long)]
+    output: PathBuf,
+}
+
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum MinimumActionArg {
     Review,
@@ -237,6 +260,8 @@ fn main() -> Result<()> {
         Command::Eval(arguments) => eval(&arguments),
         Command::Reproduce(arguments) => reproduce_repository(&arguments),
         Command::Regenerate(arguments) => regenerate_repository(&arguments),
+        Command::LexiconHarvest(arguments) => lexicon_harvest_command(&arguments),
+        Command::LexiconBuild(arguments) => lexicon_build_command(&arguments),
     }
 }
 
@@ -292,6 +317,35 @@ fn report_regeneration(project_root: PathBuf, work_root: PathBuf) -> Result<()> 
         "status=regenerated files={} changed={}",
         report.files.len(),
         report.changed()
+    );
+    Ok(())
+}
+
+fn lexicon_harvest_command(arguments: &LexiconHarvestArgs) -> Result<()> {
+    let options = HarvestOptions {
+        language_name: arguments.language_name.clone(),
+        storage_code: arguments.storage_code.clone(),
+        wikis: vec![default_wiki(&arguments.language_name)],
+        output: arguments.output.clone(),
+    };
+    let report = harvest(&options).context("cannot harvest the wiktionary lexicon")?;
+    println!(
+        "status=harvested language={} lemmas={} sha256={}",
+        arguments.storage_code, report.lemmas, report.sha256
+    );
+    Ok(())
+}
+
+fn lexicon_build_command(arguments: &LexiconBuildArgs) -> Result<()> {
+    let options = BuildOptions {
+        harvest_root: arguments.harvest.clone(),
+        storage_code: arguments.storage_code.clone(),
+        output: arguments.output.clone(),
+    };
+    let report = build(&options).context("cannot build the offline lexicon")?;
+    println!(
+        "status=built language={} entries={} identity_entries={} sha256={}",
+        arguments.storage_code, report.entries, report.identity_entries, report.sha256
     );
     Ok(())
 }
