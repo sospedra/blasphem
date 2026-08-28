@@ -81,7 +81,7 @@ No new AUTO latency gate applies to this first measurement.
 | Explicit-only JavaScript glue | 12,541 | 2,989 | 2,700 |
 | Explicit-only transferred total | 5,685,540 | 2,000,625 | 1,630,271 |
 
-The ELDC artifact has 18,498,380 raw bytes.
+The ELDC artifact has 5,048,468 raw bytes.
 
 Its SHA-256 is `69dd5c22723bbe60073575a67fb94fc1fb8ba60c3ed1ac150ddbef1935dd84da`.
 

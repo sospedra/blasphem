@@ -4,17 +4,18 @@ use std::error::Error;
 use std::fmt::{self, Display, Formatter};
 
 const MAGIC: &[u8; 8] = b"BLASPHEM";
-const FORMAT_VERSION: u32 = 1;
+const FORMAT_VERSION: u32 = 2;
 const LANGUAGE_COUNT: usize = 15;
 const LETTER_TABLE_LEN: usize = 8_192;
 const CJK_TABLE_LEN: usize = 8_192;
 const LOWERCASE_TABLE_LEN: usize = 1_920;
 const SOURCE_COMMIT: &[u8; 40] = b"a0301db809ff2e48a418018aa5359fb0c4354eb8";
 const HEADER_LEN: usize = 76;
+const MIN_TABLE_LEN: u32 = 64;
 const MAX_INPUT_BYTES: usize = 1_000;
 const MAX_FEATURES: usize = 500;
 
-static EMBEDDED_MODEL: &[u8] = include_bytes!("../data/blasphem-language-15-v1.bin");
+static EMBEDDED_MODEL: &[u8] = include_bytes!("../data/blasphem-language-15-v2.bin");
 
 /// A language profile in the compact language model.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -112,7 +113,8 @@ pub enum ModelError {
     InvalidCjkTableLength(u32),
     InvalidLowercaseTableLength(u32),
     InvalidSourceCommit,
-    InvalidEmptySlot { slot: usize },
+    InvalidLiveSlot { slot: usize },
+    InvalidEntry { slot: usize },
     InvalidBlobRange { slot: usize },
     InvalidLanguageIndex { index: usize },
     Truncated,
@@ -162,10 +164,16 @@ impl Display for ModelError {
             Self::InvalidSourceCommit => {
                 formatter.write_str("the language model source commit is invalid")
             }
-            Self::InvalidEmptySlot { slot } => {
+            Self::InvalidLiveSlot { slot } => {
                 write!(
                     formatter,
-                    "the language model empty slot {slot} has metadata"
+                    "the language model live slot {slot} is not occupied"
+                )
+            }
+            Self::InvalidEntry { slot } => {
+                write!(
+                    formatter,
+                    "the language model entry at slot {slot} has no fingerprint or no scores"
                 )
             }
             Self::InvalidBlobRange { slot } => {
@@ -201,7 +209,11 @@ pub struct Detector {
     letter_bits: Box<[u8]>,
     cjk_bits: Box<[u8]>,
     lowercase: Box<[u16]>,
-    table: Box<[Slot]>,
+    mask: usize,
+    occupied: Box<[u64]>,
+    live: Box<[u64]>,
+    block_ranks: Box<[u32]>,
+    entries: Box<[Slot]>,
     blob: Box<[u32]>,
 }
 
@@ -233,78 +245,208 @@ impl Detector {
         }
 
         let mut raw = [1.0_f32; LANGUAGE_COUNT];
-        let mask = self.table.len() - 1;
         for feature in &features {
-            let hash = h64(*feature);
-            let mut index = (hash as u32 as usize) & mask;
-            let fingerprint = ((hash >> 32) as u32).max(1);
-            while self.table[index].fingerprint != 0 {
-                let slot = self.table[index];
+            self.add_feature_scores(*feature, &mut raw);
+        }
+        finish_detection(&self.averages, raw, features.len())
+    }
+
+    /// Walks the upstream probe sequence. Dead slots stay occupied, so every
+    /// chain ends where the upstream table ended it.
+    fn add_feature_scores(&self, feature: u64, raw: &mut [f32; LANGUAGE_COUNT]) {
+        let hash = h64(feature);
+        let fingerprint = ((hash >> 32) as u32).max(1);
+        let mut index = (hash as u32 as usize) & self.mask;
+        while bit_at(&self.occupied, index) {
+            if bit_at(&self.live, index) {
+                let slot = self.entries[self.rank(index)];
                 if slot.fingerprint == fingerprint {
-                    let offset = (slot.metadata & 0x00ff_ffff) as usize;
-                    let count = (slot.metadata >> 24) as usize;
-                    for packed_score in &self.blob[offset..offset + count] {
-                        let language = (*packed_score & 0xff) as usize;
-                        let weight = f32::from_bits(*packed_score & 0xffff_ff00);
-                        raw[language] += weight;
-                    }
-                    break;
+                    self.add_slot_scores(slot, raw);
+                    return;
                 }
-                index = (index + 1) & mask;
             }
+            index = (index + 1) & self.mask;
         }
+    }
 
-        let mut ranked_raw = Vec::with_capacity(LANGUAGE_COUNT);
-        for (index, score) in raw.into_iter().enumerate() {
-            if score > 1.0 {
-                ranked_raw.push((index, score));
-            }
+    fn add_slot_scores(&self, slot: Slot, raw: &mut [f32; LANGUAGE_COUNT]) {
+        let offset = (slot.metadata & 0x00ff_ffff) as usize;
+        let count = (slot.metadata >> 24) as usize;
+        for packed_score in &self.blob[offset..offset + count] {
+            let language = (*packed_score & 0xff) as usize;
+            let weight = f32::from_bits(*packed_score & 0xffff_ff00);
+            raw[language] += weight;
         }
-        for index in 1..ranked_raw.len() {
-            let item = ranked_raw[index];
-            let mut insertion = index;
-            while insertion > 0 && ranked_raw[insertion - 1].1 < item.1 {
-                ranked_raw[insertion] = ranked_raw[insertion - 1];
-                insertion -= 1;
-            }
-            ranked_raw[insertion] = item;
+    }
+
+    /// The position of a live slot inside `entries`.
+    fn rank(&self, index: usize) -> usize {
+        let word = index >> 6;
+        let below = self.live[word] & ((1_u64 << (index & 63)) - 1);
+        self.block_ranks[word] as usize + below.count_ones() as usize
+    }
+}
+
+fn bit_at(words: &[u64], index: usize) -> bool {
+    (words[index >> 6] >> (index & 63)) & 1 == 1
+}
+
+fn block_ranks(live: &[u64]) -> Box<[u32]> {
+    let mut total = 0_u32;
+    live.iter()
+        .map(|word| {
+            let rank = total;
+            total += word.count_ones();
+            rank
+        })
+        .collect()
+}
+
+fn finish_detection(
+    averages: &[f32; LANGUAGE_COUNT],
+    raw: [f32; LANGUAGE_COUNT],
+    feature_count: usize,
+) -> Detection {
+    let mut ranked_raw = Vec::with_capacity(LANGUAGE_COUNT);
+    for (index, score) in raw.into_iter().enumerate() {
+        if score > 1.0 {
+            ranked_raw.push((index, score));
         }
+    }
+    for index in 1..ranked_raw.len() {
+        let item = ranked_raw[index];
+        let mut insertion = index;
+        while insertion > 0 && ranked_raw[insertion - 1].1 < item.1 {
+            ranked_raw[insertion] = ranked_raw[insertion - 1];
+            insertion -= 1;
+        }
+        ranked_raw[insertion] = item;
+    }
 
-        let inverse_count = -0.0001_f32 / features.len() as f32;
-        let ranked_scores: Vec<_> = ranked_raw
-            .into_iter()
-            .map(|(index, score)| RankedScore {
-                language: Language::from_index(index),
-                score: 1.0_f32 - (inverse_count * score).exp(),
-            })
-            .collect();
-        let language = ranked_scores.first().map(|entry| entry.language);
-        let top_score = ranked_scores.first().map_or(0.0, |entry| entry.score);
-        let second_score = ranked_scores.get(1).map_or(0.0, |entry| entry.score);
-        let reliable = language.is_some()
-            && features.len() >= 3
-            && top_score >= 0.85_f32 * self.averages[language.expect("checked above") as usize]
-            && top_score - second_score > 0.02_f32;
+    let inverse_count = -0.0001_f32 / feature_count as f32;
+    let ranked_scores: Vec<_> = ranked_raw
+        .into_iter()
+        .map(|(index, score)| RankedScore {
+            language: Language::from_index(index),
+            score: 1.0_f32 - (inverse_count * score).exp(),
+        })
+        .collect();
+    let language = ranked_scores.first().map(|entry| entry.language);
+    let top_score = ranked_scores.first().map_or(0.0, |entry| entry.score);
+    let second_score = ranked_scores.get(1).map_or(0.0, |entry| entry.score);
+    let reliable = language.is_some()
+        && feature_count >= 3
+        && top_score >= 0.85_f32 * averages[language.expect("checked above") as usize]
+        && top_score - second_score > 0.02_f32;
 
-        Detection {
-            language,
-            reliable,
-            top_score,
-            second_score,
-            feature_count: features.len(),
-            ranked_scores,
+    Detection {
+        language,
+        reliable,
+        top_score,
+        second_score,
+        feature_count,
+        ranked_scores,
+    }
+}
+
+struct Header {
+    table_len: usize,
+    blob_len: usize,
+}
+
+struct Reader<'a> {
+    bytes: &'a [u8],
+    cursor: usize,
+}
+
+impl<'a> Reader<'a> {
+    fn take(&mut self, length: usize) -> Result<&'a [u8], ModelError> {
+        let end = self
+            .cursor
+            .checked_add(length)
+            .ok_or(ModelError::Truncated)?;
+        let value = self
+            .bytes
+            .get(self.cursor..end)
+            .ok_or(ModelError::Truncated)?;
+        self.cursor = end;
+        Ok(value)
+    }
+
+    fn u32(&mut self) -> Result<u32, ModelError> {
+        let value = self.take(4)?;
+        Ok(u32::from_le_bytes(value.try_into().expect("four bytes")))
+    }
+
+    fn u16_slice(&mut self, count: usize) -> Result<Box<[u16]>, ModelError> {
+        let length = count.checked_mul(2).ok_or(ModelError::Truncated)?;
+        let value = self.take(length)?;
+        Ok(value
+            .chunks_exact(2)
+            .map(|chunk| u16::from_le_bytes([chunk[0], chunk[1]]))
+            .collect())
+    }
+
+    fn u64_slice(&mut self, count: usize) -> Result<Box<[u64]>, ModelError> {
+        let length = count.checked_mul(8).ok_or(ModelError::Truncated)?;
+        let value = self.take(length)?;
+        Ok(value
+            .chunks_exact(8)
+            .map(|chunk| u64::from_le_bytes(chunk.try_into().expect("eight bytes")))
+            .collect())
+    }
+
+    fn finish(self) -> Result<(), ModelError> {
+        if self.cursor == self.bytes.len() {
+            Ok(())
+        } else {
+            Err(ModelError::TrailingData)
         }
     }
 }
 
 fn parse_model(bytes: &[u8]) -> Result<Detector, ModelError> {
+    let header = parse_header(bytes)?;
+    let mut reader = Reader {
+        bytes,
+        cursor: HEADER_LEN,
+    };
+    let mut averages = [0.0_f32; LANGUAGE_COUNT];
+    for average in &mut averages {
+        *average = f32::from_bits(reader.u32()?);
+    }
+    let letter_bits = reader.take(LETTER_TABLE_LEN)?.into();
+    let cjk_bits = reader.take(CJK_TABLE_LEN)?.into();
+    let lowercase = reader.u16_slice(LOWERCASE_TABLE_LEN)?;
+    let words = header.table_len / 64;
+    let occupied = reader.u64_slice(words)?;
+    let live = reader.u64_slice(words)?;
+    check_bitmaps(&occupied, &live, header.table_len)?;
+    let entries = take_entries(&mut reader, &live, header.blob_len)?;
+    let blob = take_blob(&mut reader, header.blob_len)?;
+    reader.finish()?;
+
+    Ok(Detector {
+        averages,
+        letter_bits,
+        cjk_bits,
+        lowercase,
+        mask: header.table_len - 1,
+        block_ranks: block_ranks(&live),
+        occupied,
+        live,
+        entries,
+        blob,
+    })
+}
+
+fn parse_header(bytes: &[u8]) -> Result<Header, ModelError> {
     if bytes.len() < HEADER_LEN {
         return Err(ModelError::Truncated);
     }
     if &bytes[..8] != MAGIC {
         return Err(ModelError::InvalidMagic);
     }
-
     let version = read_u32(bytes, 8)?;
     if version != FORMAT_VERSION {
         return Err(ModelError::UnsupportedVersion(version));
@@ -314,10 +456,21 @@ fn parse_model(bytes: &[u8]) -> Result<Detector, ModelError> {
         return Err(ModelError::InvalidLanguageCount(language_count));
     }
     let table_len = read_u32(bytes, 16)?;
-    if table_len == 0 || !table_len.is_power_of_two() {
+    if table_len < MIN_TABLE_LEN || !table_len.is_power_of_two() {
         return Err(ModelError::InvalidTableLength(table_len));
     }
     let blob_len = read_u32(bytes, 20)?;
+    check_table_lengths(bytes)?;
+    if &bytes[36..HEADER_LEN] != SOURCE_COMMIT {
+        return Err(ModelError::InvalidSourceCommit);
+    }
+    Ok(Header {
+        table_len: table_len as usize,
+        blob_len: blob_len as usize,
+    })
+}
+
+fn check_table_lengths(bytes: &[u8]) -> Result<(), ModelError> {
     let letter_len = read_u32(bytes, 24)?;
     if letter_len as usize != LETTER_TABLE_LEN {
         return Err(ModelError::InvalidLetterTableLength(letter_len));
@@ -330,114 +483,84 @@ fn parse_model(bytes: &[u8]) -> Result<Detector, ModelError> {
     if lowercase_len as usize != LOWERCASE_TABLE_LEN {
         return Err(ModelError::InvalidLowercaseTableLength(lowercase_len));
     }
-    if &bytes[36..HEADER_LEN] != SOURCE_COMMIT {
-        return Err(ModelError::InvalidSourceCommit);
-    }
+    Ok(())
+}
 
-    let table_bytes = usize::try_from(table_len)
-        .ok()
-        .and_then(|length| length.checked_mul(8))
-        .ok_or(ModelError::Truncated)?;
-    let blob_bytes = usize::try_from(blob_len)
-        .ok()
-        .and_then(|length| length.checked_mul(4))
-        .ok_or(ModelError::Truncated)?;
-    let expected_len = HEADER_LEN
-        .checked_add(LANGUAGE_COUNT * 4)
-        .and_then(|length| length.checked_add(LETTER_TABLE_LEN))
-        .and_then(|length| length.checked_add(CJK_TABLE_LEN))
-        .and_then(|length| length.checked_add(LOWERCASE_TABLE_LEN * 2))
-        .and_then(|length| length.checked_add(table_bytes))
-        .and_then(|length| length.checked_add(blob_bytes))
-        .ok_or(ModelError::Truncated)?;
-    if bytes.len() < expected_len {
-        return Err(ModelError::Truncated);
-    }
-    if bytes.len() > expected_len {
-        return Err(ModelError::TrailingData);
-    }
-
-    let mut cursor = HEADER_LEN;
-    let mut averages = [0.0_f32; LANGUAGE_COUNT];
-    for average in &mut averages {
-        *average = f32::from_bits(take_u32(bytes, &mut cursor)?);
-    }
-    let letter_bits = take_bytes(bytes, &mut cursor, LETTER_TABLE_LEN)?.into();
-    let cjk_bits = take_bytes(bytes, &mut cursor, CJK_TABLE_LEN)?.into();
-    let mut lowercase = Vec::with_capacity(LOWERCASE_TABLE_LEN);
-    for _ in 0..LOWERCASE_TABLE_LEN {
-        lowercase.push(take_u16(bytes, &mut cursor)?);
-    }
-    let mut table = Vec::with_capacity(table_len as usize);
+/// Every live slot must be occupied, and the table must keep one empty slot
+/// so that every probe sequence terminates.
+fn check_bitmaps(occupied: &[u64], live: &[u64], table_len: usize) -> Result<(), ModelError> {
     let mut has_empty_slot = false;
-    for slot_index in 0..table_len as usize {
-        let fingerprint = take_u32(bytes, &mut cursor)?;
-        let metadata = take_u32(bytes, &mut cursor)?;
-        if fingerprint == 0 {
-            has_empty_slot = true;
-            if metadata != 0 {
-                return Err(ModelError::InvalidEmptySlot { slot: slot_index });
-            }
+    for (word_index, (occupied_word, live_word)) in occupied.iter().zip(live).enumerate() {
+        let unoccupied_live = live_word & !occupied_word;
+        if unoccupied_live != 0 {
+            let slot = word_index * 64 + unoccupied_live.trailing_zeros() as usize;
+            return Err(ModelError::InvalidLiveSlot { slot });
         }
-        let offset = (metadata & 0x00ff_ffff) as usize;
-        let count = (metadata >> 24) as usize;
-        if offset
-            .checked_add(count)
-            .is_none_or(|end| end > blob_len as usize)
-        {
-            return Err(ModelError::InvalidBlobRange { slot: slot_index });
-        }
-        table.push(Slot {
-            fingerprint,
-            metadata,
-        });
+        has_empty_slot |= *occupied_word != u64::MAX;
     }
     if !has_empty_slot {
-        return Err(ModelError::InvalidTableLength(table_len));
+        return Err(ModelError::InvalidTableLength(table_len as u32));
     }
-    let mut blob = Vec::with_capacity(blob_len as usize);
-    for index in 0..blob_len as usize {
-        let packed_score = take_u32(bytes, &mut cursor)?;
+    Ok(())
+}
+
+fn live_slots(live: &[u64]) -> impl Iterator<Item = usize> + '_ {
+    live.iter().enumerate().flat_map(|(word_index, word)| {
+        (0..64_usize)
+            .filter(move |bit| (*word >> bit) & 1 == 1)
+            .map(move |bit| word_index * 64 + bit)
+    })
+}
+
+fn take_entries(
+    reader: &mut Reader<'_>,
+    live: &[u64],
+    blob_len: usize,
+) -> Result<Box<[Slot]>, ModelError> {
+    let count: usize = live.iter().map(|word| word.count_ones() as usize).sum();
+    let length = count.checked_mul(8).ok_or(ModelError::Truncated)?;
+    let raw = reader.take(length)?;
+    let mut entries = Vec::with_capacity(count);
+    for (slot, chunk) in live_slots(live).zip(raw.chunks_exact(8)) {
+        entries.push(parse_entry(slot, chunk, blob_len)?);
+    }
+    Ok(entries.into_boxed_slice())
+}
+
+fn parse_entry(slot: usize, chunk: &[u8], blob_len: usize) -> Result<Slot, ModelError> {
+    let fingerprint = u32::from_le_bytes(chunk[..4].try_into().expect("four bytes"));
+    let metadata = u32::from_le_bytes(chunk[4..].try_into().expect("four bytes"));
+    let offset = (metadata & 0x00ff_ffff) as usize;
+    let count = (metadata >> 24) as usize;
+    if fingerprint == 0 || count == 0 {
+        return Err(ModelError::InvalidEntry { slot });
+    }
+    if offset + count > blob_len {
+        return Err(ModelError::InvalidBlobRange { slot });
+    }
+    Ok(Slot {
+        fingerprint,
+        metadata,
+    })
+}
+
+fn take_blob(reader: &mut Reader<'_>, blob_len: usize) -> Result<Box<[u32]>, ModelError> {
+    let length = blob_len.checked_mul(4).ok_or(ModelError::Truncated)?;
+    let raw = reader.take(length)?;
+    let mut blob = Vec::with_capacity(blob_len);
+    for (index, chunk) in raw.chunks_exact(4).enumerate() {
+        let packed_score = u32::from_le_bytes(chunk.try_into().expect("four bytes"));
         if packed_score as u8 as usize >= LANGUAGE_COUNT {
             return Err(ModelError::InvalidLanguageIndex { index });
         }
         blob.push(packed_score);
     }
-
-    Ok(Detector {
-        averages,
-        letter_bits,
-        cjk_bits,
-        lowercase: lowercase.into_boxed_slice(),
-        table: table.into_boxed_slice(),
-        blob: blob.into_boxed_slice(),
-    })
+    Ok(blob.into_boxed_slice())
 }
 
 fn read_u32(bytes: &[u8], offset: usize) -> Result<u32, ModelError> {
     let value = bytes.get(offset..offset + 4).ok_or(ModelError::Truncated)?;
     Ok(u32::from_le_bytes(value.try_into().expect("four bytes")))
-}
-
-fn take_u16(bytes: &[u8], cursor: &mut usize) -> Result<u16, ModelError> {
-    let value = take_bytes(bytes, cursor, 2)?;
-    Ok(u16::from_le_bytes(value.try_into().expect("two bytes")))
-}
-
-fn take_u32(bytes: &[u8], cursor: &mut usize) -> Result<u32, ModelError> {
-    let value = take_bytes(bytes, cursor, 4)?;
-    Ok(u32::from_le_bytes(value.try_into().expect("four bytes")))
-}
-
-fn take_bytes<'a>(
-    bytes: &'a [u8],
-    cursor: &mut usize,
-    length: usize,
-) -> Result<&'a [u8], ModelError> {
-    let end = cursor.checked_add(length).ok_or(ModelError::Truncated)?;
-    let value = bytes.get(*cursor..end).ok_or(ModelError::Truncated)?;
-    *cursor = end;
-    Ok(value)
 }
 
 fn h64(mut value: u64) -> u64 {

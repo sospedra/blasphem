@@ -2,6 +2,7 @@ use std::ops::Range;
 
 use charabia::Tokenize;
 use unicode_normalization::UnicodeNormalization;
+use unicode_script::{Script, UnicodeScript};
 use unicode_security::skeleton;
 
 use crate::Language;
@@ -117,8 +118,7 @@ impl TextDocument {
             })
             .collect::<Vec<_>>();
         let context_tokens = context_tokens(original, &context_words);
-        let (skeleton_text, skeleton_spans) = skeleton_with_spans(original);
-        let confusable_tokens = tokens_from_mapped_text(&skeleton_text, &skeleton_spans);
+        let confusable_tokens = confusable_tokens(&tokens);
 
         Self {
             original: original.to_owned(),
@@ -289,36 +289,42 @@ fn normalized_view(tokens: &[WordToken]) -> CandidateView {
     view
 }
 
-fn skeleton_with_spans(text: &str) -> (String, Vec<TextSpan>) {
-    let mut output = String::new();
-    let mut spans = Vec::new();
-    let mut characters = text.char_indices().peekable();
-
-    while let Some((start, character)) = characters.next() {
-        let end = characters.peek().map_or(text.len(), |(end, _)| *end);
-        let value: String = skeleton(&character.to_string()).collect();
-        output.push_str(&value);
-        for _ in value.bytes() {
-            spans.push(TextSpan { start, end });
+/// Rebuilds each visual word from the tokens that touch it, then folds it as
+/// one unit. charabia splits a word wherever the script changes, so "idiоt"
+/// arrives as three tokens; folding them apart would miss the homoglyph, and
+/// folding the skeleton before tokenizing invented boundaries inside Arabic,
+/// Cyrillic, and Hangul words.
+fn confusable_tokens(tokens: &[WordToken]) -> Vec<WordToken> {
+    let mut words: Vec<WordToken> = Vec::new();
+    for token in tokens {
+        match words.last_mut() {
+            Some(last) if last.span.end == token.span.start => {
+                last.text.push_str(&token.text);
+                last.span.end = token.span.end;
+            }
+            _ => words.push(WordToken {
+                text: token.text.clone(),
+                span: token.span,
+            }),
         }
     }
-
-    (output, spans)
+    for word in &mut words {
+        word.text = confusable_fold(&word.text);
+    }
+    words
 }
 
-fn tokens_from_mapped_text(text: &str, byte_spans: &[TextSpan]) -> Vec<WordToken> {
-    text.tokenize()
-        .filter(|token| token.is_word())
-        .map(|token| {
-            let spans = &byte_spans[token.byte_start..token.byte_end];
-            let start = spans.iter().map(|span| span.start).min().unwrap_or(0);
-            let end = spans.iter().map(|span| span.end).max().unwrap_or(0);
-            WordToken {
-                text: token.lemma().to_owned(),
-                span: TextSpan { start, end },
-            }
-        })
-        .collect()
+fn confusable_fold(text: &str) -> String {
+    let foldable = text.chars().any(|character| {
+        matches!(
+            character.script(),
+            Script::Latin | Script::Cyrillic | Script::Greek
+        )
+    });
+    if !foldable {
+        return text.to_owned();
+    }
+    skeleton(text).collect()
 }
 
 fn evasion_view(tokens: &[WordToken]) -> CandidateView {

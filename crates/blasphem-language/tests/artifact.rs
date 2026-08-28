@@ -19,7 +19,7 @@ fn the_committed_artifact_rebuilds_from_the_vendored_tables() {
 
     let rebuilt = fs::read(output.path()).expect("readable rebuild");
     let committed =
-        fs::read(root.join("crates/blasphem-language/data/blasphem-language-15-v1.bin"))
+        fs::read(root.join("crates/blasphem-language/data/blasphem-language-15-v2.bin"))
             .expect("readable committed artifact");
     assert_eq!(
         rebuilt, committed,

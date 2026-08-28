@@ -1,13 +1,25 @@
 {
   "schema_version": "language-artifact-v1",
-  "artifact_relative_path": "crates/blasphem-language/data/blasphem-language-15-v1.bin",
-  "artifact_bytes": 18498380,
-  "artifact_sha256": "9384f5b8ea298af9c81ae506c1cbe09e1c06e28519bba38569ea2959eb15faf0",
+  "artifact_relative_path": "crates/blasphem-language/data/blasphem-language-15-v2.bin",
+  "artifact_bytes": 5048468,
+  "artifact_sha256": "1e741de3313032d19c75d8147d52efbcb19a67aae316e1b702ad7db4c1d8bf24",
   "source_commit": "a0301db809ff2e48a418018aa5359fb0c4354eb8",
   "source_headers": [
-    { "file_name": "large_db.h", "sha256": "4f9f3d9741e5f594b0a50da9bf1d26cfba2b8f049a1b75627114a6cc9c0dfe64" },
-    { "file_name": "eld_unicode_bits.h", "sha256": "e620b9feb08eb32ce751a7148a51b19c5eb2774d2dff74f5dd2d1363184df23b" },
-    { "file_name": "eld_tolower.h", "sha256": "97722a4d9765e609631ce527ff42b27a4e589d7e673d17e8bf1da68068da1d2b" },
-    { "file_name": "eld_unicode.h", "sha256": "26b6b645823f81796dcdafdf8eedb41299d769d8c06579eab9ec4ffa3e519cf0" }
+    {
+      "file_name": "large_db.h",
+      "sha256": "4f9f3d9741e5f594b0a50da9bf1d26cfba2b8f049a1b75627114a6cc9c0dfe64"
+    },
+    {
+      "file_name": "eld_unicode_bits.h",
+      "sha256": "e620b9feb08eb32ce751a7148a51b19c5eb2774d2dff74f5dd2d1363184df23b"
+    },
+    {
+      "file_name": "eld_tolower.h",
+      "sha256": "97722a4d9765e609631ce527ff42b27a4e589d7e673d17e8bf1da68068da1d2b"
+    },
+    {
+      "file_name": "eld_unicode.h",
+      "sha256": "26b6b645823f81796dcdafdf8eedb41299d769d8c06579eab9ec4ffa3e519cf0"
+    }
   ]
 }

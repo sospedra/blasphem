@@ -158,18 +158,25 @@ fn korean_collisions_are_zero_point_evidence() {
     let channel =
         RuleChannel::from_hurtlex_bytes(Language::Ko, Some(&bytes)).expect("rule channel");
 
-    for text in ["메시지를 보냈다", "김 씨가 왔다"] {
-        let result = channel.analyze(text, ReplyTarget::Unknown);
-        assert_eq!(result.score, 0, "{text}: {:?}", result.evidence);
-        assert!(!result.should_nudge, "{text}: {:?}", result.evidence);
-        assert!(
-            result.evidence.iter().any(|item| {
-                item.rule_id == RuleId::LexicalCollisionExcluded && item.points == 0
-            }),
-            "{text}: {:?}",
-            result.evidence
-        );
-    }
+    let unrelated = channel.analyze("메시지를 보냈다", ReplyTarget::Unknown);
+    assert_eq!(unrelated.score, 0, "{:?}", unrelated.evidence);
+    assert!(
+        unrelated.evidence.is_empty(),
+        "no lemma is a whole word in this text: {:?}",
+        unrelated.evidence
+    );
+
+    let result = channel.analyze("김 씨가 왔다", ReplyTarget::Unknown);
+    assert_eq!(result.score, 0, "{:?}", result.evidence);
+    assert!(!result.should_nudge, "{:?}", result.evidence);
+    assert!(
+        result
+            .evidence
+            .iter()
+            .any(|item| { item.rule_id == RuleId::LexicalCollisionExcluded && item.points == 0 }),
+        "{:?}",
+        result.evidence
+    );
 
     let report = channel.analyze("뉴스가 협박 메시지 삭제를 보도했다", ReplyTarget::Unknown);
     assert_eq!(report.score, HURTLEX_SCORE);

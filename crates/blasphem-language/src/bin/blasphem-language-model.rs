@@ -2,7 +2,10 @@ use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use blasphem_language::Detector;
+
 const SOURCE_COMMIT: &str = "a0301db809ff2e48a418018aa5359fb0c4354eb8";
+const FORMAT_VERSION: u32 = 2;
 const TABLE_LENGTH: usize = 2_097_152;
 const LANGUAGE_COUNT: usize = 15;
 const LETTER_TABLE_LENGTH: usize = 8_192;
@@ -101,16 +104,18 @@ fn run() -> Result<(), String> {
     }
 
     let (slots, blob) = filter_slots(&original_slots, &original_blob)?;
+    let layout = CompactLayout::from_slots(&slots);
     let mut artifact = Vec::with_capacity(
         76 + LANGUAGE_COUNT * 4
             + LETTER_TABLE_LENGTH
             + CJK_TABLE_LENGTH
             + LOWERCASE_TABLE_LENGTH * 2
-            + slots.len() * 8
+            + layout.occupied.len() * 16
+            + layout.entries.len() * 8
             + blob.len() * 4,
     );
     artifact.extend_from_slice(b"BLASPHEM");
-    write_u32(&mut artifact, 1);
+    write_u32(&mut artifact, FORMAT_VERSION);
     write_u32(&mut artifact, LANGUAGE_COUNT as u32);
     write_u32(&mut artifact, slots.len() as u32);
     write_u32(&mut artifact, blob.len() as u32);
@@ -135,13 +140,21 @@ fn run() -> Result<(), String> {
             .map_err(|_| format!("lowercase table value {value} exceeds u16"))?;
         artifact.extend_from_slice(&value.to_le_bytes());
     }
-    for slot in slots {
+    for word in &layout.occupied {
+        artifact.extend_from_slice(&word.to_le_bytes());
+    }
+    for word in &layout.live {
+        artifact.extend_from_slice(&word.to_le_bytes());
+    }
+    for slot in &layout.entries {
         write_u32(&mut artifact, slot.fingerprint);
         write_u32(&mut artifact, slot.metadata);
     }
     for score in blob {
         write_u32(&mut artifact, score);
     }
+    Detector::from_bytes(&artifact)
+        .map_err(|error| format!("the generated artifact fails validation: {error}"))?;
 
     if let Some(parent) = output.parent() {
         fs::create_dir_all(parent)
@@ -270,6 +283,37 @@ fn parse_slots(source: &str, name: &str) -> Result<Vec<Slot>, String> {
         remaining = &remaining[close_offset + 1..];
     }
     Ok(slots)
+}
+
+/// The version-two table layout. Two bitmaps cover every upstream position,
+/// and only live slots store a fingerprint. Dead slots, whose scores all
+/// belonged to dropped languages, stay occupied so probe chains do not change.
+struct CompactLayout {
+    occupied: Vec<u64>,
+    live: Vec<u64>,
+    entries: Vec<Slot>,
+}
+
+impl CompactLayout {
+    fn from_slots(slots: &[Slot]) -> Self {
+        let words = slots.len().div_ceil(64);
+        let mut layout = Self {
+            occupied: vec![0; words],
+            live: vec![0; words],
+            entries: Vec::new(),
+        };
+        for (index, slot) in slots.iter().enumerate() {
+            if slot.fingerprint == 0 {
+                continue;
+            }
+            layout.occupied[index / 64] |= 1 << (index % 64);
+            if slot.metadata >> 24 != 0 {
+                layout.live[index / 64] |= 1 << (index % 64);
+                layout.entries.push(*slot);
+            }
+        }
+        layout
+    }
 }
 
 fn compact_index(upstream_index: u8) -> Option<u8> {
@@ -489,7 +533,7 @@ fn sha256_hex(input: &[u8]) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{Slot, filter_slots, parse_slots, parse_u32_array, sha256_hex};
+    use super::{CompactLayout, Slot, filter_slots, parse_slots, parse_u32_array, sha256_hex};
 
     #[test]
     fn sha256_matches_the_standard_abc_vector() {
@@ -522,6 +566,26 @@ mod tests {
                 },
             ]
         );
+    }
+
+    #[test]
+    fn compact_layout_marks_dead_slots_occupied_and_stores_only_live_entries() {
+        let empty = Slot {
+            fingerprint: 0,
+            metadata: 0,
+        };
+        let dead = Slot {
+            fingerprint: 7,
+            metadata: 5,
+        };
+        let live = Slot {
+            fingerprint: 9,
+            metadata: (2 << 24) | 5,
+        };
+        let layout = CompactLayout::from_slots(&[empty, dead, live, empty]);
+        assert_eq!(layout.occupied, vec![0b0110]);
+        assert_eq!(layout.live, vec![0b0100]);
+        assert_eq!(layout.entries, vec![live]);
     }
 
     #[test]

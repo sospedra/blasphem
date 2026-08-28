@@ -24,3 +24,11 @@ The generated artifact contains only these upstream language indexes.
 `1 9 11 12 17 20 25 26 29 36 42 44 54 57 59`
 
 The compact order is `AR DE EN ES FR HI IT JA KO MS PT RU TR VI ZH`.
+
+## Artifact layout
+
+The artifact is format version 2. The 76-byte header holds the magic `BLASPHEM`, the version, the language count, the table length, the blob length, the three unicode table lengths, and the upstream commit. The 15 averages, the letter bits, the CJK bits, and the lowercase table follow.
+
+The upstream hash table has 2,097,152 positions. Version 2 stores two bitmaps over those positions instead of the table. The occupied bitmap marks every position the upstream table filled. The live bitmap marks the positions whose scores survive the 15-language filter. The live slots follow in position order as fingerprint and metadata pairs. The score blob comes last.
+
+A dead slot is occupied and not live. Every score it held belonged to a dropped language. It stays occupied so each probe chain ends where the upstream table ended it, and it stores nothing else. The reader derives the rank of every live slot from the live bitmap and reads scores only from live slots. Detection output is identical to the version 1 table. Version 1 was 18,498,380 bytes. Version 2 is 5,048,468 bytes.

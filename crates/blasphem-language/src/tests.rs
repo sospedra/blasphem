@@ -1,15 +1,15 @@
-use super::{Detector, Language, ModelError, extract_features};
+use super::{Detector, Language, ModelError, extract_features, h64};
 
 const HEADER_LEN: usize = 76;
+const TABLE_LEN: usize = 64;
+const TABLES_LEN: usize = 15 * 4 + 8_192 + 8_192 + 1_920 * 2;
+const BITMAPS_OFFSET: usize = HEADER_LEN + TABLES_LEN;
 
-fn valid_model() -> Vec<u8> {
-    let table_len = 2_u32;
-    let blob_len = 0_u32;
-    let mut bytes = Vec::with_capacity(
-        HEADER_LEN + 15 * 4 + 8_192 + 8_192 + 1_920 * 2 + table_len as usize * 8,
-    );
+/// A version-two header and zeroed unicode tables.
+fn header(table_len: u32, blob_len: u32) -> Vec<u8> {
+    let mut bytes = Vec::with_capacity(BITMAPS_OFFSET + 16);
     bytes.extend_from_slice(b"BLASPHEM");
-    bytes.extend_from_slice(&1_u32.to_le_bytes());
+    bytes.extend_from_slice(&2_u32.to_le_bytes());
     bytes.extend_from_slice(&15_u32.to_le_bytes());
     bytes.extend_from_slice(&table_len.to_le_bytes());
     bytes.extend_from_slice(&blob_len.to_le_bytes());
@@ -20,57 +20,62 @@ fn valid_model() -> Vec<u8> {
     for _ in 0..15 {
         bytes.extend_from_slice(&0.9_f32.to_bits().to_le_bytes());
     }
-    bytes.resize(bytes.len() + 8_192 + 8_192 + 1_920 * 2, 0);
-    bytes.resize(bytes.len() + table_len as usize * 8, 0);
+    bytes.resize(BITMAPS_OFFSET, 0);
     bytes
 }
 
-fn scored_model(scores_per_feature: &[u32]) -> Vec<u8> {
-    let table_len = 8_u32;
-    let blob_len = 3 * scores_per_feature.len() as u32;
-    let mut bytes = Vec::with_capacity(
-        HEADER_LEN
-            + 15 * 4
-            + 8_192
-            + 8_192
-            + 1_920 * 2
-            + table_len as usize * 8
-            + blob_len as usize * 4,
-    );
-    bytes.extend_from_slice(b"BLASPHEM");
-    bytes.extend_from_slice(&1_u32.to_le_bytes());
-    bytes.extend_from_slice(&15_u32.to_le_bytes());
-    bytes.extend_from_slice(&table_len.to_le_bytes());
-    bytes.extend_from_slice(&blob_len.to_le_bytes());
-    bytes.extend_from_slice(&8_192_u32.to_le_bytes());
-    bytes.extend_from_slice(&8_192_u32.to_le_bytes());
-    bytes.extend_from_slice(&1_920_u32.to_le_bytes());
-    bytes.extend_from_slice(b"a0301db809ff2e48a418018aa5359fb0c4354eb8");
-    for _ in 0..15 {
-        bytes.extend_from_slice(&0.9_f32.to_bits().to_le_bytes());
-    }
-    bytes.resize(bytes.len() + 8_192 + 8_192 + 1_920 * 2, 0);
+fn with_bitmaps(mut bytes: Vec<u8>, occupied: u64, live: u64) -> Vec<u8> {
+    bytes.extend_from_slice(&occupied.to_le_bytes());
+    bytes.extend_from_slice(&live.to_le_bytes());
+    bytes
+}
 
-    let mut slots = [(0_u32, 0_u32); 8];
-    for (feature_index, (bucket, fingerprint)) in
-        [(1, 0x4bbc_e23a), (6, 0xa404_4f5b), (3, 0xfc4b_bc73)]
-            .into_iter()
-            .enumerate()
-    {
-        let offset = feature_index * scores_per_feature.len();
-        slots[bucket] = (
-            fingerprint,
-            ((scores_per_feature.len() as u32) << 24) | offset as u32,
-        );
+fn with_entry(mut bytes: Vec<u8>, fingerprint: u32, metadata: u32) -> Vec<u8> {
+    bytes.extend_from_slice(&fingerprint.to_le_bytes());
+    bytes.extend_from_slice(&metadata.to_le_bytes());
+    bytes
+}
+
+fn with_scores(mut bytes: Vec<u8>, scores: &[u32]) -> Vec<u8> {
+    for score in scores {
+        bytes.extend_from_slice(&score.to_le_bytes());
     }
-    for (fingerprint, metadata) in slots {
-        bytes.extend_from_slice(&fingerprint.to_le_bytes());
-        bytes.extend_from_slice(&metadata.to_le_bytes());
+    bytes
+}
+
+/// An empty 64-position table.
+fn valid_model() -> Vec<u8> {
+    with_bitmaps(header(TABLE_LEN as u32, 0), 0, 0)
+}
+
+/// The home bucket and fingerprint of one single-word feature.
+fn placement(word: &str) -> (usize, u32) {
+    let hash = h64(extract_features(word)[0]);
+    (
+        (hash as u32 as usize) % TABLE_LEN,
+        ((hash >> 32) as u32).max(1),
+    )
+}
+
+/// One model where the words `a`, `b`, and `c` each score `scores_per_feature`.
+fn scored_model(scores_per_feature: &[u32]) -> Vec<u8> {
+    let mut placed: Vec<_> = ["a", "b", "c"].into_iter().map(placement).collect();
+    placed.sort_unstable();
+    assert!(
+        placed.windows(2).all(|pair| pair[0].0 != pair[1].0),
+        "the test words must not share a bucket"
+    );
+
+    let count = scores_per_feature.len() as u32;
+    let bits = placed
+        .iter()
+        .fold(0_u64, |bits, (bucket, _)| bits | (1 << bucket));
+    let mut bytes = with_bitmaps(header(TABLE_LEN as u32, 3 * count), bits, bits);
+    for (index, (_, fingerprint)) in placed.iter().enumerate() {
+        bytes = with_entry(bytes, *fingerprint, (count << 24) | (index as u32 * count));
     }
     for _ in 0..3 {
-        for score in scores_per_feature {
-            bytes.extend_from_slice(&score.to_le_bytes());
-        }
+        bytes = with_scores(bytes, scores_per_feature);
     }
     bytes
 }
@@ -113,9 +118,10 @@ fn language_codes_follow_the_compact_language_order() {
 #[test]
 fn model_parser_rejects_each_header_contract_break() {
     let cases = [
-        (8, 0_u32, ModelError::UnsupportedVersion(0)),
+        (8, 1_u32, ModelError::UnsupportedVersion(1)),
         (12, 14_u32, ModelError::InvalidLanguageCount(14)),
         (16, 3_u32, ModelError::InvalidTableLength(3)),
+        (16, 32_u32, ModelError::InvalidTableLength(32)),
         (24, 8_191_u32, ModelError::InvalidLetterTableLength(8_191)),
         (28, 8_191_u32, ModelError::InvalidCjkTableLength(8_191)),
         (
@@ -157,13 +163,59 @@ fn model_parser_rejects_truncation_and_trailing_bytes() {
 
 #[test]
 fn model_parser_rejects_a_blob_range_outside_the_blob() {
-    let mut bytes = valid_model();
-    let table_offset = HEADER_LEN + 15 * 4 + 8_192 + 8_192 + 1_920 * 2;
-    bytes[table_offset..table_offset + 4].copy_from_slice(&1_u32.to_le_bytes());
-    bytes[table_offset + 4..table_offset + 8].copy_from_slice(&(1_u32 << 24).to_le_bytes());
+    let bytes = with_entry(with_bitmaps(header(TABLE_LEN as u32, 0), 1, 1), 1, 1 << 24);
     assert_eq!(
         Detector::from_bytes(&bytes).unwrap_err(),
         ModelError::InvalidBlobRange { slot: 0 }
+    );
+}
+
+#[test]
+fn model_parser_rejects_a_live_slot_that_is_not_occupied() {
+    let bytes = with_entry(
+        with_bitmaps(header(TABLE_LEN as u32, 1), 0, 1 << 5),
+        1,
+        1 << 24,
+    );
+    let bytes = with_scores(bytes, &[2]);
+    assert_eq!(
+        Detector::from_bytes(&bytes).unwrap_err(),
+        ModelError::InvalidLiveSlot { slot: 5 }
+    );
+}
+
+#[test]
+fn model_parser_rejects_entries_without_a_fingerprint_or_scores() {
+    for (fingerprint, metadata) in [(0_u32, 1_u32 << 24), (7, 0)] {
+        let bytes = with_entry(
+            with_bitmaps(header(TABLE_LEN as u32, 1), 1, 1),
+            fingerprint,
+            metadata,
+        );
+        let bytes = with_scores(bytes, &[2]);
+        assert_eq!(
+            Detector::from_bytes(&bytes).unwrap_err(),
+            ModelError::InvalidEntry { slot: 0 }
+        );
+    }
+}
+
+#[test]
+fn model_parser_rejects_a_table_without_an_empty_slot() {
+    let bytes = with_bitmaps(header(TABLE_LEN as u32, 0), u64::MAX, 0);
+    assert_eq!(
+        Detector::from_bytes(&bytes).unwrap_err(),
+        ModelError::InvalidTableLength(64)
+    );
+}
+
+#[test]
+fn model_parser_rejects_a_score_for_a_language_outside_the_profile_set() {
+    let bytes = with_entry(with_bitmaps(header(TABLE_LEN as u32, 1), 1, 1), 1, 1 << 24);
+    let bytes = with_scores(bytes, &[15]);
+    assert_eq!(
+        Detector::from_bytes(&bytes).unwrap_err(),
+        ModelError::InvalidLanguageIndex { index: 0 }
     );
 }
 
@@ -250,6 +302,21 @@ fn detector_is_send_and_sync() {
 }
 
 #[test]
+fn detector_probes_past_a_dead_slot_to_its_live_entry() {
+    let (home, fingerprint) = placement("a");
+    let next = (home + 1) % TABLE_LEN;
+    let occupied = (1_u64 << home) | (1_u64 << next);
+    let weight = 100_000_f32.to_bits() & 0xffff_ff00;
+    let bytes = with_bitmaps(header(TABLE_LEN as u32, 1), occupied, 1_u64 << next);
+    let bytes = with_scores(with_entry(bytes, fingerprint, 1 << 24), &[weight | 2]);
+
+    let detector = Detector::from_bytes(&bytes).unwrap();
+    let detection = detector.detect("a");
+    assert_eq!(detection.language, Some(Language::English));
+    assert_eq!(detection.feature_count, 1);
+}
+
+#[test]
 fn reliability_uses_feature_average_and_gap_gates() {
     let high_weight = 100_000_f32.to_bits() & 0xffff_ff00;
     let strong = Detector::from_bytes(&scored_model(&[high_weight | 2])).unwrap();
@@ -295,7 +362,8 @@ fn embedded_model_detects_representative_selected_languages() {
 }
 
 #[test]
-fn the_committed_artifact_uses_the_blasphem_magic() {
-    let bytes = include_bytes!("../data/blasphem-language-15-v1.bin");
+fn the_committed_artifact_uses_the_blasphem_magic_and_version_two() {
+    let bytes = include_bytes!("../data/blasphem-language-15-v2.bin");
     assert_eq!(&bytes[..8], b"BLASPHEM");
+    assert_eq!(u32::from_le_bytes(bytes[8..12].try_into().unwrap()), 2);
 }
