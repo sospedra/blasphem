@@ -20,7 +20,9 @@ use blasphem_train::compiler::{BatchCompileOptions, compile_model_set};
 use blasphem_train::corpus::verify_corpus;
 use blasphem_train::evaluation_lock::parse_evaluation_lock;
 use blasphem_train::evidence::write_canonical_json;
-use blasphem_train::lexicon::{BuildOptions, HarvestOptions, build, default_wiki, harvest};
+use blasphem_train::lexicon::{
+    BuildOptions, HarvestOptions, WikiSource, build, default_wiki, harvest,
+};
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
 use blasphem_train::regenerate::{RegenerateOptions, regenerate};
 use blasphem_train::reproduce::{ReproduceOptions, reproduce};
@@ -218,6 +220,17 @@ struct LexiconHarvestArgs {
     storage_code: String,
     #[arg(long)]
     output: PathBuf,
+    /// Native wiki host, for example "tr.wiktionary.org". Some languages
+    /// carry no meaningful offence categories on en.wiktionary.org and must
+    /// harvest from their own wiki instead. Harvested first; the
+    /// en.wiktionary.org derivation still runs as a secondary source.
+    #[arg(long)]
+    native_host: Option<String>,
+    /// Full category titles on the native wiki, for example
+    /// "Kategori:Türkçe argo". Repeat the flag for more than one category.
+    /// Ignored when `native_host` is not set.
+    #[arg(long = "native-category")]
+    native_categories: Vec<String>,
 }
 
 #[derive(Debug, Args)]
@@ -322,10 +335,19 @@ fn report_regeneration(project_root: PathBuf, work_root: PathBuf) -> Result<()> 
 }
 
 fn lexicon_harvest_command(arguments: &LexiconHarvestArgs) -> Result<()> {
+    let mut wikis = Vec::new();
+    if let Some(host) = arguments.native_host.clone() {
+        wikis.push(WikiSource {
+            host,
+            categories: arguments.native_categories.clone(),
+            strong: Vec::new(),
+        });
+    }
+    wikis.push(default_wiki(&arguments.language_name));
     let options = HarvestOptions {
         language_name: arguments.language_name.clone(),
         storage_code: arguments.storage_code.clone(),
-        wikis: vec![default_wiki(&arguments.language_name)],
+        wikis,
         output: arguments.output.clone(),
     };
     let report = harvest(&options).context("cannot harvest the wiktionary lexicon")?;
