@@ -1,0 +1,3504 @@
+{
+  "storage_code": "IT",
+  "language_name": "Italian",
+  "harvest_sha256": "0091dccec38f0c28f286895869844d595b6dbcb0004b277f1a9be46a5e31e7cd",
+  "entries": 437,
+  "entries_detail": [
+    {
+      "id": "IT00001",
+      "lemma": "cagna",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00002",
+      "lemma": "maiala",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00003",
+      "lemma": "mulo",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00004",
+      "lemma": "pecora",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00005",
+      "lemma": "pecorizzare",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00006",
+      "lemma": "porca",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00007",
+      "lemma": "quadrupede",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00008",
+      "lemma": "scrofa",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00009",
+      "lemma": "vacca",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00010",
+      "lemma": "conno",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00011",
+      "lemma": "cunnu",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00012",
+      "lemma": "fessa",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00013",
+      "lemma": "fica",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00014",
+      "lemma": "figa",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00015",
+      "lemma": "fregna",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00016",
+      "lemma": "gnocca",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00017",
+      "lemma": "mona",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00018",
+      "lemma": "mussa",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00019",
+      "lemma": "passera",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00020",
+      "lemma": "passerona",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00021",
+      "lemma": "patacca",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00022",
+      "lemma": "patonza",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00023",
+      "lemma": "potta",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00024",
+      "lemma": "pucchiacchera",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00025",
+      "lemma": "sticchio",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00026",
+      "lemma": "tetta",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00027",
+      "lemma": "tette",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00028",
+      "lemma": "topa",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00029",
+      "lemma": "zinna",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00030",
+      "lemma": "zinne",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00031",
+      "lemma": "'sti cazzi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00032",
+      "lemma": "'sto cazzo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00033",
+      "lemma": "belino",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00034",
+      "lemma": "bocchinara",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00035",
+      "lemma": "bocchinaro",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00036",
+      "lemma": "bocchino",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00037",
+      "lemma": "cazzi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00038",
+      "lemma": "cazzo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00039",
+      "lemma": "cazzone",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00040",
+      "lemma": "cazzuto",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00041",
+      "lemma": "chiavare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00042",
+      "lemma": "chiavata",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00043",
+      "lemma": "ciucciacazzi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00044",
+      "lemma": "inchiappettare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00045",
+      "lemma": "inculare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00046",
+      "lemma": "ingroppare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00047",
+      "lemma": "limonare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00048",
+      "lemma": "minchia",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00049",
+      "lemma": "moscio",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00050",
+      "lemma": "nerchia",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00051",
+      "lemma": "pinnolone",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00052",
+      "lemma": "pippa",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00053",
+      "lemma": "pippaiolo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00054",
+      "lemma": "pippone",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00055",
+      "lemma": "pipponi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00056",
+      "lemma": "pomiciare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00057",
+      "lemma": "pompinaio",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00058",
+      "lemma": "pompinaro",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00059",
+      "lemma": "pompino",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00060",
+      "lemma": "pugnetta",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00061",
+      "lemma": "sbora",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00062",
+      "lemma": "sboro",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00063",
+      "lemma": "sborra",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00064",
+      "lemma": "sborrare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00065",
+      "lemma": "sborrata",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00066",
+      "lemma": "sborrone",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00067",
+      "lemma": "sbura",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00068",
+      "lemma": "sburare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00069",
+      "lemma": "sburo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00070",
+      "lemma": "sburrare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00071",
+      "lemma": "scaldacazzi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00072",
+      "lemma": "scopabile",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00073",
+      "lemma": "scopamico",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00074",
+      "lemma": "scopare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00075",
+      "lemma": "scopata",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00076",
+      "lemma": "scopatina",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00077",
+      "lemma": "scopato",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00078",
+      "lemma": "scopatore",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00079",
+      "lemma": "sega",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00080",
+      "lemma": "segaiolo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00081",
+      "lemma": "segaossa",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00082",
+      "lemma": "segone",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00083",
+      "lemma": "stocazzo",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00084",
+      "lemma": "succhiacazzi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00085",
+      "lemma": "succhione",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00086",
+      "lemma": "sveltina",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00087",
+      "lemma": "sverginare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00088",
+      "lemma": "trombabile",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00089",
+      "lemma": "trombamico",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00090",
+      "lemma": "trombare",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00091",
+      "lemma": "trombata",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00092",
+      "lemma": "trombatore",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00093",
+      "lemma": "arrogante",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00094",
+      "lemma": "baggianata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00095",
+      "lemma": "bastarda",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00096",
+      "lemma": "bastarde",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00097",
+      "lemma": "bastardi",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00098",
+      "lemma": "bastardo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00099",
+      "lemma": "bimbaminkia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00100",
+      "lemma": "bimbominkia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00101",
+      "lemma": "boiata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00102",
+      "lemma": "branco",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00103",
+      "lemma": "bugiardo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00104",
+      "lemma": "cagone",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00105",
+      "lemma": "cagotto",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00106",
+      "lemma": "canaglia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00107",
+      "lemma": "cazzaro",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00108",
+      "lemma": "cazzata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00109",
+      "lemma": "cazzate",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00110",
+      "lemma": "ciarlatani",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00111",
+      "lemma": "coglionaggine",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00112",
+      "lemma": "coglionata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00113",
+      "lemma": "coglionatura",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00114",
+      "lemma": "coglione",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00115",
+      "lemma": "coglioneria",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00116",
+      "lemma": "coglioni",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00117",
+      "lemma": "cornuto",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00118",
+      "lemma": "cretinata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00119",
+      "lemma": "donnetta",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00120",
+      "lemma": "fancazzismo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00121",
+      "lemma": "fancazzista",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00122",
+      "lemma": "farabutta",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00123",
+      "lemma": "farabutti",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00124",
+      "lemma": "farabutto",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00125",
+      "lemma": "feccia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00126",
+      "lemma": "gentaglia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00127",
+      "lemma": "giuda",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00128",
+      "lemma": "giullare",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00129",
+      "lemma": "gretto",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00130",
+      "lemma": "guardone",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00131",
+      "lemma": "ignorante",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00132",
+      "lemma": "imputtanare",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00133",
+      "lemma": "ipocrita",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00134",
+      "lemma": "istrione",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00135",
+      "lemma": "leccaculo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00136",
+      "lemma": "lecchina",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00137",
+      "lemma": "lecchine",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00138",
+      "lemma": "lecchini",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00139",
+      "lemma": "lecchino",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00140",
+      "lemma": "leone da tastiera",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00141",
+      "lemma": "maleducato",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00142",
+      "lemma": "meschino",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00143",
+      "lemma": "minchiata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00144",
+      "lemma": "omuncolo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00145",
+      "lemma": "pagliaccia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00146",
+      "lemma": "pagliaccio",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00147",
+      "lemma": "paraculata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00148",
+      "lemma": "paraculo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00149",
+      "lemma": "parassiti",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00150",
+      "lemma": "piantagrane",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00151",
+      "lemma": "poveraccio",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00152",
+      "lemma": "presuntuoso",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00153",
+      "lemma": "puttanata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00154",
+      "lemma": "ridicolo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00155",
+      "lemma": "rompiballe",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00156",
+      "lemma": "rompicazzo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00157",
+      "lemma": "rompicoglioni",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00158",
+      "lemma": "rompiminchia",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00159",
+      "lemma": "rompipalle",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00160",
+      "lemma": "saccente",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00161",
+      "lemma": "salamelecco",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00162",
+      "lemma": "scarto",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00163",
+      "lemma": "scassacoglioni",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00164",
+      "lemma": "scassamaroni",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00165",
+      "lemma": "scassapalle",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00166",
+      "lemma": "seccatore",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00167",
+      "lemma": "smerdare",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00168",
+      "lemma": "smerdata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00169",
+      "lemma": "smerdato",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00170",
+      "lemma": "smerdo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00171",
+      "lemma": "smorzacandela",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00172",
+      "lemma": "sottospecie",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00173",
+      "lemma": "sputtanamento",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00174",
+      "lemma": "sputtanare",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00175",
+      "lemma": "strafottenza",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00176",
+      "lemma": "strafottere",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00177",
+      "lemma": "stronza",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00178",
+      "lemma": "stronzata",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00179",
+      "lemma": "stronze",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00180",
+      "lemma": "stronzi",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00181",
+      "lemma": "stronzo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00182",
+      "lemma": "teatrino",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00183",
+      "lemma": "testa di cazzo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00184",
+      "lemma": "trollare",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00185",
+      "lemma": "tronfione",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00186",
+      "lemma": "vigliacco",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00187",
+      "lemma": "balena",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00188",
+      "lemma": "befana",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00189",
+      "lemma": "cesso",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00190",
+      "lemma": "culone",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00191",
+      "lemma": "megera",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00192",
+      "lemma": "quattrocchi",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00193",
+      "lemma": "rimbambire",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00194",
+      "lemma": "rimbambirsi",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00195",
+      "lemma": "scalognato",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00196",
+      "lemma": "sederone",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00197",
+      "lemma": "sederoni",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00198",
+      "lemma": "sfigata",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00199",
+      "lemma": "sfigato",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00200",
+      "lemma": "sfortunata",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00201",
+      "lemma": "sfortunate",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00202",
+      "lemma": "sfortunato",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00203",
+      "lemma": "tettona",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00204",
+      "lemma": "vecchiaccia",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00205",
+      "lemma": "vecchiaccio",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00206",
+      "lemma": "vecchiarda",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00207",
+      "lemma": "vecchiardo",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00208",
+      "lemma": "bischeraggine",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00209",
+      "lemma": "bischero",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00210",
+      "lemma": "cretini",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00211",
+      "lemma": "cretino",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00212",
+      "lemma": "deficiente",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00213",
+      "lemma": "deficienti",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00214",
+      "lemma": "ebete",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00215",
+      "lemma": "ebeti",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00216",
+      "lemma": "fessacchiotta",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00217",
+      "lemma": "fessacchiotte",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00218",
+      "lemma": "fessacchiotti",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00219",
+      "lemma": "fessacchiotto",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00220",
+      "lemma": "fesso",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00221",
+      "lemma": "idiota",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00222",
+      "lemma": "idioti",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00223",
+      "lemma": "imbecille",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00224",
+      "lemma": "imbecilli",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00225",
+      "lemma": "minchionaggine",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00226",
+      "lemma": "minchione",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00227",
+      "lemma": "minchioneria",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00228",
+      "lemma": "mongolo",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00229",
+      "lemma": "mongoloide",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00230",
+      "lemma": "mongoloidi",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00231",
+      "lemma": "nanerottolo",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00232",
+      "lemma": "nano",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00233",
+      "lemma": "ominide",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00234",
+      "lemma": "pirla",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00235",
+      "lemma": "rimbecillire",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00236",
+      "lemma": "rimbecillirsi",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00237",
+      "lemma": "rincoglionimento",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00238",
+      "lemma": "rincoglionire",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00239",
+      "lemma": "rincoglionirsi",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00240",
+      "lemma": "rincoglionito",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00241",
+      "lemma": "ritardata",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00242",
+      "lemma": "ritardate",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00243",
+      "lemma": "ritardati",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00244",
+      "lemma": "ritardato",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00245",
+      "lemma": "scema",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00246",
+      "lemma": "sceme",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00247",
+      "lemma": "scemi",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00248",
+      "lemma": "scemo",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00249",
+      "lemma": "casta",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00250",
+      "lemma": "comunista",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00251",
+      "lemma": "fascista",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00252",
+      "lemma": "neofascistico",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00253",
+      "lemma": "pidiota",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00254",
+      "lemma": "rosso",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00255",
+      "lemma": "salvinite",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00256",
+      "lemma": "salvinizzare",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00257",
+      "lemma": "trinariciuto",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00258",
+      "lemma": "bamboccione",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00259",
+      "lemma": "bigotto",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00260",
+      "lemma": "burino",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00261",
+      "lemma": "cafone",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00262",
+      "lemma": "cattedratico",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00263",
+      "lemma": "collotorto",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00264",
+      "lemma": "contadiname",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00265",
+      "lemma": "crumiro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00266",
+      "lemma": "dottorame",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00267",
+      "lemma": "filosofastro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00268",
+      "lemma": "itagliano",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00269",
+      "lemma": "lazzaro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00270",
+      "lemma": "maranza",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00271",
+      "lemma": "montanaro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00272",
+      "lemma": "paesucolo",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00273",
+      "lemma": "pariolino",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00274",
+      "lemma": "pelacani",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00275",
+      "lemma": "pezzente",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00276",
+      "lemma": "plebaglia",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00277",
+      "lemma": "plebe",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00278",
+      "lemma": "plebeo",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00279",
+      "lemma": "poetastro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00280",
+      "lemma": "professorame",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00281",
+      "lemma": "ragazzaglia",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00282",
+      "lemma": "romanaccio",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00283",
+      "lemma": "tamarro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00284",
+      "lemma": "vastaso",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00285",
+      "lemma": "arrusa",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00286",
+      "lemma": "arruso",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00287",
+      "lemma": "bofilo",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00288",
+      "lemma": "brinca",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00289",
+      "lemma": "bucaiola",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00290",
+      "lemma": "bucaiole",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00291",
+      "lemma": "bucaioli",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00292",
+      "lemma": "bucaiolo",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00293",
+      "lemma": "budiùlo",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00294",
+      "lemma": "bufu",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00295",
+      "lemma": "busone",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00296",
+      "lemma": "checca",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00297",
+      "lemma": "culattina",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00298",
+      "lemma": "culattone",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00299",
+      "lemma": "culattoni",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00300",
+      "lemma": "froci",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00301",
+      "lemma": "frociaggine",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00302",
+      "lemma": "frocio",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00303",
+      "lemma": "froscio",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00304",
+      "lemma": "invertito",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00305",
+      "lemma": "mangiapatate",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00306",
+      "lemma": "recchione",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00307",
+      "lemma": "ricchione",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00308",
+      "lemma": "ricchioni",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00309",
+      "lemma": "rotto in culo",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00310",
+      "lemma": "sodomita",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00311",
+      "lemma": "tega",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00312",
+      "lemma": "travestita",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00313",
+      "lemma": "travestite",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00314",
+      "lemma": "travestiti",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00315",
+      "lemma": "travestito",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00316",
+      "lemma": "travone",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00317",
+      "lemma": "bagascia",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00318",
+      "lemma": "bagascione",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00319",
+      "lemma": "bagassa",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00320",
+      "lemma": "baldracca",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00321",
+      "lemma": "battona",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00322",
+      "lemma": "battone",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00323",
+      "lemma": "cortigiana",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00324",
+      "lemma": "donnacchera",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00325",
+      "lemma": "donnaccia",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00326",
+      "lemma": "donnaccola",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00327",
+      "lemma": "mignotta",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00328",
+      "lemma": "mignottocrazia",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00329",
+      "lemma": "pappone",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00330",
+      "lemma": "peripatetica",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00331",
+      "lemma": "peripatetiche",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00332",
+      "lemma": "putta",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00333",
+      "lemma": "puttana",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00334",
+      "lemma": "puttanaio",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00335",
+      "lemma": "puttaneggiare",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00336",
+      "lemma": "puttanesimo",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00337",
+      "lemma": "puttaniere",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00338",
+      "lemma": "puttano",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00339",
+      "lemma": "ricottaro",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00340",
+      "lemma": "ruffiano",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00341",
+      "lemma": "sgualdrina",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00342",
+      "lemma": "sgualdrinaccia",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00343",
+      "lemma": "smandrappata",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00344",
+      "lemma": "troia",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00345",
+      "lemma": "troiaggine",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00346",
+      "lemma": "troiaio",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00347",
+      "lemma": "troiata",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00348",
+      "lemma": "troieggiare",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00349",
+      "lemma": "zoccola",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00350",
+      "lemma": "baluba",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00351",
+      "lemma": "cinegro",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00352",
+      "lemma": "clandestina",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00353",
+      "lemma": "clandestini",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00354",
+      "lemma": "clandestino",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00355",
+      "lemma": "crucco",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00356",
+      "lemma": "falascià",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00357",
+      "lemma": "giaurro",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00358",
+      "lemma": "mangiapolenta",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00359",
+      "lemma": "mangiarane",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00360",
+      "lemma": "negra",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00361",
+      "lemma": "negraccio",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00362",
+      "lemma": "negre",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00363",
+      "lemma": "negri",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00364",
+      "lemma": "negro",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00365",
+      "lemma": "polentone",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00366",
+      "lemma": "polentoni",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00367",
+      "lemma": "sardegnolo",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00368",
+      "lemma": "tarzanello",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00369",
+      "lemma": "terrone",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00370",
+      "lemma": "terroni",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00371",
+      "lemma": "vucumprà",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00372",
+      "lemma": "zingara",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00373",
+      "lemma": "zingare",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00374",
+      "lemma": "zingari",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00375",
+      "lemma": "zingaro",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00376",
+      "lemma": "affanculo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00377",
+      "lemma": "cacare",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00378",
+      "lemma": "cacata",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00379",
+      "lemma": "cacca",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00380",
+      "lemma": "cagare",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00381",
+      "lemma": "cavolate",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00382",
+      "lemma": "che merda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00383",
+      "lemma": "che palle",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00384",
+      "lemma": "chiappa",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00385",
+      "lemma": "chiappe",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00386",
+      "lemma": "crepare",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00387",
+      "lemma": "culaccio",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00388",
+      "lemma": "culo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00389",
+      "lemma": "faccia di merda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00390",
+      "lemma": "fanculo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00391",
+      "lemma": "figlia di puttana",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00392",
+      "lemma": "figlio di puttana",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00393",
+      "lemma": "fottere",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00394",
+      "lemma": "fottersene",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00395",
+      "lemma": "fottersi",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00396",
+      "lemma": "fottio",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00397",
+      "lemma": "fottitore",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00398",
+      "lemma": "fottuti",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00399",
+      "lemma": "fottuto",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00400",
+      "lemma": "fregarsene",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00401",
+      "lemma": "merda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00402",
+      "lemma": "merdaccia",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00403",
+      "lemma": "merdaio",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00404",
+      "lemma": "merdaiolo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00405",
+      "lemma": "merdata",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00406",
+      "lemma": "merde",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00407",
+      "lemma": "merdina",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00408",
+      "lemma": "merdone",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00409",
+      "lemma": "merdosamente",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00410",
+      "lemma": "merdoso",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00411",
+      "lemma": "palle",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00412",
+      "lemma": "pezzo di merda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00413",
+      "lemma": "rottinculo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00414",
+      "lemma": "sbattersene",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00415",
+      "lemma": "sculo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00416",
+      "lemma": "vaffanculo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00417",
+      "lemma": "repubblica delle banane",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00418",
+      "lemma": "cristo",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00419",
+      "lemma": "dannata",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00420",
+      "lemma": "dannate",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00421",
+      "lemma": "dannati",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00422",
+      "lemma": "dannato",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00423",
+      "lemma": "dio boia",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00424",
+      "lemma": "dio cane",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00425",
+      "lemma": "dio maledetto",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00426",
+      "lemma": "maledetta",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00427",
+      "lemma": "maledette",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00428",
+      "lemma": "maledetti",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00429",
+      "lemma": "maledetto",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00430",
+      "lemma": "mannaggia",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00431",
+      "lemma": "porca madonna",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00432",
+      "lemma": "porca miseria",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00433",
+      "lemma": "porca puttana",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00434",
+      "lemma": "porca troia",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00435",
+      "lemma": "porco dio",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00436",
+      "lemma": "porcoddio",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "IT00437",
+      "lemma": "porcodio",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    }
+  ]
+}

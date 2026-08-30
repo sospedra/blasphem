@@ -132,6 +132,44 @@ pub enum LexiconError {
         first_line: usize,
         second_line: usize,
     },
+    #[error("{0}")]
+    SiblingMismatch(Box<SiblingMismatch>),
+}
+
+/// Boxed out of [`LexiconError::SiblingMismatch`] because clippy's
+/// `result_large_err` correctly flags a seven-`String` variant as bloating
+/// every `Result<_, LexiconError>` in this module, not just the one that
+/// actually returns it. `#[error("...")]`'s format string cannot do field
+/// access on a boxed value (`{0.field}` is not supported by `std::fmt`),
+/// so the message is built by a manual `Display` impl below instead.
+#[derive(Debug)]
+pub struct SiblingMismatch {
+    lemma: String,
+    sibling: String,
+    fields: String,
+    lemma_category: String,
+    lemma_level: String,
+    sibling_category: String,
+    sibling_level: String,
+}
+
+impl std::fmt::Display for SiblingMismatch {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{:?} and its gender/number sibling {:?} disagree on {}: \
+             {:?} is {}/{}, {:?} is {}/{}",
+            self.lemma,
+            self.sibling,
+            self.fields,
+            self.lemma,
+            self.lemma_category,
+            self.lemma_level,
+            self.sibling,
+            self.sibling_category,
+            self.sibling_level,
+        )
+    }
 }
 
 type QueryParams = BTreeMap<String, String>;
@@ -716,6 +754,8 @@ pub fn build(options: &BuildOptions) -> Result<BuildReport, LexiconError> {
         (&left.row.category, &left.row.lemma).cmp(&(&right.row.category, &right.row.lemma))
     });
 
+    assert_sibling_agreement(&code, &assigned)?;
+
     let storage_code = &options.storage_code;
     for (index, item) in assigned.iter_mut().enumerate() {
         item.row.id = format!("{storage_code}{:05}", index + 1);
@@ -742,6 +782,150 @@ pub fn build(options: &BuildOptions) -> Result<BuildReport, LexiconError> {
         identity_entries,
         sha256: hex(&Sha256::digest(&tsv_bytes)),
     })
+}
+
+/// A generated gender/number sibling of a lemma disagreeing with it on
+/// category or level is the same defect class as a duplicate sense or an
+/// invalid category: a human wrote two rows for what should be one
+/// judgment call and they drifted apart. Checked here, at build time,
+/// against every language's assigned table, rather than as a script
+/// someone has to remember to re-run after editing a sense table by hand.
+///
+/// Today this only generates candidates for Portuguese (`code == "pt"`).
+/// Spanish shares Portuguese's basic o/a gender marking and much of its
+/// pluralisation, but has its own irregulars (`vez` -> `veces`, not
+/// `vezes`) that have not been individually verified against a real
+/// Spanish sense table yet; Italian pluralises on a different axis
+/// entirely (`o` -> `i`, `a` -> `e`, no `-s` suffix at all) and applying
+/// the Portuguese rule to it would silently generate wrong candidates
+/// rather than simply finding nothing. An unverified rule that never
+/// fires is safe (a missed check, no worse than before this existed); an
+/// unverified rule that fires wrong is not. Extending this to ES/IT is
+/// real work for whoever retrofits those languages, not a one-line
+/// language-code change.
+///
+/// # Errors
+///
+/// Returns [`LexiconError::SiblingMismatch`] naming both lemmas and every
+/// field that differs, on the first disagreement found (lemmas are walked
+/// in the table's own sorted order, so the result is deterministic).
+fn assert_sibling_agreement(code: &str, assigned: &[AssignedRow]) -> Result<(), LexiconError> {
+    let table: BTreeMap<&str, (&str, &str)> = assigned
+        .iter()
+        .map(|item| {
+            (
+                item.row.lemma.as_str(),
+                (item.row.category.as_str(), item.row.level.as_str()),
+            )
+        })
+        .collect();
+    for item in assigned {
+        let lemma = item.row.lemma.as_str();
+        let siblings = match code {
+            "pt" => portuguese_siblings(lemma),
+            _ => Vec::new(),
+        };
+        for sibling in siblings {
+            let Some(&(sibling_category, sibling_level)) = table.get(sibling.as_str()) else {
+                continue;
+            };
+            let (lemma_category, lemma_level) = (item.row.category.as_str(), item.row.level.as_str());
+            let mut fields = Vec::new();
+            if lemma_category != sibling_category {
+                fields.push("category");
+            }
+            if lemma_level != sibling_level {
+                fields.push("level");
+            }
+            if !fields.is_empty() {
+                return Err(LexiconError::SiblingMismatch(Box::new(SiblingMismatch {
+                    lemma: lemma.to_owned(),
+                    sibling,
+                    fields: fields.join(" and "),
+                    lemma_category: lemma_category.to_owned(),
+                    lemma_level: lemma_level.to_owned(),
+                    sibling_category: sibling_category.to_owned(),
+                    sibling_level: sibling_level.to_owned(),
+                })));
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Generates the feminine and plural forms of a Portuguese lemma worth
+/// checking against the rest of the table. Returns candidates, not facts:
+/// a returned string is only meaningful if it also happens to be a lemma
+/// already in the table, which is what `assert_sibling_agreement` checks.
+///
+/// Multi-word phrases and verb infinitives are skipped (phrases don't
+/// inflect this way as a single token; infinitives conjugate, they don't
+/// pluralise as nouns). `-ão` pluralises here as `-ões`, the productive,
+/// majority pattern -- verified by hand against every `-ão` lemma
+/// currently in the Portuguese table (`sapatão`, `fanchão`, `maricão`,
+/// `colhão`, and 20 others all form `-ões`, none are members of the small
+/// closed set of native irregulars that instead take `-ães` or `-ãos`,
+/// e.g. `cão`/`mão`/`alemão`, because slur and vulgar vocabulary is
+/// almost always built on the productive augmentative `-ão` suffix, not
+/// on that closed set). A future addition that *is* one of those
+/// irregulars would generate a wrong candidate that simply matches
+/// nothing already in the table -- a missed pair, not a corrupted one.
+fn portuguese_siblings(lemma: &str) -> Vec<String> {
+    if lemma.contains(' ') || lemma.chars().count() < 3 {
+        return Vec::new();
+    }
+    if VERB_INFINITIVE_SUFFIXES
+        .iter()
+        .any(|suffix| lemma.ends_with(suffix))
+    {
+        return Vec::new();
+    }
+    let mut siblings = Vec::new();
+    if let Some(feminine) = portuguese_feminine(lemma) {
+        siblings.push(feminine);
+    }
+    if let Some(plural) = portuguese_plural(lemma) {
+        siblings.push(plural);
+    }
+    siblings
+}
+
+/// Infinitive endings excluded from `portuguese_siblings` so a verb like
+/// `desmunhecar` doesn't get a nonsense "plural" `desmunhecares`. Deliberately
+/// narrower than a full verb detector: this only needs to avoid false
+/// candidates among the lemmas actually in a sense table, not classify
+/// every Portuguese word.
+const VERB_INFINITIVE_SUFFIXES: &[&str] = &["ar", "er", "ir"];
+
+fn portuguese_feminine(lemma: &str) -> Option<String> {
+    if lemma.ends_with("ão") || lemma.ends_with("io") || lemma.ends_with("uo") {
+        return None;
+    }
+    let stem = lemma.strip_suffix('o')?;
+    Some(format!("{stem}a"))
+}
+
+fn portuguese_plural(lemma: &str) -> Option<String> {
+    if let Some(stem) = lemma.strip_suffix("ão") {
+        return Some(format!("{stem}ões"));
+    }
+    if lemma.ends_with(['a', 'e', 'o', 'á', 'é', 'ó', 'í', 'ú']) {
+        return Some(format!("{lemma}s"));
+    }
+    if let Some(stem) = lemma.strip_suffix('m') {
+        return Some(format!("{stem}ns"));
+    }
+    if lemma.ends_with('r') || lemma.ends_with('z') {
+        return Some(format!("{lemma}es"));
+    }
+    if lemma.ends_with("al") || lemma.ends_with("el") || lemma.ends_with("ol") || lemma.ends_with("ul") {
+        let stem = &lemma[..lemma.len() - 1];
+        return Some(format!("{stem}is"));
+    }
+    if let Some(stem) = lemma.strip_suffix("il") {
+        return Some(format!("{stem}is"));
+    }
+    None
 }
 
 fn sibling_output_path(options: &BuildOptions, extension: &str) -> PathBuf {
