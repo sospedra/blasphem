@@ -1,0 +1,23 @@
+{
+  "name": "@blasphem/node-linux-x64-musl",
+  "version": "0.1.0",
+  "private": true,
+  "description": "blasphem native engine for linux-x64-musl",
+  "license": "Apache-2.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "musl"
+  ],
+  "main": "blasphem.linux-x64-musl.node",
+  "files": [
+    "blasphem.linux-x64-musl.node"
+  ],
+  "engines": {
+    "node": ">= 20.6"
+  }
+}

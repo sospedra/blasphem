@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use blasphem::{Language, NudgeDetector, ReplyTarget, RuleId, SparseModel};
+use blasphem::{Language, NudgeDetector, PackInput, PackSource, ReplyTarget, RuleId, SparseModel};
 
 fn hurtlex_bytes(language: Language) -> Vec<u8> {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -230,4 +230,244 @@ fn judge_without_detection_scores_every_loaded_locale() {
 
     assert_eq!(verdict.locale, Some(Language::Es));
     assert!(!verdict.safe);
+}
+
+fn artifact_bytes(language: Language) -> Vec<u8> {
+    let filename = if language == Language::Es {
+        "es-chargram-v1.bin".to_owned()
+    } else {
+        format!(
+            "{}-sparse-v2.bin",
+            language.storage_code().to_ascii_lowercase()
+        )
+    };
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("resources/models/multilingual-v2")
+        .join(filename);
+    std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
+}
+
+fn rule_pack_version(language: Language) -> u16 {
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("resources/models/multilingual-v2/manifest.json");
+    let manifest: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&path).expect("model manifest"))
+            .expect("valid manifest json");
+    let entry = manifest["entries"]
+        .as_array()
+        .expect("entries")
+        .iter()
+        .find(|entry| entry["language"] == language.code())
+        .unwrap_or_else(|| panic!("{} has no manifest entry", language.code()));
+    u16::try_from(
+        entry["rule_pack_version"]
+            .as_u64()
+            .expect("rule pack version"),
+    )
+    .expect("u16")
+}
+
+fn pack_bytes(language: Language) -> Vec<u8> {
+    let artifact = artifact_bytes(language);
+    let lexicon = hurtlex_bytes(language);
+    blasphem::encode_pack(&PackInput {
+        language,
+        rule_pack_version: rule_pack_version(language),
+        artifact: &artifact,
+        lexicon: &lexicon,
+    })
+}
+
+#[cfg(feature = "language-detection")]
+fn detect_bytes(language: Language) -> Vec<u8> {
+    let model = std::fs::read(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
+    )
+    .expect("committed language model");
+    let code = language.code().to_ascii_lowercase();
+    blasphem_language::slice::write_slices(&model)
+        .expect("slices")
+        .into_iter()
+        .find(|(slice_language, _)| slice_language.code() == code)
+        .map(|(_, bytes)| bytes)
+        .unwrap_or_else(|| panic!("{code} has no slice"))
+}
+
+fn sha256(bytes: &[u8]) -> [u8; 32] {
+    use sha2::Digest;
+    sha2::Sha256::digest(bytes).into()
+}
+
+#[cfg(feature = "language-detection")]
+#[test]
+fn judge_from_packs_matches_the_embedded_judge() {
+    let en_pack = pack_bytes(Language::En);
+    let es_pack = pack_bytes(Language::Es);
+    let en_detect = detect_bytes(Language::En);
+    let es_detect = detect_bytes(Language::Es);
+    let sources = [
+        PackSource {
+            language: Language::En,
+            pack: &en_pack,
+            pack_sha256: Some(sha256(&en_pack)),
+            detect: Some(&en_detect),
+            detect_sha256: Some(sha256(&en_detect)),
+        },
+        PackSource {
+            language: Language::Es,
+            pack: &es_pack,
+            pack_sha256: Some(sha256(&es_pack)),
+            detect: Some(&es_detect),
+            detect_sha256: Some(sha256(&es_detect)),
+        },
+    ];
+    let from_packs = blasphem::Judge::from_packs(&sources, true, true).expect("judge from packs");
+    let embedded = blasphem::Judge::new(blasphem::JudgeOptions {
+        locales: vec![Language::En, Language::Es],
+        detect_language: true,
+        grawlix: true,
+    })
+    .expect("embedded judge");
+
+    assert_eq!(from_packs.locales(), vec![Language::En, Language::Es]);
+    for text in [
+        "you are a stupid loser",
+        "eres un idiota",
+        "good morning everyone",
+        "Was ist das?",
+        "",
+    ] {
+        assert_eq!(from_packs.judge(text), embedded.judge(text), "{text:?}");
+    }
+    assert_eq!(from_packs.judge("you are a stupid loser").score, 0.64);
+}
+
+#[test]
+fn judge_from_packs_without_detection_scores_every_loaded_locale() {
+    let en_pack = pack_bytes(Language::En);
+    let es_pack = pack_bytes(Language::Es);
+    let sources = [
+        PackSource {
+            language: Language::Es,
+            pack: &es_pack,
+            pack_sha256: None,
+            detect: None,
+            detect_sha256: None,
+        },
+        PackSource {
+            language: Language::En,
+            pack: &en_pack,
+            pack_sha256: None,
+            detect: None,
+            detect_sha256: None,
+        },
+    ];
+    let judge = blasphem::Judge::from_packs(&sources, false, false).expect("judge from packs");
+
+    assert_eq!(judge.locales(), vec![Language::En, Language::Es]);
+    let verdict = judge.judge("eres un idiota");
+    assert_eq!(verdict.locale, Some(Language::Es));
+    assert!(!verdict.safe);
+}
+
+#[test]
+fn judge_from_packs_rejects_a_digest_mismatch_by_file_name() {
+    let en_pack = pack_bytes(Language::En);
+    let sources = [PackSource {
+        language: Language::En,
+        pack: &en_pack,
+        pack_sha256: Some([0; 32]),
+        detect: None,
+        detect_sha256: None,
+    }];
+    let error = blasphem::Judge::from_packs(&sources, false, false).expect_err("bad digest");
+
+    assert!(
+        error
+            .to_string()
+            .starts_with("BLASPHEM_DIGEST_MISMATCH: en.pack expected sha256 0000"),
+        "got {error}"
+    );
+}
+
+#[test]
+fn judge_from_packs_rejects_a_foreign_format_version() {
+    let mut en_pack = pack_bytes(Language::En);
+    en_pack[8..12].copy_from_slice(&2_u32.to_le_bytes());
+    let sources = [PackSource {
+        language: Language::En,
+        pack: &en_pack,
+        pack_sha256: None,
+        detect: None,
+        detect_sha256: None,
+    }];
+    let error = blasphem::Judge::from_packs(&sources, false, false).expect_err("bad version");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_FORMAT_VERSION: en.pack has format version 2, this build accepts 1"
+    );
+}
+
+#[test]
+fn judge_from_packs_rejects_a_pack_for_another_language() {
+    let es_pack = pack_bytes(Language::Es);
+    let sources = [PackSource {
+        language: Language::En,
+        pack: &es_pack,
+        pack_sha256: None,
+        detect: None,
+        detect_sha256: None,
+    }];
+    let error = blasphem::Judge::from_packs(&sources, false, false).expect_err("wrong language");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_PACK_INVALID: en.pack declares es"
+    );
+}
+
+#[cfg(feature = "language-detection")]
+#[test]
+fn judge_from_packs_requires_a_detect_slice_when_detection_is_on() {
+    let en_pack = pack_bytes(Language::En);
+    let sources = [PackSource {
+        language: Language::En,
+        pack: &en_pack,
+        pack_sha256: None,
+        detect: None,
+        detect_sha256: None,
+    }];
+    let error = blasphem::Judge::from_packs(&sources, true, false).expect_err("missing slice");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_PACK_INVALID: en.detect is required when language detection is on"
+    );
+}
+
+#[test]
+fn judge_from_packs_rejects_empty_sources_and_repeated_locales() {
+    let en_pack = pack_bytes(Language::En);
+    let source = PackSource {
+        language: Language::En,
+        pack: &en_pack,
+        pack_sha256: None,
+        detect: None,
+        detect_sha256: None,
+    };
+
+    assert_eq!(
+        blasphem::Judge::from_packs(&[], false, false)
+            .expect_err("no sources")
+            .to_string(),
+        "BLASPHEM_LOCALES_EMPTY: no locale was given"
+    );
+    assert_eq!(
+        blasphem::Judge::from_packs(&[source, source], false, false)
+            .expect_err("repeated")
+            .to_string(),
+        "BLASPHEM_PACK_INVALID: en.pack was given twice"
+    );
 }

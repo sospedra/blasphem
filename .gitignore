@@ -13,3 +13,13 @@ node_modules/
 /packages/blasphem/src/blasphem.d.ts
 /packages/blasphem/src/blasphem_bg.wasm
 /packages/blasphem/src/blasphem_bg.wasm.d.ts
+/packages/packs/dist/
+/packages/blasphem/src/core/
+/packages/react-native/src/core/
+/packages/node/npm/*/*.node
+*.node
+/packages/react-native/dist/
+/packages/react-native/ios/BlasphemFFI.xcframework/
+/packages/react-native/android/libs/
+/packages/react-native/cpp/blasphem.h
+/packages/blasphem/src/version.generated.ts

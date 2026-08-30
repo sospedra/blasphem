@@ -116,7 +116,7 @@ result.free();
 detector.free();
 ```
 
-Run `./crates/blasphem-wasm/verify-browser.sh` to rebuild the module and repeat the actual Chrome check.
+Run `pnpm --filter blasphem run build` and `pnpm --filter blasphem run test:browser` to rebuild the module and repeat the real-browser check.
 
 ## Limits
 

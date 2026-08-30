@@ -58,7 +58,7 @@ const routingRows = [
 
 const behaviorTotals = caseTotals(behavior);
 const smokeTotals = caseTotals(smoke);
-const engine = `${browser.browser_engine} ${browser.browser_version}`;
+const engine = browser.engines.map((entry) => `${entry.engine} ${entry.version}`).join(", ");
 const contractRows = [
   ["behavior panels", `${formatInt(behaviorTotals.passed)} / ${formatInt(behaviorTotals.total)}`, label(behavior.evidence_status)],
   ["native smoke", `${formatInt(smokeTotals.passed)} / ${formatInt(smokeTotals.total)}`, label(smoke.evidence_status)],

@@ -70,24 +70,27 @@ The package is isomorphic and runs the same in Node and the browser. Every optio
 
 ## Reproduce every artifact
 
-This form passes today:
-
-```bash
-cargo run --release --locked -p blasphem-train -- reproduce --skip-browser
-```
-
-It verifies raw inputs, rebuilds every model and language artifact, builds
-the native and WASM binaries, and runs the Rust tests and Clippy.
-
-The spec's canonical command omits the flag:
+The canonical command runs every check:
 
 ```bash
 cargo run --release --locked -p blasphem-train -- reproduce
 ```
 
-The unflagged form additionally runs the npm package checks and the browser
-smoke test through `pnpm`. It needs the `test:browser` script in
-`packages/blasphem`, which is not yet added.
+It verifies raw inputs, rebuilds every model and language artifact, builds
+the native and WASM binaries, runs the Rust tests and Clippy, then runs the
+package checks through `pnpm`: install, build, pack check, the Node smoke,
+and the browser smoke on Playwright Chromium and WebKit. Install the pinned
+browsers once:
+
+```bash
+pnpm --filter blasphem exec playwright install chromium webkit
+```
+
+Without Node, pnpm, or the browsers, skip the JavaScript checks:
+
+```bash
+cargo run --release --locked -p blasphem-train -- reproduce --skip-browser
+```
 
 Both forms read only committed inputs. Neither downloads a corpus, lexicon,
 or model source. Both write generated data to a temporary directory and
@@ -248,7 +251,9 @@ The hash split is deterministic and is not stratified. Realized split counts can
 
 Exact normalized duplicates within one detector language stay in one group. Label-conflict groups do not enter evaluation.
 
-The `provenance.tsv` file records every source row. It records duplicate, conflict, exclusion, group, and split data.
+`corpus/` holds one committed TSV file per language. That file is the single source of truth for its rows. See `corpus/README.md`.
+
+`resources/datasets/behavior-provenance-v1.tsv` records the 55 audit-only rows the behavior panels cite. Those rows stay out of the corpus.
 
 Paraphrases, copied templates, and cross-language copies can still cross splits.
 
@@ -258,7 +263,8 @@ Compile the model set from development, validation, and frozen clean behavior co
 
 ```bash
 cargo run --release --locked -p blasphem-train -- compile \
-  --prepared-root data/prepared-v1 \
+  --corpus-root corpus \
+  --source-lock resources/datasets/source-lock-v1.json \
   --hurtlex-root data/raw-v1/hurtlex \
   --behavior-root tests/fixtures/behavior \
   --output resources/models/multilingual-v2
@@ -279,7 +285,7 @@ Write the 14-language validation evidence:
 ```bash
 cargo run --release --locked -p blasphem-train -- evaluate \
   --split validation \
-  --prepared-root data/prepared-v1 \
+  --corpus-root corpus \
   --model-manifest resources/models/multilingual-v2/manifest.json \
   --hurtlex-root data/raw-v1/hurtlex \
   --output reports/multilingual-validation.json
@@ -296,7 +302,7 @@ Write the 360-case behavior contract evidence:
 ```bash
 cargo run --release --locked -p blasphem-train -- behavior \
   --fixture-root tests/fixtures/behavior \
-  --prepared-root data/prepared-v1 \
+  --corpus-root corpus \
   --model-manifest resources/models/multilingual-v2/manifest.json \
   --hurtlex-root data/raw-v1/hurtlex \
   --output reports/multilingual-behavior.json
@@ -315,7 +321,7 @@ cargo run --release --locked -p blasphem-train -- cli-smoke \
 
 The smoke report covers all 15 languages. It records two supplied cases and two context cases per language.
 
-These commands call the shipping `NudgeDetector::check` path. They do not open a prepared test split.
+These commands call the shipping `NudgeDetector::check` path. They do not open a sealed test split.
 
 The legacy `eval` command accepts manual audit TSV files. Do not use it for a frozen test split.
 
@@ -332,6 +338,10 @@ Evaluation errors can identify manual audit candidates. Runtime code never gener
 Any row that influences a rule becomes audit-only. Do not report that row in later quality metrics.
 
 ## Offline dataset workflow
+
+These commands import a new upstream source. The reproduction path does not run
+them: it reads `corpus/` directly. This repository ships no raw dataset files, so
+supply your own before running `acquire` or `prepare`.
 
 Observe the catalog before the source review:
 
@@ -358,6 +368,8 @@ cargo run --release --locked -p blasphem-train -- prepare \
   --raw-root data/raw-v1 \
   --output data/prepared-draft-v1
 ```
+
+Merge the prepared rows into `corpus/{LANGUAGE}.tsv`, then run `corpus-verify`.
 
 The commands refuse an existing output. The acquire command verifies each frozen identity and SHA-256 digest before publication.
 
@@ -436,9 +448,9 @@ cargo build --release --locked --target wasm32-unknown-unknown \
 
 The explicit-only module rejects `AUTO`.
 
-The measured explicit-only transfer is 1,630,271 Brotli bytes, including JavaScript glue.
+The measured explicit-only transfer is 1,634,390 Brotli bytes, including JavaScript glue.
 
-The measured default transfer is 9,038,194 Brotli bytes, including JavaScript glue.
+The measured default transfer is 9,048,040 Brotli bytes, including JavaScript glue.
 
 The current WASM module still embeds all 15 toxicity packs in both build modes.
 
@@ -452,14 +464,15 @@ The shared language detector table does not shrink in proportion to the selected
 
 See the automatic-language-detection report under `docs/` for route, latency, size, and browser evidence.
 
-Run the actual Chrome smoke test:
+Run the real-browser smoke test on Playwright Chromium and WebKit:
 
 ```bash
-./crates/blasphem-wasm/verify-browser.sh
+pnpm --filter blasphem run build
+pnpm --filter blasphem run test:browser
 ```
 
-The test runs the default and explicit-only modules in separate WASM instances.
+The test loads the `blasphem` package entry and the explicit-only module in separate WASM instances.
 
 The explicit-only check verifies an English route and the `AUTO` feature error.
 
-The test writes experimental browser and compressed-size evidence to `reports/multilingual-wasm.json`.
+The test writes experimental browser and compressed-size evidence to `reports/browser-smoke.json`.

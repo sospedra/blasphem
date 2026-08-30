@@ -101,3 +101,26 @@ fn assert_score(actual: f32, expected: f32, field: &str, context: &str) {
         "{field} differs for {context}: expected {expected:.9}, got {actual:.9}, error {error:.9}"
     );
 }
+
+#[test]
+fn slices_of_the_committed_model_match_the_full_detector() {
+    let model = std::fs::read(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/data/blasphem-language-15-v2.bin"
+    ))
+    .expect("the committed model must be readable");
+    let slices = blasphem_language::slice::write_slices(&model).expect("slices");
+    let views: Vec<&[u8]> = slices.iter().map(|(_, bytes)| bytes.as_slice()).collect();
+    let sliced =
+        blasphem_language::slice::SliceDetector::from_slices(&views).expect("slice detector");
+    let full = Detector::new().expect("the embedded model must load");
+
+    for row in fixture_rows() {
+        assert_eq!(
+            sliced.detect(&row.input),
+            full.detect(&row.input),
+            "{}",
+            row.id
+        );
+    }
+}

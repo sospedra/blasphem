@@ -64,24 +64,34 @@ export type CompressedFile = { raw_bytes: number; gzip_bytes: number; brotli_byt
 export type BrowserBuild = {
   wasm: CompressedFile;
   javascript_glue: CompressedFile;
+  /** Pack files this download profile includes, as repository-relative paths. */
+  packs: string[];
   raw_total_bytes: number;
   gzip_total_bytes: number;
   brotli_total_bytes: number;
 };
-export type BrowserReport = {
-  evidence_status: string;
-  status: string;
-  browser_engine: string;
-  browser_version: string;
-  wasm_bindgen_version: string;
+export type BrowserCaseCounts = {
   supplied_case_count: number;
   passed_case_count: number;
   auto_case_count: number;
   passed_auto_case_count: number;
   unknown_case_count: number;
   passed_unknown_case_count: number;
+  package_case_count: number;
+  passed_package_case_count: number;
   runtime_network_requests: string[];
-  browser_builds: { full: BrowserBuild; explicit_only: BrowserBuild };
+};
+export type BrowserEngine = BrowserCaseCounts & { engine: string; version: string; status: string };
+export type BrowserReport = BrowserCaseCounts & {
+  evidence_status: string;
+  status: string;
+  playwright_version: string;
+  wasm_bindgen_version: string;
+  engines: BrowserEngine[];
+  en_only_requests: string[];
+  en_only_passed: boolean;
+  /** full: every locale with detection. explicit_only: EN without detection. english_routed: EN with detection. */
+  browser_builds: { full: BrowserBuild; explicit_only: BrowserBuild; english_routed: BrowserBuild };
 };
 
 export type RouteCounts = {

@@ -6,14 +6,16 @@ rust-version = "1.85"
 publish = false
 license = "Apache-2.0"
 
-[lints.clippy]
-correctness = "deny"
-suspicious = "warn"
-style = "warn"
-complexity = "warn"
-perf = "warn"
+[features]
+default = ["embedded-model"]
+# Compiles the 15-profile model into the crate. Off in the wasm and napi
+# builds, which load per-language slices at run time.
+embedded-model = []
+
+[lints]
+workspace = true
 
 [dev-dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tempfile = "3.20"
+serde.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true

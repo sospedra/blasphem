@@ -2,7 +2,7 @@
   "name": "blasphem",
   "version": "0.1.0",
   "private": true,
-  "description": "Experimental multilingual pre-send toxicity nudge for browsers",
+  "description": "Multilingual pre-send toxicity nudge. One createJudge for browsers and Node; Node runs a native binary when its platform package is installed and wasm otherwise.",
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
@@ -10,18 +10,25 @@
     "node": "24.18.0",
     "pnpm": "11.13.0"
   },
+  "main": "./dist/browser.js",
+  "module": "./dist/browser.js",
+  "types": "./dist/browser.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "browser": "./dist/index.js",
-      "node": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/browser.d.ts",
+      "browser": "./dist/browser.js",
+      "node": "./dist/node.js",
+      "default": "./dist/browser.js"
     },
-    "./blasphem_bg.wasm": "./dist/blasphem_bg.wasm"
+    "./blasphem_bg.wasm": "./dist/blasphem_bg.wasm",
+    "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.ts",
+  "bin": {
+    "blasphem-assets": "./bin/blasphem-assets.mjs"
+  },
   "files": [
     "dist",
+    "bin",
     "README.md",
     "NOTICE",
     "LICENSE"
@@ -29,10 +36,23 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "pack:check": "node scripts/pack-check.mjs",
-    "test": "node scripts/pack-check.mjs"
+    "test": "node scripts/pack-check.mjs && node scripts/node-smoke.mjs",
+    "test:node": "node scripts/node-smoke.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs"
+  },
+  "optionalDependencies": {
+    "@blasphem/node-darwin-arm64": "workspace:*",
+    "@blasphem/node-darwin-x64": "workspace:*",
+    "@blasphem/node-linux-arm64-gnu": "workspace:*",
+    "@blasphem/node-linux-arm64-musl": "workspace:*",
+    "@blasphem/node-linux-x64-gnu": "workspace:*",
+    "@blasphem/node-linux-x64-musl": "workspace:*",
+    "@blasphem/node-win32-x64-msvc": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
-    "@types/node": "24.10.1"
+    "@blasphem/packs": "workspace:*",
+    "@types/node": "24.10.1",
+    "playwright": "1.62.1",
+    "typescript": "5.9.3"
   }
 }

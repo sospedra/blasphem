@@ -1,7 +1,9 @@
 //! Experimental multilingual lexical toxicity detector.
 
 mod detector;
+#[cfg(feature = "embedded")]
 mod embedded;
+mod engine;
 mod evaluation;
 mod features;
 mod grawlix;
@@ -10,6 +12,7 @@ mod language;
 mod language_detection;
 mod lexicon;
 mod normalization;
+mod pack;
 mod policy;
 mod registry;
 mod rule_pack;
@@ -20,7 +23,9 @@ mod text;
 mod workflow;
 
 pub use detector::{Detection, Detector, DetectorError, LexiconMatch, normalize_text};
+#[cfg(feature = "embedded")]
 pub use embedded::{embedded_detector, embedded_hurtlex_bytes};
+pub use engine::{Engine, EngineError, EngineJudgement, EngineSource};
 pub use evaluation::{ConfusionMatrix, EvalLabel, EvalRow, Metrics};
 pub use features::{FeatureError, extract_feature_bins};
 pub use grawlix::{apply_grawlix, masked_spans};
@@ -36,6 +41,11 @@ pub use language_detection::{
 pub use language_detection::{LanguageDetector, LanguageDetectorError};
 pub use lexicon::{LexiconEntry, MatchLevel, ParseLexiconError, parse_hurtlex};
 pub use normalization::{NormalizationError, normalize_v2};
+pub use pack::{
+    DecodedPack, PACK_FORMAT_VERSION, PACK_HEADER_LEN, PACK_MAGIC, PackError, PackInput,
+    PackSource, decode_pack, detect_file_name, encode_pack, pack_file_name, parse_sha256,
+    verify_digest,
+};
 pub use policy::{
     AnalysisContext, CategoryScores, NudgeResult, PolicyAction, PolicyCategory, PolicyResult,
     ReplyTarget, RuleEvidence, RuleId,

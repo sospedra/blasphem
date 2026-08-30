@@ -1,48 +1,16 @@
-blasphem browser package
+blasphem
 Copyright 2026 Rubén Sospedra
 
 Licensed under the Apache License, Version 2.0. See LICENSE.
 
-This package embeds third-party data.
+This package carries code only. Language data ships separately in
+@blasphem/packs, whose NOTICE lists the lexica and the corpora behind the
+sparse tables and the licenses that apply to them.
 
-HurtLex 1.2 lexica for AR, DE, EN, ES, FR, HI, ID, IT, JA, KO, PT, RU, TR, VI, ZH
-  Source: https://github.com/valeriobasile/hurtlex
-  Revision: d4d5cf1199c09868486f978fcea58af0e8936a1e
-  License: CC BY-NC-SA 4.0, https://creativecommons.org/licenses/by-nc-sa/4.0/
-  Citation: Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.
-  NonCommercial: the upstream README at the pinned revision licenses the
-  lexicon for non-commercial use only.
-  Share-alike: the embedded lexica are redistributed under CC BY-NC-SA 4.0. Any
-  redistribution of this data, modified or not, must carry the same license
-  and this attribution.
+The wasm embeds one third-party table set:
 
-Language detection tables ported from ELDC
+Unicode character tables ported from ELDC (letter bits, CJK bits, lowercase map)
   Source: https://github.com/nitotm/eldc
   Commit: a0301db809ff2e48a418018aa5359fb0c4354eb8
   Author: Nito
   License: Apache License 2.0
-
-The sparse toxicity tables were trained on these corpora. The tables contain
-hashed integer weights and no corpus text.
-
-  TextDetox multilingual toxicity dataset (AR, DE, EN, FR, HI, IT, JA, RU, ZH)
-    https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset
-    CC BY 4.0
-  Ibrohim and Budi, 2019 (ID)
-    https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection
-    CC BY 4.0
-  ToLD-Br, Leite et al., 2020 (PT)
-    https://github.com/joaoaleite/ToLD-Br
-    CC BY 4.0
-  OffensEval-TR, Çöltekin, 2020 (TR)
-    https://coltekin.github.io/offensive-turkish/
-    CC BY 4.0
-  ViHOS (VI)
-    https://github.com/phusroyal/ViHOS
-    CC BY 4.0
-  K-MHaS, Lee et al., 2022 (KO)
-    https://github.com/adlnlp/K-MHaS
-    CC BY-SA 4.0
-  GermEval 2018, Wiegand, Siegel, and Ruppenhofer, 2018 (DE)
-    https://github.com/uds-lsv/GermEval-2018-Data
-    License not asserted by the source

@@ -1,8 +1,10 @@
 //! A high-level client over locale selection, scoring, and masking.
 
+#[cfg(feature = "embedded")]
 use crate::embedded::embedded_detector;
 use crate::grawlix::{apply_grawlix, masked_spans};
 use crate::language::Language;
+use crate::pack::{PackError, PackSource, detect_file_name, pack_file_name, verify_digest};
 use crate::policy::{PolicyResult, ReplyTarget};
 use crate::runtime::{NudgeDetector, RuntimeInitError};
 
@@ -56,14 +58,25 @@ impl Judgement {
     }
 }
 
-/// Anything that stops a judge from being built.
+/// Anything that stops a judge from being built. Every message starts with
+/// the error code the JavaScript contract exposes.
 #[derive(Debug, thiserror::Error)]
 pub enum JudgeError {
-    #[error(transparent)]
+    #[error("BLASPHEM_PACK_INVALID: {0}")]
     Runtime(#[from] RuntimeInitError),
     #[cfg(feature = "language-detection")]
-    #[error(transparent)]
+    #[error("BLASPHEM_PACK_INVALID: {0}")]
     LanguageDetector(#[from] LanguageDetectorError),
+    #[error(transparent)]
+    Pack(#[from] PackError),
+    #[error("BLASPHEM_LOCALES_EMPTY: no locale was given")]
+    NoLocales,
+    #[error("BLASPHEM_PACK_INVALID: {} was given twice", pack_file_name(*.0))]
+    DuplicateLocale(Language),
+    #[error("BLASPHEM_PACK_INVALID: {} is required when language detection is on", detect_file_name(*.0))]
+    MissingDetect(Language),
+    #[error("BLASPHEM_PACK_INVALID: this build has no language detection")]
+    DetectionUnavailable,
 }
 
 /// A reusable judge holding one detector per loaded locale.
@@ -80,12 +93,13 @@ pub struct Judge {
 }
 
 impl Judge {
-    /// Builds one detector per requested locale.
+    /// Builds one detector per requested locale from the embedded data.
     ///
     /// # Errors
     ///
     /// Returns an error when an embedded resource is invalid, or when the
     /// language detector cannot start.
+    #[cfg(feature = "embedded")]
     pub fn new(options: JudgeOptions) -> Result<Self, JudgeError> {
         let mut detectors = Vec::new();
         for language in requested_locales(&options.locales) {
@@ -97,6 +111,68 @@ impl Judge {
             #[cfg(feature = "language-detection")]
             identifier: identifier_for(options.detect_language)?,
             grawlix: options.grawlix,
+        })
+    }
+
+    /// Builds one detector per pack, verifying each digest the caller supplies.
+    ///
+    /// With `detect_language` every source needs its detect slice, and the
+    /// judge routes by the merged slices. Without it, the judge scores every
+    /// loaded locale and reports the highest.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error naming the file for a digest mismatch, a foreign
+    /// format version, a malformed pack, a repeated locale, or a missing slice.
+    pub fn from_packs(
+        sources: &[PackSource<'_>],
+        detect_language: bool,
+        grawlix: bool,
+    ) -> Result<Self, JudgeError> {
+        if sources.is_empty() {
+            return Err(JudgeError::NoLocales);
+        }
+        let mut detectors: Vec<(Language, NudgeDetector)> = Vec::with_capacity(sources.len());
+        let mut slices = Vec::with_capacity(sources.len());
+        for source in sources {
+            if detectors
+                .iter()
+                .any(|(language, _)| *language == source.language)
+            {
+                return Err(JudgeError::DuplicateLocale(source.language));
+            }
+            verify_digest(
+                &pack_file_name(source.language),
+                source.pack,
+                source.pack_sha256,
+            )?;
+            let detector =
+                NudgeDetector::from_pack(source.language, source.pack).map_err(lift_runtime)?;
+            detectors.push((source.language, detector));
+            if !detect_language {
+                continue;
+            }
+            let detect = source
+                .detect
+                .ok_or(JudgeError::MissingDetect(source.language))?;
+            verify_digest(
+                &detect_file_name(source.language),
+                detect,
+                source.detect_sha256,
+            )?;
+            slices.push(detect);
+        }
+        detectors.sort_by_key(|(language, _)| language.index());
+        #[cfg(feature = "language-detection")]
+        let identifier = identifier_from_slices(detect_language, &slices)?;
+        #[cfg(not(feature = "language-detection"))]
+        ensure_no_detection(detect_language, &slices)?;
+
+        Ok(Self {
+            detectors,
+            #[cfg(feature = "language-detection")]
+            identifier,
+            grawlix,
         })
     }
 
@@ -168,7 +244,33 @@ impl Judge {
     }
 }
 
+fn lift_runtime(error: RuntimeInitError) -> JudgeError {
+    match error {
+        RuntimeInitError::Pack(pack) => JudgeError::Pack(pack),
+        other => JudgeError::Runtime(other),
+    }
+}
+
 #[cfg(feature = "language-detection")]
+fn identifier_from_slices(
+    detect_language: bool,
+    slices: &[&[u8]],
+) -> Result<Option<LanguageDetector>, JudgeError> {
+    if !detect_language {
+        return Ok(None);
+    }
+    Ok(Some(LanguageDetector::from_slices(slices)?))
+}
+
+#[cfg(not(feature = "language-detection"))]
+fn ensure_no_detection(detect_language: bool, _slices: &[&[u8]]) -> Result<(), JudgeError> {
+    if detect_language {
+        return Err(JudgeError::DetectionUnavailable);
+    }
+    Ok(())
+}
+
+#[cfg(all(feature = "language-detection", feature = "embedded"))]
 fn identifier_for(detect_language: bool) -> Result<Option<LanguageDetector>, JudgeError> {
     if !detect_language {
         return Ok(None);
@@ -176,6 +278,7 @@ fn identifier_for(detect_language: bool) -> Result<Option<LanguageDetector>, Jud
     Ok(Some(LanguageDetector::new()?))
 }
 
+#[cfg(feature = "embedded")]
 fn requested_locales(locales: &[Language]) -> Vec<Language> {
     if locales.is_empty() {
         return Language::ALL.to_vec();

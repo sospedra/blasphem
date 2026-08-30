@@ -1,0 +1,16 @@
+[package]
+name = "blasphem-ffi"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+blasphem = { path = "../..", default-features = false, features = ["language-detection"] }
+
+[lints]
+workspace = true

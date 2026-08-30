@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>blasphem package smoke</title>
+  </head>
+  <body data-status="running">
+    <pre id="result">running</pre>
+    <script type="module">
+      const ASSETS = "/assets";
+      const EN_ONLY_EXPECTED = ["/assets/en.detect", "/assets/en.pack", "/assets/manifest.json"];
+      const report = { status: "running" };
+      window.__blasphemReport = report;
+      performance.setResourceTimingBufferSize(2000);
+
+      const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+      const resourcePaths = (from) => performance.getEntriesByType("resource").slice(from).map((entry) => new URL(entry.name).pathname).sort();
+
+      try {
+        const [api, { runCases }] = await Promise.all([import("../dist/browser.js"), import("./cases.mjs")]);
+        const { createJudge } = api;
+        Object.assign(report, await runCases(api, ASSETS));
+
+        // A fresh EN-only judge downloads exactly the manifest and the two EN files. The wasm is already instantiated.
+        await settle();
+        const beforeEnglish = performance.getEntriesByType("resource").length;
+        const english = await createJudge({ locales: ["en"], assets: ASSETS });
+        await settle();
+        report.en_only_requests = resourcePaths(beforeEnglish);
+        report.en_only_passed = JSON.stringify(report.en_only_requests) === JSON.stringify(EN_ONLY_EXPECTED);
+
+        // Judging never touches the network.
+        const beforeJudging = performance.getEntriesByType("resource").length;
+        for (const text of ["hello there", "you are a stupid loser", ""]) english.judge(text);
+        await settle();
+        report.runtime_network_requests = resourcePaths(beforeJudging);
+        english.close();
+
+        // Split bases: the wasm and the packs from different places.
+        const split = await createJudge({ locales: ["es"], detectLanguage: false, assets: { wasm: "/wasm-only", packs: "/packs-only" } });
+        report.split_assets_passed = split.judge("eres un idiota").safe === false && split.locales.join() === "es";
+        split.close();
+
+        // Omitting assets means the jsDelivr preset: exact pinned versions, wasm and packs from their own npm packages.
+        // The test runner routes cdn.jsdelivr.net to local files, so this checks URL construction, not the CDN.
+        const { VERSIONS } = await import("../dist/browser.js");
+        const beforeCdn = performance.getEntriesByType("resource").length;
+        const cdn = await createJudge({ locales: ["en"] });
+        await settle();
+        const cdnRequests = performance.getEntriesByType("resource").slice(beforeCdn).map((entry) => entry.name).sort();
+        report.jsdelivr_requests = cdnRequests;
+        const packsBase = `https://cdn.jsdelivr.net/npm/@blasphem/packs@${VERSIONS.packs}/dist`;
+        report.jsdelivr_passed = cdn.judge("you are a stupid loser").safe === false
+          && JSON.stringify(cdnRequests) === JSON.stringify([`${packsBase}/en.detect`, `${packsBase}/en.pack`, `${packsBase}/manifest.json`]);
+        cdn.close();
+        const explicitCdn = await createJudge({ locales: ["en"], assets: "jsdelivr" });
+        // Two features are below the router's reliability floor, so a full sentence is needed to route.
+        report.jsdelivr_passed = report.jsdelivr_passed && explicitCdn.judge("I never should've bought that.").locale === "en";
+        explicitCdn.close();
+
+        report.status = report.passed && report.en_only_passed && report.runtime_network_requests.length === 0
+          && report.split_assets_passed && report.jsdelivr_passed ? "passed" : "failed";
+      } catch (error) {
+        report.status = "failed";
+        report.error = String(error?.stack ?? error);
+      }
+
+      document.body.dataset.status = report.status;
+      document.getElementById("result").textContent = JSON.stringify(report, null, 2);
+    </script>
+  </body>
+</html>

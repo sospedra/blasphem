@@ -7,12 +7,14 @@ import Spread from "./Spread.astro";
 const thresholds = [...new Set(Object.values(smoke.languages).flatMap((language) => language.cases.map((entry) => entry.threshold / 100)))];
 const tableBytes = Math.max(...Object.values(sizes.artifacts).map((artifact) => artifact.bytes));
 const browserChecks = browser.supplied_case_count + browser.auto_case_count + browser.unknown_case_count;
+const ENGINE_NAMES: Record<string, string> = { chromium: "Chromium", webkit: "WebKit" };
+const engineRuns = browser.engines.map((entry) => ENGINE_NAMES[entry.engine] ?? entry.engine).join(" and ");
 
 const vows = [
   {
     numeral: "I",
     title: "Nothing leaves the page",
-    body: `Once the module loads it makes no request. The Chromium run recorded ${browser.runtime_network_requests.length} runtime network requests across ${browserChecks} checks.`,
+    body: `Once the module loads it makes no request. The ${engineRuns} runs recorded ${browser.runtime_network_requests.length} runtime network requests across ${browserChecks} checks.`,
     glyph: "star",
   },
   {

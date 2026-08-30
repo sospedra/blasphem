@@ -829,7 +829,8 @@ fn assert_sibling_agreement(code: &str, assigned: &[AssignedRow]) -> Result<(), 
             let Some(&(sibling_category, sibling_level)) = table.get(sibling.as_str()) else {
                 continue;
             };
-            let (lemma_category, lemma_level) = (item.row.category.as_str(), item.row.level.as_str());
+            let (lemma_category, lemma_level) =
+                (item.row.category.as_str(), item.row.level.as_str());
             let mut fields = Vec::new();
             if lemma_category != sibling_category {
                 fields.push("category");
@@ -918,7 +919,11 @@ fn portuguese_plural(lemma: &str) -> Option<String> {
     if lemma.ends_with('r') || lemma.ends_with('z') {
         return Some(format!("{lemma}es"));
     }
-    if lemma.ends_with("al") || lemma.ends_with("el") || lemma.ends_with("ol") || lemma.ends_with("ul") {
+    if lemma.ends_with("al")
+        || lemma.ends_with("el")
+        || lemma.ends_with("ol")
+        || lemma.ends_with("ul")
+    {
         let stem = &lemma[..lemma.len() - 1];
         return Some(format!("{stem}is"));
     }

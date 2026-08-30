@@ -1,173 +1,174 @@
-use blasphem::Language;
-use blasphem_wasm::DetectorCore;
+//! Exercises the engine the wasm classes wrap, with packs built from the
+//! repository's committed artifacts.
 
-#[cfg(feature = "language-detection")]
-const AUTO_CASES: &[(Language, &str, u8)] = &[
-    (Language::En, "I never should've bought that.", 42),
-    (Language::Zh, "我想要确定什么都没有发生在汤姆身上。", 28),
-    (
-        Language::Es,
-        "Was ist das? A ship. Todo bien en la costa.",
-        17,
-    ),
-    (Language::Ar, "هل تحب الكتب؟", 11),
-    (
-        Language::Ms,
-        "Dia memberitahu saya yang dia benar-benar letih.",
-        38,
-    ),
-    (Language::Pt, "Não vou chegar em casa até segunda.", 15),
-    (Language::Fr, "Bonjour le monde", 22),
-    (Language::Hi, "वह मेरे पिताजी की माँ है। वह मेरी दादी है।", 38),
-    (Language::Ru, "Они были здесь.", 46),
-    (Language::Ja, "私は２日間忙しくありません。", 0),
-    (Language::De, "Was ist das?", 0),
-    (Language::Tr, "Çok büyük bir musibet.", 0),
-    (Language::Vi, "Đây là 1 lời nói đùa cợt", 13),
-    (Language::Ko, "물이 별로 없다.", 18),
-    (Language::It, "La incontrerai domani sera.", 1),
-];
+use std::path::PathBuf;
 
-#[test]
-fn explicit_core_initializes_every_language_and_returns_route_fields() {
-    for language in Language::ALL {
-        let detector = DetectorCore::new(language.code()).expect("embedded detector");
-        let result = detector.check("A neutral message");
+use blasphem::{Engine, EngineSource, Language, PackInput};
+use sha2::Digest as _;
 
-        assert_eq!(detector.language(), language.code());
-        assert!(result.score <= 100, "{}", language.code());
-        assert_eq!(result.threshold, 50, "{}", language.code());
-        assert_eq!(result.ok, !result.should_nudge, "{}", language.code());
-        assert_eq!(
-            result.should_nudge,
-            result.score >= result.threshold,
-            "{}",
-            language.code(),
-        );
-        assert!(result.evaluated, "{}", language.code());
-        assert_eq!(result.resolved_language, language.code());
-        assert!(result.language_reliable, "{}", language.code());
-        assert_eq!(result.language_score, None, "{}", language.code());
-    }
+fn root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
+}
+
+fn read(relative: &str) -> Vec<u8> {
+    let path = root().join(relative);
+    std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
+}
+
+fn rule_pack_version(language: Language) -> u16 {
+    let manifest: serde_json::Value =
+        serde_json::from_slice(&read("resources/models/multilingual-v2/manifest.json"))
+            .expect("valid model manifest");
+    let entry = manifest["entries"]
+        .as_array()
+        .expect("entries")
+        .iter()
+        .find(|entry| entry["language"] == language.code())
+        .expect("manifest entry");
+    u16::try_from(entry["rule_pack_version"].as_u64().expect("version")).expect("u16")
+}
+
+fn pack(language: Language) -> Vec<u8> {
+    let storage = language.storage_code();
+    let artifact_name = if language == Language::Es {
+        "es-chargram-v1.bin".to_owned()
+    } else {
+        format!("{}-sparse-v2.bin", storage.to_ascii_lowercase())
+    };
+    let artifact = read(&format!("resources/models/multilingual-v2/{artifact_name}"));
+    let lexicon = read(&format!(
+        "data/raw-v1/hurtlex/{storage}/1.2/hurtlex_{storage}.tsv"
+    ));
+    blasphem::encode_pack(&PackInput {
+        language,
+        rule_pack_version: rule_pack_version(language),
+        artifact: &artifact,
+        lexicon: &lexicon,
+    })
+}
+
+fn detect(language: Language) -> Vec<u8> {
+    let model = read("crates/blasphem-language/data/blasphem-language-15-v2.bin");
+    let code = language.code().to_ascii_lowercase();
+    blasphem_language::slice::write_slices(&model)
+        .expect("slices")
+        .into_iter()
+        .find(|(slice_language, _)| slice_language.code() == code)
+        .map(|(_, bytes)| bytes)
+        .expect("slice for language")
+}
+
+fn hex(bytes: &[u8]) -> String {
+    format!("{:x}", sha2::Sha256::digest(bytes))
+}
+
+fn source(language: Language, with_detect: bool) -> EngineSource {
+    let pack = pack(language);
+    let detect = with_detect.then(|| detect(language));
+    EngineSource::new(
+        &language.code().to_ascii_lowercase(),
+        pack.clone(),
+        Some(&hex(&pack)),
+        detect.clone(),
+        detect.as_deref().map(hex).as_deref(),
+    )
+    .expect("valid source")
 }
 
 #[test]
-fn explicit_ms_and_id_alias_return_the_same_canonical_result() {
-    let ms = DetectorCore::new("MS").expect("MS detector");
-    let id = DetectorCore::new("ID").expect("ID alias detector");
+fn engine_scores_english_and_masks_on_request() {
+    let engine = Engine::build(
+        &[source(Language::En, true), source(Language::Es, true)],
+        true,
+        true,
+    )
+    .expect("engine builds");
+    let verdict = engine.judge("you are a stupid loser");
 
-    assert_eq!(ms.language(), "MS");
-    assert_eq!(id.language(), "MS");
-    assert_eq!(
-        ms.check("Dia memberitahu saya yang dia benar-benar letih."),
-        id.check("Dia memberitahu saya yang dia benar-benar letih."),
-    );
-}
-
-#[cfg(feature = "language-detection")]
-#[test]
-fn automatic_core_resolves_all_fifteen_languages_and_matches_explicit_toxicity() {
-    let automatic = DetectorCore::new("AUTO").expect("automatic detector");
-
-    assert_eq!(automatic.language(), "AUTO");
-    for &(language, text, expected_score) in AUTO_CASES {
-        let automatic_result = automatic.check(text);
-        let explicit_result = DetectorCore::new(language.code())
-            .expect("explicit detector")
-            .check(text);
-
-        assert_eq!(
-            automatic_result.resolved_language,
-            language.code(),
-            "{text}"
-        );
-        assert!(automatic_result.evaluated, "{text}");
-        assert!(automatic_result.language_reliable, "{text}");
-        assert!(
-            automatic_result
-                .language_score
-                .is_some_and(|score| score > 0.0),
-            "{text}",
-        );
-        assert_eq!(automatic_result.score, expected_score, "{text}");
-        assert_eq!(automatic_result.ok, explicit_result.ok, "{text}");
-        assert_eq!(automatic_result.score, explicit_result.score, "{text}");
-        assert_eq!(
-            automatic_result.threshold, explicit_result.threshold,
-            "{text}"
-        );
-        assert_eq!(
-            automatic_result.should_nudge, explicit_result.should_nudge,
-            "{text}",
-        );
-    }
-}
-
-#[cfg(feature = "language-detection")]
-#[test]
-fn automatic_core_fails_open_without_evaluating_unreliable_input() {
-    let detector = DetectorCore::new("AUTO").expect("automatic detector");
-
-    for text in ["", "!@#$%^&*()", "😀🚀🧪❤️", "Hello"] {
-        let result = detector.check(text);
-
-        assert!(result.ok, "{text:?}");
-        assert_eq!(result.score, 0, "{text:?}");
-        assert_eq!(result.threshold, 50, "{text:?}");
-        assert!(!result.should_nudge, "{text:?}");
-        assert!(!result.evaluated, "{text:?}");
-        assert_eq!(result.resolved_language, "unknown", "{text:?}");
-        assert!(!result.language_reliable, "{text:?}");
-        assert_eq!(result.language_score, None, "{text:?}");
-    }
-}
-
-#[cfg(not(feature = "language-detection"))]
-#[test]
-fn automatic_core_requires_the_optional_language_detection_feature() {
-    let error = DetectorCore::new("AUTO").expect_err("AUTO must require its feature");
-
-    assert_eq!(error, "AUTO requires the language-detection feature");
-}
-
-#[test]
-fn core_rejects_unknown_language_values() {
-    for language in ["", "EN-US", "XX"] {
-        assert!(
-            DetectorCore::new(language).is_err(),
-            "{language:?} must fail"
-        );
-    }
-}
-
-#[test]
-fn core_judge_scores_english_and_masks_on_request() {
-    let core = blasphem_wasm::JudgeCore::new(&["en".to_owned(), "es".to_owned()], true, true)
-        .expect("judge core builds");
-    let verdict = core.judge("you are a stupid loser");
-
+    assert_eq!(engine.locales(), vec!["en".to_owned(), "es".to_owned()]);
     assert!(!verdict.safe);
-    assert!(verdict.score > 0.0 && verdict.score <= 1.0);
+    assert_eq!(verdict.score, 0.64);
     assert_eq!(verdict.locale.as_deref(), Some("en"));
-    assert!(
-        verdict
-            .grawlix
-            .is_some_and(|masked| !masked.contains("stupid"))
+    assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! loser"));
+}
+
+#[test]
+fn engine_omits_grawlix_when_not_requested_and_accepts_the_id_alias() {
+    let engine = Engine::build(&[source(Language::Ms, false)], false, false).expect("engine");
+    let aliased = EngineSource::new("id", pack(Language::Ms), None, None, None).expect("alias");
+    let alias_engine = Engine::build(&[aliased], false, false).expect("alias engine");
+    let text = "Dia memberitahu saya yang dia benar-benar letih.";
+
+    assert_eq!(engine.locales(), vec!["ms".to_owned()]);
+    assert_eq!(alias_engine.locales(), vec!["ms".to_owned()]);
+    assert_eq!(engine.judge(text), alias_engine.judge(text));
+    assert_eq!(engine.judge(text).grawlix, None);
+}
+
+#[test]
+fn engine_fails_open_for_text_no_loaded_locale_routes() {
+    let engine = Engine::build(&[source(Language::En, true)], true, false).expect("engine");
+
+    for text in ["물이 별로 없다.", "", "!@#$%^&*()"] {
+        let verdict = engine.judge(text);
+        assert!(verdict.safe, "{text:?}");
+        assert_eq!(verdict.score, 0.0, "{text:?}");
+        assert_eq!(verdict.locale, None, "{text:?}");
+    }
+}
+
+#[test]
+fn engine_source_reports_an_unknown_locale_with_its_code() {
+    let error = EngineSource::new("xx", pack(Language::En), None, None, None).expect_err("xx");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_LOCALE_UNSUPPORTED: unsupported locale \"xx\""
     );
 }
 
 #[test]
-fn core_judge_omits_grawlix_when_not_requested() {
-    let core =
-        blasphem_wasm::JudgeCore::new(&["en".to_owned()], true, false).expect("judge core builds");
+fn engine_source_rejects_a_short_digest_string() {
+    let error =
+        EngineSource::new("en", pack(Language::En), Some("abc"), None, None).expect_err("digest");
 
-    assert_eq!(core.judge("you are a stupid loser").grawlix, None);
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_PACK_INVALID: en.pack digest is not 64 hexadecimal characters"
+    );
 }
 
 #[test]
-fn core_judge_rejects_an_unknown_locale() {
-    let error = blasphem_wasm::JudgeCore::new(&["xx".to_owned()], true, false)
-        .expect_err("unknown locale fails");
+fn engine_reports_a_digest_mismatch_with_its_code() {
+    let zeroes = "0".repeat(64);
+    let source =
+        EngineSource::new("en", pack(Language::En), Some(&zeroes), None, None).expect("source");
+    let error = Engine::build(&[source], false, false).expect_err("mismatch");
 
-    assert!(error.contains("xx"), "got {error}");
+    assert!(
+        error
+            .to_string()
+            .starts_with("BLASPHEM_DIGEST_MISMATCH: en.pack expected sha256 0000"),
+        "got {error}"
+    );
+}
+
+#[test]
+fn engine_requires_a_detect_slice_when_detection_is_on() {
+    let error = Engine::build(&[source(Language::En, false)], true, false).expect_err("no slice");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_PACK_INVALID: en.detect is required when language detection is on"
+    );
+}
+
+#[test]
+fn engine_rejects_no_sources() {
+    let error = Engine::build(&[], false, false).expect_err("empty");
+
+    assert_eq!(
+        error.to_string(),
+        "BLASPHEM_LOCALES_EMPTY: no locale was given"
+    );
 }

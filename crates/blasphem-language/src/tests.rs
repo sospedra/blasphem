@@ -1,3 +1,4 @@
+use super::slice::{SliceDetector, SliceError, write_slices};
 use super::{Detector, Language, ModelError, extract_features, h64};
 
 const HEADER_LEN: usize = 76;
@@ -366,4 +367,76 @@ fn the_committed_artifact_uses_the_blasphem_magic_and_version_two() {
     let bytes = include_bytes!("../data/blasphem-language-15-v2.bin");
     assert_eq!(&bytes[..8], b"BLASPHEM");
     assert_eq!(u32::from_le_bytes(bytes[8..12].try_into().unwrap()), 2);
+}
+
+fn slice_entry_count(slice: &[u8]) -> u32 {
+    u32::from_le_bytes(slice[20..24].try_into().expect("four bytes"))
+}
+
+#[test]
+fn slices_route_like_the_full_table_for_any_subset() {
+    // English scores 1.0 and Spanish 0.5 on each of the three placed words.
+    let model = scored_model(&[0x3f80_0000 | 2, 0x3f00_0000 | 3]);
+    let full = Detector::from_bytes(&model).expect("valid model");
+    let slices = write_slices(&model).expect("slices");
+    assert_eq!(slices.len(), 15);
+    let english = slices[Language::English.index()].1.as_slice();
+    let spanish = slices[Language::Spanish.index()].1.as_slice();
+    let hindi = slices[Language::Hindi.index()].1.as_slice();
+    assert_eq!(slice_entry_count(english), 3);
+    assert_eq!(slice_entry_count(spanish), 3);
+    assert_eq!(slice_entry_count(hindi), 0);
+
+    let merged = SliceDetector::from_slices(&[english, spanish]).expect("merged slices");
+    for text in ["a", "b", "c", "a b c", "zzz", ""] {
+        assert_eq!(merged.detect(text), full.detect(text), "{text:?}");
+    }
+
+    let english_only = SliceDetector::from_slices(&[english]).expect("one slice");
+    let detection = english_only.detect("a b c");
+    assert_eq!(detection.language, Some(Language::English));
+    assert_eq!(detection.ranked_scores.len(), 1);
+    assert_eq!(english_only.languages(), vec![Language::English]);
+}
+
+#[test]
+fn slice_reader_rejects_broken_slices() {
+    let model = scored_model(&[0x3f80_0000 | 2]);
+    let english = write_slices(&model)
+        .expect("slices")
+        .swap_remove(Language::English.index())
+        .1;
+
+    let mut swapped = english.clone();
+    let first = swapped[68..80].to_vec();
+    let second = swapped[80..92].to_vec();
+    swapped[68..80].copy_from_slice(&second);
+    swapped[80..92].copy_from_slice(&first);
+    assert_eq!(
+        SliceDetector::from_slices(&[&swapped]).unwrap_err(),
+        SliceError::Unsorted { index: 1 }
+    );
+
+    let mut truncated = english.clone();
+    truncated.pop();
+    assert_eq!(
+        SliceDetector::from_slices(&[&truncated]).unwrap_err(),
+        SliceError::Truncated
+    );
+
+    let mut foreign = english.clone();
+    foreign[12..14].copy_from_slice(b"xx");
+    assert_eq!(
+        SliceDetector::from_slices(&[&foreign]).unwrap_err(),
+        SliceError::UnknownLanguage(*b"xx")
+    );
+
+    assert_eq!(
+        SliceDetector::from_slices(&[&english, &english]).unwrap_err(),
+        SliceError::DuplicateLanguage(Language::English)
+    );
+    assert_eq!(
+        SliceDetector::from_slices(&[]).unwrap_err(),
+        SliceError::Empty
+    );
 }

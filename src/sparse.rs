@@ -1,3 +1,4 @@
+#[cfg(feature = "embedded")]
 use std::sync::OnceLock;
 
 use thiserror::Error;
@@ -13,7 +14,9 @@ const V2_HEADER_LENGTH: usize = 40;
 const BIN_COUNT: usize = 65_536;
 const PAYLOAD_LENGTH: usize = BIN_COUNT * size_of::<i16>();
 const WEIGHT_SCALE: u16 = 256;
+#[cfg(feature = "embedded")]
 const SPANISH_ARTIFACT: &[u8] = include_bytes!("../resources/models/es-chargram-v1.bin");
+#[cfg(feature = "embedded")]
 static SPANISH_MODEL: OnceLock<SparseModel> = OnceLock::new();
 
 /// A validated fixed-table text scorer.
@@ -408,6 +411,13 @@ fn parse_feature_schema(value: u16) -> Result<FeatureSchema, SparseModelError> {
     }
 }
 
+/// Without embedded data the legacy policy path has no sparse model to score with.
+#[cfg(not(feature = "embedded"))]
+pub(crate) fn embedded_model(_language: &str) -> Option<&'static SparseModel> {
+    None
+}
+
+#[cfg(feature = "embedded")]
 pub(crate) fn embedded_model(language: &str) -> Option<&'static SparseModel> {
     language.trim().eq_ignore_ascii_case("ES").then(|| {
         SPANISH_MODEL.get_or_init(|| {

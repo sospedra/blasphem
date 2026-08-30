@@ -1,7 +1,7 @@
 ---
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import type { Judgement, JudgeOptions } from "blasphem";
+import type { Judge, JudgeOptions } from "blasphem";
 import { LANGUAGES } from "../lib/languages";
 import { smoke } from "../lib/reports";
 import Numeral from "./Numeral.astro";
@@ -12,13 +12,19 @@ if (!example) throw new Error("the smoke report lacks supplied-es-toxic");
 const codes = LANGUAGES.map((language) => language.code).join(", ");
 
 // Run the real package at build time so the sample cannot drift from it.
-// The import stays dynamic and absolute so Vite leaves the module alone;
-// bundling it strips the top-level await that instantiates the wasm.
-const entry = pathToFileURL(resolve(process.cwd(), "../../packages/blasphem/dist/index.js")).href;
-const { judge } = (await import(/* @vite-ignore */ entry)) as {
-  judge: (text: string, options?: JudgeOptions) => Judgement;
+// The import stays dynamic and absolute so Vite leaves the Node entry alone.
+const entry = pathToFileURL(resolve(process.cwd(), "../../packages/blasphem/dist/node.js")).href;
+const { createJudge } = (await import(/* @vite-ignore */ entry)) as {
+  createJudge: (options: JudgeOptions) => Promise<Judge>;
 };
-const verdict = judge(example.text, { locales: ["es"], detectLanguage: false, grawlix: true });
+const buildJudge = await createJudge({
+  locales: ["es"],
+  detectLanguage: false,
+  grawlix: true,
+  assets: resolve(process.cwd(), "../../packages/packs/dist"),
+});
+const verdict = buildJudge.judge(example.text);
+buildJudge.close();
 
 const fields = [
   ["safe", "boolean", "True when no nudge is due. Also true when no locale routed the text."],
@@ -28,8 +34,9 @@ const fields = [
 ] as const;
 
 const options = [
-  ["locales", "string[]", "Locales to load, lowercase. Defaults to all 15."],
-  ["detectLanguage", "boolean", "Route by detected language. Defaults to true."],
+  ["locales", "string[]", "Locales to load, lowercase. Required. Only these download."],
+  ["assets", "string", "Browser: the path that serves the wasm and the packs. Required there. Node: optional packs directory."],
+  ["detectLanguage", "boolean", "Route by detected language. Defaults to true. Loads one .detect slice per locale."],
   ["grawlix", "boolean", "Return the masked text. Defaults to false."],
 ] as const;
 ---
@@ -38,9 +45,9 @@ const options = [
     <Numeral value="II" class="two" />
     <p class="rubric">chapter two</p>
     <h2 id="rite-title" class="title">One import, one call</h2>
-    <p class="copy">Import once. Then call <code>judge()</code> as often as the keystrokes come. The same bytes judge the same text the same way in every browser and in Node.</p>
+    <p class="copy">Build a judge once with the locales you need. Then call <code>judge()</code> as often as the keystrokes come. The same packs judge the same text the same way in every browser, in Node, and in React Native.</p>
     <p class="copy">With <code>detectLanguage</code> the router identifies the language before the toxicity check. Text it cannot route returns <code>locale: null</code> and <code>safe: true</code>. Nothing is judged. The nudge fails open by design.</p>
-    <p class="copy">There is nothing to free. <code>judge()</code> returns a plain object and reuses one judge per option set.</p>
+    <p class="copy"><code>judge()</code> is synchronous and returns a plain object. Call <code>close()</code> when a judge is no longer needed; after that, <code>judge()</code> throws <code>BLASPHEM_CLOSED</code>.</p>
     <table class="ledger fields">
       <caption>Judgement</caption>
       <thead><tr><th>field</th><th>type</th><th>meaning</th></tr></thead>
@@ -52,14 +59,16 @@ const options = [
     </table>
   </div>
   <div class="page l">
-    <pre><code><span class="c">// One import. The module loads itself, so judge() is synchronous.</span>
-<span class="k">import</span> &#123; judge &#125; <span class="k">from</span> <span class="s">"blasphem"</span>;
+    <pre><code><span class="c">// One import. createJudge loads the locales you name; judge() is synchronous.</span>
+<span class="k">import</span> &#123; createJudge &#125; <span class="k">from</span> <span class="s">"blasphem"</span>;
 
-<span class="k">const</span> v = judge(<span class="s">{JSON.stringify(example.text)}</span>, &#123;
+<span class="k">const</span> judge = <span class="k">await</span> createJudge(&#123;
   locales: [<span class="s">"es"</span>],
+  assets: <span class="s">"/blasphem"</span>,
   detectLanguage: <span class="k">false</span>,
   grawlix: <span class="k">true</span>,
 &#125;);
+<span class="k">const</span> v = judge.judge(<span class="s">{JSON.stringify(example.text)}</span>);
 
 v.safe    <span class="c">// {String(verdict.safe)}</span>
 v.score   <span class="c">// {verdict.score}, ordinal</span>
@@ -70,12 +79,13 @@ v.grawlix <span class="c">// {JSON.stringify(verdict.grawlix)}</span></code></pr
     <h3 class="sub">Install</h3>
     <p class="copy">The package is private and unpublished. Build it from a clone of <a href="https://github.com/sospedra/blasphem">sospedra/blasphem</a>:</p>
     <pre><code>pnpm install --frozen-lockfile
+pnpm --filter @blasphem/packs run build
 pnpm --filter blasphem run build
 pnpm --filter blasphem pack</code></pre>
-    <p class="copy">Then <code>pnpm add ./blasphem-0.1.0.tgz</code> in your app, or reference the package as <code>workspace:*</code> inside this repository. The same entry runs in Node and in the browser. Serve <code>blasphem_bg.wasm</code> as <code>application/wasm</code>.</p>
+    <p class="copy">Then <code>pnpm add ./blasphem-0.1.0.tgz</code> in your app together with <code>@blasphem/packs</code>, or reference both as <code>workspace:*</code> inside this repository. In the browser, copy <code>blasphem_bg.wasm</code> and the packs into one public directory and pass it as <code>assets</code>. Serve <code>blasphem_bg.wasm</code> as <code>application/wasm</code>. Node reads the installed packs and runs the native binary of <code>@blasphem/node-*</code> when it is installed.</p>
 
     <h3 class="sub">Tongues</h3>
-    <p class="copy"><code>{codes}</code>, lowercase, in <code>locales</code>. <code>id</code> is accepted as an alias for <code>ms</code>. Any other value throws. Every option is optional.</p>
+    <p class="copy"><code>{codes}</code>, lowercase, in <code>locales</code>. <code>id</code> is accepted as an alias for <code>ms</code>. Any other value throws. <code>locales</code> is required; the other options have defaults.</p>
     <table class="ledger fields">
       <caption>JudgeOptions</caption>
       <thead><tr><th>option</th><th>type</th><th>meaning</th></tr></thead>

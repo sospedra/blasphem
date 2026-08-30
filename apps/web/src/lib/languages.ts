@@ -1,4 +1,7 @@
-export type LanguageCode = "EN" | "ZH" | "ES" | "AR" | "MS" | "PT" | "FR" | "HI" | "RU" | "JA" | "DE" | "TR" | "VI" | "KO" | "IT";
+import { LOCALES } from "../../../../packages/core/src/locales.generated";
+
+/** Uppercase codes, generated from the Rust `Language::ALL` through the core table. */
+export type LanguageCode = Uppercase<(typeof LOCALES)[number]["code"]>;
 export type Selection = LanguageCode | "AUTO";
 
 export type Language = {
@@ -8,25 +11,33 @@ export type Language = {
   direction: "ltr" | "rtl";
 };
 
-export const LANGUAGES: readonly Language[] = [
-  { code: "EN", name: "English", tag: "en", direction: "ltr" },
-  { code: "ZH", name: "Chinese", tag: "zh", direction: "ltr" },
-  { code: "ES", name: "Spanish", tag: "es", direction: "ltr" },
-  { code: "AR", name: "Arabic", tag: "ar", direction: "rtl" },
-  { code: "MS", name: "Malay", tag: "ms", direction: "ltr" },
-  { code: "PT", name: "Portuguese", tag: "pt", direction: "ltr" },
-  { code: "FR", name: "French", tag: "fr", direction: "ltr" },
-  { code: "HI", name: "Hindi", tag: "hi", direction: "ltr" },
-  { code: "RU", name: "Russian", tag: "ru", direction: "ltr" },
-  { code: "JA", name: "Japanese", tag: "ja", direction: "ltr" },
-  { code: "DE", name: "German", tag: "de", direction: "ltr" },
-  { code: "TR", name: "Turkish", tag: "tr", direction: "ltr" },
-  { code: "VI", name: "Vietnamese", tag: "vi", direction: "ltr" },
-  { code: "KO", name: "Korean", tag: "ko", direction: "ltr" },
-  { code: "IT", name: "Italian", tag: "it", direction: "ltr" },
-];
+/** Display data only. Codes and aliases come from the generated table. */
+const DISPLAY: Record<LanguageCode, { name: string; direction: "ltr" | "rtl" }> = {
+  EN: { name: "English", direction: "ltr" },
+  ZH: { name: "Chinese", direction: "ltr" },
+  ES: { name: "Spanish", direction: "ltr" },
+  AR: { name: "Arabic", direction: "rtl" },
+  MS: { name: "Malay", direction: "ltr" },
+  PT: { name: "Portuguese", direction: "ltr" },
+  FR: { name: "French", direction: "ltr" },
+  HI: { name: "Hindi", direction: "ltr" },
+  RU: { name: "Russian", direction: "ltr" },
+  JA: { name: "Japanese", direction: "ltr" },
+  DE: { name: "German", direction: "ltr" },
+  TR: { name: "Turkish", direction: "ltr" },
+  VI: { name: "Vietnamese", direction: "ltr" },
+  KO: { name: "Korean", direction: "ltr" },
+  IT: { name: "Italian", direction: "ltr" },
+};
 
-const ALIASES: Record<string, LanguageCode> = { ID: "MS" };
+export const LANGUAGES: readonly Language[] = LOCALES.map((locale) => {
+  const code = locale.code.toUpperCase() as LanguageCode;
+  return { code, name: DISPLAY[code].name, tag: locale.code, direction: DISPLAY[code].direction };
+});
+
+const ALIASES: Record<string, LanguageCode> = Object.fromEntries(
+  LOCALES.flatMap((locale) => locale.aliases.map((alias) => [alias.toUpperCase(), locale.code.toUpperCase() as LanguageCode])),
+);
 const CODES = new Set<string>(LANGUAGES.map((language) => language.code));
 
 export function normalizeSelection(raw: string): Selection | null {

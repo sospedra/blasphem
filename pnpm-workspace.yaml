@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+  - packages/node/npm/*
 allowBuilds:
   esbuild: true
   sharp: true

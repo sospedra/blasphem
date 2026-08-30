@@ -1,18 +1,17 @@
-import type { JudgeOptions, Judgement } from "blasphem";
-import { normalizeSelection, type Selection } from "../lib/languages";
+import type { Judge, JudgeOptions, Judgement } from "blasphem";
+import { LANGUAGES, normalizeSelection, type Selection } from "../lib/languages";
 import { statusCopy, transition, verdictFor, WAITING, type Phase, type PhaseEvent, type Snapshot } from "./playground-state";
 
-type Module = typeof import("blasphem");
+type Module = { createJudge: (options: JudgeOptions) => Promise<Judge> };
 
 const BASE = __BLASPHEM_BASE__;
-const MEGABYTES = `${(__BLASPHEM_WASM_BYTES__ / 1_000_000).toFixed(1)} MB`;
-/** The nudge boundary is fixed at 50 of 100, so 0.5 on the returned score. */
-const NUDGE_THRESHOLD = 0.5;
+const MEGABYTES = `${(__BLASPHEM_TOTAL_BYTES__ / 1_048_576).toFixed(2)} MB`;
 /** The first call in a burst runs cold and Safari rounds performance.now() to 1 ms, so the mean covers at least five runs and stops once the clock has moved 3 ms. */
 const TIMING_MIN_RUNS = 5;
 const TIMING_BUDGET_MS = 3;
 const TIMING_MAX_RUNS = 300;
 const FIELD_IDS = ["f-safe", "f-score", "f-locale", "f-grawlix"] as const;
+const ALL_LOCALES = LANGUAGES.map((language) => language.tag);
 
 type FieldId = (typeof FIELD_IDS)[number];
 type Sample = { code: string; tag: string; text: string };
@@ -38,6 +37,8 @@ type Elements = {
 type Session = {
   phase: Phase;
   module: Module | null;
+  /** One judge per selection. AUTO loads every locale with detection; a code loads one locale without it. */
+  judges: Map<Selection, Promise<Judge>>;
   sampleIndex: number;
 };
 
@@ -77,17 +78,14 @@ function describe(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-/**
- * The package entry instantiates the WebAssembly module through a top-level
- * await, so judge() is callable as soon as this import resolves.
- */
+/** The package's browser entry, served beside the wasm and the packs under BASE. */
 async function loadModule(): Promise<Module> {
-  return (await import(/* @vite-ignore */ `${BASE}/index.js`)) as Module;
+  return (await import(/* @vite-ignore */ `${BASE}/browser.js`)) as Module;
 }
 
 function optionsFor(selection: Selection): JudgeOptions {
-  if (selection === "AUTO") return { detectLanguage: true, grawlix: true };
-  return { locales: [selection.toLowerCase()], detectLanguage: false, grawlix: true };
+  if (selection === "AUTO") return { locales: ALL_LOCALES, detectLanguage: true, grawlix: true, assets: BASE };
+  return { locales: [selection.toLowerCase()], detectLanguage: false, grawlix: true, assets: BASE };
 }
 
 function snapshot(verdict: Judgement): Snapshot {
@@ -155,7 +153,7 @@ function applyQuerySelection(select: HTMLSelectElement): void {
 export function mountPlayground(root: HTMLElement): void {
   const elements = collect(root);
   const samples = readSamples(document);
-  const session: Session = { phase: { status: "idle" }, module: null, sampleIndex: -1 };
+  const session: Session = { phase: { status: "idle" }, module: null, judges: new Map(), sampleIndex: -1 };
 
   const dispatch = (event: PhaseEvent): void => {
     session.phase = transition(session.phase, event);
@@ -164,15 +162,16 @@ export function mountPlayground(root: HTMLElement): void {
 
   const currentSelection = (): Selection => normalizeSelection(elements.language.value) ?? "AUTO";
 
-  const evaluate = (module: Module): void => {
-    const text = elements.message.value;
-    if (text.trim() === "") {
-      renderWaiting(elements);
-      return;
-    }
-    const options = optionsFor(currentSelection());
-    const { verdict, perCallMs } = timeJudge(() => module.judge(text, options));
-    renderResult(elements, snapshot(verdict), perCallMs);
+  /** Builds the judge for one selection once. A failed build is forgotten so a retry can rebuild it. */
+  const judgeFor = (module: Module, selection: Selection): Promise<Judge> => {
+    const existing = session.judges.get(selection);
+    if (existing) return existing;
+    const created = module.createJudge(optionsFor(selection)).catch((error: unknown) => {
+      session.judges.delete(selection);
+      throw error;
+    });
+    session.judges.set(selection, created);
+    return created;
   };
 
   const ensureModule = async (): Promise<Module | null> => {
@@ -181,7 +180,9 @@ export function mountPlayground(root: HTMLElement): void {
     dispatch({ type: "LOAD" });
     try {
       session.module = await loadModule();
+      await judgeFor(session.module, currentSelection());
     } catch (error) {
+      session.module = null;
       dispatch({ type: "FAILED", message: describe(error) });
       return null;
     }
@@ -189,6 +190,7 @@ export function mountPlayground(root: HTMLElement): void {
     return session.module;
   };
 
+  let pending = 0;
   const check = async (): Promise<void> => {
     if (BASE === "") {
       dispatch({ type: "UNAVAILABLE" });
@@ -196,16 +198,25 @@ export function mountPlayground(root: HTMLElement): void {
     }
     const module = await ensureModule();
     if (!module) return;
-    warm(module, currentSelection());
-    evaluate(module);
+    const text = elements.message.value;
+    if (text.trim() === "") {
+      renderWaiting(elements);
+      return;
+    }
+    const ticket = ++pending;
+    let judge: Judge;
+    try {
+      judge = await judgeFor(module, currentSelection());
+    } catch (error) {
+      elements.failureMessage.textContent = describe(error);
+      elements.failure.hidden = false;
+      return;
+    }
+    // A newer keystroke or selection change supersedes this evaluation.
+    if (ticket !== pending || elements.message.value !== text) return;
+    const { verdict, perCallMs } = timeJudge(() => judge.judge(text));
+    renderResult(elements, snapshot(verdict), perCallMs);
   };
-
-  const warmed = new Set<Selection>();
-  function warm(module: Module, selection: Selection): void {
-    if (warmed.has(selection)) return;
-    warmed.add(selection);
-    module.judge("blasphem", optionsFor(selection));
-  }
 
   const samplesFor = (selection: Selection): readonly Sample[] => {
     if (selection === "AUTO") return samples;

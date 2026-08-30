@@ -1,0 +1,16 @@
+{
+  "name": "@blasphem/node",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Builds the napi binary and the @blasphem/node-<os>-<cpu> platform packages. Never published itself.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "11.13.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "npm-dirs": "node scripts/npm-dirs.mjs"
+  }
+}

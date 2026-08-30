@@ -154,7 +154,7 @@ cargo run --release --locked -p toxbench -- auto \
   --model-manifest resources/models/multilingual-v2/manifest.json \
   --native-binary target/task7-native/release/toxcheck \
   --eldc-artifact crates/eldc/data/eldc-15-v1.bin \
-  --browser-report reports/multilingual-wasm.json \
+  --browser-report reports/browser-smoke.json \
   --c-parity-fixture crates/eldc/tests/fixtures/c-parity-v1.jsonl \
   --project-root . \
   --output reports/eldc-auto-validation.json \

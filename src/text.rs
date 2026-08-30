@@ -20,10 +20,17 @@ pub struct TextSpan {
     pub end: usize,
 }
 
+/// One stretch of view text that maps back to a single original span.
+#[derive(Debug, Clone, Copy)]
+struct SpanRun {
+    text_end: usize,
+    span: TextSpan,
+}
+
 #[derive(Debug, Clone)]
 pub struct CandidateView {
     text: String,
-    byte_spans: Vec<TextSpan>,
+    runs: Vec<SpanRun>,
 }
 
 impl CandidateView {
@@ -42,23 +49,41 @@ impl CandidateView {
             return None;
         }
 
-        let spans = self.byte_spans.get(start..end)?;
-        let start = spans.iter().map(|span| span.start).min()?;
-        let end = spans.iter().map(|span| span.end).max()?;
-        Some(start..end)
+        self.spanning_runs(start, end)
+            .map(|run| run.span)
+            .reduce(|left, right| TextSpan {
+                start: left.start.min(right.start),
+                end: left.end.max(right.end),
+            })
+            .map(|span| span.start..span.end)
+    }
+
+    fn spanning_runs(&self, start: usize, end: usize) -> impl Iterator<Item = &SpanRun> {
+        let first = self.runs.partition_point(|run| run.text_end <= start);
+        let mut cursor = self.runs[..first].last().map_or(0, |run| run.text_end);
+        self.runs[first..].iter().take_while(move |run| {
+            let overlaps = cursor < end;
+            cursor = run.text_end;
+            overlaps
+        })
     }
 
     fn new() -> Self {
         Self {
             text: String::new(),
-            byte_spans: Vec::new(),
+            runs: Vec::new(),
         }
     }
 
     fn push(&mut self, value: &str, span: TextSpan) {
+        if value.is_empty() {
+            return;
+        }
         self.text.push_str(value);
-        for _ in value.bytes() {
-            self.byte_spans.push(span);
+        let text_end = self.text.len();
+        match self.runs.last_mut() {
+            Some(last) if last.span == span => last.text_end = text_end,
+            _ => self.runs.push(SpanRun { text_end, span }),
         }
     }
 

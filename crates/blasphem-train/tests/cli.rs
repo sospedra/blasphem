@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, fmt::Write as _, fs, fs::File, process::Command};
+use std::{collections::VecDeque, fmt::Write as _, fs, fs::File, path::Path, process::Command};
 
 use blasphem_train::{
     TextDetoxAcquisitionError, TextDetoxFetchError, TextDetoxHttpClient, TextDetoxHttpResponse,
@@ -1123,4 +1123,91 @@ fn corpus_verify_rejects_an_edited_sealed_row() {
 
     assert!(!output.status.success());
     assert!(String::from_utf8_lossy(&output.stderr).contains("EN"));
+}
+
+#[test]
+fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
+    use sha2::Digest as _;
+
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let directory = tempdir().expect("temporary directory");
+    let output = directory.path().join("dist");
+    let path = |relative: &str| root.join(relative).to_str().expect("UTF-8 path").to_owned();
+    let result = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
+        .args([
+            "pack",
+            "--model-manifest",
+            &path("resources/models/multilingual-v2/manifest.json"),
+            "--model-root",
+            &path("resources/models/multilingual-v2"),
+            "--language-model",
+            &path("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
+            "--hurtlex-root",
+            &path("data/raw-v1/hurtlex"),
+            "--output",
+            output.to_str().expect("UTF-8 path"),
+        ])
+        .output()
+        .expect("run pack");
+    assert!(
+        result.status.success(),
+        "{}",
+        String::from_utf8_lossy(&result.stderr)
+    );
+    let stdout = String::from_utf8_lossy(&result.stdout);
+    assert!(
+        stdout.starts_with("status=packed locales=15 files=33 bytes="),
+        "{stdout}"
+    );
+    let files_module = fs::read_to_string(output.join("files.js")).expect("files.js");
+    assert!(
+        files_module.contains("\"en.pack\": new URL(\"./en.pack\", import.meta.url),"),
+        "{files_module}"
+    );
+    assert_eq!(
+        files_module.matches("new URL(").count(),
+        31,
+        "{files_module}"
+    );
+    assert!(
+        files_module.contains("\"manifest.json\": MANIFEST,"),
+        "{files_module}"
+    );
+
+    let manifest: serde_json::Value =
+        serde_json::from_slice(&fs::read(output.join("manifest.json")).expect("manifest"))
+            .expect("valid manifest json");
+    assert_eq!(manifest["formatVersion"], 1);
+    let files = manifest["files"].as_object().expect("files map");
+    assert_eq!(files.len(), 30);
+    for (name, record) in files {
+        let bytes = fs::read(output.join(name)).unwrap_or_else(|error| panic!("{name}: {error}"));
+        assert_eq!(
+            record["bytes"].as_u64().expect("bytes") as usize,
+            bytes.len(),
+            "{name}"
+        );
+        assert_eq!(
+            record["sha256"].as_str().expect("sha256"),
+            format!("{:x}", sha2::Sha256::digest(&bytes)),
+            "{name}"
+        );
+    }
+
+    let en_pack = fs::read(output.join("en.pack")).expect("en.pack");
+    let en_detect = fs::read(output.join("en.detect")).expect("en.detect");
+    let digest = |name: &str| blasphem::parse_sha256(files[name]["sha256"].as_str().expect("hex"));
+    let judge = blasphem::Judge::from_packs(
+        &[blasphem::PackSource {
+            language: blasphem::Language::En,
+            pack: &en_pack,
+            pack_sha256: digest("en.pack"),
+            detect: Some(&en_detect),
+            detect_sha256: digest("en.detect"),
+        }],
+        true,
+        false,
+    )
+    .expect("the written pack loads with its manifest digests");
+    assert_eq!(judge.judge("you are a stupid loser").score, 0.64);
 }

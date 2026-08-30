@@ -1,0 +1,23 @@
+{
+  "name": "@blasphem/node-linux-arm64-gnu",
+  "version": "0.1.0",
+  "private": true,
+  "description": "blasphem native engine for linux-arm64-gnu",
+  "license": "Apache-2.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "main": "blasphem.linux-arm64-gnu.node",
+  "files": [
+    "blasphem.linux-arm64-gnu.node"
+  ],
+  "engines": {
+    "node": ">= 20.6"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["blasphem"],
+  "ios": {
+    "iosModuleName": "BlasphemReactNative"
+  },
+  "android": {
+    "androidNamespace": ["blasphem"],
+    "androidCxxLibName": "BlasphemReactNative"
+  },
+  "autolinking": {
+    "BlasphemEngineBuilder": {
+      "all": {
+        "language": "c++",
+        "implementationClassName": "HybridBlasphemEngineBuilder"
+      }
+    },
+    "BlasphemAssets": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridBlasphemAssets"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridBlasphemAssets"
+      }
+    }
+  },
+  "ignorePaths": ["node_modules", "dist", "src/core"]
+}

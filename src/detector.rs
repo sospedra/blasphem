@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet, HashSet};
+use std::sync::Arc;
 
 use crate::{
     AnalysisContext, CandidateViewKind, LexiconEntry, MatchLevel, PolicyResult, TextDocument,
@@ -17,7 +18,7 @@ pub enum DetectorError {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct LexiconMatch {
-    pub entry: LexiconEntry,
+    pub entry: Arc<LexiconEntry>,
     pub matched_text: String,
     pub matched_confusable_view: bool,
     pub view: CandidateViewKind,
@@ -50,7 +51,7 @@ struct PatternIndex {
 
 impl PatternIndex {
     fn build(
-        entries: &[LexiconEntry],
+        entries: &[Arc<LexiconEntry>],
         transform: impl Fn(&str) -> String,
     ) -> Result<Self, DetectorError> {
         let mut by_pattern = BTreeMap::<String, Vec<usize>>::new();
@@ -118,7 +119,7 @@ fn surface_patterns(entry: &LexiconEntry, base: String) -> BTreeSet<String> {
 
 #[derive(Debug)]
 pub struct Detector {
-    entries: Vec<LexiconEntry>,
+    entries: Vec<Arc<LexiconEntry>>,
     normalized: Option<PatternIndex>,
     confusable: Option<PatternIndex>,
     evasion: Option<PatternIndex>,
@@ -129,6 +130,7 @@ impl Detector {
         if entries.is_empty() {
             return Err(DetectorError::EmptyLexicon);
         }
+        let entries = entries.into_iter().map(Arc::new).collect::<Vec<_>>();
         let normalized = PatternIndex::build(&entries, |text| {
             TextDocument::new(text)
                 .view(CandidateViewKind::Normalized)
@@ -169,7 +171,10 @@ impl Detector {
     #[must_use]
     pub fn check(&self, text: &str) -> Detection {
         let document = TextDocument::new(text);
-        let normalized_text = normalize_text(text);
+        let normalized_text = document
+            .view(CandidateViewKind::Normalized)
+            .text()
+            .to_owned();
         let mut seen = HashSet::new();
         let mut matches = Vec::new();
 
@@ -213,7 +218,7 @@ impl Detector {
                 continue;
             }
             output.push(LexiconMatch {
-                entry: self.entries[entry_index].clone(),
+                entry: Arc::clone(&self.entries[entry_index]),
                 matched_text: matched_text.to_owned(),
                 matched_confusable_view: kind == CandidateViewKind::Confusable,
                 view: kind,

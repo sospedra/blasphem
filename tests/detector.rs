@@ -50,7 +50,7 @@ fn matches_a_spanish_plural_from_a_nominal_lemma() {
     let result = detector.check("Sois unos imbéciles.");
 
     assert!(result.is_match());
-    assert_eq!(result.matches[0].entry, source);
+    assert_eq!(*result.matches[0].entry, source);
     assert_eq!(
         &"Sois unos imbéciles."[result.matches[0].raw_start..result.matches[0].raw_end],
         "imbéciles"

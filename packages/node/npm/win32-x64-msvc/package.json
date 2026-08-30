@@ -1,0 +1,20 @@
+{
+  "name": "@blasphem/node-win32-x64-msvc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "blasphem native engine for win32-x64-msvc",
+  "license": "Apache-2.0",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "blasphem.win32-x64-msvc.node",
+  "files": [
+    "blasphem.win32-x64-msvc.node"
+  ],
+  "engines": {
+    "node": ">= 20.6"
+  }
+}

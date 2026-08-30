@@ -15,6 +15,9 @@ const MIN_TABLE_LEN: u32 = 64;
 const MAX_INPUT_BYTES: usize = 1_000;
 const MAX_FEATURES: usize = 500;
 
+pub mod slice;
+
+#[cfg(feature = "embedded-model")]
 static EMBEDDED_MODEL: &[u8] = include_bytes!("../data/blasphem-language-15-v2.bin");
 
 /// A language profile in the compact language model.
@@ -82,6 +85,20 @@ impl Language {
     const fn from_index(index: usize) -> Self {
         Self::ALL[index]
     }
+
+    /// The position of this language in the compact model order.
+    #[must_use]
+    pub const fn index(self) -> usize {
+        self as usize
+    }
+
+    /// The language for a lowercase ISO 639-1 code, if the model has it.
+    #[must_use]
+    pub fn from_code(code: &str) -> Option<Self> {
+        Self::ALL
+            .into_iter()
+            .find(|language| language.code() == code)
+    }
 }
 
 /// One normalized language score in descending score order.
@@ -102,6 +119,20 @@ pub struct Detection {
     pub ranked_scores: Vec<RankedScore>,
 }
 
+impl Detection {
+    /// The result for text with no features.
+    const fn empty() -> Self {
+        Self {
+            language: None,
+            reliable: false,
+            top_score: 0.0,
+            second_score: 0.0,
+            feature_count: 0,
+            ranked_scores: Vec::new(),
+        }
+    }
+}
+
 /// A model validation error.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ModelError {
@@ -119,6 +150,7 @@ pub enum ModelError {
     InvalidLanguageIndex { index: usize },
     Truncated,
     TrailingData,
+    RunTooLong { slot: usize },
 }
 
 impl Display for ModelError {
@@ -190,6 +222,12 @@ impl Display for ModelError {
             }
             Self::Truncated => formatter.write_str("the language model is truncated"),
             Self::TrailingData => formatter.write_str("the language model has trailing data"),
+            Self::RunTooLong { slot } => {
+                write!(
+                    formatter,
+                    "the language model occupied run through slot {slot} exceeds 255 slots"
+                )
+            }
         }
     }
 }
@@ -219,6 +257,7 @@ pub struct Detector {
 
 impl Detector {
     /// Loads and validates the embedded 15-profile model.
+    #[cfg(feature = "embedded-model")]
     pub fn new() -> Result<Self, ModelError> {
         Self::from_bytes(EMBEDDED_MODEL)
     }
@@ -234,14 +273,7 @@ impl Detector {
         let features =
             extract_features_with_tables(text, &self.letter_bits, &self.cjk_bits, &self.lowercase);
         if features.is_empty() {
-            return Detection {
-                language: None,
-                reliable: false,
-                top_score: 0.0,
-                second_score: 0.0,
-                feature_count: 0,
-                ranked_scores: Vec::new(),
-            };
+            return Detection::empty();
         }
 
         let mut raw = [1.0_f32; LANGUAGE_COUNT];
@@ -816,7 +848,7 @@ fn extract_features_with_tables(
     features
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "embedded-model"))]
 fn extract_features(text: &str) -> Vec<u64> {
     let detector = Detector::new().expect("embedded model must be valid");
     extract_features_with_tables(
@@ -827,5 +859,5 @@ fn extract_features(text: &str) -> Vec<u64> {
     )
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "embedded-model"))]
 mod tests;

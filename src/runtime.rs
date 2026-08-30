@@ -1,8 +1,11 @@
+use std::borrow::Cow;
 use std::fmt;
 
+#[cfg(feature = "embedded")]
 use sha2::{Digest, Sha256};
 use thiserror::Error;
 
+use crate::pack::{PackError, decode_pack, pack_file_name};
 use crate::policy::policy_result_from_rule_channel;
 use crate::registry::registry_entry;
 use crate::{
@@ -13,7 +16,7 @@ use crate::{
 /// A fixed-language detector for the product pre-send nudge.
 pub struct NudgeDetector {
     language: Language,
-    model: &'static SparseModel,
+    model: Cow<'static, SparseModel>,
     rule_channel: RuleChannel,
 }
 
@@ -44,6 +47,8 @@ pub enum RuntimeInitError {
         #[source]
         source: RuleChannelError,
     },
+    #[error(transparent)]
+    Pack(#[from] PackError),
 }
 
 impl NudgeDetector {
@@ -52,13 +57,18 @@ impl NudgeDetector {
     /// # Errors
     ///
     /// Returns an error when any resource is missing, changed, or invalid.
+    #[cfg(feature = "embedded")]
     pub fn from_hurtlex_bytes(
         language: Language,
         hurtlex: Option<&[u8]>,
     ) -> Result<Self, RuntimeInitError> {
         let entry = registry_entry(language);
-        let model = entry.model()?;
-        validate_hurtlex(language, entry.hurtlex_sha256, hurtlex)?;
+        let model = crate::embedded::embedded_model_ref(language)?;
+        validate_hurtlex(
+            language,
+            crate::embedded::embedded_hurtlex_sha256(language),
+            hurtlex,
+        )?;
         let rule_channel = entry.rule_channel(hurtlex)?;
 
         Ok(Self {
@@ -66,6 +76,54 @@ impl NudgeDetector {
             model,
             rule_channel,
         })
+    }
+
+    /// Builds a detector from one language's pack bytes.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the pack is malformed, declares another language,
+    /// was built for other rules, or carries an invalid artifact or lexicon.
+    pub fn from_pack(language: Language, pack: &[u8]) -> Result<Self, RuntimeInitError> {
+        let file = pack_file_name(language);
+        let decoded = decode_pack(language, pack)?;
+        let entry = registry_entry(language);
+        let expected_version = entry.expected_rule_pack_version()?;
+        if decoded.rule_pack_version != expected_version {
+            return Err(PackError::Invalid {
+                file,
+                reason: format!(
+                    "was built for rule pack version {}, this build has {expected_version}",
+                    decoded.rule_pack_version
+                ),
+            }
+            .into());
+        }
+        let model =
+            SparseModel::from_bytes(decoded.artifact).map_err(|error| PackError::Invalid {
+                file: file.clone(),
+                reason: error.to_string(),
+            })?;
+        entry
+            .check_model(&model)
+            .map_err(|reason| PackError::Invalid {
+                file: file.clone(),
+                reason,
+            })?;
+        let rule_channel = entry.rule_channel(Some(decoded.lexicon))?;
+        Ok(Self::from_parts(language, Cow::Owned(model), rule_channel))
+    }
+
+    pub(crate) const fn from_parts(
+        language: Language,
+        model: Cow<'static, SparseModel>,
+        rule_channel: RuleChannel,
+    ) -> Self {
+        Self {
+            language,
+            model,
+            rule_channel,
+        }
     }
 
     #[must_use]
@@ -95,6 +153,7 @@ impl NudgeDetector {
     }
 }
 
+#[cfg(feature = "embedded")]
 fn validate_hurtlex(
     language: Language,
     expected: Option<[u8; 32]>,

@@ -1,0 +1,56 @@
+{
+  "name": "@blasphem/react-native",
+  "version": "0.1.0",
+  "private": true,
+  "description": "React Native binding for blasphem on Nitro Modules. Same createJudge as the web package, native engine underneath.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "11.13.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./dist/index.js",
+      "browser": "./dist/web.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "cpp",
+    "ios",
+    "android",
+    "nitrogen/generated",
+    "nitro.json",
+    "*.podspec",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc --noEmit --project tsconfig.json",
+    "nitrogen": "nitrogen",
+    "build:rust": "node scripts/rust.mjs"
+  },
+  "peerDependencies": {
+    "blasphem": "workspace:*",
+    "react-native": "*",
+    "react-native-nitro-modules": "*"
+  },
+  "peerDependenciesMeta": {
+    "blasphem": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "nitrogen": "0.37.1",
+    "react-native": "0.87.1",
+    "react-native-nitro-modules": "0.37.1",
+    "typescript": "5.9.3"
+  }
+}

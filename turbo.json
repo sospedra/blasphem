@@ -2,10 +2,19 @@
   "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
-    "blasphem#build": {
+    "@blasphem/core#check": {
+      "inputs": [
+        "$TURBO_DEFAULT$"
+      ]
+    },
+    "@blasphem/packs#build": {
       "inputs": [
         "$TURBO_DEFAULT$",
         "$TURBO_ROOT$/Cargo.toml",
@@ -17,20 +26,88 @@
         "$TURBO_ROOT$/data/raw-v1/hurtlex/**",
         "$TURBO_ROOT$/resources/models/**"
       ],
-      "outputs": ["dist/**"]
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@blasphem/node#build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/Cargo.toml",
+        "$TURBO_ROOT$/Cargo.lock",
+        "$TURBO_ROOT$/rust-toolchain.toml",
+        "$TURBO_ROOT$/.cargo/**",
+        "$TURBO_ROOT$/src/**",
+        "$TURBO_ROOT$/crates/**"
+      ],
+      "outputs": [
+        "npm/*/*.node"
+      ]
+    },
+    "blasphem#build": {
+      "dependsOn": [
+        "@blasphem/core#check"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/Cargo.toml",
+        "$TURBO_ROOT$/Cargo.lock",
+        "$TURBO_ROOT$/rust-toolchain.toml",
+        "$TURBO_ROOT$/.cargo/**",
+        "$TURBO_ROOT$/src/**",
+        "$TURBO_ROOT$/crates/**",
+        "$TURBO_ROOT$/packages/core/src/**"
+      ],
+      "outputs": [
+        "dist/**",
+        "src/blasphem.js",
+        "src/blasphem.d.ts",
+        "src/blasphem_bg.wasm",
+        "src/blasphem_bg.wasm.d.ts"
+      ]
     },
     "blasphem#test": {
-      "dependsOn": ["blasphem#build"],
+      "dependsOn": [
+        "blasphem#build",
+        "@blasphem/packs#build",
+        "@blasphem/node#build"
+      ],
       "cache": false
     },
+    "@blasphem/react-native#build": {
+      "dependsOn": [
+        "@blasphem/core#check",
+        "blasphem#build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/core/src/**"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
     "web#build": {
-      "dependsOn": ["blasphem#build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/reports/**"],
-      "outputs": ["dist/**"],
-      "env": ["SITE_URL"]
+      "dependsOn": [
+        "blasphem#build",
+        "@blasphem/packs#build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/reports/**",
+        "$TURBO_ROOT$/packages/core/src/**"
+      ],
+      "outputs": [
+        "dist/**"
+      ],
+      "env": [
+        "SITE_URL"
+      ]
     },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
     },
     "check": {

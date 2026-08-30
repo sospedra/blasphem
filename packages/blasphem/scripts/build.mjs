@@ -1,53 +1,49 @@
-import { execFileSync } from "node:child_process";
-import { copyFileSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import { copyFileSync, cpSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { packageRoot, projectRoot, readCrate } from "./crate.mjs";
+import { assertWasmBindgen, buildWasm, generateGlue, stream } from "./wasm.mjs";
 
 const distribution = resolve(packageRoot, "dist");
 const sources = resolve(packageRoot, "src");
+const coreSource = resolve(projectRoot, "packages/core/src");
+const coreCopy = resolve(sources, "core");
 const GLUE_FILES = ["blasphem.js", "blasphem.d.ts", "blasphem_bg.wasm", "blasphem_bg.wasm.d.ts"];
+const VERSION_FILE = "version.generated.ts";
 const targetDir = resolve(projectRoot, "target/npm-wasm");
-const REQUIRED_CLASSES = ["class BlasphemDetector", "class BlasphemJudge", "class BlasphemResult"];
+const REQUIRED_CLASSES = ["class BlasphemEngineBuilder", "class BlasphemEngine"];
 
-function capture(command, args) {
-  return execFileSync(command, args, { encoding: "utf8", stdio: ["ignore", "pipe", "inherit"] });
-}
-
-function stream(command, args, env = process.env) {
-  execFileSync(command, args, { stdio: "inherit", env });
-}
-
-function assertWasmBindgen(expected) {
-  const found = capture("wasm-bindgen", ["--version"]).trim();
-  if (found === `wasm-bindgen ${expected}`) return;
-  throw new Error(
-    `wasm-bindgen-cli must be ${expected}, found "${found}". Run: cargo install wasm-bindgen-cli --version ${expected} --locked`,
-  );
-}
-
-function buildCrate(crate) {
-  stream(
-    "cargo",
-    [
-      "build",
-      "--release",
-      "--locked",
-      "--target",
-      "wasm32-unknown-unknown",
-      "-p",
-      crate.name,
-      "--manifest-path",
-      resolve(projectRoot, "Cargo.toml"),
-    ],
-    { ...process.env, CARGO_TARGET_DIR: targetDir },
-  );
-  return resolve(targetDir, "wasm32-unknown-unknown/release", `${crate.libName}.wasm`);
-}
-
-function generateGlue(wasmPath) {
+function clean() {
   rmSync(distribution, { recursive: true, force: true });
-  for (const file of GLUE_FILES) rmSync(resolve(sources, file), { force: true });
-  stream("wasm-bindgen", [wasmPath, "--target", "web", "--out-dir", sources, "--out-name", "blasphem"]);
+  rmSync(coreCopy, { recursive: true, force: true });
+  for (const file of [...GLUE_FILES, VERSION_FILE]) rmSync(resolve(sources, file), { force: true });
+}
+
+/** The exact versions `assets: "jsdelivr"` pins: this package and the packs it was built beside. */
+function writeVersions() {
+  const own = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8"));
+  const packs = JSON.parse(readFileSync(resolve(projectRoot, "packages/packs/package.json"), "utf8"));
+  const source = `// Written by scripts/build.mjs. Do not edit.\nexport const VERSIONS = { blasphem: ${JSON.stringify(own.version)}, packs: ${JSON.stringify(packs.version)} } as const;\n`;
+  writeFileSync(resolve(sources, VERSION_FILE), source);
+  return { blasphem: own.version, packs: packs.version };
+}
+
+/** The private core is never published. Each package carries its own copy. */
+function inlineCore() {
+  cpSync(coreSource, coreCopy, { recursive: true });
+  const copied = readdirSync(coreCopy).filter((name) => name.endsWith(".ts"));
+  if (copied.length === 0) throw new Error(`${coreSource} has no TypeScript sources`);
+  return copied.length;
+}
+
+function assertClasses() {
+  const glue = readFileSync(resolve(sources, "blasphem.js"), "utf8");
+  const missing = REQUIRED_CLASSES.filter((marker) => !glue.includes(marker));
+  if (missing.length > 0) throw new Error(`blasphem.js lacks ${missing.join(", ")}. The crate needs js_name and js_class attributes.`);
+  if (glue.includes("import.meta.url")) throw new Error("blasphem.js still references import.meta.url; pass --omit-default-module-path");
+}
+
+function compileTypeScript() {
+  stream("pnpm", ["exec", "tsc", "--project", resolve(packageRoot, "tsconfig.json")]);
 }
 
 function copyGlue() {
@@ -55,23 +51,15 @@ function copyGlue() {
   for (const file of GLUE_FILES) copyFileSync(resolve(sources, file), resolve(distribution, file));
 }
 
-function assertClasses() {
-  const glue = readFileSync(resolve(sources, "blasphem.js"), "utf8");
-  const missing = REQUIRED_CLASSES.filter((marker) => !glue.includes(marker));
-  if (missing.length === 0) return;
-  throw new Error(`dist/blasphem.js lacks ${missing.join(", ")}. The crate needs js_name and js_class attributes.`);
-}
-
-function compileTypeScript() {
-  stream("pnpm", ["exec", "tsc", "--project", resolve(packageRoot, "tsconfig.json")]);
-}
-
 const crate = readCrate();
 assertWasmBindgen(crate.wasmBindgenVersion);
-generateGlue(buildCrate(crate));
+clean();
+const versions = writeVersions();
+const coreFiles = inlineCore();
+generateGlue(buildWasm(crate, { targetDir }), sources);
 assertClasses();
 compileTypeScript();
 copyGlue();
 const wasmBytes = statSync(resolve(distribution, "blasphem_bg.wasm")).size;
 const glueBytes = statSync(resolve(distribution, "blasphem.js")).size;
-console.log(`status=built wasm_bytes=${wasmBytes} glue_bytes=${glueBytes}`);
+console.log(`status=built wasm_bytes=${wasmBytes} wasm_mb=${(wasmBytes / 1048576).toFixed(2)} glue_bytes=${glueBytes} core_files=${coreFiles} versions=${versions.blasphem}/${versions.packs}`);

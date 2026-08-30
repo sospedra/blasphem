@@ -54,18 +54,30 @@ pub trait LanguageIdentifier {
     fn identify(&self, text: &str) -> LanguageDetection;
 }
 
-/// An embedded language detector.
+/// A language detector over the full embedded model or over loaded slices.
 #[cfg(feature = "language-detection")]
 #[derive(Debug)]
 pub struct LanguageDetector {
-    detector: blasphem_language::Detector,
+    detector: DetectorKind,
 }
 
-/// An error from embedded language model initialization.
+#[cfg(feature = "language-detection")]
+#[derive(Debug)]
+enum DetectorKind {
+    #[cfg(feature = "embedded")]
+    Full(blasphem_language::Detector),
+    Slices(blasphem_language::slice::SliceDetector),
+}
+
+/// An error from language model initialization.
 #[cfg(feature = "language-detection")]
 #[derive(Debug, Clone, PartialEq, Eq, Error)]
-#[error("cannot initialize the language model: {0}")]
-pub struct LanguageDetectorError(#[from] blasphem_language::ModelError);
+pub enum LanguageDetectorError {
+    #[error("cannot initialize the language model: {0}")]
+    Model(#[from] blasphem_language::ModelError),
+    #[error("cannot initialize the language slices: {0}")]
+    Slices(#[from] blasphem_language::slice::SliceError),
+}
 
 #[cfg(feature = "language-detection")]
 impl LanguageDetector {
@@ -74,17 +86,39 @@ impl LanguageDetector {
     /// # Errors
     ///
     /// Returns an error when the embedded model is invalid.
+    #[cfg(feature = "embedded")]
     pub fn new() -> Result<Self, LanguageDetectorError> {
         Ok(Self {
-            detector: blasphem_language::Detector::new()?,
+            detector: DetectorKind::Full(blasphem_language::Detector::new()?),
         })
+    }
+
+    /// Merges per-language detect slices into a detector for those languages.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when a slice is invalid or a language repeats.
+    pub fn from_slices(slices: &[&[u8]]) -> Result<Self, LanguageDetectorError> {
+        Ok(Self {
+            detector: DetectorKind::Slices(blasphem_language::slice::SliceDetector::from_slices(
+                slices,
+            )?),
+        })
+    }
+
+    fn detect(&self, text: &str) -> blasphem_language::Detection {
+        match &self.detector {
+            #[cfg(feature = "embedded")]
+            DetectorKind::Full(detector) => detector.detect(text),
+            DetectorKind::Slices(detector) => detector.detect(text),
+        }
     }
 }
 
 #[cfg(feature = "language-detection")]
 impl LanguageIdentifier for LanguageDetector {
     fn identify(&self, text: &str) -> LanguageDetection {
-        let detection = self.detector.detect(text);
+        let detection = self.detect(text);
         let resolution = match (detection.reliable, detection.language) {
             (true, Some(language)) => LanguageResolution::Known(map_language(language)),
             _ => LanguageResolution::Unknown,

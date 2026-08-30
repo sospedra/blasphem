@@ -23,6 +23,8 @@ use blasphem_train::evidence::write_canonical_json;
 use blasphem_train::lexicon::{
     BuildOptions, HarvestOptions, WikiSource, build, default_wiki, harvest,
 };
+use blasphem_train::locales_table::write_locales_table;
+use blasphem_train::pack::{PackOptions, write_packs};
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
 use blasphem_train::regenerate::{RegenerateOptions, regenerate};
 use blasphem_train::reproduce::{ReproduceOptions, reproduce};
@@ -70,6 +72,8 @@ enum Command {
     Regenerate(RegenerateArgs),
     LexiconHarvest(LexiconHarvestArgs),
     LexiconBuild(LexiconBuildArgs),
+    Pack(PackArgs),
+    LocalesTable(LocalesTableArgs),
 }
 
 #[derive(Debug, Args)]
@@ -243,6 +247,26 @@ struct LexiconBuildArgs {
     output: PathBuf,
 }
 
+#[derive(Debug, Args)]
+struct PackArgs {
+    #[arg(long)]
+    model_manifest: PathBuf,
+    #[arg(long)]
+    model_root: PathBuf,
+    #[arg(long)]
+    language_model: PathBuf,
+    #[arg(long)]
+    hurtlex_root: PathBuf,
+    #[arg(long)]
+    output: PathBuf,
+}
+
+#[derive(Debug, Args)]
+struct LocalesTableArgs {
+    #[arg(long)]
+    output: PathBuf,
+}
+
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum MinimumActionArg {
     Review,
@@ -275,7 +299,35 @@ fn main() -> Result<()> {
         Command::Regenerate(arguments) => regenerate_repository(&arguments),
         Command::LexiconHarvest(arguments) => lexicon_harvest_command(&arguments),
         Command::LexiconBuild(arguments) => lexicon_build_command(&arguments),
+        Command::Pack(arguments) => pack_command(&arguments),
+        Command::LocalesTable(arguments) => locales_table_command(&arguments),
     }
+}
+
+fn pack_command(arguments: &PackArgs) -> Result<()> {
+    let options = PackOptions {
+        model_manifest: arguments.model_manifest.clone(),
+        model_root: arguments.model_root.clone(),
+        language_model: arguments.language_model.clone(),
+        hurtlex_root: arguments.hurtlex_root.clone(),
+        output: arguments.output.clone(),
+    };
+    let report = write_packs(&options).context("cannot write the packs")?;
+    println!(
+        "status=packed locales={} files={} bytes={} output={}",
+        report.locales,
+        report.files,
+        report.bytes,
+        arguments.output.display()
+    );
+    Ok(())
+}
+
+fn locales_table_command(arguments: &LocalesTableArgs) -> Result<()> {
+    write_locales_table(&arguments.output)
+        .with_context(|| format!("cannot write {}", arguments.output.display()))?;
+    println!("status=written path={}", arguments.output.display());
+    Ok(())
 }
 
 fn reproduce_repository(arguments: &ReproduceArgs) -> Result<()> {

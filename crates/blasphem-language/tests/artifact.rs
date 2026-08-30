@@ -26,3 +26,17 @@ fn the_committed_artifact_rebuilds_from_the_vendored_tables() {
         "the rebuild must match the committed artifact"
     );
 }
+
+#[test]
+fn the_committed_tables_match_the_committed_model() {
+    let root = project_root();
+    let model = fs::read(root.join("crates/blasphem-language/data/blasphem-language-15-v2.bin"))
+        .expect("readable committed model");
+    let tables = blasphem_language::slice::write_tables(&model).expect("tables section");
+    assert_eq!(tables, blasphem_language::slice::TABLES);
+    assert_eq!(
+        fs::read(root.join("crates/blasphem-language/data/eld-tables-v1.bin"))
+            .expect("readable tables file"),
+        tables
+    );
+}
