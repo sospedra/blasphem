@@ -1,0 +1,2352 @@
+{
+  "storage_code": "HI",
+  "language_name": "Hindi",
+  "harvest_sha256": "f1c2b69bf2d287db7a4a91fcb2ec52b3a9460d886a178db3eeb144ec8fddde30",
+  "entries": 293,
+  "entries_detail": [
+    {
+      "id": "HI00001",
+      "lemma": "कीड़े",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00002",
+      "lemma": "कुतिया",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00003",
+      "lemma": "कुत्ता",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00004",
+      "lemma": "कुत्ती",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00005",
+      "lemma": "कुत्ते",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00006",
+      "lemma": "कूतिया",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00007",
+      "lemma": "खटमल",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00008",
+      "lemma": "गधा",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00009",
+      "lemma": "गधी",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00010",
+      "lemma": "गधे",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00011",
+      "lemma": "जानवर",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00012",
+      "lemma": "पिल्ला",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00013",
+      "lemma": "पिल्ली",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00014",
+      "lemma": "पिल्ले",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00015",
+      "lemma": "भौंक",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00016",
+      "lemma": "मच्छर",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00017",
+      "lemma": "सुअर",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00018",
+      "lemma": "सुअरों",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00019",
+      "lemma": "सुवर",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00020",
+      "lemma": "सूअर",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00021",
+      "lemma": "सूअरों",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00022",
+      "lemma": "हैवान",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00023",
+      "lemma": "गंडिए",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00024",
+      "lemma": "गंडिया",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00025",
+      "lemma": "गंडिये",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00026",
+      "lemma": "चुत",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00027",
+      "lemma": "चूची",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00028",
+      "lemma": "चूचीयों",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00029",
+      "lemma": "चूत",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00030",
+      "lemma": "चूतड़",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00031",
+      "lemma": "चूतर",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00032",
+      "lemma": "पिछवाड़ा",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00033",
+      "lemma": "फुद्दी",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00034",
+      "lemma": "बुर",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00035",
+      "lemma": "बूब्स",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00036",
+      "lemma": "बोबे",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00037",
+      "lemma": "भोसड़पप्पू",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00038",
+      "lemma": "भोसड़ा",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00039",
+      "lemma": "भोसड़ी",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00040",
+      "lemma": "भोसड़ीका",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00041",
+      "lemma": "भोसड़ीकी",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00042",
+      "lemma": "भोसड़ीके",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00043",
+      "lemma": "भोसड़ीवाला",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00044",
+      "lemma": "भोसड़ीवाली",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00045",
+      "lemma": "भोसड़ीवालों",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00046",
+      "lemma": "लुल्ली",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00047",
+      "lemma": "खज्जू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00048",
+      "lemma": "गंडफट",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00049",
+      "lemma": "गंडफ़ट",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00050",
+      "lemma": "गंडफ़टी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00051",
+      "lemma": "गंडमरी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00052",
+      "lemma": "गंडमरे",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00053",
+      "lemma": "गांड",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00054",
+      "lemma": "गांडफ़ाड़ू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00055",
+      "lemma": "गांडफाड़ू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00056",
+      "lemma": "गांडू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00057",
+      "lemma": "गुदा",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00058",
+      "lemma": "गुदा छेद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00059",
+      "lemma": "गोटी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00060",
+      "lemma": "घुसेड़",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00061",
+      "lemma": "घुसेड़ना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00062",
+      "lemma": "चुदक्कड़",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00063",
+      "lemma": "चुदना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00064",
+      "lemma": "चुदने",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00065",
+      "lemma": "चुदवाना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00066",
+      "lemma": "चुदा",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00067",
+      "lemma": "चुदाई",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00068",
+      "lemma": "चुदाईखाना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00069",
+      "lemma": "चुदाना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00070",
+      "lemma": "चुदावनी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00071",
+      "lemma": "चुदी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00072",
+      "lemma": "चूतमरा",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00073",
+      "lemma": "चोद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00074",
+      "lemma": "चोदना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00075",
+      "lemma": "चोदा",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00076",
+      "lemma": "चोदी",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00077",
+      "lemma": "चोदू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00078",
+      "lemma": "चोदेंगे",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00079",
+      "lemma": "चोदो",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00080",
+      "lemma": "चौदवा ना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00081",
+      "lemma": "चौदवाना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00082",
+      "lemma": "झांट",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00083",
+      "lemma": "झांटू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00084",
+      "lemma": "डिक",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00085",
+      "lemma": "फ़ाड़ना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00086",
+      "lemma": "फाड़ना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00087",
+      "lemma": "बहन के लौड़े",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00088",
+      "lemma": "बहनचोद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00089",
+      "lemma": "भेनचोद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00090",
+      "lemma": "भैनचोद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00091",
+      "lemma": "माँ चोदना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00092",
+      "lemma": "मां के लौड़े",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00093",
+      "lemma": "मां चुदाए",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00094",
+      "lemma": "मां चुदाओ",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00095",
+      "lemma": "मादरचोद",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00096",
+      "lemma": "मादरचोदों",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00097",
+      "lemma": "मुंह में लेना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00098",
+      "lemma": "मुठ मारना",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00099",
+      "lemma": "लंड",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00100",
+      "lemma": "लण्ड",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00101",
+      "lemma": "लन्ड",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00102",
+      "lemma": "लवड़ू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00103",
+      "lemma": "लौड़ा",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00104",
+      "lemma": "लौड़ू",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00105",
+      "lemma": "टट्टी",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00106",
+      "lemma": "टट्टी करना",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00107",
+      "lemma": "शिट",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00108",
+      "lemma": "हगना",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00109",
+      "lemma": "कुप्पा",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00110",
+      "lemma": "खटारा",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00111",
+      "lemma": "चश्मिश",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00112",
+      "lemma": "डेढ़ फुटिया",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00113",
+      "lemma": "नकटा",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00114",
+      "lemma": "नकटी",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00115",
+      "lemma": "बुड्ढा खूंसट",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00116",
+      "lemma": "लँगड़ा",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00117",
+      "lemma": "लंगड़ा",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00118",
+      "lemma": "उल्लू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00119",
+      "lemma": "उल्लू का पट्ठा",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00120",
+      "lemma": "उल्लू के पट्ठे",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00121",
+      "lemma": "गोबर",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00122",
+      "lemma": "घनचक्कर",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00123",
+      "lemma": "घोंचू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00124",
+      "lemma": "चुतिया",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00125",
+      "lemma": "चूतिया",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00126",
+      "lemma": "चूतिया कटना",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00127",
+      "lemma": "चूतिया काटना",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00128",
+      "lemma": "चूतियागिरी",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00129",
+      "lemma": "चूतियापा",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00130",
+      "lemma": "झंडू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00131",
+      "lemma": "ढक्कन",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00132",
+      "lemma": "नपुंसक",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00133",
+      "lemma": "नालायक",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00134",
+      "lemma": "नालायक़",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00135",
+      "lemma": "निकम्मा",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00136",
+      "lemma": "निकम्मी",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00137",
+      "lemma": "फट्टू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00138",
+      "lemma": "फ़ट्टू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00139",
+      "lemma": "फ़ुकरा",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00140",
+      "lemma": "फ़ुकरी",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00141",
+      "lemma": "बेवक़ूफ़",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00142",
+      "lemma": "बेवकूफ",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00143",
+      "lemma": "बेवकूफ़ी",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00144",
+      "lemma": "बौड़म",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00145",
+      "lemma": "भोंदू",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00146",
+      "lemma": "मूर्ख",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00147",
+      "lemma": "सुतिया",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00148",
+      "lemma": "अंध भक्तों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00149",
+      "lemma": "अंधभक्त",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00150",
+      "lemma": "अंधभक्ति",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00151",
+      "lemma": "अंधभक्ती",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00152",
+      "lemma": "अंधभक्तों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00153",
+      "lemma": "आंदोलनजीवी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00154",
+      "lemma": "ओ तेरी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00155",
+      "lemma": "कमबख़्त",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00156",
+      "lemma": "कमबख्त",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00157",
+      "lemma": "कमिना",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00158",
+      "lemma": "कमिनी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00159",
+      "lemma": "कमिने",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00160",
+      "lemma": "कमीना",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00161",
+      "lemma": "कमीनी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00162",
+      "lemma": "कमीने",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00163",
+      "lemma": "कमीनों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00164",
+      "lemma": "ख़ुशामदी टट्टू",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00165",
+      "lemma": "गद्दार",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00166",
+      "lemma": "गद्दारी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00167",
+      "lemma": "गद्दारों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00168",
+      "lemma": "गपोड़पंथ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00169",
+      "lemma": "गपोड़पंथी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00170",
+      "lemma": "गुंडा",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00171",
+      "lemma": "गुंडी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00172",
+      "lemma": "गुंडे",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00173",
+      "lemma": "गोदी मीडिया",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00174",
+      "lemma": "चड्डी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00175",
+      "lemma": "चमचा",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00176",
+      "lemma": "चमची",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00177",
+      "lemma": "चमचे",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00178",
+      "lemma": "चमचो",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00179",
+      "lemma": "चमचों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00180",
+      "lemma": "चाय पानी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00181",
+      "lemma": "छिनाल",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00182",
+      "lemma": "जयचंद",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00183",
+      "lemma": "झूठा",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00184",
+      "lemma": "झूठी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00185",
+      "lemma": "झूठे",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00186",
+      "lemma": "टुकड़े टुकड़े गैंग",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00187",
+      "lemma": "दक़ियानूसी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00188",
+      "lemma": "धत साले",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00189",
+      "lemma": "नीच",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00190",
+      "lemma": "पाखंडी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00191",
+      "lemma": "पाजी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00192",
+      "lemma": "भाड़ मे जाओ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00193",
+      "lemma": "मक्कार",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00194",
+      "lemma": "रंडी रोना",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00195",
+      "lemma": "रेवड़ी की राजनीति",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00196",
+      "lemma": "रेवड़ी पॉलिटिक्स",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00197",
+      "lemma": "रेवड़ी राजनीति",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00198",
+      "lemma": "रेवड़ीवाल",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00199",
+      "lemma": "संघी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00200",
+      "lemma": "सरग़ना",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00201",
+      "lemma": "साठे पर पाठा",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00202",
+      "lemma": "साला",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00203",
+      "lemma": "साली",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00204",
+      "lemma": "साले",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00205",
+      "lemma": "सालो",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00206",
+      "lemma": "हरामख़ोर",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00207",
+      "lemma": "हरामखोर",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00208",
+      "lemma": "हरामज़ादा",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00209",
+      "lemma": "हरामज़ादी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00210",
+      "lemma": "हरामजादी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00211",
+      "lemma": "हरामि",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00212",
+      "lemma": "हरामियों",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00213",
+      "lemma": "हरामी",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00214",
+      "lemma": "कंगलू",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00215",
+      "lemma": "गंवार",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00216",
+      "lemma": "चरसी",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00217",
+      "lemma": "छपरी",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00218",
+      "lemma": "जाहिल",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00219",
+      "lemma": "देहाती",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00220",
+      "lemma": "नशाख़ोर",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00221",
+      "lemma": "नशेड़ी",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00222",
+      "lemma": "बेवड़ा",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00223",
+      "lemma": "बेवड़ी",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00224",
+      "lemma": "चुड़ैल",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00225",
+      "lemma": "छक्का",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00226",
+      "lemma": "छोकरी",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00227",
+      "lemma": "लौंडा",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00228",
+      "lemma": "लौंडिया",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00229",
+      "lemma": "हिजड़ा",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00230",
+      "lemma": "हिजड़े",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00231",
+      "lemma": "हिजड़ों",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00232",
+      "lemma": "ठुल्ला",
+      "category": "pa",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00233",
+      "lemma": "ठुल्ली",
+      "category": "pa",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00234",
+      "lemma": "कोठा",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00235",
+      "lemma": "कोठेवाली",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00236",
+      "lemma": "तवायफ़",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00237",
+      "lemma": "दल्ला",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00238",
+      "lemma": "दल्ले",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00239",
+      "lemma": "भड़वा",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00240",
+      "lemma": "भड़वे",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00241",
+      "lemma": "भड़ुआ",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00242",
+      "lemma": "भड़ुवे",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00243",
+      "lemma": "रंडी",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00244",
+      "lemma": "रंडीखाना",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00245",
+      "lemma": "रांड",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00246",
+      "lemma": "कटुआ",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00247",
+      "lemma": "कटुए",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00248",
+      "lemma": "कटुवे",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00249",
+      "lemma": "कटुवो",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00250",
+      "lemma": "कठमुल्ला",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00251",
+      "lemma": "कठमुल्ले",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00252",
+      "lemma": "कलूटा",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00253",
+      "lemma": "कलूटी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00254",
+      "lemma": "काफ़िर",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00255",
+      "lemma": "काफिर",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00256",
+      "lemma": "काफिरों",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00257",
+      "lemma": "कालू",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00258",
+      "lemma": "गुज्जू",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00259",
+      "lemma": "चमार",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00260",
+      "lemma": "चमारों",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00261",
+      "lemma": "चिंकी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00262",
+      "lemma": "जिहादन",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00263",
+      "lemma": "जिहादियों",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00264",
+      "lemma": "जिहादी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00265",
+      "lemma": "जेहादी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00266",
+      "lemma": "भंगियों",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00267",
+      "lemma": "भंगी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00268",
+      "lemma": "मद्रासी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00269",
+      "lemma": "मल्लू",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00270",
+      "lemma": "मुल्ला",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00271",
+      "lemma": "मुल्ले",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00272",
+      "lemma": "मुल्लो",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00273",
+      "lemma": "मुल्लों",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00274",
+      "lemma": "म्लेच्छ",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00275",
+      "lemma": "हब्शी",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00276",
+      "lemma": "हरिजन",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00277",
+      "lemma": "अफ़लातून",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00278",
+      "lemma": "औक़ात",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00279",
+      "lemma": "औकात",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00280",
+      "lemma": "घटिया",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00281",
+      "lemma": "चोदमपट्टी",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00282",
+      "lemma": "नंगा",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00283",
+      "lemma": "नंगी",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00284",
+      "lemma": "फेंकना",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00285",
+      "lemma": "बकचोद",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00286",
+      "lemma": "बकचोदी",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00287",
+      "lemma": "बकवास",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00288",
+      "lemma": "बेशर्म",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00289",
+      "lemma": "चोर",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00290",
+      "lemma": "कुत्ते की मौत",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00291",
+      "lemma": "मर गई",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00292",
+      "lemma": "मरा ले",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "HI00293",
+      "lemma": "मार ले",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    }
+  ]
+}

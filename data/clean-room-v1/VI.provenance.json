@@ -1,0 +1,2424 @@
+{
+  "storage_code": "VI",
+  "language_name": "Vietnamese",
+  "harvest_sha256": "569d8d963304834b9beab135ce88acefd38bcf66d477e62daf63b5f68d3797ee",
+  "entries": 302,
+  "entries_detail": [
+    {
+      "id": "VI00001",
+      "lemma": "bò vàng",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00002",
+      "lemma": "chó",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00003",
+      "lemma": "chó chết",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00004",
+      "lemma": "chó cái",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00005",
+      "lemma": "chó má",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00006",
+      "lemma": "chó săn",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00007",
+      "lemma": "chó vàng",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00008",
+      "lemma": "chó đẻ",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00009",
+      "lemma": "cẩu",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00010",
+      "lemma": "cờ hó",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00011",
+      "lemma": "hồ li",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00012",
+      "lemma": "lợn",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00013",
+      "lemma": "ngựa bà",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00014",
+      "lemma": "súc sinh",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00015",
+      "lemma": "súc vật",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00016",
+      "lemma": "sủa",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00017",
+      "lemma": "tườu",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00018",
+      "lemma": "hàu",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00019",
+      "lemma": "hột le",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00020",
+      "lemma": "loz",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00021",
+      "lemma": "lòn",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00022",
+      "lemma": "lôn",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00023",
+      "lemma": "lồn",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00024",
+      "lemma": "buồi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00025",
+      "lemma": "bú cu",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00026",
+      "lemma": "bắn tùm lum",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00027",
+      "lemma": "chịch",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00028",
+      "lemma": "cmm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00029",
+      "lemma": "cặc",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00030",
+      "lemma": "cửng",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00031",
+      "lemma": "dcm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00032",
+      "lemma": "dit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00033",
+      "lemma": "dkm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00034",
+      "lemma": "dmm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00035",
+      "lemma": "dái",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00036",
+      "lemma": "móc lồn",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00037",
+      "lemma": "nứng",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00038",
+      "lemma": "phọt cứt",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00039",
+      "lemma": "sục cu",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00040",
+      "lemma": "sục cặc",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00041",
+      "lemma": "trym",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00042",
+      "lemma": "trứng dái",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00043",
+      "lemma": "trứng dái đánh lô tô",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00044",
+      "lemma": "xoạc",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00045",
+      "lemma": "ăn lồn",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00046",
+      "lemma": "đcm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00047",
+      "lemma": "đit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00048",
+      "lemma": "đkm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00049",
+      "lemma": "đmm",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00050",
+      "lemma": "đầu buồi",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00051",
+      "lemma": "địt",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00052",
+      "lemma": "địt mẹ",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00053",
+      "lemma": "đụ",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00054",
+      "lemma": "đụ má",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00055",
+      "lemma": "bè lũ",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00056",
+      "lemma": "bỏ mẹ",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00057",
+      "lemma": "bốp",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00058",
+      "lemma": "chết bà",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00059",
+      "lemma": "chết cha",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00060",
+      "lemma": "chết mẹ",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00061",
+      "lemma": "chết ngắt",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00062",
+      "lemma": "clm",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00063",
+      "lemma": "cmnr",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00064",
+      "lemma": "cút",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00065",
+      "lemma": "cứt",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00066",
+      "lemma": "del",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00067",
+      "lemma": "dell",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00068",
+      "lemma": "khốn",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00069",
+      "lemma": "mả cha",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00070",
+      "lemma": "mả mẹ",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00071",
+      "lemma": "mẹ kiếp",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00072",
+      "lemma": "mẹc",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00073",
+      "lemma": "thí bà nội",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00074",
+      "lemma": "thí mẹ",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00075",
+      "lemma": "vcl",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00076",
+      "lemma": "vkl",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00077",
+      "lemma": "vl",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00078",
+      "lemma": "vãi",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00079",
+      "lemma": "vãi cả lồn",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00080",
+      "lemma": "vãi lồn",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00081",
+      "lemma": "xí",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00082",
+      "lemma": "á đù",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00083",
+      "lemma": "đéo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00084",
+      "lemma": "đù",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00085",
+      "lemma": "đếch",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00086",
+      "lemma": "câm",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00087",
+      "lemma": "già khú",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00088",
+      "lemma": "hủi",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00089",
+      "lemma": "nạ dòng",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00090",
+      "lemma": "đui",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00091",
+      "lemma": "dốt đặc cán mai",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00092",
+      "lemma": "khùng",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00093",
+      "lemma": "ngu",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00094",
+      "lemma": "ngu si",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00095",
+      "lemma": "ngu đần",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00096",
+      "lemma": "ngu độn",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00097",
+      "lemma": "ngốc",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00098",
+      "lemma": "thiểu năng",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00099",
+      "lemma": "thối não",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00100",
+      "lemma": "óc chó",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00101",
+      "lemma": "điên",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00102",
+      "lemma": "đần độn",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00103",
+      "lemma": "đầu đất",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00104",
+      "lemma": "anh hùng cá nhân",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00105",
+      "lemma": "ba que",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00106",
+      "lemma": "ba que xỏ lá",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00107",
+      "lemma": "bán khai",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00108",
+      "lemma": "bò đỏ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00109",
+      "lemma": "bông tuyết",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00110",
+      "lemma": "bồi bút",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00111",
+      "lemma": "chóp bu",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00112",
+      "lemma": "chống lưng",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00113",
+      "lemma": "csvn",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00114",
+      "lemma": "cờ ba que",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00115",
+      "lemma": "dlv",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00116",
+      "lemma": "dư luận viên",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00117",
+      "lemma": "giặc cỏ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00118",
+      "lemma": "giặc lái",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00119",
+      "lemma": "hữu khuynh",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00120",
+      "lemma": "lều báo",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00121",
+      "lemma": "mĩ–nguỵ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00122",
+      "lemma": "mại bản",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00123",
+      "lemma": "nâng bi",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00124",
+      "lemma": "nịnh thần",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00125",
+      "lemma": "phản động",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00126",
+      "lemma": "sừng sỏ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00127",
+      "lemma": "tay sai",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00128",
+      "lemma": "ton hót",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00129",
+      "lemma": "trung cộng",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00130",
+      "lemma": "tài phiệt",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00131",
+      "lemma": "tả khuynh",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00132",
+      "lemma": "tự nhục",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00133",
+      "lemma": "việt cộng",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00134",
+      "lemma": "vua tin vịt",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00135",
+      "lemma": "vây cánh",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00136",
+      "lemma": "ô dù",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00137",
+      "lemma": "ăn bớt",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00138",
+      "lemma": "ăn chặn",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00139",
+      "lemma": "ăn cơm quốc gia, thờ ma cộng sản",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00140",
+      "lemma": "ăn hoa hồng",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00141",
+      "lemma": "đu càng",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00142",
+      "lemma": "đầu sỏ",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00143",
+      "lemma": "bất hiếu",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00144",
+      "lemma": "bắc kì",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00145",
+      "lemma": "cu li",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00146",
+      "lemma": "cá gỗ",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00147",
+      "lemma": "công tử bột",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00148",
+      "lemma": "cậu ấm",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00149",
+      "lemma": "hai lúa",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00150",
+      "lemma": "hạ đẳng",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00151",
+      "lemma": "parky",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00152",
+      "lemma": "phèn",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00153",
+      "lemma": "trọc phú",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00154",
+      "lemma": "việt gian",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00155",
+      "lemma": "vô học",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00156",
+      "lemma": "xó xỉnh",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00157",
+      "lemma": "be de",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00158",
+      "lemma": "bede",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00159",
+      "lemma": "beđe",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00160",
+      "lemma": "bê dê",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00161",
+      "lemma": "bê đe",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00162",
+      "lemma": "bê đê",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00163",
+      "lemma": "bêde",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00164",
+      "lemma": "bêđê",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00165",
+      "lemma": "bóng bẩn",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00166",
+      "lemma": "bóng dơ",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00167",
+      "lemma": "bóng già",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00168",
+      "lemma": "bóng khùng",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00169",
+      "lemma": "bóng lộn",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00170",
+      "lemma": "bóng râu",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00171",
+      "lemma": "bóng thúi",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00172",
+      "lemma": "bóng tâm thần",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00173",
+      "lemma": "bóng điên",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00174",
+      "lemma": "bóng đũy",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00175",
+      "lemma": "bóng đực",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00176",
+      "lemma": "con bóng",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00177",
+      "lemma": "pe de",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00178",
+      "lemma": "pede",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00179",
+      "lemma": "pê đê",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00180",
+      "lemma": "pê-đê",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00181",
+      "lemma": "ô môi",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00182",
+      "lemma": "cớm",
+      "category": "pa",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00183",
+      "lemma": "ca ve",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00184",
+      "lemma": "con điếm",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00185",
+      "lemma": "gà móng đỏ",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00186",
+      "lemma": "lầu xanh",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00187",
+      "lemma": "ma cô",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00188",
+      "lemma": "me tây",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00189",
+      "lemma": "phò",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00190",
+      "lemma": "trai bao",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00191",
+      "lemma": "tú bà",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00192",
+      "lemma": "đĩ",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00193",
+      "lemma": "đĩ ngựa",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00194",
+      "lemma": "đĩ thõa",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00195",
+      "lemma": "đũy",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00196",
+      "lemma": "đứng đường",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00197",
+      "lemma": "ba tàu",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00198",
+      "lemma": "chệc",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00199",
+      "lemma": "chệch",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00200",
+      "lemma": "hàn xẻng",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00201",
+      "lemma": "hán nô",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00202",
+      "lemma": "khựa",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00203",
+      "lemma": "mẽo",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00204",
+      "lemma": "mọi cà lơ",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00205",
+      "lemma": "mọi rợ",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00206",
+      "lemma": "mọi đen",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00207",
+      "lemma": "nhật lùn",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00208",
+      "lemma": "tung của",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00209",
+      "lemma": "tây lông",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00210",
+      "lemma": "ấn đụ",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00211",
+      "lemma": "anh hùng bàn phím",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00212",
+      "lemma": "anh hùng rơm",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00213",
+      "lemma": "biến thái",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00214",
+      "lemma": "bà chằn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00215",
+      "lemma": "bệnh hoạn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00216",
+      "lemma": "bị thịt",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00217",
+      "lemma": "bố đời",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00218",
+      "lemma": "bồ nhí",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00219",
+      "lemma": "bợm nhậu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00220",
+      "lemma": "cao siêu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00221",
+      "lemma": "chạn vương",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00222",
+      "lemma": "chỉ tay năm ngón",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00223",
+      "lemma": "con giáp thứ 13",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00224",
+      "lemma": "cuốn gói",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00225",
+      "lemma": "cám hấp",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00226",
+      "lemma": "cò",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00227",
+      "lemma": "cơm thừa canh cặn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00228",
+      "lemma": "dạy đời",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00229",
+      "lemma": "dị hợm",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00230",
+      "lemma": "ghẻ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00231",
+      "lemma": "giáo phái",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00232",
+      "lemma": "giảng đạo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00233",
+      "lemma": "hà tiện",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00234",
+      "lemma": "há miệng chờ sung",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00235",
+      "lemma": "hủ nho",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00236",
+      "lemma": "keo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00237",
+      "lemma": "khốn kiếp",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00238",
+      "lemma": "khốn nạn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00239",
+      "lemma": "kẻ cả",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00240",
+      "lemma": "lí sự",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00241",
+      "lemma": "lẳng lơ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00242",
+      "lemma": "lỗ tai cây",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00243",
+      "lemma": "mèo mả gà đồng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00244",
+      "lemma": "mất dạy",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00245",
+      "lemma": "mất nết",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00246",
+      "lemma": "mẹ thiên hạ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00247",
+      "lemma": "mụ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00248",
+      "lemma": "nghề ngỗng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00249",
+      "lemma": "người ngợm",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00250",
+      "lemma": "ngồi lê đôi mách",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00251",
+      "lemma": "ngữ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00252",
+      "lemma": "nhai lại",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00253",
+      "lemma": "ném đá giấu tay",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00254",
+      "lemma": "nịnh đầm",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00255",
+      "lemma": "oắt con",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00256",
+      "lemma": "phàm ăn tục uống",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00257",
+      "lemma": "phét",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00258",
+      "lemma": "phắn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00259",
+      "lemma": "qua cầu rút ván",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00260",
+      "lemma": "quỷ quyệt",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00261",
+      "lemma": "ranh",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00262",
+      "lemma": "rượn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00263",
+      "lemma": "tai to mặt lớn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00264",
+      "lemma": "thú tính",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00265",
+      "lemma": "thảo mai",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00266",
+      "lemma": "thị",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00267",
+      "lemma": "thủ dâm tinh thần",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00268",
+      "lemma": "tinh tướng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00269",
+      "lemma": "tiên sư",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00270",
+      "lemma": "trẻ trâu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00271",
+      "lemma": "tép riu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00272",
+      "lemma": "tằng tịu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00273",
+      "lemma": "tọc mạch",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00274",
+      "lemma": "tự đắc",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00275",
+      "lemma": "vòng vo tam quốc",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00276",
+      "lemma": "vô đạo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00277",
+      "lemma": "vắt chanh bỏ vỏ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00278",
+      "lemma": "vị kỉ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00279",
+      "lemma": "vừa ăn cướp vừa la làng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00280",
+      "lemma": "vừa đánh trống vừa ăn cướp",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00281",
+      "lemma": "xéo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00282",
+      "lemma": "yêng hùng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00283",
+      "lemma": "ôm cây đợi thỏ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00284",
+      "lemma": "ôn",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00285",
+      "lemma": "õng ẹo",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00286",
+      "lemma": "ý kiến ý cò",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00287",
+      "lemma": "ăn cháo đá bát",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00288",
+      "lemma": "ăn cháo đái bát",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00289",
+      "lemma": "ăn chực",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00290",
+      "lemma": "ăn mảnh",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00291",
+      "lemma": "ăn thùng uống vại",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00292",
+      "lemma": "ăn tàn phá hại",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00293",
+      "lemma": "ăn tục nói phét",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00294",
+      "lemma": "ăn xổi",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00295",
+      "lemma": "đê tiện",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00296",
+      "lemma": "đầu têu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00297",
+      "lemma": "đắc thắng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00298",
+      "lemma": "đểu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00299",
+      "lemma": "đểu cáng",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00300",
+      "lemma": "đồi truỵ",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00301",
+      "lemma": "ả",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "VI00302",
+      "lemma": "ca li",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    }
+  ]
+}

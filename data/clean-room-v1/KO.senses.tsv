@@ -102,7 +102,6 @@ lemma	category	level
 거지도	is	inclusive
 거지들	is	inclusive
 거지로	is	inclusive
-거지만	is	inclusive
 거지발싸개	is	inclusive
 거지와	is	inclusive
 거짓부렁	svp	inclusive
@@ -136,7 +135,6 @@ lemma	category	level
 곰	an	inclusive
 곰보	ddf	inclusive
 곰보가	ddf	inclusive
-곰이	an	inclusive
 공부벌레	dmc	inclusive
 공비	dmc	inclusive
 관심종자	dmc	inclusive
@@ -178,7 +176,6 @@ lemma	category	level
 그놈도	cds	inclusive
 그놈들	cds	conservative
 그놈만	cds	inclusive
-그놈에	cds	conservative
 그놈은	cds	conservative
 그놈이	cds	conservative
 금사빠	qas	inclusive
@@ -254,7 +251,6 @@ lemma	category	level
 꼴값을	cds	inclusive
 꼴값하다	cds	inclusive
 꼴도	cds	inclusive
-꼴로	cds	inclusive
 꼴리다	asm	inclusive
 꼴불견	cds	inclusive
 꼴불견으로	cds	inclusive
@@ -348,11 +344,9 @@ lemma	category	level
 놈들	cds	conservative
 놈부터	cds	conservative
 놈아	cds	conservative
-놈에	cds	inclusive
 놈으로	cds	inclusive
 놈은	cds	conservative
 놈을	cds	conservative
-놈의	cds	inclusive
 놈이	cds	conservative
 놈처럼	cds	conservative
 놈팡이	is	inclusive
@@ -561,7 +555,6 @@ lemma	category	level
 마우자	ps	inclusive
 마우재	ps	inclusive
 막말	cds	inclusive
-막말로	cds	inclusive
 막말만	cds	inclusive
 막말은	cds	inclusive
 막말을	cds	inclusive
@@ -652,12 +645,6 @@ lemma	category	level
 미친개처럼	ddp	conservative
 미친놈	ddp	conservative
 미친새끼	ddp	conservative
-민주화	dmc	inclusive
-민주화가	dmc	inclusive
-민주화는	dmc	inclusive
-민주화도	dmc	inclusive
-민주화를	dmc	inclusive
-민주화의	dmc	inclusive
 밑구멍	asf	inclusive
 바나나 공화국	rci	inclusive
 바보	ddp	inclusive
@@ -679,8 +666,6 @@ lemma	category	level
 박쥐	an	inclusive
 박쥐가	an	inclusive
 박쥐같은	an	inclusive
-박쥐도	an	inclusive
-박쥐를	an	inclusive
 박쥐처럼	an	inclusive
 밥도둑	qas	inclusive
 밥자루	is	inclusive
@@ -721,7 +706,6 @@ lemma	category	level
 병신들	ddp	conservative
 병신들은	ddp	conservative
 보지	asf	conservative
-보지를	asf	inclusive
 볼때기	cds	inclusive
 봉사	ddf	inclusive
 부카니스탄	rci	inclusive
@@ -1084,10 +1068,8 @@ lemma	category	level
 이놈도	cds	conservative
 이놈들	cds	conservative
 이놈아	cds	conservative
-이놈에	cds	inclusive
 이놈은	cds	conservative
 이놈을	cds	conservative
-이놈의	cds	conservative
 이놈이	cds	conservative
 이마떼기	cds	inclusive
 이마빡	cds	inclusive
@@ -1121,7 +1103,6 @@ lemma	category	level
 자식이	cds	inclusive
 자지	asm	conservative
 자지같이	asm	conservative
-자지도	asm	inclusive
 자지를	asm	conservative
 잡년	pr	conservative
 잡종	ps	inclusive
@@ -1145,10 +1126,8 @@ lemma	category	level
 저놈들	cds	conservative
 저놈만	cds	conservative
 저놈아	cds	conservative
-저놈에	cds	inclusive
 저놈은	cds	conservative
 저놈을	cds	inclusive
-저놈의	cds	inclusive
 저놈이	cds	conservative
 저능아	ddp	conservative
 저능아가	ddp	conservative
@@ -1341,9 +1320,6 @@ lemma	category	level
 쪼다같은	ddp	inclusive
 쪼다는	ddp	inclusive
 쪼다야	ddp	inclusive
-쪽	cds	inclusive
-쪽도	cds	inclusive
-쪽만	cds	inclusive
 쪽바리	ps	conservative
 쪽바리가	ps	conservative
 쪽바리같이	ps	conservative
@@ -1368,13 +1344,6 @@ lemma	category	level
 쪽발이에	ps	conservative
 쪽발이와	ps	conservative
 쪽발이의	ps	conservative
-쪽에	cds	inclusive
-쪽에서	cds	inclusive
-쪽으로	cds	inclusive
-쪽은	cds	inclusive
-쪽을	cds	inclusive
-쪽의	cds	inclusive
-쪽이	cds	inclusive
 찌라시	qas	inclusive
 찌라시가	qas	inclusive
 찌라시같은	qas	inclusive
@@ -1420,7 +1389,6 @@ lemma	category	level
 촌뜨기	is	inclusive
 충	an	inclusive
 충들	an	inclusive
-충만	an	inclusive
 충의	an	inclusive
 취저	qas	inclusive
 치신머리사납다	cds	inclusive
