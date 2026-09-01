@@ -2,6 +2,7 @@ packages:
   - apps/*
   - packages/*
   - packages/node/npm/*
+  - packages/cli/npm/*
 allowBuilds:
   esbuild: true
   sharp: true

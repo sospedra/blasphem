@@ -44,6 +44,22 @@
         "npm/*/*.node"
       ]
     },
+    "@blasphem/cli#build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/Cargo.toml",
+        "$TURBO_ROOT$/Cargo.lock",
+        "$TURBO_ROOT$/rust-toolchain.toml",
+        "$TURBO_ROOT$/.cargo/**",
+        "$TURBO_ROOT$/src/**",
+        "$TURBO_ROOT$/crates/**",
+        "$TURBO_ROOT$/data/raw-v1/hurtlex/**",
+        "$TURBO_ROOT$/resources/models/**"
+      ],
+      "outputs": [
+        "npm/*/bin/**"
+      ]
+    },
     "blasphem#build": {
       "dependsOn": [
         "@blasphem/core#check"
@@ -70,7 +86,8 @@
       "dependsOn": [
         "blasphem#build",
         "@blasphem/packs#build",
-        "@blasphem/node#build"
+        "@blasphem/node#build",
+        "@blasphem/cli#build"
       ],
       "cache": false
     },

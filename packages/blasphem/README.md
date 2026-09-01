@@ -41,7 +41,7 @@ Several judges at once, for example one per language on a moderation page, come 
 | browser, `assets: { wasm, packs }` | the `wasm` base | the `packs` base |
 | Node | `@blasphem/node-<os>-<cpu>` when installed, else the wasm in this package | the installed `@blasphem/packs`, or `assets` as a directory |
 
-The default needs nothing copied and nothing configured. Both versions are pinned to the ones this build was made with (`VERSIONS`), jsDelivr answers with `Access-Control-Allow-Origin: *`, serves `.wasm` as `application/wasm`, and caches exact versions for a year. Every file is verified against `manifest.json` before it parses. The preset serves bytes once both packages are published.
+The default needs nothing copied and nothing configured. Both packages are pinned to this build's version, exported as `VERSION`, jsDelivr answers with `Access-Control-Allow-Origin: *`, serves `.wasm` as `application/wasm`, and caches exact versions for a year. Every file is verified against `manifest.json` before it parses. The preset serves bytes once both packages are published.
 
 Self-hosting: `pnpm add @blasphem/packs`, then `blasphem-assets public/blasphem` copies the wasm and the packs into one directory (32 files, 10.34 MB), and `assets: "/blasphem"` points at it. Serve `.wasm` as `application/wasm`. The browser entry never resolves a path from `import.meta.url`.
 
@@ -106,6 +106,60 @@ export async function POST(request: Request) {
 ```
 
 Self-hosting instead of jsDelivr adds `"prebuild": "blasphem-assets public/blasphem"` to `package.json` and `assets: "/blasphem"` to `init`. A Content Security Policy, if you have one, is the next section.
+
+## Svelte and Solid
+
+Plain Vite apps need nothing but the import. Verified with `create-vite` `svelte-ts` and `solid-ts` templates, built and driven in Chromium and WebKit; each judged `you are a stupid loser` to `score 0.64`, and downloaded only the requested locales.
+
+Svelte 5:
+
+```svelte
+<script lang="ts">
+  import { init, judge, type Judgement } from "blasphem";
+  import { onMount } from "svelte";
+
+  let text = $state("");
+  let verdict = $state<Judgement | null>(null);
+
+  onMount(() => { void init({ locales: ["en", "es"], grawlix: true }); });
+  $effect(() => { verdict = text ? judge(text) : null; });
+</script>
+
+<textarea bind:value={text}></textarea>
+{#if verdict && !verdict.safe}<p role="status">Take another look: {verdict.grawlix}</p>{/if}
+```
+
+Solid:
+
+```tsx
+import { createSignal, onMount } from "solid-js";
+import { init, judge, type Judgement } from "blasphem";
+
+export function Composer() {
+  const [verdict, setVerdict] = createSignal<Judgement | null>(null);
+  onMount(() => { void init({ locales: ["en", "es"], grawlix: true }); });
+  return (
+    <>
+      <textarea onInput={(event) => setVerdict(judge(event.currentTarget.value))} />
+      {verdict() && !verdict()!.safe && <p role="status">Take another look: {verdict()!.grawlix}</p>}
+    </>
+  );
+}
+```
+
+SvelteKit and SolidStart render on the server with Vite SSR, which leaves `node_modules` external by default, so a `+server.ts` or an API route calls the same `init` and `judge` and gets the Node entry. Keep `blasphem` and `@blasphem/packs` out of `ssr.noExternal`.
+
+## Other languages
+
+The same contract, over the same Rust core:
+
+| Language | Package | Runtime path |
+| --- | --- | --- |
+| Go | `packages/go` | wazero over `crates/blasphem-ffi` compiled to WebAssembly, no cgo |
+| Python | `packages/python`, `packages/python-packs` | PyO3 extension, abi3 for Python 3.10 and later |
+| React Native | `packages/react-native` | Nitro Modules over `crates/blasphem-ffi` |
+
+Each has `init`, `judge`, `ready`, `close`, a multi-instance judge type, the same `Judgement` fields, and the same error codes.
 
 ## Content Security Policy
 

@@ -7,7 +7,14 @@ const ENTRY_FILES = ["browser", "node", "native", "wasm-engine", "version.genera
 const GLUE_FILES = ["dist/blasphem.d.ts", "dist/blasphem.js", "dist/blasphem_bg.wasm", "dist/blasphem_bg.wasm.d.ts"];
 const FORBIDDEN_PREFIXES = ["crates/", "data/", "reports/", "resources/", "src/", "target/"];
 const FORBIDDEN_SUFFIXES = [".pack", ".detect", ".node"];
-const NATIVE_PACKAGES = [
+const OPTIONAL_PACKAGES = [
+  "@blasphem/cli-darwin-arm64",
+  "@blasphem/cli-darwin-x64",
+  "@blasphem/cli-linux-arm64-gnu",
+  "@blasphem/cli-linux-arm64-musl",
+  "@blasphem/cli-linux-x64-gnu",
+  "@blasphem/cli-linux-x64-musl",
+  "@blasphem/cli-win32-x64-msvc",
   "@blasphem/node-darwin-arm64",
   "@blasphem/node-darwin-x64",
   "@blasphem/node-linux-arm64-gnu",
@@ -28,7 +35,7 @@ function coreFiles() {
 }
 
 function requiredFiles() {
-  return ["LICENSE", "NOTICE", "README.md", "package.json", "bin/blasphem-assets.mjs", ...ENTRY_FILES, ...GLUE_FILES, ...coreFiles()].toSorted();
+  return ["LICENSE", "NOTICE", "README.md", "package.json", "bin/blasphem-assets.mjs", "bin/blasphem.mjs", ...ENTRY_FILES, ...GLUE_FILES, ...coreFiles()].toSorted();
 }
 
 function assertManifest(manifest) {
@@ -42,7 +49,7 @@ function assertManifest(manifest) {
   }
   if (manifest.exports?.["./blasphem_bg.wasm"] !== "./dist/blasphem_bg.wasm") throw new Error('exports["./blasphem_bg.wasm"] must point at dist');
   const optional = Object.keys(manifest.optionalDependencies ?? {}).toSorted();
-  if (optional.join(",") !== NATIVE_PACKAGES.join(",")) throw new Error(`optionalDependencies must list ${NATIVE_PACKAGES.join(", ")}`);
+  if (optional.join(",") !== OPTIONAL_PACKAGES.join(",")) throw new Error(`optionalDependencies must list ${OPTIONAL_PACKAGES.join(", ")}`);
   if (manifest.dependencies !== undefined) throw new Error("the package must not declare dependencies; @blasphem/packs is the application's choice");
 }
 
@@ -68,6 +75,7 @@ function assertPaths(paths) {
 }
 
 function assertBin(manifest) {
+  if (manifest.bin?.["blasphem"] !== "./bin/blasphem.mjs") throw new Error("bin.blasphem must point at ./bin/blasphem.mjs");
   if (manifest.bin?.["blasphem-assets"] !== "./bin/blasphem-assets.mjs") throw new Error("bin.blasphem-assets must point at ./bin/blasphem-assets.mjs");
 }
 

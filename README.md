@@ -2,9 +2,36 @@
 
 Blasphem is a deterministic pre-send toxicity nudge. It checks a message before send, across 15 languages. It runs no neural model and no AI runtime.
 
-It ships a native CLI and a browser WASM build. The evidence status is experimental.
+It ships a command-line binary, a browser WASM build, and Node bindings. The evidence status is experimental.
 
-Build the native CLI:
+## Command line
+
+Install one of three ways:
+
+```bash
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/sospedra/blasphem/releases/latest/download/blasphem-installer.sh | sh
+cargo install --git https://github.com/sospedra/blasphem blasphem
+npx blasphem judge "you are a stupid loser"
+```
+
+Judge one message, or one message per stdin line:
+
+```bash
+blasphem judge "you are a stupid loser"
+blasphem judge --json --locales en,es --grawlix "you are a stupid loser"
+printf 'hello there\nTe voy a matar\n' | blasphem judge
+```
+
+```
+safe=false score=0.64 locale=en
+{"safe":false,"score":0.64,"locale":"en","grawlix":"you are a @#$%&! loser"}
+safe=true score=0 locale=none
+safe=false score=0.95 locale=es
+```
+
+The exit code is 0 when nothing nudged, 1 when a verdict nudged, and 2 on an error. `--locales` limits the loaded languages. `--no-detect` scores every loaded locale and reports the highest. The binary embeds all fifteen locales and needs no data files.
+
+Build it from a checkout:
 
 ```bash
 cargo build --release --locked --bin blasphem
@@ -125,6 +152,8 @@ cargo run --release -p blasphem-train -- setup --languages all
 The runtime uses conservative HurtLex entries only.
 
 ## Policy checks
+
+The `check` command is the diagnostic behind the evidence reports. It is hidden from `--help` and reads HurtLex from `data/raw-v1/hurtlex`.
 
 Run these policy checks:
 

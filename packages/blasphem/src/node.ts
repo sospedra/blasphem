@@ -7,7 +7,7 @@ import { buildWasmEngine } from "./wasm-engine.js";
 
 export type { AssetBases, Judge, JudgeOptions, Judgement } from "./core/index.js";
 export { JSDELIVR, LOCALES, jsdelivrBases, type LocaleCode } from "./core/index.js";
-export { VERSIONS } from "./version.generated.js";
+export { VERSION } from "./version.generated.js";
 
 // This entry is Node-only, so `import.meta.url` is Node's own and tracers such
 // as @vercel/nft follow the literal. Bundlers never see it: Next.js users list

@@ -130,7 +130,7 @@ lemma	category	level
 चोर	re	inclusive
 चौदवा ना	asm	inclusive
 चौदवाना	asm	inclusive
-छक्का	om	conservative
+छक्का	om	inclusive
 छपरी	is	inclusive
 छिनाल	dmc	conservative
 छोकरी	om	inclusive
@@ -172,7 +172,7 @@ lemma	category	level
 नालायक़	ddp	inclusive
 निकम्मा	ddp	inclusive
 निकम्मी	ddp	inclusive
-नीच	dmc	conservative
+नीच	dmc	inclusive
 पाखंडी	dmc	inclusive
 पाजी	dmc	inclusive
 पिछवाड़ा	asf	inclusive
@@ -193,7 +193,6 @@ lemma	category	level
 बहन के लौड़े	asm	conservative
 बहनचोद	asm	conservative
 बुड्ढा खूंसट	ddf	inclusive
-बुर	asf	conservative
 बूब्स	asf	inclusive
 बेवक़ूफ़	ddp	inclusive
 बेवकूफ	ddp	inclusive
@@ -226,8 +225,6 @@ lemma	category	level
 मक्कार	dmc	inclusive
 मच्छर	an	inclusive
 मद्रासी	ps	conservative
-मर गई	svp	conservative
-मरा ले	svp	conservative
 मल्लू	ps	inclusive
 माँ चोदना	asm	conservative
 मां के लौड़े	asm	conservative
@@ -235,7 +232,6 @@ lemma	category	level
 मां चुदाओ	asm	conservative
 मादरचोद	asm	conservative
 मादरचोदों	asm	conservative
-मार ले	svp	conservative
 मुंह में लेना	asm	conservative
 मुठ मारना	asm	inclusive
 मुल्ला	ps	conservative
@@ -247,7 +243,7 @@ lemma	category	level
 रंडी	pr	conservative
 रंडी रोना	dmc	inclusive
 रंडीखाना	pr	inclusive
-रांड	pr	conservative
+रांड	pr	inclusive
 रेवड़ी की राजनीति	dmc	inclusive
 रेवड़ी पॉलिटिक्स	dmc	inclusive
 रेवड़ी राजनीति	dmc	inclusive

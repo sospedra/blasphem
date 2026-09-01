@@ -22,13 +22,17 @@ typedef struct blasphem_judgement {
 
 blasphem_builder *blasphem_builder_new(bool detect_language, bool grawlix);
 
-/* Returns 0 on success, 1 on failure. Digest strings may be NULL. */
+/* Returns 0 on success, 1 on failure with the message in blasphem_builder_error. Digest strings may be NULL. */
 int32_t blasphem_builder_add(blasphem_builder *builder, const char *locale,
                              const uint8_t *pack, size_t pack_len, const char *pack_sha256,
                              const uint8_t *detect, size_t detect_len, const char *detect_sha256);
 
-/* Consumes the builder. Returns NULL on failure. */
+/* On success consumes the builder. On failure returns NULL and leaves the builder alive
+   with the message in blasphem_builder_error; free it with blasphem_builder_free. */
 blasphem_engine *blasphem_builder_build(blasphem_builder *builder);
+
+/* The builder's last failure or NULL. Safe across threads; valid until the next call on it. */
+const char *blasphem_builder_error(const blasphem_builder *builder);
 void blasphem_builder_free(blasphem_builder *builder);
 
 blasphem_judgement blasphem_engine_judge(const blasphem_engine *engine, const char *text);
@@ -38,7 +42,7 @@ void blasphem_judgement_free(blasphem_judgement judgement);
 void blasphem_text_free(char *text);
 void blasphem_engine_free(blasphem_engine *engine);
 
-/* Thread-local. Valid until the next failing call on the same thread. */
+/* Thread-local fallback. Prefer blasphem_builder_error. Valid until the next failing call on the same thread. */
 const char *blasphem_last_error(void);
 
 #ifdef __cplusplus

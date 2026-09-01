@@ -70,6 +70,27 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
     optionalDependencies:
+      '@blasphem/cli-darwin-arm64':
+        specifier: workspace:*
+        version: link:../cli/npm/darwin-arm64
+      '@blasphem/cli-darwin-x64':
+        specifier: workspace:*
+        version: link:../cli/npm/darwin-x64
+      '@blasphem/cli-linux-arm64-gnu':
+        specifier: workspace:*
+        version: link:../cli/npm/linux-arm64-gnu
+      '@blasphem/cli-linux-arm64-musl':
+        specifier: workspace:*
+        version: link:../cli/npm/linux-arm64-musl
+      '@blasphem/cli-linux-x64-gnu':
+        specifier: workspace:*
+        version: link:../cli/npm/linux-x64-gnu
+      '@blasphem/cli-linux-x64-musl':
+        specifier: workspace:*
+        version: link:../cli/npm/linux-x64-musl
+      '@blasphem/cli-win32-x64-msvc':
+        specifier: workspace:*
+        version: link:../cli/npm/win32-x64-msvc
       '@blasphem/node-darwin-arm64':
         specifier: workspace:*
         version: link:../node/npm/darwin-arm64
@@ -91,6 +112,22 @@ importers:
       '@blasphem/node-win32-x64-msvc':
         specifier: workspace:*
         version: link:../node/npm/win32-x64-msvc
+
+  packages/cli: {}
+
+  packages/cli/npm/darwin-arm64: {}
+
+  packages/cli/npm/darwin-x64: {}
+
+  packages/cli/npm/linux-arm64-gnu: {}
+
+  packages/cli/npm/linux-arm64-musl: {}
+
+  packages/cli/npm/linux-x64-gnu: {}
+
+  packages/cli/npm/linux-x64-musl: {}
+
+  packages/cli/npm/win32-x64-msvc: {}
 
   packages/core:
     devDependencies:

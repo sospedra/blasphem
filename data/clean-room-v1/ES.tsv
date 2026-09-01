@@ -2,1494 +2,1733 @@ id	pos	category	stereotype	lemma	level
 ES00001	a	an	no	aguacatero	inclusive
 ES00002	n	an	no	animalucho	inclusive
 ES00003	n	an	no	arpía	conservative
-ES00004	n	an	no	avechucho	inclusive
-ES00005	n	an	no	bicho	inclusive
-ES00006	n	an	no	borrego	inclusive
-ES00007	n	an	no	caballejo	inclusive
-ES00008	n	an	no	cabro	conservative
-ES00009	n	an	no	cabron	conservative
-ES00010	n	an	no	cabrón	conservative
-ES00011	n	an	no	cerda	inclusive
-ES00012	n	an	no	chandoso	inclusive
-ES00013	n	an	no	chivo	conservative
-ES00014	n	an	no	chopa	inclusive
-ES00015	n	an	no	choto	conservative
-ES00016	n	an	no	cono	inclusive
-ES00017	n	an	no	gamba	inclusive
-ES00018	n	an	no	grilla	inclusive
-ES00019	n	an	no	guarra	conservative
-ES00020	n	an	no	gusano	inclusive
-ES00021	n	an	no	hocico	inclusive
-ES00022	n	an	no	jamelgo	inclusive
-ES00023	n	an	no	jote	inclusive
-ES00024	n	an	no	jumento	inclusive
-ES00025	n	an	no	lagarta	conservative
-ES00026	n	an	no	loro	inclusive
-ES00027	n	an	no	marica	inclusive
-ES00028	n	an	no	marrano	inclusive
-ES00029	n	an	no	otorongo	inclusive
-ES00030	n	an	no	perra	conservative
-ES00031	n	an	no	perro	inclusive
-ES00032	n	an	no	pico	inclusive
-ES00033	n	an	no	puerco	inclusive
-ES00034	n	an	no	putada	inclusive
-ES00035	n	an	no	sapo	inclusive
-ES00036	n	an	no	yegua	inclusive
-ES00037	n	an	no	zorrillo	inclusive
-ES00038	n	asf	no	almeja	conservative
-ES00039	v	asf	no	andarse a la chucha	conservative
-ES00040	n	asf	no	argolla	conservative
-ES00041	n	asf	no	buceta	conservative
-ES00042	n	asf	no	cachucha	conservative
-ES00043	n	asf	no	cajeta	conservative
-ES00044	n	asf	no	chochete	conservative
-ES00045	n	asf	no	chucha	conservative
-ES00046	n	asf	no	chumino	conservative
-ES00047	n	asf	no	coño	conservative
-ES00048	n	asf	no	coños	conservative
-ES00049	n	asf	no	cuca	conservative
-ES00050	n	asf	no	panocha	conservative
-ES00051	n	asf	no	panzanocha	conservative
-ES00052	n	asf	no	papo	conservative
-ES00053	n	asf	no	raja	conservative
-ES00054	n	asf	no	teta	conservative
-ES00055	n	asf	no	tetamen	conservative
-ES00056	n	asf	no	tetas	conservative
-ES00057	p	asf	no	tetas grandes	conservative
-ES00058	n	asf	no	vagina	conservative
-ES00059	p	asm	no	a la verga	conservative
-ES00060	a	asm	no	a verga	conservative
-ES00061	p	asm	no	agárramela que me crece	conservative
-ES00062	n	asm	no	anaconda	conservative
-ES00063	v	asm	no	arrimar la cebolleta	conservative
-ES00064	v	asm	no	atornillar	conservative
-ES00065	a	asm	no	bien verga	conservative
-ES00066	n	asm	no	bolas	conservative
-ES00067	p	asm	no	bolsa de pelota	conservative
-ES00068	n	asm	no	bolsas	conservative
-ES00069	v	asm	no	cachar	conservative
-ES00070	n	asm	no	callampa	conservative
-ES00071	n	asm	no	capullo	conservative
-ES00072	n	asm	no	carajo	conservative
-ES00073	n	asm	no	casquete	conservative
-ES00074	n	asm	no	chinga	conservative
-ES00075	n	asm	no	chorra	conservative
-ES00076	n	asm	no	chota	conservative
-ES00077	n	asm	no	cipote	conservative
-ES00078	v	asm	no	coger	conservative
-ES00079	n	asm	no	cojonazos	conservative
-ES00080	n	asm	no	cojones	conservative
-ES00081	n	asm	no	cojón	conservative
-ES00082	v	asm	no	culear	conservative
-ES00083	v	asm	no	follar	conservative
-ES00084	v	asm	no	garchar	conservative
-ES00085	n	asm	no	hijo de la verga	conservative
-ES00086	n	asm	no	huevazos	inclusive
-ES00087	v	asm	no	jalar	conservative
-ES00088	v	asm	no	joder	conservative
-ES00089	n	asm	no	jodienda	conservative
-ES00090	n	asm	no	macana	conservative
-ES00091	n	asm	no	maldito	conservative
-ES00092	n	asm	no	merculo	inclusive
-ES00093	n	asm	no	minga	conservative
-ES00094	n	asm	no	mosorola	conservative
-ES00095	n	asm	no	pajarraco	inclusive
-ES00096	n	asm	no	palo	conservative
-ES00097	n	asm	no	paloma	conservative
-ES00098	n	asm	no	papirola	conservative
-ES00099	n	asm	no	pene	conservative
-ES00100	n	asm	no	picha	conservative
-ES00101	v	asm	no	pichar	conservative
-ES00102	n	asm	no	pichula	conservative
-ES00103	n	asm	no	pija	conservative
-ES00104	n	asm	no	pijo	conservative
-ES00105	n	asm	no	pinga	conservative
-ES00106	n	asm	no	pito	conservative
-ES00107	n	asm	no	polla	conservative
-ES00108	n	asm	no	pollada	conservative
-ES00109	n	asm	no	pollas	conservative
-ES00110	n	asm	no	pollazo	conservative
-ES00111	n	asm	no	polvo	conservative
-ES00112	n	asm	no	poronga	conservative
-ES00113	n	asm	no	pupusa	conservative
-ES00114	n	asm	no	puñetero	conservative
-ES00115	n	asm	no	reata	conservative
-ES00116	n	asm	no	testículo	conservative
-ES00117	v	asm	no	tirar	conservative
-ES00118	n	asm	no	turca	inclusive
-ES00119	n	asm	no	verga	conservative
-ES00120	v	asm	no	vergar	conservative
-ES00121	n	asm	no	vergas	conservative
-ES00122	a	asm	no	vergatario	conservative
-ES00123	n	asm	no	vergazo	conservative
-ES00124	n	asm	no	ñefle	conservative
-ES00125	n	asm	no	ñuñuco	conservative
-ES00126	n	cds	no	-sco	inclusive
-ES00127	i	cds	no	a la puta calle	conservative
-ES00128	n	cds	no	acoplado	inclusive
-ES00129	n	cds	no	arrapiezo	inclusive
-ES00130	n	cds	no	artilugio	inclusive
-ES00131	n	cds	no	asilo	inclusive
-ES00132	n	cds	no	atajo	inclusive
-ES00133	n	cds	no	bable	inclusive
-ES00134	a	cds	no	bajero	inclusive
-ES00135	n	cds	no	bareto	inclusive
-ES00136	n	cds	no	barquichuela	inclusive
-ES00137	n	cds	no	barquichuelo	inclusive
-ES00138	n	cds	no	bastardo	conservative
-ES00139	n	cds	no	bazofia	inclusive
-ES00140	n	cds	no	bigardo	inclusive
-ES00141	n	cds	no	bizcochuelo	inclusive
-ES00142	n	cds	no	brebaje	inclusive
-ES00143	n	cds	no	cabeza de mierda	inclusive
-ES00144	n	cds	no	cacharro	inclusive
-ES00145	v	cds	no	callar	inclusive
-ES00146	n	cds	no	camastro	inclusive
-ES00147	n	cds	no	canalla	inclusive
-ES00148	n	cds	no	candidote	inclusive
-ES00149	n	cds	no	capirucha	inclusive
-ES00150	n	cds	no	caracho	inclusive
-ES00151	n	cds	no	carcundia	inclusive
-ES00152	n	cds	no	carrerilla	inclusive
-ES00153	n	cds	no	castrapo	inclusive
-ES00154	a	cds	no	ceniciento	inclusive
-ES00155	n	cds	no	central lechera	inclusive
-ES00156	n	cds	no	cerote	conservative
-ES00157	n	cds	no	chafarote	inclusive
-ES00158	n	cds	no	chagüite	inclusive
-ES00159	n	cds	no	chamaco	inclusive
-ES00160	n	cds	no	chamo	inclusive
-ES00161	n	cds	no	chapón	inclusive
-ES00162	n	cds	no	charca	inclusive
-ES00163	n	cds	no	chicuela	inclusive
-ES00164	n	cds	no	chifurnia	inclusive
-ES00165	n	cds	no	chiquillaje	inclusive
-ES00166	a	cds	no	chiviento	inclusive
-ES00167	a	cds	no	chumo	inclusive
-ES00168	n	cds	no	chunche	inclusive
-ES00169	n	cds	no	cintajo	inclusive
-ES00170	n	cds	no	comemierda	conservative
-ES00171	v	cds	no	comerse con patatas	inclusive
-ES00172	n	cds	no	comistrajo	inclusive
-ES00173	n	cds	no	corrillo	inclusive
-ES00174	n	cds	no	cromo	inclusive
-ES00175	n	cds	no	cuadrilla	inclusive
-ES00176	a	cds	no	cuajado	inclusive
-ES00177	n	cds	no	cuartico	inclusive
-ES00178	v	cds	no	cállate	inclusive
-ES00179	n	cds	no	desgraciado	inclusive
-ES00180	p	cds	no	dios los cría y ellos se juntan	inclusive
-ES00181	v	cds	no	empollar	inclusive
-ES00182	n	cds	no	escuincle	inclusive
-ES00183	n	cds	no	españolada	inclusive
-ES00184	n	cds	no	fenómeno	inclusive
-ES00185	n	cds	no	fiestilla	inclusive
-ES00186	n	cds	no	figura	inclusive
-ES00187	n	cds	no	fritanga	inclusive
-ES00188	n	cds	no	fulano	inclusive
-ES00189	n	cds	no	gachó	inclusive
-ES00190	n	cds	no	guilindajo	inclusive
-ES00191	n	cds	no	guisote	inclusive
-ES00192	n	cds	no	hdlgp	conservative
-ES00193	n	cds	no	hijo de la chingada	conservative
-ES00194	n	cds	no	hijo de la gran puta	conservative
-ES00195	n	cds	no	hijo de perra	conservative
-ES00196	n	cds	no	hijo de puta	conservative
-ES00197	n	cds	no	hijoputa	conservative
-ES00198	n	cds	no	hijuela	inclusive
-ES00199	n	cds	no	hijueputa	conservative
-ES00200	n	cds	no	hijueputilla	conservative
-ES00201	v	cds	no	importar un comino	inclusive
-ES00202	n	cds	no	indilgue	inclusive
-ES00203	n	cds	no	irigote	inclusive
-ES00204	n	cds	no	joya	inclusive
-ES00205	n	cds	no	juela	inclusive
-ES00206	n	cds	no	juelagranputa	conservative
-ES00207	n	cds	no	jueputa	conservative
-ES00208	p	cds	no	la cagada va en la taza	conservative
-ES00209	i	cds	no	la madre que te parió	conservative
-ES00210	p	cds	no	la puta que te parió	conservative
-ES00211	n	cds	no	lacho	inclusive
-ES00212	n	cds	no	latinajo	inclusive
-ES00213	n	cds	no	libraco	inclusive
-ES00214	n	cds	no	malnacido	inclusive
-ES00215	n	cds	no	mamarracho	inclusive
-ES00216	n	cds	no	mcmierda	conservative
-ES00217	p	cds	no	me cago en tu familia	conservative
-ES00218	n	cds	no	mejunje	inclusive
-ES00219	n	cds	no	miérdico	inclusive
-ES00220	n	cds	no	mocoso	inclusive
-ES00221	n	cds	no	moridero	inclusive
-ES00222	n	cds	no	mueble	inclusive
-ES00223	n	cds	no	napa	inclusive
-ES00224	n	cds	no	neomonja	inclusive
-ES00225	n	cds	no	niñato	inclusive
-ES00226	n	cds	no	niñita	inclusive
-ES00227	n	cds	no	novelón	inclusive
-ES00228	n	cds	no	ojete	conservative
-ES00229	n	cds	no	pambol	inclusive
-ES00230	n	cds	no	papelejo	inclusive
-ES00231	n	cds	no	papelucho	inclusive
-ES00232	n	cds	no	paquetón	inclusive
-ES00233	n	cds	no	para	inclusive
-ES00234	n	cds	no	pasquín	inclusive
-ES00235	n	cds	no	pechocha	inclusive
-ES00236	r	cds	no	por las putas	conservative
-ES00237	n	cds	no	pucta	inclusive
-ES00238	n	cds	no	putazo	conservative
-ES00239	n	cds	no	puto	conservative
-ES00240	i	cds	no	que te jodan	conservative
-ES00241	n	cds	no	rapazuelo	inclusive
-ES00242	v	cds	no	refanfinflarse	inclusive
-ES00243	n	cds	no	refrito	inclusive
-ES00244	r	cds	no	so	inclusive
-ES00245	n	cds	no	suelto	inclusive
-ES00246	n	cds	no	testamento	inclusive
-ES00247	n	cds	no	tetunte	inclusive
-ES00248	n	cds	no	tiparraco	inclusive
-ES00249	n	cds	no	tipejo	inclusive
-ES00250	n	cds	no	torta	inclusive
-ES00251	n	cds	no	travesaño	inclusive
-ES00252	i	cds	no	tu madre	inclusive
-ES00253	n	cds	no	vela güira	inclusive
-ES00254	p	cds	no	vete a chingar	inclusive
-ES00255	n	cds	no	wekereke	inclusive
-ES00256	n	cds	no	ñajo	inclusive
-ES00257	n	cds	no	ñora	inclusive
-ES00258	a	cds	no	único y detergente	inclusive
-ES00259	n	ddf	yes	antigualla	inclusive
-ES00260	a	ddf	yes	blanducho	inclusive
-ES00261	n	ddf	yes	carcamal	inclusive
-ES00262	n	ddf	yes	cegatón	inclusive
-ES00263	n	ddf	yes	cuarentón	inclusive
-ES00264	n	ddf	yes	cuatro ojos	inclusive
-ES00265	a	ddf	yes	curcuncho	inclusive
-ES00266	n	ddf	yes	debilucho	inclusive
-ES00267	a	ddf	yes	delgaducho	inclusive
-ES00268	n	ddf	yes	feto	inclusive
-ES00269	a	ddf	yes	feúcho	inclusive
-ES00270	a	ddf	yes	flacucho	inclusive
-ES00271	n	ddf	yes	gafudo	inclusive
-ES00272	a	ddf	yes	gordezuelo	inclusive
-ES00273	n	ddf	yes	la vieja	conservative
-ES00274	n	ddf	yes	larguirucho	inclusive
-ES00275	n	ddf	yes	minusa	inclusive
-ES00276	n	ddf	yes	pequeñajo	inclusive
-ES00277	a	ddf	yes	roco	inclusive
-ES00278	n	ddf	yes	ruco	inclusive
-ES00279	n	ddf	yes	sidoso	inclusive
-ES00280	n	ddf	yes	sidático	inclusive
-ES00281	n	ddf	yes	vejestorio	inclusive
-ES00282	n	ddf	yes	vejezuela	inclusive
-ES00283	n	ddf	yes	viejujo	inclusive
-ES00284	n	ddp	yes	alaraco	inclusive
-ES00285	a	ddp	yes	apendejado	conservative
-ES00286	v	ddp	yes	apendejar	conservative
-ES00287	n	ddp	yes	atraso	inclusive
-ES00288	a	ddp	yes	aweonao	conservative
-ES00289	n	ddp	yes	badulaque	inclusive
-ES00290	a	ddp	yes	bayunco	inclusive
-ES00291	n	ddp	yes	bestia	inclusive
-ES00292	n	ddp	yes	bestial	conservative
-ES00293	n	ddp	yes	bestialidad	conservative
-ES00294	n	ddp	yes	bolsa	conservative
-ES00295	n	ddp	yes	boludazo	conservative
-ES00296	n	ddp	yes	boludo	conservative
-ES00297	n	ddp	yes	burrote	conservative
-ES00298	n	ddp	yes	caja boba	inclusive
-ES00299	n	ddp	yes	caja idiota	inclusive
-ES00300	n	ddp	yes	caja tonta	inclusive
-ES00301	n	ddp	yes	cateto	inclusive
-ES00302	n	ddp	yes	cavernícola	inclusive
-ES00303	n	ddp	yes	cazurro	inclusive
-ES00304	n	ddp	yes	cojudo	conservative
-ES00305	n	ddp	yes	descerebrado	inclusive
-ES00306	a	ddp	yes	descriteriado	inclusive
-ES00307	n	ddp	yes	energúmeno	inclusive
-ES00308	a	ddp	yes	estúpido	conservative
-ES00309	n	ddp	yes	gil	inclusive
-ES00310	n	ddp	yes	gilicórner	inclusive
-ES00311	n	ddp	yes	gilipollas	conservative
-ES00312	n	ddp	yes	gilipollez	conservative
-ES00313	a	ddp	yes	gilí	inclusive
-ES00314	n	ddp	yes	haiga	inclusive
-ES00315	n	ddp	yes	idiota	conservative
-ES00316	n	ddp	yes	imbécil	conservative
-ES00317	n	ddp	yes	jilipollas	conservative
-ES00318	a	ddp	yes	leso	inclusive
-ES00319	n	ddp	yes	letrasado	inclusive
-ES00320	a	ddp	yes	leído y escribido	inclusive
-ES00321	n	ddp	yes	loco	inclusive
-ES00322	n	ddp	yes	mastuerzo	inclusive
-ES00323	a	ddp	yes	menso	inclusive
-ES00324	n	ddp	yes	mierda	conservative
-ES00325	a	ddp	yes	mogólico	inclusive
-ES00326	n	ddp	yes	mongolo	inclusive
-ES00327	a	ddp	yes	mongólico	inclusive
-ES00328	n	ddp	yes	monigote	inclusive
-ES00329	n	ddp	yes	onvre	inclusive
-ES00330	n	ddp	yes	orate	inclusive
-ES00331	n	ddp	yes	paja	conservative
-ES00332	n	ddp	yes	paleto	inclusive
-ES00333	n	ddp	yes	palurdo	inclusive
-ES00334	n	ddp	yes	pardillo	inclusive
-ES00335	v	ddp	yes	pendejear	conservative
-ES00336	n	ddp	yes	pendejerú	conservative
-ES00337	n	ddp	yes	pendejismo	conservative
-ES00338	n	ddp	yes	pendejo	conservative
-ES00339	n	ddp	yes	retagil	inclusive
-ES00340	n	ddp	yes	retajil	inclusive
-ES00341	n	ddp	yes	retardado	inclusive
-ES00342	n	ddp	yes	sonsonetudo	inclusive
-ES00343	n	ddp	yes	subnormal	inclusive
-ES00344	a	ddp	yes	tolili	inclusive
-ES00345	n	ddp	yes	tonto	inclusive
-ES00346	a	ddp	yes	tonto del culo	conservative
-ES00347	n	ddp	yes	tontopollas	conservative
-ES00348	n	ddp	yes	turro	inclusive
-ES00349	n	ddp	yes	weón	conservative
-ES00350	a	dmc	no	acartonado	inclusive
-ES00351	n	dmc	no	aliade	inclusive
-ES00352	n	dmc	no	alzado	conservative
-ES00353	n	dmc	no	asaltacunas	inclusive
-ES00354	n	dmc	no	asturtzale	inclusive
-ES00355	n	dmc	no	balconazi	inclusive
-ES00356	n	dmc	no	batasuno	inclusive
-ES00357	n	dmc	no	bellaco	conservative
-ES00358	n	dmc	no	bilduetarra	inclusive
-ES00359	n	dmc	no	bocachancla	inclusive
-ES00360	n	dmc	no	bocazas	inclusive
-ES00361	n	dmc	no	bodrio stars	inclusive
-ES00362	n	dmc	no	boliburguesía	inclusive
-ES00363	n	dmc	no	buenista	inclusive
-ES00364	n	dmc	no	buscapleitos	inclusive
-ES00365	n	dmc	no	cagueta	conservative
-ES00366	n	dmc	no	carca	inclusive
-ES00367	n	dmc	no	catalufo	inclusive
-ES00368	n	dmc	no	cayetano	inclusive
-ES00369	n	dmc	no	cazapartner	inclusive
-ES00370	n	dmc	no	chairo	inclusive
-ES00371	n	dmc	no	chapucero	inclusive
-ES00372	n	dmc	no	charo	inclusive
-ES00373	n	dmc	no	charocracia	inclusive
-ES00374	n	dmc	no	chupacirios	inclusive
-ES00375	a	dmc	no	come palomas	inclusive
-ES00376	n	dmc	no	comeflor	inclusive
-ES00377	n	dmc	no	comegambas	inclusive
-ES00378	a	dmc	no	comepalomas	inclusive
-ES00379	a	dmc	no	comepipas	inclusive
-ES00380	n	dmc	no	comunacho	inclusive
-ES00381	n	dmc	no	comuñanga	inclusive
-ES00382	n	dmc	no	concheto	inclusive
-ES00383	n	dmc	no	conspiranoia	inclusive
-ES00384	n	dmc	no	conspiranoico	inclusive
-ES00385	n	dmc	no	convenenciero	inclusive
-ES00386	n	dmc	no	covidiano	inclusive
-ES00387	n	dmc	no	covidiota	inclusive
-ES00388	n	dmc	no	covinazi	inclusive
-ES00389	n	dmc	no	criticadera	inclusive
-ES00390	n	dmc	no	cultura de la cancelación	inclusive
-ES00391	n	dmc	no	cultureta	inclusive
-ES00392	n	dmc	no	cuñado	inclusive
-ES00393	a	dmc	no	delicado	inclusive
-ES00394	n	dmc	no	derechoso	inclusive
-ES00395	n	dmc	no	dictadorzuelo	inclusive
-ES00396	n	dmc	no	ecolojeta	inclusive
-ES00397	n	dmc	no	empollón	inclusive
-ES00398	n	dmc	no	enchufista	inclusive
-ES00399	n	dmc	no	esquirol	inclusive
-ES00400	n	dmc	no	facha	inclusive
-ES00401	n	dmc	no	fachaleco	inclusive
-ES00402	n	dmc	no	facherío	inclusive
-ES00403	n	dmc	no	facho	inclusive
-ES00404	n	dmc	no	fachosfera	inclusive
-ES00405	a	dmc	no	famoso por ser famoso	inclusive
-ES00406	n	dmc	no	femiloca	inclusive
-ES00407	n	dmc	no	feminazi	inclusive
-ES00408	n	dmc	no	feminazismo	inclusive
-ES00409	a	dmc	no	femiprogre	inclusive
-ES00410	n	dmc	no	fife	inclusive
-ES00411	n	dmc	no	frentudo	inclusive
-ES00412	n	dmc	no	fula	inclusive
-ES00413	n	dmc	no	garca	inclusive
-ES00414	n	dmc	no	gatopardismo	inclusive
-ES00415	n	dmc	no	generación de cristal	inclusive
-ES00416	n	dmc	no	giliprogre	inclusive
-ES00417	n	dmc	no	gorila	inclusive
-ES00418	v	dmc	no	hablar con la e	inclusive
-ES00419	n	dmc	no	izquierdoso	inclusive
-ES00420	a	dmc	no	jesuítico	inclusive
-ES00421	n	dmc	no	kuka	inclusive
-ES00422	n	dmc	no	lameculos	conservative
-ES00423	n	dmc	no	lamehuevos	conservative
-ES00424	v	dmc	no	lamer el culo	conservative
-ES00425	n	dmc	no	lazi	inclusive
-ES00426	n	dmc	no	lechuguino	inclusive
-ES00427	n	dmc	no	lolicerdo	inclusive
-ES00428	n	dmc	no	loliconero	inclusive
-ES00429	n	dmc	no	ludismo	inclusive
-ES00430	n	dmc	no	machirulo	inclusive
-ES00431	n	dmc	no	magufo	inclusive
-ES00432	n	dmc	no	malinchista	inclusive
-ES00433	n	dmc	no	mamerto	inclusive
-ES00434	n	dmc	no	mami	inclusive
-ES00435	n	dmc	no	maruja	inclusive
-ES00436	v	dmc	no	marujear	inclusive
-ES00437	n	dmc	no	micro$oft	inclusive
-ES00438	n	dmc	no	miedica	inclusive
-ES00439	n	dmc	no	milenita	inclusive
-ES00440	n	dmc	no	milipili	inclusive
-ES00441	n	dmc	no	modernez	inclusive
-ES00442	n	dmc	no	monotema	inclusive
-ES00443	n	dmc	no	nayiliber	inclusive
-ES00444	n	dmc	no	nazionalismo	inclusive
-ES00445	n	dmc	no	nazionalista	inclusive
-ES00446	n	dmc	no	niño rata	inclusive
-ES00447	n	dmc	no	normi	inclusive
-ES00448	n	dmc	no	ofendidito	inclusive
-ES00449	n	dmc	no	pandejo	inclusive
-ES00450	n	dmc	no	pepero	inclusive
-ES00451	n	dmc	no	perkin	inclusive
-ES00452	n	dmc	no	pesetero	inclusive
-ES00453	n	dmc	no	pijoprogre	inclusive
-ES00454	n	dmc	no	pitiyanqui	inclusive
-ES00455	n	dmc	no	planchabragas	inclusive
-ES00456	n	dmc	no	plandemia	inclusive
-ES00457	n	dmc	no	podemita	inclusive
-ES00458	n	dmc	no	politiqués	inclusive
-ES00459	n	dmc	no	poser	inclusive
-ES00460	n	dmc	no	preciosismo	inclusive
-ES00461	n	dmc	no	progre	inclusive
-ES00462	v	dmc	no	quemar	inclusive
-ES00463	n	dmc	no	radfem	inclusive
-ES00464	n	dmc	no	rancio	inclusive
-ES00465	n	dmc	no	rasputín	inclusive
-ES00466	a	dmc	no	remilgado	inclusive
-ES00467	n	dmc	no	revisionismo	inclusive
-ES00468	n	dmc	no	rezadera	inclusive
-ES00469	n	dmc	no	ricacho	inclusive
-ES00470	n	dmc	no	ricachón	inclusive
-ES00471	n	dmc	no	robacunas	inclusive
-ES00472	n	dmc	no	rojipardismo	inclusive
-ES00473	n	dmc	no	rojipardo	inclusive
-ES00474	a	dmc	no	sabihondo	inclusive
-ES00475	n	dmc	no	santurrón	inclusive
-ES00476	n	dmc	no	senderista	inclusive
-ES00477	n	dmc	no	separata	inclusive
-ES00478	n	dmc	no	separrata	inclusive
-ES00479	n	dmc	no	señoro	inclusive
-ES00480	a	dmc	no	sifrino	inclusive
-ES00481	n	dmc	no	slop	inclusive
-ES00482	n	dmc	no	sociata	inclusive
-ES00483	n	dmc	no	sologripista	inclusive
-ES00484	n	dmc	no	solterona	inclusive
-ES00485	n	dmc	no	solterón	inclusive
-ES00486	n	dmc	no	sucursalismo	inclusive
-ES00487	n	dmc	no	telebasura	inclusive
-ES00488	n	dmc	no	terfa	inclusive
-ES00489	n	dmc	no	terminales mediáticas	inclusive
-ES00490	n	dmc	no	terruco	inclusive
-ES00491	n	dmc	no	tiranuelo	inclusive
-ES00492	n	dmc	no	tongo	inclusive
-ES00493	n	dmc	no	tragacionista	inclusive
-ES00494	n	dmc	no	tragaperras	inclusive
-ES00495	n	dmc	no	tribunal prostitucional	inclusive
-ES00496	n	dmc	no	trilero	inclusive
-ES00497	n	dmc	no	tutumpote	inclusive
-ES00498	n	dmc	no	ultroso	inclusive
-ES00499	a	dmc	no	untuoso	inclusive
-ES00500	n	dmc	no	urbanita	inclusive
-ES00501	n	dmc	no	uribestia	inclusive
-ES00502	n	dmc	no	vendido	inclusive
-ES00503	n	dmc	no	vividor	inclusive
-ES00504	n	dmc	no	zurdo	inclusive
-ES00505	n	dmc	no	ñordo	conservative
-ES00506	n	dmc	no	ñángara	inclusive
-ES00507	n	is	no	andoba	inclusive
-ES00508	n	is	no	atorrante	inclusive
-ES00509	n	is	no	cani	inclusive
-ES00510	n	is	no	chiringuito	inclusive
-ES00511	n	is	no	choni	inclusive
-ES00512	a	is	no	de medio pelo	inclusive
-ES00513	a	is	no	de todo a cien	inclusive
-ES00514	a	is	no	del tres al cuarto	inclusive
-ES00515	n	is	no	descamisado	inclusive
-ES00516	n	is	no	emulapobre	inclusive
-ES00517	n	is	no	gamín	inclusive
-ES00518	n	is	no	gentecilla	inclusive
-ES00519	n	is	no	gentualla	inclusive
-ES00520	n	is	no	gentuza	inclusive
-ES00521	n	is	no	mantenido	inclusive
-ES00522	n	is	no	mindundi	inclusive
-ES00523	n	is	no	méndigo	conservative
-ES00524	n	is	no	pagapensiones	inclusive
-ES00525	n	is	no	paguita	inclusive
-ES00526	n	is	no	perroflauta	inclusive
-ES00527	n	is	no	pobrezolano	inclusive
-ES00528	n	is	no	pobrezuela	inclusive
-ES00529	n	is	no	poligonera	inclusive
-ES00530	n	is	no	poligonero	inclusive
-ES00531	n	is	no	populacho	inclusive
-ES00532	n	is	no	ralea	inclusive
-ES00533	n	is	no	roto	inclusive
-ES00534	n	is	no	tenducho	inclusive
-ES00535	n	is	no	tienducha	inclusive
-ES00536	n	is	no	villero	inclusive
-ES00537	n	is	no	ñero	inclusive
-ES00538	a	om	yes	amariconado	conservative
-ES00539	v	om	yes	amariconar	conservative
-ES00540	n	om	yes	ano	conservative
-ES00541	a	om	yes	anormal	inclusive
-ES00542	n	om	yes	arepera	inclusive
-ES00543	n	om	yes	asno	inclusive
-ES00544	n	om	yes	bollera	inclusive
-ES00545	n	om	yes	brisco	inclusive
-ES00546	n	om	yes	bujarrón	conservative
-ES00547	n	om	yes	cacorro	inclusive
-ES00548	n	om	yes	cerrú	inclusive
-ES00549	n	om	yes	chulunca	inclusive
-ES00550	n	om	yes	cola	inclusive
-ES00551	n	om	yes	culandrón	conservative
-ES00552	n	om	yes	culerdo	inclusive
-ES00553	n	om	yes	culo	conservative
-ES00554	a	om	yes	desviado	inclusive
-ES00555	v	om	yes	encular	conservative
-ES00556	n	om	yes	fleto	conservative
-ES00557	p	om	yes	follador de culo	conservative
-ES00558	n	om	yes	hueco	conservative
-ES00559	n	om	yes	huequereque	conservative
-ES00560	n	om	yes	invertido	inclusive
-ES00561	n	om	yes	jeva	conservative
-ES00562	n	om	yes	jota	conservative
-ES00563	n	om	yes	joto	conservative
-ES00564	n	om	yes	lencha	inclusive
-ES00565	n	om	yes	loca	inclusive
-ES00566	n	om	yes	mamplora	conservative
-ES00567	n	om	yes	manflora	conservative
-ES00568	n	om	yes	maraco	inclusive
-ES00569	a	om	yes	maricantunga	inclusive
-ES00570	n	om	yes	marico	conservative
-ES00571	n	om	yes	maricona	inclusive
-ES00572	n	om	yes	mariconazo	conservative
-ES00573	n	om	yes	mariconeo	inclusive
-ES00574	n	om	yes	mariconería	conservative
-ES00575	n	om	yes	maricones	conservative
-ES00576	n	om	yes	mariconía	inclusive
-ES00577	a	om	yes	maricota	inclusive
-ES00578	n	om	yes	maricón	conservative
-ES00579	n	om	yes	mariliendre	conservative
-ES00580	n	om	yes	marimacha	inclusive
-ES00581	n	om	yes	marimacho	inclusive
-ES00582	n	om	yes	mariposón	inclusive
-ES00583	n	om	yes	mariquita	inclusive
-ES00584	n	om	yes	musculoca	inclusive
-ES00585	n	om	yes	nenaza	conservative
-ES00586	n	om	yes	pargo	conservative
-ES00587	n	om	yes	pato	inclusive
-ES00588	v	om	yes	perder aceite	inclusive
-ES00589	n	om	yes	pipián	conservative
-ES00590	n	om	yes	playo	inclusive
-ES00591	n	om	yes	puñal	inclusive
-ES00592	a	om	yes	rarito	inclusive
-ES00593	n	om	yes	rompeculos	conservative
-ES00594	n	om	yes	sayuelo	inclusive
-ES00595	n	om	yes	soplanucas	conservative
-ES00596	n	om	yes	tortillera	inclusive
-ES00597	n	om	yes	trava	inclusive
-ES00598	n	om	yes	travesti	conservative
-ES00599	n	om	yes	trolo	conservative
-ES00600	n	or	no	banana	conservative
-ES00601	n	or	no	champa	inclusive
-ES00602	n	or	no	chichi	conservative
-ES00603	n	or	no	chile	conservative
-ES00604	n	or	no	chocha	conservative
-ES00605	n	or	no	chocho	conservative
-ES00606	n	or	no	choro	conservative
-ES00607	n	or	no	concha	inclusive
-ES00608	n	or	no	conejo	conservative
-ES00609	n	or	no	floripondio	inclusive
-ES00610	n	or	no	mamón	conservative
-ES00611	n	or	no	nabo	inclusive
-ES00612	n	pa	no	achichincle	inclusive
-ES00613	n	pa	no	arenero	inclusive
-ES00614	n	pa	no	cagatintas	conservative
-ES00615	n	pa	no	capanga	inclusive
-ES00616	n	pa	no	chacha	inclusive
-ES00617	n	pa	no	chupatintas	inclusive
-ES00618	n	pa	no	cipayo	inclusive
-ES00619	n	pa	no	doméstica	inclusive
-ES00620	n	pa	no	farándula	inclusive
-ES00621	n	pa	no	ganapán	inclusive
-ES00622	n	pa	no	gañán	inclusive
-ES00623	n	pa	no	gobernadorcillo	inclusive
-ES00624	n	pa	no	golondrino	inclusive
-ES00625	n	pa	no	juececillo	inclusive
-ES00626	n	pa	no	mamporrero	inclusive
-ES00627	n	pa	no	matasanos	inclusive
-ES00628	n	pa	no	milico	inclusive
-ES00629	n	pa	no	militronche	inclusive
-ES00630	n	pa	no	pacos	inclusive
-ES00631	n	pa	no	pacotillero	inclusive
-ES00632	n	pa	no	pajero	conservative
-ES00633	n	pa	no	perrodista	inclusive
-ES00634	n	pa	no	picacódigo	inclusive
-ES00635	n	pa	no	picapleitos	inclusive
-ES00636	n	pa	no	plumilla	inclusive
-ES00637	n	pa	no	plumífero	inclusive
-ES00638	n	pa	no	polizonte	inclusive
-ES00639	n	pa	no	tinterillo	inclusive
-ES00640	n	pa	no	todólogo	inclusive
-ES00641	n	pr	no	chongo	conservative
-ES00642	n	pr	no	encueratriz	inclusive
-ES00643	n	pr	no	fulana	inclusive
-ES00644	n	pr	no	furcia	inclusive
-ES00645	n	pr	no	golfa	inclusive
-ES00646	n	pr	no	maraca	inclusive
-ES00647	n	pr	no	mujerzuela	inclusive
-ES00648	n	pr	no	prostituta	conservative
-ES00649	n	pr	no	puta	conservative
-ES00650	n	pr	no	puta de quinta	conservative
-ES00651	n	pr	no	putas	conservative
-ES00652	n	pr	no	puterío	conservative
-ES00653	n	pr	no	ramera	inclusive
-ES00654	n	pr	no	ruca	inclusive
-ES00655	n	pr	no	vaca	inclusive
-ES00656	n	pr	no	vientre de alquiler	inclusive
-ES00657	n	pr	no	yira	inclusive
-ES00658	n	pr	no	zorra	conservative
-ES00659	n	ps	yes	argensimio	inclusive
-ES00660	n	ps	yes	argenzuela	inclusive
-ES00661	n	ps	yes	bachicha	conservative
-ES00662	v	ps	yes	bajarse al moro	conservative
-ES00663	n	ps	yes	bemba	conservative
-ES00664	a	ps	yes	bereco	inclusive
-ES00665	n	ps	yes	boliguayo	inclusive
-ES00666	n	ps	yes	bolillo	inclusive
-ES00667	n	ps	yes	brasuca	inclusive
-ES00668	n	ps	yes	brazuca	conservative
-ES00669	n	ps	yes	cabecita	conservative
-ES00670	n	ps	yes	cachaca	inclusive
-ES00671	n	ps	yes	cachaco	inclusive
-ES00672	n	ps	yes	castellano	inclusive
-ES00673	n	ps	yes	chanate	inclusive
-ES00674	n	ps	yes	charnego	inclusive
-ES00675	n	ps	yes	china	inclusive
-ES00676	v	ps	yes	cholerear	inclusive
-ES00677	n	ps	yes	cholero	inclusive
-ES00678	n	ps	yes	cholifacio	inclusive
-ES00679	n	ps	yes	cholo	inclusive
-ES00680	n	ps	yes	chombo	inclusive
-ES00681	n	ps	yes	chontril	inclusive
-ES00682	n	ps	yes	chúntaro	inclusive
-ES00683	n	ps	yes	congolombiano	inclusive
-ES00684	n	ps	yes	conguito	inclusive
-ES00685	n	ps	yes	cubanoide	inclusive
-ES00686	n	ps	yes	cuico	inclusive
-ES00687	a	ps	yes	curiche	inclusive
-ES00688	n	ps	yes	español	inclusive
-ES00689	n	ps	yes	españolete	conservative
-ES00690	n	ps	yes	follacabras	conservative
-ES00691	n	ps	yes	franchute	conservative
-ES00692	n	ps	yes	frijolero	conservative
-ES00693	n	ps	yes	gabacho	conservative
-ES00694	n	ps	yes	gachupín	conservative
-ES00695	n	ps	yes	gitanada	inclusive
-ES00696	n	ps	yes	griego	inclusive
-ES00697	n	ps	yes	guarachudo	inclusive
-ES00698	n	ps	yes	güero	inclusive
-ES00699	n	ps	yes	huarachudo	inclusive
-ES00700	n	ps	yes	indio	inclusive
-ES00701	n	ps	yes	jochi	inclusive
-ES00702	n	ps	yes	jovenlandés	inclusive
-ES00703	n	ps	yes	longo	inclusive
-ES00704	n	ps	yes	macaca	conservative
-ES00705	n	ps	yes	macaco	inclusive
-ES00706	n	ps	yes	macaquito	inclusive
-ES00707	n	ps	yes	machupichu	conservative
-ES00708	n	ps	yes	maicero	inclusive
-ES00709	a	ps	yes	mapuchino	inclusive
-ES00710	n	ps	yes	maqueto	conservative
-ES00711	n	ps	yes	mayate	conservative
-ES00712	n	ps	yes	mejicano	inclusive
-ES00713	n	ps	yes	meteco	inclusive
-ES00714	n	ps	yes	mexichango	inclusive
-ES00715	n	ps	yes	meximono	inclusive
-ES00716	n	ps	yes	mojado	inclusive
-ES00717	n	ps	yes	moro	inclusive
-ES00718	n	ps	yes	moromierda	conservative
-ES00719	a	ps	yes	más negro que los cojones de un burro	conservative
-ES00720	n	ps	yes	naco	inclusive
-ES00721	n	ps	yes	narcolombiano	inclusive
-ES00722	n	ps	yes	negrata	inclusive
-ES00723	n	ps	yes	negro	inclusive
-ES00724	n	ps	yes	negrolombiano	inclusive
-ES00725	n	ps	yes	oaxaquita	inclusive
-ES00726	n	ps	yes	palestino	inclusive
-ES00727	n	ps	yes	panchito	conservative
-ES00728	n	ps	yes	paqui	inclusive
-ES00729	n	ps	yes	payo	inclusive
-ES00730	n	ps	yes	payoponi	inclusive
-ES00731	n	ps	yes	peligro amarillo	inclusive
-ES00732	n	ps	yes	peroncho	inclusive
-ES00733	a	ps	yes	perruano	inclusive
-ES00734	n	ps	yes	perrú	inclusive
-ES00735	n	ps	yes	peruca	inclusive
-ES00736	n	ps	yes	pocho	inclusive
-ES00737	n	ps	yes	polaco	inclusive
-ES00738	n	ps	yes	rojo	inclusive
-ES00739	n	ps	yes	saltamuros	conservative
-ES00740	n	ps	yes	salvatrucho	inclusive
-ES00741	n	ps	yes	sudaca	conservative
-ES00742	n	ps	yes	tiraflechas	inclusive
-ES00743	v	ps	yes	trabajar como un negro	inclusive
-ES00744	n	ps	yes	veneco	inclusive
-ES00745	n	ps	yes	whitexican	inclusive
-ES00746	n	ps	yes	yanacona	inclusive
-ES00747	r	qas	no	a calzón quitado	conservative
-ES00748	r	qas	no	a huevo	conservative
-ES00749	p	qas	no	a la chingada	conservative
-ES00750	i	qas	no	a la mierda	conservative
-ES00751	p	qas	no	a tomar por culo	conservative
-ES00752	r	qas	no	a tomar por el culo	conservative
-ES00753	n	qas	no	aborto	conservative
-ES00754	v	qas	no	abrochar	conservative
-ES00755	n	qas	no	acabada	conservative
-ES00756	v	qas	no	acabar	conservative
-ES00757	a	qas	no	acojonante	conservative
-ES00758	v	qas	no	acojonar	conservative
-ES00759	v	qas	no	afilar	conservative
-ES00760	n	qas	no	agallas	conservative
-ES00761	v	qas	no	agarrar a putazos	conservative
-ES00762	v	qas	no	agüevar	conservative
-ES00763	n	qas	no	anal	conservative
-ES00764	v	qas	no	apretar el culo	conservative
-ES00765	n	qas	no	aquí te pillo, aquí te mato	conservative
-ES00766	v	qas	no	arrebatar	conservative
-ES00767	v	qas	no	arrecho	conservative
-ES00768	n	qas	no	autofollador	conservative
-ES00769	n	qas	no	bagayo	inclusive
-ES00770	v	qas	no	bajar al pilón	conservative
-ES00771	a	qas	no	beyako	conservative
-ES00772	n	qas	no	bolita	inclusive
-ES00773	n	qas	no	bollok	conservative
-ES00774	n	qas	no	bombilla	inclusive
-ES00775	n	qas	no	brida	inclusive
-ES00776	n	qas	no	buchiteo	conservative
-ES00777	n	qas	no	bugayo	conservative
-ES00778	v	qas	no	burrear	conservative
-ES00779	p	qas	no	bésame el culo	conservative
-ES00780	n	qas	no	cabadura	conservative
-ES00781	n	qas	no	cabronazo	conservative
-ES00782	n	qas	no	caca	conservative
-ES00783	n	qas	no	cachondo	conservative
-ES00784	n	qas	no	cagada	conservative
-ES00785	n	qas	no	cagadas	conservative
-ES00786	n	qas	no	cagadera	conservative
-ES00787	n	qas	no	cagadero	conservative
-ES00788	a	qas	no	cagado	conservative
-ES00789	n	qas	no	cagalera	conservative
-ES00790	n	qas	no	cagando	conservative
-ES00791	v	qas	no	cagar	conservative
-ES00792	v	qas	no	cagar a pedos	conservative
-ES00793	v	qas	no	cagar a piñas	conservative
-ES00794	v	qas	no	cagar dinero	conservative
-ES00795	v	qas	no	cagar el palo	conservative
-ES00796	v	qas	no	cagarse en la noticia	conservative
-ES00797	n	qas	no	cagazo	conservative
-ES00798	n	qas	no	cagazón	conservative
-ES00799	n	qas	no	cagón	conservative
-ES00800	n	qas	no	calientapollas	conservative
-ES00801	v	qas	no	callarse como una puta	conservative
-ES00802	n	qas	no	campana	inclusive
-ES00803	v	qas	no	cangrejear	conservative
-ES00804	n	qas	no	caraculo	conservative
-ES00805	n	qas	no	carajo de mar	conservative
-ES00806	n	qas	no	caraxo	conservative
-ES00807	v	qas	no	carnear	conservative
-ES00808	v	qas	no	cascar	inclusive
-ES00809	v	qas	no	cascársela	conservative
-ES00810	n	qas	no	casucha	inclusive
-ES00811	v	qas	no	cepillar	conservative
-ES00812	n	qas	no	cereguete	conservative
-ES00813	n	qas	no	cerotada	conservative
-ES00814	n	qas	no	cerotazo	conservative
-ES00815	v	qas	no	cerrar el orto	conservative
-ES00816	n	qas	no	chacachaca	conservative
-ES00817	v	qas	no	chantar	conservative
-ES00818	n	qas	no	chaqueta	conservative
-ES00819	n	qas	no	chele	conservative
-ES00820	n	qas	no	chicha	conservative
-ES00821	v	qas	no	chichar	conservative
-ES00822	n	qas	no	chilguete	conservative
-ES00823	v	qas	no	chimar	conservative
-ES00824	n	qas	no	chingada	conservative
-ES00825	n	qas	no	chingadazo	conservative
-ES00826	n	qas	no	chingadera	conservative
-ES00827	a	qas	no	chingado	conservative
-ES00828	a	qas	no	chingados	conservative
-ES00829	n	qas	no	chingamadral	conservative
-ES00830	v	qas	no	chingar la madre	conservative
-ES00831	v	qas	no	chingarle	conservative
-ES00832	n	qas	no	chingatal	conservative
-ES00833	n	qas	no	chingazal	conservative
-ES00834	n	qas	no	chingo	conservative
-ES00835	a	qas	no	chingue y chingue	conservative
-ES00836	n	qas	no	chinguero	conservative
-ES00837	n	qas	no	chingón	conservative
-ES00838	n	qas	no	chipuste	conservative
-ES00839	i	qas	no	chite	conservative
-ES00840	n	qas	no	choriceo	conservative
-ES00841	v	qas	no	chorrear	conservative
-ES00842	n	qas	no	chuchada	conservative
-ES00843	n	qas	no	chunchucuyo	conservative
-ES00844	n	qas	no	chupada	conservative
-ES00845	n	qas	no	chupamangas	conservative
-ES00846	n	qas	no	chupapollas	conservative
-ES00847	p	qas	no	chupar la polla	conservative
-ES00848	i	qas	no	chupe mantequilla de mi culo	conservative
-ES00849	n	qas	no	chupetón	conservative
-ES00850	v	qas	no	chupársela	conservative
-ES00851	n	qas	no	churria	conservative
-ES00852	n	qas	no	chusma	inclusive
-ES00853	v	qas	no	chíngate	conservative
-ES00854	p	qas	no	chúpalo entonces	conservative
-ES00855	n	qas	no	cipa	conservative
-ES00856	v	qas	no	clavársela	conservative
-ES00857	n	qas	no	clítoris	conservative
-ES00858	v	qas	no	coger por los huevos	conservative
-ES00859	n	qas	no	cogida	conservative
-ES00860	v	qas	no	cogérsela con papel de fumar	conservative
-ES00861	r	qas	no	cojonudamente	conservative
-ES00862	a	qas	no	cojonudo	conservative
-ES00863	n	qas	no	colita	inclusive
-ES00864	n	qas	no	comepollas	conservative
-ES00865	n	qas	no	comer	conservative
-ES00866	a	qas	no	como el coño de la bernarda	conservative
-ES00867	r	qas	no	como el culo	conservative
-ES00868	a	qas	no	como las huevas	conservative
-ES00869	a	qas	no	como si las huevas	conservative
-ES00870	i	qas	no	con dos cojones	conservative
-ES00871	r	qas	no	con el culo al aire	conservative
-ES00872	i	qas	no	concha de tu madre	conservative
-ES00873	n	qas	no	conchatumadre	conservative
-ES00874	i	qas	no	conchatumare	conservative
-ES00875	i	qas	no	conchetumadre	conservative
-ES00876	i	qas	no	conchetumare	conservative
-ES00877	n	qas	no	consolador	conservative
-ES00878	n	qas	no	consoladores	conservative
-ES00879	n	qas	no	coprofagía	conservative
-ES00880	n	qas	no	corrida	conservative
-ES00881	n	qas	no	cortachurro	conservative
-ES00882	v	qas	no	cortarle los cojones	conservative
-ES00883	v	qas	no	costar un cojón	conservative
-ES00884	n	qas	no	coyoma	conservative
-ES00885	n	qas	no	coña	conservative
-ES00886	n	qas	no	coñamentazón	conservative
-ES00887	n	qas	no	coñazo	conservative
-ES00888	n	qas	no	coñito	conservative
-ES00889	n	qas	no	coñitos	conservative
-ES00890	n	qas	no	coñoto	conservative
-ES00891	n	qas	no	coñón	conservative
-ES00892	n	qas	no	cresta	conservative
-ES00893	n	qas	no	creta	conservative
-ES00894	n	qas	no	crica	conservative
-ES00895	n	qas	no	cuacha	conservative
-ES00896	n	qas	no	cuchara	conservative
-ES00897	n	qas	no	cuesco	conservative
-ES00898	n	qas	no	culada	conservative
-ES00899	n	qas	no	culamen	conservative
-ES00900	n	qas	no	culero	conservative
-ES00901	n	qas	no	culiado	conservative
-ES00902	a	qas	no	culiao	conservative
-ES00903	v	qas	no	culiar	conservative
-ES00904	n	qas	no	culito	conservative
-ES00905	n	qas	no	culo del mundo	conservative
-ES00906	n	qas	no	culos	conservative
-ES00907	n	qas	no	culote	conservative
-ES00908	n	qas	no	cum	conservative
-ES00909	n	qas	no	cunillingus	conservative
-ES00910	n	qas	no	currutaca	conservative
-ES00911	n	qas	no	cursiento	conservative
-ES00912	p	qas	no	cómeme el coño	conservative
-ES00913	p	qas	no	cómeme el rabo	conservative
-ES00914	p	qas	no	cómeme la polla	conservative
-ES00915	p	qas	no	cómeme los huevos	conservative
-ES00916	n	qas	no	córneo	conservative
-ES00917	v	qas	no	dar	conservative
-ES00918	v	qas	no	dar el coñazo	conservative
-ES00919	v	qas	no	dar por el culo	conservative
-ES00920	v	qas	no	dar verga	conservative
-ES00921	v	qas	no	darle al tema	conservative
-ES00922	a	qas	no	de cojones	conservative
-ES00923	a	qas	no	de coña	conservative
-ES00924	r	qas	no	de culo	conservative
-ES00925	a	qas	no	de la chingada	conservative
-ES00926	a	qas	no	de la verga	conservative
-ES00927	a	qas	no	de mierda	conservative
-ES00928	a	qas	no	de puta madre	conservative
-ES00929	a	qas	no	del carajo	conservative
-ES00930	r	qas	no	del culo	conservative
-ES00931	a	qas	no	del orto	conservative
-ES00932	v	qas	no	descojonarse	conservative
-ES00933	v	qas	no	descoñetar	conservative
-ES00934	v	qas	no	descubrir américa	inclusive
-ES00935	v	qas	no	descubriste américa	inclusive
-ES00936	v	qas	no	desempalmar	conservative
-ES00937	v	qas	no	desgranar	conservative
-ES00938	v	qas	no	despollarse	conservative
-ES00939	n	qas	no	despolle	conservative
-ES00940	v	qas	no	desturcar	conservative
-ES00941	v	qas	no	detonar	conservative
-ES00942	n	qas	no	devoratulas	conservative
-ES00943	n	qas	no	dique	conservative
-ES00944	n	qas	no	disparos unidos	inclusive
-ES00945	p	qas	no	donde tengas la olla no metas la polla	conservative
-ES00946	n	qas	no	drogas	conservative
-ES00947	n	qas	no	duche	conservative
-ES00948	v	qas	no	echar la papilla	conservative
-ES00949	v	qas	no	echar la pava	conservative
-ES00950	v	qas	no	echarle cojones a algo	conservative
-ES00951	p	qas	no	echarle los calzones	conservative
-ES00952	a	qas	no	empalmado	conservative
-ES00953	v	qas	no	empalmar	conservative
-ES00954	v	qas	no	empedar	conservative
-ES00955	v	qas	no	emperrar	conservative
-ES00956	v	qas	no	empiltrarse	conservative
-ES00957	a	qas	no	empotrable	conservative
-ES00958	n	qas	no	empotrador	conservative
-ES00959	v	qas	no	empotrar	conservative
-ES00960	v	qas	no	emputar	conservative
-ES00961	v	qas	no	emputarse	conservative
-ES00962	v	qas	no	emputecer	conservative
-ES00963	r	qas	no	en la quinta puñeta	conservative
-ES00964	p	qas	no	en tiempos de guerra cualquier agujero es trinchera	conservative
-ES00965	v	qas	no	enchufársela	conservative
-ES00966	v	qas	no	encojonar	conservative
-ES00967	n	qas	no	enculador	conservative
-ES00968	v	qas	no	enmerdar	conservative
-ES00969	v	qas	no	escoñar	conservative
-ES00970	v	qas	no	escoñetar	conservative
-ES00971	n	qas	no	escroto	conservative
-ES00972	n	qas	no	espacio	conservative
-ES00973	n	qas	no	esperma	conservative
-ES00974	v	qas	no	estar en chinga	conservative
-ES00975	v	qas	no	estar hasta la madre	conservative
-ES00976	v	qas	no	estar hasta la verga	conservative
-ES00977	v	qas	no	estar hasta los cojones	conservative
-ES00978	n	qas	no	extremo	conservative
-ES00979	n	qas	no	eyacula	conservative
-ES00980	n	qas	no	eyaculación	conservative
-ES00981	n	qas	no	eyaculado	conservative
-ES00982	v	qas	no	eyacular	conservative
-ES00983	n	qas	no	fagging	conservative
-ES00984	n	qas	no	falopa	conservative
-ES00985	n	qas	no	felación	conservative
-ES00986	n	qas	no	felching	conservative
-ES00987	n	qas	no	fierros	conservative
-ES00988	p	qas	no	fiesta de salchichas	conservative
-ES00989	n	qas	no	figurita	inclusive
-ES00990	v	qas	no	foder	conservative
-ES00991	n	qas	no	folla	conservative
-ES00992	n	qas	no	follabilidad	conservative
-ES00993	a	qas	no	follable	conservative
-ES00994	n	qas	no	follada	conservative
-ES00995	n	qas	no	follador	conservative
-ES00996	n	qas	no	folladores	conservative
-ES00997	n	qas	no	follamigo	conservative
-ES00998	n	qas	no	follaniños	conservative
-ES00999	n	qas	no	folleteo	conservative
-ES01000	n	qas	no	follódromo	conservative
-ES01001	v	qas	no	forrar	conservative
-ES01002	v	qas	no	fregar	conservative
-ES01003	v	qas	no	frotársela	conservative
-ES01004	i	qas	no	fuck	conservative
-ES01005	a	qas	no	fucking	conservative
-ES01006	p	qas	no	fudge packer	conservative
-ES01007	n	qas	no	gachí	conservative
-ES01008	n	qas	no	gallos	conservative
-ES01009	n	qas	no	gamborimbo	conservative
-ES01010	n	qas	no	garcha	conservative
-ES01011	n	qas	no	garco	conservative
-ES01012	n	qas	no	gilipichis	conservative
-ES01013	n	qas	no	goma	conservative
-ES01014	n	qas	no	gorrero	conservative
-ES01015	n	qas	no	goy	inclusive
-ES01016	n	qas	no	grieta	conservative
-ES01017	n	qas	no	guacho	conservative
-ES01018	n	qas	no	guarrilla	conservative
-ES01019	n	qas	no	guasca	conservative
-ES01020	n	qas	no	guevo	conservative
-ES01021	p	qas	no	hacer una paja	conservative
-ES01022	v	qas	no	hacerse el boludo	conservative
-ES01023	v	qas	no	hacerse el pendejo	conservative
-ES01024	p	qas	no	hacerse una paja	conservative
-ES01025	p	qas	no	haciendo el amor	conservative
-ES01026	v	qas	no	hartar	conservative
-ES01027	a	qas	no	hasta el culo	conservative
-ES01028	a	qas	no	hasta la madre	conservative
-ES01029	a	qas	no	hasta la polla	conservative
-ES01030	a	qas	no	hasta la verga	conservative
-ES01031	a	qas	no	hasta los cojones	conservative
-ES01032	p	qas	no	hay que joderse	conservative
-ES01033	n	qas	no	heroína	conservative
-ES01034	n	qas	no	hez	inclusive
-ES01035	n	qas	no	hideputa	conservative
-ES01036	p	qas	no	hija de puta	conservative
-ES01037	n	qas	no	hijaputa	conservative
-ES01038	n	qas	no	hijo de yuta	conservative
-ES01039	n	qas	no	hijueputez	conservative
-ES01040	n	qas	no	hinchapelotas	conservative
-ES01041	v	qas	no	hinchar	conservative
-ES01042	v	qas	no	hoder	conservative
-ES01043	n	qas	no	holocuento	inclusive
-ES01044	n	qas	no	hore	conservative
-ES01045	i	qas	no	hostia puta	conservative
-ES01046	n	qas	no	huelebicho	conservative
-ES01047	n	qas	no	hueva	conservative
-ES01048	n	qas	no	huevada	conservative
-ES01049	n	qas	no	huevo	conservative
-ES01050	n	qas	no	huevos	conservative
-ES01051	n	qas	no	huevón	conservative
-ES01052	n	qas	no	incogible	conservative
-ES01053	n	qas	no	infierno	conservative
-ES01054	a	qas	no	insingable	conservative
-ES01055	n	qas	no	instrumento	conservative
-ES01056	v	qas	no	ir	conservative
-ES01057	v	qas	no	irse a hacer puñetas	conservative
-ES01058	v	qas	no	irse a la chucha	conservative
-ES01059	v	qas	no	irse a la verga	conservative
-ES01060	v	qas	no	irse a tomar por culo	conservative
-ES01061	v	qas	no	irse al carajo	conservative
-ES01062	v	qas	no	irse de culo	conservative
-ES01063	v	qas	no	irse por la pata abajo	conservative
-ES01064	v	qas	no	irse por la patilla	conservative
-ES01065	n	qas	no	islas falkland	inclusive
-ES01066	v	qas	no	jalársela	conservative
-ES01067	a	qas	no	jediondo	conservative
-ES01068	n	qas	no	jiñada	conservative
-ES01069	v	qas	no	jiñar	conservative
-ES01070	n	qas	no	joda	conservative
-ES01071	v	qas	no	jode	conservative
-ES01072	n	qas	no	jodedor	conservative
-ES01073	v	qas	no	joderla	conservative
-ES01074	a	qas	no	jodible	conservative
-ES01075	r	qas	no	jodidamente	conservative
-ES01076	v	qas	no	jodidas	conservative
-ES01077	a	qas	no	jodido	conservative
-ES01078	a	qas	no	jodidísimo	conservative
-ES01079	a	qas	no	jodiente	conservative
-ES01080	v	qas	no	jodiera	conservative
-ES01081	v	qas	no	jodiere	conservative
-ES01082	v	qas	no	jodieses	conservative
-ES01083	v	qas	no	jodiéramos	conservative
-ES01084	n	qas	no	jodión	conservative
-ES01085	v	qas	no	jodo	conservative
-ES01086	v	qas	no	jodáis	conservative
-ES01087	v	qas	no	jodás	conservative
-ES01088	v	qas	no	jodí	conservative
-ES01089	n	qas	no	joputa	conservative
-ES01090	v	qas	no	jódame	conservative
-ES01091	v	qas	no	jódete	conservative
-ES01092	n	qas	no	kapullo	conservative
-ES01093	n	qas	no	kiki	conservative
-ES01094	n	qas	no	kock	conservative
-ES01095	i	qas	no	la concha de la lora	conservative
-ES01096	p	qas	no	la concha de tu madre	conservative
-ES01097	p	qas	no	la polla en vinagre	conservative
-ES01098	i	qas	no	la puta madre	conservative
-ES01099	i	qas	no	la reconcha de la lora	conservative
-ES01100	i	qas	no	la yuta madre	conservative
-ES01101	p	qas	no	labios vaginales	conservative
-ES01102	n	qas	no	ladilla	conservative
-ES01103	n	qas	no	lambeculo	conservative
-ES01104	n	qas	no	lechazo	conservative
-ES01105	n	qas	no	leche	conservative
-ES01106	v	qas	no	lechear	conservative
-ES01107	n	qas	no	lechota	conservative
-ES01108	n	qas	no	lefa	conservative
-ES01109	n	qas	no	lefazo	conservative
-ES01110	v	qas	no	llegar al pincho	conservative
-ES01111	n	qas	no	locro	conservative
-ES01112	n	qas	no	lora	conservative
-ES01113	p	qas	no	los cojones	conservative
-ES01114	p	qas	no	los cojones morados	conservative
-ES01115	p	qas	no	los pechos	conservative
-ES01116	n	qas	no	lumi	conservative
-ES01117	v	qas	no	machacársela	conservative
-ES01118	n	qas	no	machete	conservative
-ES01119	n	qas	no	machona	inclusive
-ES01120	n	qas	no	maciza	conservative
-ES01121	n	qas	no	macizorra	conservative
-ES01122	n	qas	no	madral	conservative
-ES01123	n	qas	no	madrazo	conservative
-ES01124	n	qas	no	madre	conservative
-ES01125	p	qas	no	madre folladora	conservative
-ES01126	v	qas	no	madrear	conservative
-ES01127	v	qas	no	majar	conservative
-ES01128	i	qas	no	maldita sea	conservative
-ES01129	p	qas	no	maldito sea	conservative
-ES01130	a	qas	no	malfollado	conservative
-ES01131	n	qas	no	malparido	conservative
-ES01132	n	qas	no	mamabicho	conservative
-ES01133	n	qas	no	mamada	conservative
-ES01134	a	qas	no	mamado	conservative
-ES01135	n	qas	no	mamagüevo	conservative
-ES01136	n	qas	no	mamahuevo	conservative
-ES01137	v	qas	no	mamar	conservative
-ES01138	n	qas	no	mamawebo	conservative
-ES01139	v	qas	no	mandar a la mierda	conservative
-ES01140	n	qas	no	manicomio	inclusive
-ES01141	n	qas	no	manuela	conservative
-ES01142	n	qas	no	mapache	conservative
-ES01143	n	qas	no	martillo	conservative
-ES01144	n	qas	no	masoquista	conservative
-ES01145	v	qas	no	masturbarse	conservative
-ES01146	p	qas	no	me cago en dios	conservative
-ES01147	p	qas	no	me cago en el mar	conservative
-ES01148	p	qas	no	me cago en la leche	conservative
-ES01149	i	qas	no	me cago en la mar	conservative
-ES01150	p	qas	no	me cago en la puta	conservative
-ES01151	i	qas	no	me cago en ti	conservative
-ES01152	p	qas	no	me cago en todo	conservative
-ES01153	p	qas	no	me cago en tu puta madre	conservative
-ES01154	p	qas	no	me cago en tu puta madre que te parió	conservative
-ES01155	i	qas	no	me cago en tus muertos	conservative
-ES01156	i	qas	no	me cago en tus vivos	conservative
-ES01157	p	qas	no	me la pela	conservative
-ES01158	p	qas	no	me la suda	conservative
-ES01159	n	qas	no	meadero	conservative
-ES01160	v	qas	no	mear	conservative
-ES01161	n	qas	no	meco	conservative
-ES01162	v	qas	no	meneársela	conservative
-ES01163	v	qas	no	mequear	conservative
-ES01164	a	qas	no	merdoso	conservative
-ES01165	v	qas	no	merecer	conservative
-ES01166	v	qas	no	meter mierda	conservative
-ES01167	n	qas	no	mi3rd@	conservative
-ES01168	n	qas	no	michi	conservative
-ES01169	n	qas	no	mierda de toro	conservative
-ES01170	n	qas	no	mierda pinchada en un palo	conservative
-ES01171	a	qas	no	mierdero	conservative
-ES01172	n	qas	no	mierdificación	conservative
-ES01173	a	qas	no	mierdoso	conservative
-ES01174	p	qas	no	mil pares de cojones	conservative
-ES01175	p	qas	no	mis cojones treinta y tres	conservative
-ES01176	n	qas	no	mojón	conservative
-ES01177	n	qas	no	molesto	conservative
-ES01178	n	qas	no	monda	conservative
-ES01179	n	qas	no	mozcorra	conservative
-ES01180	p	qas	no	mucha mierda	conservative
-ES01181	p	qas	no	muncher alfombra	conservative
-ES01182	p	qas	no	más me crece	conservative
-ES01183	p	qas	no	métetelo por el culo	conservative
-ES01184	n	qas	no	nai	conservative
-ES01185	n	qas	no	nardo	conservative
-ES01186	n	qas	no	nazi	conservative
-ES01187	i	qas	no	ndeara	conservative
-ES01188	n	qas	no	nepe	conservative
-ES01189	r	qas	no	ni cagando	conservative
-ES01190	r	qas	no	ni en pedo	conservative
-ES01191	p	qas	no	ni puta idea	conservative
-ES01192	n	qas	no	niche	inclusive
-ES01193	n	qas	no	niggers	conservative
-ES01194	p	qas	no	no digas mamadas	conservative
-ES01195	p	qas	no	no jodas	conservative
-ES01196	p	qas	no	no mames	conservative
-ES01197	p	qas	no	no te jode	conservative
-ES01198	v	qas	no	no tener cojones	conservative
-ES01199	v	qas	no	no tener huevos	conservative
-ES01200	v	qas	no	no tener madre	conservative
-ES01201	v	qas	no	no tener ni puta idea	conservative
-ES01202	n	qas	no	nopor	conservative
-ES01203	n	qas	no	npi	conservative
-ES01204	n	qas	no	ocho	conservative
-ES01205	n	qas	no	ocote	conservative
-ES01206	p	qas	no	olé tus cojones	conservative
-ES01207	n	qas	no	opa	inclusive
-ES01208	n	qas	no	orgasimo	conservative
-ES01209	n	qas	no	orgasmo	conservative
-ES01210	n	qas	no	orgasmos	conservative
-ES01211	n	qas	no	orina	conservative
-ES01212	n	qas	no	orinando	conservative
-ES01213	n	qas	no	orto	conservative
-ES01214	n	qas	no	pachorriento	inclusive
-ES01215	n	qas	no	paja mental	conservative
-ES01216	n	qas	no	pajilla	conservative
-ES01217	n	qas	no	pajillero	conservative
-ES01218	n	qas	no	pajote	conservative
-ES01219	v	qas	no	pajuelear	conservative
-ES01220	n	qas	no	pallaringa	conservative
-ES01221	n	qas	no	palomo	conservative
-ES01222	n	qas	no	papaya	conservative
-ES01223	n	qas	no	papelero	conservative
-ES01224	v	qas	no	parar	conservative
-ES01225	v	qas	no	parir	conservative
-ES01226	n	qas	no	patería	conservative
-ES01227	n	qas	no	pedo	conservative
-ES01228	n	qas	no	pedorro	conservative
-ES01229	v	qas	no	peer	conservative
-ES01230	v	qas	no	pelar	conservative
-ES01231	n	qas	no	pelota	conservative
-ES01232	n	qas	no	pelotas	conservative
-ES01233	n	qas	no	pelotudazo	conservative
-ES01234	v	qas	no	pelotudear	conservative
-ES01235	n	qas	no	pelotudez	conservative
-ES01236	n	qas	no	pelotudo	conservative
-ES01237	n	qas	no	peluche	conservative
-ES01238	n	qas	no	pelusa	conservative
-ES01239	v	qas	no	pelársela	conservative
-ES01240	n	qas	no	pendejada	conservative
-ES01241	n	qas	no	pendejez	conservative
-ES01242	v	qas	no	perder el culo	conservative
-ES01243	n	qas	no	perras	conservative
-ES01244	p	qas	no	perro follador	conservative
-ES01245	n	qas	no	peruanada	inclusive
-ES01246	n	qas	no	pervertido	conservative
-ES01247	n	qas	no	pezón	conservative
-ES01248	n	qas	no	pijazal	conservative
-ES01249	n	qas	no	pijazo	conservative
-ES01250	n	qas	no	pijeada	conservative
-ES01251	a	qas	no	pijeado	conservative
-ES01252	n	qas	no	pinchazo	conservative
-ES01253	n	qas	no	pinchazos	conservative
-ES01254	n	qas	no	pinche	conservative
-ES01255	n	qas	no	pinchito	conservative
-ES01256	n	qas	no	pincho	conservative
-ES01257	a	qas	no	pinchísimo	conservative
-ES01258	n	qas	no	pintamonas	inclusive
-ES01259	n	qas	no	piricuaco	inclusive
-ES01260	n	qas	no	pirobo	conservative
-ES01261	n	qas	no	piruja	conservative
-ES01262	n	qas	no	pis	conservative
-ES01263	v	qas	no	pisar	conservative
-ES01264	v	qas	no	pisser	conservative
-ES01265	n	qas	no	pitillo	conservative
-ES01266	n	qas	no	plátano	conservative
-ES01267	v	qas	no	poner mirando pa' cuenca	conservative
-ES01268	v	qas	no	ponerle	conservative
-ES01269	n	qas	no	popola	conservative
-ES01270	p	qas	no	por el culo te la hinco	conservative
-ES01271	r	qas	no	por las puras huevas	conservative
-ES01272	n	qas	no	porno	conservative
-ES01273	n	qas	no	pornografía	conservative
-ES01274	n	qas	no	potorro	conservative
-ES01275	n	qas	no	prelefa	conservative
-ES01276	a	qas	no	preñado	inclusive
-ES01277	n	qas	no	pube	conservative
-ES01278	n	qas	no	pucha	conservative
-ES01279	n	qas	no	puchaina	conservative
-ES01280	n	qas	no	pun	conservative
-ES01281	v	qas	no	pupusear	conservative
-ES01282	n	qas	no	pupusiada	conservative
-ES01283	n	qas	no	pupusona	conservative
-ES01284	n	qas	no	pupusuda	conservative
-ES01285	i	qas	no	puta la huevada	conservative
-ES01286	i	qas	no	puta la wea	conservative
-ES01287	i	qas	no	puta madre	conservative
-ES01288	p	qas	no	puta que te parió	conservative
-ES01289	n	qas	no	putamadral	conservative
-ES01290	n	qas	no	putarrajal	conservative
-ES01291	n	qas	no	putaña	conservative
-ES01292	v	qas	no	putañear	conservative
-ES01293	n	qas	no	putañero	conservative
-ES01294	n	qas	no	puteada	conservative
-ES01295	v	qas	no	putear	conservative
-ES01296	n	qas	no	putimadral	conservative
-ES01297	n	qas	no	putivuelta	conservative
-ES01298	n	qas	no	putiza	conservative
-ES01299	n	qas	no	putón verbenero	conservative
-ES01300	n	qas	no	puñeta	conservative
-ES01301	n	qas	no	puñetas	conservative
-ES01302	p	qas	no	pájaro carpintero	conservative
-ES01303	a	qas	no	que te cagas	conservative
-ES01304	p	qas	no	que te den por el culo	conservative
-ES01305	p	qas	no	que te folle un pez	conservative
-ES01306	p	qas	no	que te follen	conservative
-ES01307	n	qas	no	quejas	conservative
-ES01308	n	qas	no	queque	conservative
-ES01309	v	qas	no	querer cagar más arriba del culo	conservative
-ES01310	n	qas	no	queso	conservative
-ES01311	v	qas	no	quimbar	conservative
-ES01312	r	qas	no	quinto coño	conservative
-ES01313	p	qas	no	qué carajo	conservative
-ES01314	p	qas	no	qué pedo	conservative
-ES01315	p	qas	no	qué puñetas	conservative
-ES01316	p	qas	no	qué tienen que ver los cojones con comer trigo	conservative
-ES01317	p	qas	no	qué verga	conservative
-ES01318	n	qas	no	racista	conservative
-ES01319	n	qas	no	rascacazuelas	inclusive
-ES01320	n	qas	no	reatazo	conservative
-ES01321	i	qas	no	reconchasumadre	conservative
-ES01322	n	qas	no	recto	conservative
-ES01323	v	qas	no	reventar	conservative
-ES01324	n	qas	no	rimming	conservative
-ES01325	v	qas	no	romper las pelotas	conservative
-ES01326	n	qas	no	saco de hueva	conservative
-ES01327	n	qas	no	saco de mierda	conservative
-ES01328	n	qas	no	saco wea	conservative
-ES01329	n	qas	no	salame	inclusive
-ES01330	n	qas	no	salchicha	conservative
-ES01331	p	qas	no	salir de la polla	conservative
-ES01332	p	qas	no	salir de los cojones	conservative
-ES01333	n	qas	no	sanamabiche	conservative
-ES01334	n	qas	no	sangriento	conservative
-ES01335	n	qas	no	secuaz	inclusive
-ES01336	n	qas	no	semen	conservative
-ES01337	n	qas	no	sentón	conservative
-ES01338	n	qas	no	sereguete	conservative
-ES01339	n	qas	no	sexo	conservative
-ES01340	n	qas	no	sexo débil	inclusive
-ES01341	p	qas	no	sexo oral	conservative
-ES01342	i	qas	no	shit	conservative
-ES01343	n	qas	no	shute	conservative
-ES01344	n	qas	no	sidótico	inclusive
-ES01345	n	qas	no	siete	conservative
-ES01346	p	qas	no	sin arcada no hay mamada	conservative
-ES01347	v	qas	no	singar	conservative
-ES01348	n	qas	no	skank	conservative
-ES01349	n	qas	no	smegma	conservative
-ES01350	n	qas	no	soplagaitas	conservative
-ES01351	n	qas	no	soplapollas	conservative
-ES01352	n	qas	no	soplapollez	conservative
-ES01353	v	qas	no	soplar la vela	conservative
-ES01354	n	qas	no	sorete	conservative
-ES01355	v	qas	no	sudar	conservative
-ES01356	n	qas	no	sádico	conservative
-ES01357	i	qas	no	tamare	conservative
-ES01358	n	qas	no	tanate	conservative
-ES01359	n	qas	no	tata	conservative
-ES01360	v	qas	no	tener agarrado por los cojones	conservative
-ES01361	v	qas	no	tener huevos	conservative
-ES01362	v	qas	no	tirar el fideo	conservative
-ES01363	v	qas	no	tirar la goma	conservative
-ES01364	n	qas	no	tirón	conservative
-ES01365	n	qas	no	tizón	conservative
-ES01366	v	qas	no	tocar los cojones	conservative
-ES01367	v	qas	no	tocar los huevos	conservative
-ES01368	v	qas	no	tocársela	conservative
-ES01369	n	qas	no	tolete	conservative
-ES01370	v	qas	no	tomar por culo	conservative
-ES01371	n	qas	no	toto	conservative
-ES01372	n	qas	no	tragasables	conservative
-ES01373	n	qas	no	trans	inclusive
-ES01374	n	qas	no	transexual	conservative
-ES01375	n	qas	no	travelo	conservative
-ES01376	n	qas	no	trio	conservative
-ES01377	n	qas	no	trucha	inclusive
-ES01378	n	qas	no	truño	conservative
-ES01379	n	qas	no	tuche	conservative
-ES01380	n	qas	no	tula	conservative
-ES01381	v	qas	no	turquear	conservative
-ES01382	p	qas	no	tía buena	conservative
-ES01383	p	qas	no	tócate los cojones	conservative
-ES01384	p	qas	no	un carajo	conservative
-ES01385	r	qas	no	un chingo	conservative
-ES01386	r	qas	no	un huevo	conservative
-ES01387	r	qas	no	un huevo y parte del otro	conservative
-ES01388	p	qas	no	una mierda	conservative
-ES01389	n	qas	no	vaina	conservative
-ES01390	v	qas	no	valer verga	conservative
-ES01391	n	qas	no	valeverguista	conservative
-ES01392	n	qas	no	vergazal	conservative
-ES01393	n	qas	no	vergo	conservative
-ES01394	n	qas	no	vergota	conservative
-ES01395	n	qas	no	vergueada	conservative
-ES01396	v	qas	no	verguear	conservative
-ES01397	a	qas	no	vergón	conservative
-ES01398	p	qas	no	vete a la mierda	conservative
-ES01399	i	qas	no	vete a la verga	conservative
-ES01400	p	qas	no	vete a tomar por culo	conservative
-ES01401	p	qas	no	vete y jódete	conservative
-ES01402	n	qas	no	viagra	conservative
-ES01403	v	qas	no	volar la raja	conservative
-ES01404	v	qas	no	volar verga	conservative
-ES01405	n	qas	no	vulva	conservative
-ES01406	n	qas	no	wang	conservative
-ES01407	n	qas	no	wawi	conservative
-ES01408	n	qas	no	wea	conservative
-ES01409	n	qas	no	wtf	conservative
-ES01410	p	qas	no	x clasificado	conservative
-ES01411	n	qas	no	xxx	conservative
-ES01412	i	qas	no	y una polla	conservative
-ES01413	v	qas	no	yacer	conservative
-ES01414	v	qas	no	zorrear	conservative
-ES01415	n	qas	no	zurullo	conservative
-ES01416	n	qas	no	ñacañaca	conservative
-ES01417	n	qas	no	ñaña	inclusive
-ES01418	n	rci	yes	babazorro	inclusive
-ES01419	a	rci	yes	carpetovetónico	inclusive
-ES01420	n	rci	yes	catalanistán	inclusive
-ES01421	n	rci	yes	chilote	inclusive
-ES01422	n	rci	yes	congolombia	inclusive
-ES01423	n	rci	yes	culipardo	inclusive
-ES01424	n	rci	yes	españistán	inclusive
-ES01425	n	rci	yes	eurabia	inclusive
-ES01426	n	rci	yes	gato	inclusive
-ES01427	n	rci	yes	godo	inclusive
-ES01428	n	rci	yes	godolandia	inclusive
-ES01429	n	rci	yes	gringo	inclusive
-ES01430	n	rci	yes	gringotenango	inclusive
-ES01431	n	rci	yes	guirilandia	inclusive
-ES01432	n	rci	yes	hambrezolano	inclusive
-ES01433	n	rci	yes	hambrezuela	inclusive
-ES01434	a	rci	yes	hispanistaní	inclusive
-ES01435	n	rci	yes	jovenlandia	inclusive
-ES01436	n	rci	yes	la madre putria	conservative
-ES01437	n	rci	yes	lachinoamérica	inclusive
-ES01438	n	rci	yes	mataulipas	inclusive
-ES01439	n	rci	yes	mesetario	inclusive
-ES01440	n	rci	yes	narcolombia	inclusive
-ES01441	n	rci	yes	negrolombia	inclusive
-ES01442	n	rci	yes	paisucho	inclusive
-ES01443	n	rci	yes	palmero	inclusive
-ES01444	n	rci	yes	pendejistán	inclusive
-ES01445	n	rci	yes	peronia	inclusive
-ES01446	n	rci	yes	perukistaní	inclusive
-ES01447	n	rci	yes	perukistán	inclusive
-ES01448	n	rci	yes	perusalén	inclusive
-ES01449	n	rci	yes	peruyork	inclusive
-ES01450	n	rci	yes	pipope	inclusive
-ES01451	n	rci	yes	poblachón	inclusive
-ES01452	n	rci	yes	pueblucho	inclusive
-ES01453	n	rci	yes	putria	conservative
-ES01454	n	rci	yes	república bananera	inclusive
-ES01455	n	rci	yes	rolo	inclusive
-ES01456	n	rci	yes	uropa	inclusive
-ES01457	n	re	no	abogánster	inclusive
-ES01458	n	re	no	asesinato	conservative
-ES01459	n	re	no	cana	conservative
-ES01460	n	re	no	canuto	inclusive
-ES01461	v	re	no	chingar	conservative
-ES01462	n	re	no	chonte	conservative
-ES01463	v	re	no	chorear	conservative
-ES01464	n	re	no	chori	inclusive
-ES01465	n	re	no	chorizo	conservative
-ES01466	n	re	no	coquero	inclusive
-ES01467	n	re	no	cuilio	inclusive
-ES01468	n	re	no	cuilío	inclusive
-ES01469	n	re	no	cuñadismo	inclusive
-ES01470	n	re	no	fierro	conservative
-ES01471	v	re	no	huevear	conservative
-ES01472	n	re	no	madero	inclusive
-ES01473	n	re	no	malviviente	inclusive
-ES01474	n	re	no	paco	inclusive
-ES01475	a	re	no	paraco	inclusive
-ES01476	n	re	no	pipero	inclusive
-ES01477	n	re	no	pirata	inclusive
-ES01478	n	re	no	quitavidas	inclusive
-ES01479	n	re	no	tamal	conservative
-ES01480	n	re	no	tecato	inclusive
-ES01481	n	re	no	violación	conservative
-ES01482	n	re	no	violador	conservative
-ES01483	n	svp	no	aleluyo	inclusive
-ES01484	n	svp	no	amarrete	inclusive
-ES01485	n	svp	no	bautista	inclusive
-ES01486	n	svp	no	biblia	inclusive
-ES01487	n	svp	no	capillita	inclusive
-ES01488	n	svp	no	comilón	conservative
-ES01489	n	svp	no	enojado	conservative
-ES01490	n	svp	no	hostia	conservative
-ES01491	n	svp	no	lambucio	inclusive
-ES01492	n	svp	no	lujuria	conservative
-ES01493	n	svp	no	rata	inclusive
-ES01494	n	svp	no	trasto	inclusive
+ES00004	n	an	no	arpías	conservative
+ES00005	n	an	no	avechucho	inclusive
+ES00006	n	an	no	bicho	inclusive
+ES00007	n	an	no	borrega	inclusive
+ES00008	n	an	no	borrego	inclusive
+ES00009	n	an	no	borregos	inclusive
+ES00010	n	an	no	caballejo	inclusive
+ES00011	n	an	no	cabro	conservative
+ES00012	n	an	no	cabron	conservative
+ES00013	n	an	no	cabrona	conservative
+ES00014	n	an	no	cabrones	conservative
+ES00015	n	an	no	cabrón	conservative
+ES00016	n	an	no	cerda	inclusive
+ES00017	n	an	no	cerdo	inclusive
+ES00018	n	an	no	chandoso	inclusive
+ES00019	n	an	no	chivo	conservative
+ES00020	n	an	no	chopa	inclusive
+ES00021	n	an	no	choto	conservative
+ES00022	n	an	no	cono	inclusive
+ES00023	n	an	no	gamba	inclusive
+ES00024	n	an	no	grilla	inclusive
+ES00025	n	an	no	guarra	conservative
+ES00026	n	an	no	guarras	conservative
+ES00027	n	an	no	guarro	conservative
+ES00028	n	an	no	gusano	inclusive
+ES00029	n	an	no	gusanos	inclusive
+ES00030	n	an	no	hocico	inclusive
+ES00031	n	an	no	jamelgo	inclusive
+ES00032	n	an	no	jote	inclusive
+ES00033	n	an	no	jumento	inclusive
+ES00034	n	an	no	lagarta	conservative
+ES00035	n	an	no	loro	inclusive
+ES00036	n	an	no	loros	inclusive
+ES00037	n	an	no	marica	inclusive
+ES00038	n	an	no	maricas	inclusive
+ES00039	n	an	no	marrana	inclusive
+ES00040	n	an	no	marrano	inclusive
+ES00041	n	an	no	otorongo	inclusive
+ES00042	n	an	no	perra	conservative
+ES00043	n	an	no	perro	inclusive
+ES00044	n	an	no	perros	inclusive
+ES00045	n	an	no	pica	inclusive
+ES00046	n	an	no	pico	inclusive
+ES00047	n	an	no	puerco	inclusive
+ES00048	n	an	no	puercos	inclusive
+ES00049	n	an	no	putada	inclusive
+ES00050	n	an	no	sapo	inclusive
+ES00051	n	an	no	yegua	inclusive
+ES00052	n	an	no	yeguas	inclusive
+ES00053	n	an	no	zorrilla	inclusive
+ES00054	n	an	no	zorrillo	inclusive
+ES00055	n	asf	no	almeja	conservative
+ES00056	v	asf	no	andarse a la chucha	conservative
+ES00057	n	asf	no	argolla	conservative
+ES00058	n	asf	no	buceta	conservative
+ES00059	n	asf	no	cachucha	conservative
+ES00060	n	asf	no	cajeta	conservative
+ES00061	n	asf	no	chochete	conservative
+ES00062	n	asf	no	chucha	conservative
+ES00063	n	asf	no	chuchas	conservative
+ES00064	n	asf	no	chucho	conservative
+ES00065	n	asf	no	chumino	conservative
+ES00066	n	asf	no	coño	conservative
+ES00067	n	asf	no	coños	conservative
+ES00068	n	asf	no	cuca	conservative
+ES00069	n	asf	no	panocha	conservative
+ES00070	n	asf	no	panzanocha	conservative
+ES00071	n	asf	no	papa	conservative
+ES00072	n	asf	no	papo	conservative
+ES00073	n	asf	no	raja	conservative
+ES00074	n	asf	no	teta	conservative
+ES00075	n	asf	no	tetamen	conservative
+ES00076	n	asf	no	tetas	conservative
+ES00077	p	asf	no	tetas grandes	conservative
+ES00078	n	asf	no	teto	conservative
+ES00079	n	asf	no	vagina	conservative
+ES00080	p	asm	no	a la verga	conservative
+ES00081	a	asm	no	a verga	conservative
+ES00082	p	asm	no	agárramela que me crece	conservative
+ES00083	n	asm	no	anaconda	conservative
+ES00084	v	asm	no	arrimar la cebolleta	conservative
+ES00085	v	asm	no	atornillar	conservative
+ES00086	a	asm	no	bien verga	conservative
+ES00087	n	asm	no	bolas	conservative
+ES00088	p	asm	no	bolsa de pelota	conservative
+ES00089	n	asm	no	bolsas	conservative
+ES00090	v	asm	no	cachar	conservative
+ES00091	n	asm	no	callampa	conservative
+ES00092	n	asm	no	capullo	conservative
+ES00093	n	asm	no	carajo	conservative
+ES00094	n	asm	no	carajos	conservative
+ES00095	n	asm	no	casquete	conservative
+ES00096	n	asm	no	chinga	conservative
+ES00097	n	asm	no	chingas	conservative
+ES00098	n	asm	no	chorra	conservative
+ES00099	n	asm	no	chorras	conservative
+ES00100	n	asm	no	chorro	conservative
+ES00101	n	asm	no	chota	conservative
+ES00102	n	asm	no	chotas	conservative
+ES00103	n	asm	no	cipote	conservative
+ES00104	n	asm	no	cipotes	conservative
+ES00105	v	asm	no	coger	conservative
+ES00106	n	asm	no	cojonazos	conservative
+ES00107	n	asm	no	cojones	conservative
+ES00108	n	asm	no	cojón	conservative
+ES00109	v	asm	no	culear	conservative
+ES00110	v	asm	no	follar	conservative
+ES00111	v	asm	no	garchar	conservative
+ES00112	n	asm	no	hijo de la verga	conservative
+ES00113	n	asm	no	huevazos	inclusive
+ES00114	v	asm	no	jalar	conservative
+ES00115	v	asm	no	joder	conservative
+ES00116	n	asm	no	jodienda	conservative
+ES00117	n	asm	no	macana	conservative
+ES00118	n	asm	no	maldita	conservative
+ES00119	n	asm	no	maldito	conservative
+ES00120	n	asm	no	malditos	conservative
+ES00121	n	asm	no	merculo	inclusive
+ES00122	n	asm	no	minga	conservative
+ES00123	n	asm	no	mosorola	conservative
+ES00124	n	asm	no	pajarraco	inclusive
+ES00125	n	asm	no	palo	conservative
+ES00126	n	asm	no	paloma	conservative
+ES00127	n	asm	no	palos	conservative
+ES00128	n	asm	no	papirola	conservative
+ES00129	n	asm	no	pene	conservative
+ES00130	n	asm	no	penes	conservative
+ES00131	n	asm	no	picha	conservative
+ES00132	v	asm	no	pichar	conservative
+ES00133	n	asm	no	pichula	conservative
+ES00134	n	asm	no	pija	conservative
+ES00135	n	asm	no	pijas	conservative
+ES00136	n	asm	no	pijo	conservative
+ES00137	n	asm	no	pinga	conservative
+ES00138	n	asm	no	pita	conservative
+ES00139	n	asm	no	pito	conservative
+ES00140	n	asm	no	pitos	conservative
+ES00141	n	asm	no	polla	conservative
+ES00142	n	asm	no	pollada	conservative
+ES00143	n	asm	no	pollas	conservative
+ES00144	n	asm	no	pollazo	conservative
+ES00145	n	asm	no	polvo	conservative
+ES00146	n	asm	no	poronga	conservative
+ES00147	n	asm	no	pupusa	conservative
+ES00148	n	asm	no	puñetero	conservative
+ES00149	n	asm	no	puñeteros	conservative
+ES00150	n	asm	no	reata	conservative
+ES00151	n	asm	no	testículo	conservative
+ES00152	v	asm	no	tirar	conservative
+ES00153	n	asm	no	turca	inclusive
+ES00154	n	asm	no	turco	inclusive
+ES00155	n	asm	no	verga	conservative
+ES00156	v	asm	no	vergar	conservative
+ES00157	n	asm	no	vergas	conservative
+ES00158	a	asm	no	vergatario	conservative
+ES00159	n	asm	no	vergazo	conservative
+ES00160	n	asm	no	ñefle	conservative
+ES00161	n	asm	no	ñuñuco	conservative
+ES00162	n	cds	no	-sco	inclusive
+ES00163	i	cds	no	a la puta calle	conservative
+ES00164	n	cds	no	acoplado	inclusive
+ES00165	n	cds	no	arrapiezo	inclusive
+ES00166	n	cds	no	artilugio	inclusive
+ES00167	n	cds	no	asilo	inclusive
+ES00168	n	cds	no	atajo	inclusive
+ES00169	n	cds	no	bable	inclusive
+ES00170	a	cds	no	bajero	inclusive
+ES00171	n	cds	no	bareto	inclusive
+ES00172	n	cds	no	barquichuela	inclusive
+ES00173	n	cds	no	barquichuelo	inclusive
+ES00174	n	cds	no	bastarda	conservative
+ES00175	n	cds	no	bastardo	conservative
+ES00176	n	cds	no	bazofia	inclusive
+ES00177	n	cds	no	bigardo	inclusive
+ES00178	n	cds	no	bizcochuelo	inclusive
+ES00179	n	cds	no	brebaje	inclusive
+ES00180	n	cds	no	cabeza de mierda	inclusive
+ES00181	n	cds	no	cacharro	inclusive
+ES00182	v	cds	no	callar	inclusive
+ES00183	n	cds	no	camastro	inclusive
+ES00184	n	cds	no	canalla	inclusive
+ES00185	n	cds	no	canallas	inclusive
+ES00186	n	cds	no	candidote	inclusive
+ES00187	n	cds	no	capirucha	inclusive
+ES00188	n	cds	no	caracho	inclusive
+ES00189	n	cds	no	carcundia	inclusive
+ES00190	n	cds	no	carrerilla	inclusive
+ES00191	n	cds	no	castrapo	inclusive
+ES00192	a	cds	no	ceniciento	inclusive
+ES00193	n	cds	no	central lechera	inclusive
+ES00194	n	cds	no	cerote	conservative
+ES00195	n	cds	no	chafarote	inclusive
+ES00196	n	cds	no	chagüite	inclusive
+ES00197	n	cds	no	chamaco	inclusive
+ES00198	n	cds	no	chamo	inclusive
+ES00199	n	cds	no	chapón	inclusive
+ES00200	n	cds	no	charca	inclusive
+ES00201	n	cds	no	chicuela	inclusive
+ES00202	n	cds	no	chifurnia	inclusive
+ES00203	n	cds	no	chiquillaje	inclusive
+ES00204	a	cds	no	chiviento	inclusive
+ES00205	a	cds	no	chumo	inclusive
+ES00206	n	cds	no	chunche	inclusive
+ES00207	n	cds	no	cintajo	inclusive
+ES00208	n	cds	no	comemierda	conservative
+ES00209	v	cds	no	comerse con patatas	inclusive
+ES00210	n	cds	no	comistrajo	inclusive
+ES00211	n	cds	no	corrillo	inclusive
+ES00212	n	cds	no	cromo	inclusive
+ES00213	n	cds	no	cromos	inclusive
+ES00214	n	cds	no	cuadrilla	inclusive
+ES00215	a	cds	no	cuajado	inclusive
+ES00216	n	cds	no	cuartico	inclusive
+ES00217	v	cds	no	cállate	inclusive
+ES00218	n	cds	no	desgraciada	inclusive
+ES00219	n	cds	no	desgraciado	inclusive
+ES00220	n	cds	no	desgraciados	inclusive
+ES00221	p	cds	no	dios los cría y ellos se juntan	inclusive
+ES00222	v	cds	no	empollar	inclusive
+ES00223	n	cds	no	escuincle	inclusive
+ES00224	n	cds	no	españolada	inclusive
+ES00225	n	cds	no	fenómeno	inclusive
+ES00226	n	cds	no	fiestilla	inclusive
+ES00227	n	cds	no	figura	inclusive
+ES00228	n	cds	no	fritanga	inclusive
+ES00229	n	cds	no	fulano	inclusive
+ES00230	n	cds	no	gachó	inclusive
+ES00231	n	cds	no	guilindajo	inclusive
+ES00232	n	cds	no	guisote	inclusive
+ES00233	n	cds	no	hdlgp	conservative
+ES00234	n	cds	no	hijo de la chingada	conservative
+ES00235	n	cds	no	hijo de la gran puta	conservative
+ES00236	n	cds	no	hijo de perra	conservative
+ES00237	n	cds	no	hijo de puta	conservative
+ES00238	n	cds	no	hijoputa	conservative
+ES00239	n	cds	no	hijuela	inclusive
+ES00240	n	cds	no	hijueputa	conservative
+ES00241	n	cds	no	hijueputas	conservative
+ES00242	n	cds	no	hijueputilla	conservative
+ES00243	v	cds	no	importar un comino	inclusive
+ES00244	n	cds	no	indilgue	inclusive
+ES00245	n	cds	no	irigote	inclusive
+ES00246	n	cds	no	joya	inclusive
+ES00247	n	cds	no	joyas	inclusive
+ES00248	n	cds	no	juela	inclusive
+ES00249	n	cds	no	juelagranputa	conservative
+ES00250	n	cds	no	jueputa	conservative
+ES00251	p	cds	no	la cagada va en la taza	conservative
+ES00252	i	cds	no	la madre que te parió	conservative
+ES00253	p	cds	no	la puta que te parió	conservative
+ES00254	n	cds	no	lacho	inclusive
+ES00255	n	cds	no	latinajo	inclusive
+ES00256	n	cds	no	libraco	inclusive
+ES00257	n	cds	no	malnacido	inclusive
+ES00258	n	cds	no	mamarracho	inclusive
+ES00259	n	cds	no	mcmierda	conservative
+ES00260	p	cds	no	me cago en tu familia	conservative
+ES00261	n	cds	no	mejunje	inclusive
+ES00262	n	cds	no	miérdico	inclusive
+ES00263	n	cds	no	mocoso	inclusive
+ES00264	n	cds	no	moridero	inclusive
+ES00265	n	cds	no	mueble	inclusive
+ES00266	n	cds	no	napa	inclusive
+ES00267	n	cds	no	neomonja	inclusive
+ES00268	n	cds	no	niñato	inclusive
+ES00269	n	cds	no	niñatos	inclusive
+ES00270	n	cds	no	niñita	inclusive
+ES00271	n	cds	no	niñito	inclusive
+ES00272	n	cds	no	novelón	inclusive
+ES00273	n	cds	no	ojete	conservative
+ES00274	n	cds	no	pambol	inclusive
+ES00275	n	cds	no	papelejo	inclusive
+ES00276	n	cds	no	papelucho	inclusive
+ES00277	n	cds	no	paquetón	inclusive
+ES00278	n	cds	no	para	inclusive
+ES00279	n	cds	no	pasquín	inclusive
+ES00280	n	cds	no	pechocha	inclusive
+ES00281	r	cds	no	por las putas	conservative
+ES00282	n	cds	no	pucta	inclusive
+ES00283	n	cds	no	putazo	conservative
+ES00284	n	cds	no	puto	conservative
+ES00285	n	cds	no	putos	conservative
+ES00286	i	cds	no	que te jodan	conservative
+ES00287	n	cds	no	rapazuelo	inclusive
+ES00288	v	cds	no	refanfinflarse	inclusive
+ES00289	n	cds	no	refrito	inclusive
+ES00290	r	cds	no	so	inclusive
+ES00291	n	cds	no	suelta	inclusive
+ES00292	n	cds	no	suelto	inclusive
+ES00293	n	cds	no	testamento	inclusive
+ES00294	n	cds	no	tetunte	inclusive
+ES00295	n	cds	no	tiparraco	inclusive
+ES00296	n	cds	no	tipeja	inclusive
+ES00297	n	cds	no	tipejo	inclusive
+ES00298	n	cds	no	torta	inclusive
+ES00299	n	cds	no	travesaño	inclusive
+ES00300	i	cds	no	tu madre	inclusive
+ES00301	n	cds	no	vela güira	inclusive
+ES00302	p	cds	no	vete a chingar	inclusive
+ES00303	n	cds	no	wekereke	inclusive
+ES00304	n	cds	no	ñajo	inclusive
+ES00305	n	cds	no	ñora	inclusive
+ES00306	n	cds	no	ñoras	inclusive
+ES00307	a	cds	no	único y detergente	inclusive
+ES00308	n	ddf	yes	antigualla	inclusive
+ES00309	a	ddf	yes	blanducho	inclusive
+ES00310	n	ddf	yes	carcamal	inclusive
+ES00311	n	ddf	yes	cegatón	inclusive
+ES00312	n	ddf	yes	cuarentones	inclusive
+ES00313	n	ddf	yes	cuarentón	inclusive
+ES00314	n	ddf	yes	cuatro ojos	inclusive
+ES00315	a	ddf	yes	curcuncho	inclusive
+ES00316	n	ddf	yes	debilucho	inclusive
+ES00317	a	ddf	yes	delgaducho	inclusive
+ES00318	n	ddf	yes	feto	inclusive
+ES00319	n	ddf	yes	fetos	inclusive
+ES00320	a	ddf	yes	feúcho	inclusive
+ES00321	a	ddf	yes	flacucho	inclusive
+ES00322	n	ddf	yes	gafudo	inclusive
+ES00323	a	ddf	yes	gordezuelo	inclusive
+ES00324	n	ddf	yes	la vieja	conservative
+ES00325	n	ddf	yes	larguirucho	inclusive
+ES00326	n	ddf	yes	minusa	inclusive
+ES00327	n	ddf	yes	pequeñajo	inclusive
+ES00328	a	ddf	yes	roco	inclusive
+ES00329	n	ddf	yes	ruco	inclusive
+ES00330	n	ddf	yes	sidoso	inclusive
+ES00331	n	ddf	yes	sidático	inclusive
+ES00332	n	ddf	yes	vejestorio	inclusive
+ES00333	n	ddf	yes	vejezuela	inclusive
+ES00334	n	ddf	yes	viejujo	inclusive
+ES00335	n	ddp	yes	alaraco	inclusive
+ES00336	a	ddp	yes	apendejado	conservative
+ES00337	v	ddp	yes	apendejar	conservative
+ES00338	n	ddp	yes	atraso	inclusive
+ES00339	a	ddp	yes	aweonao	conservative
+ES00340	n	ddp	yes	badulaque	inclusive
+ES00341	a	ddp	yes	bayunco	inclusive
+ES00342	n	ddp	yes	bestia	inclusive
+ES00343	n	ddp	yes	bestial	conservative
+ES00344	n	ddp	yes	bestialidad	conservative
+ES00345	n	ddp	yes	bolsa	conservative
+ES00346	n	ddp	yes	boluda	conservative
+ES00347	n	ddp	yes	boludazo	conservative
+ES00348	n	ddp	yes	boludo	conservative
+ES00349	n	ddp	yes	burrote	conservative
+ES00350	n	ddp	yes	caja boba	inclusive
+ES00351	n	ddp	yes	caja idiota	inclusive
+ES00352	n	ddp	yes	caja tonta	inclusive
+ES00353	n	ddp	yes	cateto	inclusive
+ES00354	n	ddp	yes	catetos	inclusive
+ES00355	n	ddp	yes	cavernícola	inclusive
+ES00356	n	ddp	yes	cazurro	inclusive
+ES00357	n	ddp	yes	cojudo	conservative
+ES00358	n	ddp	yes	descerebrado	inclusive
+ES00359	n	ddp	yes	descerebrados	inclusive
+ES00360	a	ddp	yes	descriteriado	inclusive
+ES00361	n	ddp	yes	energúmeno	inclusive
+ES00362	n	ddp	yes	estúpida	conservative
+ES00363	a	ddp	yes	estúpido	conservative
+ES00364	n	ddp	yes	estúpidos	conservative
+ES00365	n	ddp	yes	gil	inclusive
+ES00366	n	ddp	yes	gilicórner	inclusive
+ES00367	n	ddp	yes	gilipollas	conservative
+ES00368	n	ddp	yes	gilipolleces	conservative
+ES00369	n	ddp	yes	gilipollez	conservative
+ES00370	a	ddp	yes	gilí	inclusive
+ES00371	n	ddp	yes	haiga	inclusive
+ES00372	n	ddp	yes	idiota	conservative
+ES00373	n	ddp	yes	idiotas	conservative
+ES00374	n	ddp	yes	imbécil	conservative
+ES00375	n	ddp	yes	imbéciles	conservative
+ES00376	n	ddp	yes	jilipollas	conservative
+ES00377	a	ddp	yes	leso	inclusive
+ES00378	n	ddp	yes	letrasado	inclusive
+ES00379	a	ddp	yes	leído y escribido	inclusive
+ES00380	n	ddp	yes	loco	inclusive
+ES00381	n	ddp	yes	mastuerzo	inclusive
+ES00382	n	ddp	yes	mensa	inclusive
+ES00383	a	ddp	yes	menso	inclusive
+ES00384	n	ddp	yes	mierda	conservative
+ES00385	n	ddp	yes	mierdas	conservative
+ES00386	a	ddp	yes	mogólico	inclusive
+ES00387	n	ddp	yes	mongolo	inclusive
+ES00388	n	ddp	yes	mongolos	inclusive
+ES00389	n	ddp	yes	mongólica	inclusive
+ES00390	a	ddp	yes	mongólico	inclusive
+ES00391	n	ddp	yes	mongólicos	inclusive
+ES00392	n	ddp	yes	monigote	inclusive
+ES00393	n	ddp	yes	onvre	inclusive
+ES00394	n	ddp	yes	orate	inclusive
+ES00395	n	ddp	yes	paja	conservative
+ES00396	n	ddp	yes	paleta	inclusive
+ES00397	n	ddp	yes	paleto	inclusive
+ES00398	n	ddp	yes	paletos	inclusive
+ES00399	n	ddp	yes	palurdo	inclusive
+ES00400	n	ddp	yes	pardillo	inclusive
+ES00401	n	ddp	yes	pardillos	inclusive
+ES00402	n	ddp	yes	pendeja	conservative
+ES00403	v	ddp	yes	pendejear	conservative
+ES00404	n	ddp	yes	pendejerú	conservative
+ES00405	n	ddp	yes	pendejismo	conservative
+ES00406	n	ddp	yes	pendejo	conservative
+ES00407	n	ddp	yes	pendejos	conservative
+ES00408	n	ddp	yes	retagil	inclusive
+ES00409	n	ddp	yes	retajil	inclusive
+ES00410	n	ddp	yes	retardado	inclusive
+ES00411	n	ddp	yes	sonsonetudo	inclusive
+ES00412	n	ddp	yes	subnormal	inclusive
+ES00413	n	ddp	yes	subnormales	inclusive
+ES00414	a	ddp	yes	tolili	inclusive
+ES00415	n	ddp	yes	tonta	inclusive
+ES00416	n	ddp	yes	tonto	inclusive
+ES00417	a	ddp	yes	tonto del culo	conservative
+ES00418	n	ddp	yes	tontopollas	conservative
+ES00419	n	ddp	yes	tontos	inclusive
+ES00420	n	ddp	yes	turro	inclusive
+ES00421	n	ddp	yes	weona	conservative
+ES00422	n	ddp	yes	weones	conservative
+ES00423	n	ddp	yes	weón	conservative
+ES00424	a	dmc	no	acartonado	inclusive
+ES00425	n	dmc	no	aliade	inclusive
+ES00426	n	dmc	no	alzado	conservative
+ES00427	n	dmc	no	asaltacunas	inclusive
+ES00428	n	dmc	no	asturtzale	inclusive
+ES00429	n	dmc	no	balconazi	inclusive
+ES00430	n	dmc	no	batasuno	inclusive
+ES00431	n	dmc	no	bellaco	conservative
+ES00432	n	dmc	no	bilduetarra	inclusive
+ES00433	n	dmc	no	bocachancla	inclusive
+ES00434	n	dmc	no	bocazas	inclusive
+ES00435	n	dmc	no	bodrio stars	inclusive
+ES00436	n	dmc	no	boliburguesía	inclusive
+ES00437	n	dmc	no	buenista	inclusive
+ES00438	n	dmc	no	buenistas	inclusive
+ES00439	n	dmc	no	buscapleitos	inclusive
+ES00440	n	dmc	no	cagueta	conservative
+ES00441	n	dmc	no	carca	inclusive
+ES00442	n	dmc	no	catalufa	inclusive
+ES00443	n	dmc	no	catalufo	inclusive
+ES00444	n	dmc	no	catalufos	inclusive
+ES00445	n	dmc	no	cayetano	inclusive
+ES00446	n	dmc	no	cazapartner	inclusive
+ES00447	n	dmc	no	chairo	inclusive
+ES00448	n	dmc	no	chairos	inclusive
+ES00449	n	dmc	no	chapucero	inclusive
+ES00450	n	dmc	no	charo	inclusive
+ES00451	n	dmc	no	charocracia	inclusive
+ES00452	n	dmc	no	chupacirios	inclusive
+ES00453	a	dmc	no	come palomas	inclusive
+ES00454	n	dmc	no	comeflor	inclusive
+ES00455	n	dmc	no	comegambas	inclusive
+ES00456	a	dmc	no	comepalomas	inclusive
+ES00457	a	dmc	no	comepipas	inclusive
+ES00458	n	dmc	no	comunacho	inclusive
+ES00459	n	dmc	no	comuñanga	inclusive
+ES00460	n	dmc	no	concheto	inclusive
+ES00461	n	dmc	no	conspiranoia	inclusive
+ES00462	n	dmc	no	conspiranoico	inclusive
+ES00463	n	dmc	no	convenenciero	inclusive
+ES00464	n	dmc	no	covidiano	inclusive
+ES00465	n	dmc	no	covidiota	inclusive
+ES00466	n	dmc	no	covinazi	inclusive
+ES00467	n	dmc	no	criticadera	inclusive
+ES00468	n	dmc	no	cultura de la cancelación	inclusive
+ES00469	n	dmc	no	cultureta	inclusive
+ES00470	n	dmc	no	cuñado	inclusive
+ES00471	n	dmc	no	delicada	inclusive
+ES00472	a	dmc	no	delicado	inclusive
+ES00473	n	dmc	no	derechoso	inclusive
+ES00474	n	dmc	no	dictadorzuelo	inclusive
+ES00475	n	dmc	no	ecolojeta	inclusive
+ES00476	n	dmc	no	empollón	inclusive
+ES00477	n	dmc	no	enchufista	inclusive
+ES00478	n	dmc	no	esquirol	inclusive
+ES00479	n	dmc	no	facha	inclusive
+ES00480	n	dmc	no	fachaleco	inclusive
+ES00481	n	dmc	no	fachas	inclusive
+ES00482	n	dmc	no	facherío	inclusive
+ES00483	n	dmc	no	facho	inclusive
+ES00484	n	dmc	no	fachos	inclusive
+ES00485	n	dmc	no	fachosfera	inclusive
+ES00486	a	dmc	no	famoso por ser famoso	inclusive
+ES00487	n	dmc	no	femiloca	inclusive
+ES00488	n	dmc	no	feminazi	inclusive
+ES00489	n	dmc	no	feminazis	inclusive
+ES00490	n	dmc	no	feminazismo	inclusive
+ES00491	a	dmc	no	femiprogre	inclusive
+ES00492	n	dmc	no	fife	inclusive
+ES00493	n	dmc	no	frentudo	inclusive
+ES00494	n	dmc	no	fula	inclusive
+ES00495	n	dmc	no	garca	inclusive
+ES00496	n	dmc	no	gatopardismo	inclusive
+ES00497	n	dmc	no	generación de cristal	inclusive
+ES00498	n	dmc	no	giliprogre	inclusive
+ES00499	n	dmc	no	gorila	inclusive
+ES00500	n	dmc	no	gorilas	inclusive
+ES00501	v	dmc	no	hablar con la e	inclusive
+ES00502	n	dmc	no	izquierdoso	inclusive
+ES00503	n	dmc	no	izquierdosos	inclusive
+ES00504	a	dmc	no	jesuítico	inclusive
+ES00505	n	dmc	no	kuka	inclusive
+ES00506	n	dmc	no	lameculos	conservative
+ES00507	n	dmc	no	lamehuevos	conservative
+ES00508	v	dmc	no	lamer el culo	conservative
+ES00509	n	dmc	no	lazi	inclusive
+ES00510	n	dmc	no	lechuguino	inclusive
+ES00511	n	dmc	no	lolicerdo	inclusive
+ES00512	n	dmc	no	loliconero	inclusive
+ES00513	n	dmc	no	ludismo	inclusive
+ES00514	n	dmc	no	machirulo	inclusive
+ES00515	n	dmc	no	machirulos	inclusive
+ES00516	n	dmc	no	magufo	inclusive
+ES00517	n	dmc	no	malinchista	inclusive
+ES00518	n	dmc	no	malinchistas	inclusive
+ES00519	n	dmc	no	mamerto	inclusive
+ES00520	n	dmc	no	mami	inclusive
+ES00521	n	dmc	no	maruja	inclusive
+ES00522	v	dmc	no	marujear	inclusive
+ES00523	n	dmc	no	micro$oft	inclusive
+ES00524	n	dmc	no	miedica	inclusive
+ES00525	n	dmc	no	miedicas	inclusive
+ES00526	n	dmc	no	milenita	inclusive
+ES00527	n	dmc	no	milipili	inclusive
+ES00528	n	dmc	no	modernez	inclusive
+ES00529	n	dmc	no	monotema	inclusive
+ES00530	n	dmc	no	nayiliber	inclusive
+ES00531	n	dmc	no	nazionalismo	inclusive
+ES00532	n	dmc	no	nazionalista	inclusive
+ES00533	n	dmc	no	niño rata	inclusive
+ES00534	n	dmc	no	normi	inclusive
+ES00535	n	dmc	no	ofendidito	inclusive
+ES00536	n	dmc	no	pandejo	inclusive
+ES00537	n	dmc	no	pepero	inclusive
+ES00538	n	dmc	no	perkin	inclusive
+ES00539	n	dmc	no	pesetero	inclusive
+ES00540	n	dmc	no	pijoprogre	inclusive
+ES00541	n	dmc	no	pitiyanqui	inclusive
+ES00542	n	dmc	no	planchabragas	inclusive
+ES00543	n	dmc	no	plandemia	inclusive
+ES00544	n	dmc	no	podemita	inclusive
+ES00545	n	dmc	no	podemitas	inclusive
+ES00546	n	dmc	no	politiqués	inclusive
+ES00547	n	dmc	no	poser	inclusive
+ES00548	n	dmc	no	preciosismo	inclusive
+ES00549	n	dmc	no	progre	inclusive
+ES00550	n	dmc	no	progres	inclusive
+ES00551	v	dmc	no	quemar	inclusive
+ES00552	n	dmc	no	radfem	inclusive
+ES00553	n	dmc	no	rancia	inclusive
+ES00554	n	dmc	no	rancio	inclusive
+ES00555	n	dmc	no	rancios	inclusive
+ES00556	n	dmc	no	rasputín	inclusive
+ES00557	a	dmc	no	remilgado	inclusive
+ES00558	n	dmc	no	revisionismo	inclusive
+ES00559	n	dmc	no	rezadera	inclusive
+ES00560	n	dmc	no	ricacho	inclusive
+ES00561	n	dmc	no	ricachón	inclusive
+ES00562	n	dmc	no	robacunas	inclusive
+ES00563	n	dmc	no	rojipardismo	inclusive
+ES00564	n	dmc	no	rojipardo	inclusive
+ES00565	a	dmc	no	sabihondo	inclusive
+ES00566	n	dmc	no	sabihondos	inclusive
+ES00567	n	dmc	no	santurrón	inclusive
+ES00568	n	dmc	no	senderista	inclusive
+ES00569	n	dmc	no	separata	inclusive
+ES00570	n	dmc	no	separrata	inclusive
+ES00571	n	dmc	no	señora	inclusive
+ES00572	n	dmc	no	señoro	inclusive
+ES00573	a	dmc	no	sifrino	inclusive
+ES00574	n	dmc	no	slop	inclusive
+ES00575	n	dmc	no	sociata	inclusive
+ES00576	n	dmc	no	sologripista	inclusive
+ES00577	n	dmc	no	solterona	inclusive
+ES00578	n	dmc	no	solterón	inclusive
+ES00579	n	dmc	no	sucursalismo	inclusive
+ES00580	n	dmc	no	telebasura	inclusive
+ES00581	n	dmc	no	terfa	inclusive
+ES00582	n	dmc	no	terminales mediáticas	inclusive
+ES00583	n	dmc	no	terruco	inclusive
+ES00584	n	dmc	no	tiranuelo	inclusive
+ES00585	n	dmc	no	tongo	inclusive
+ES00586	n	dmc	no	tragacionista	inclusive
+ES00587	n	dmc	no	tragaperras	inclusive
+ES00588	n	dmc	no	tribunal prostitucional	inclusive
+ES00589	n	dmc	no	trilero	inclusive
+ES00590	n	dmc	no	tutumpote	inclusive
+ES00591	n	dmc	no	ultroso	inclusive
+ES00592	a	dmc	no	untuoso	inclusive
+ES00593	n	dmc	no	urbanita	inclusive
+ES00594	n	dmc	no	uribestia	inclusive
+ES00595	n	dmc	no	vendida	inclusive
+ES00596	n	dmc	no	vendido	inclusive
+ES00597	n	dmc	no	vendidos	inclusive
+ES00598	n	dmc	no	vividor	inclusive
+ES00599	n	dmc	no	vividores	inclusive
+ES00600	n	dmc	no	zurdo	inclusive
+ES00601	n	dmc	no	zurdos	inclusive
+ES00602	n	dmc	no	ñordo	conservative
+ES00603	n	dmc	no	ñángara	inclusive
+ES00604	n	is	no	andoba	inclusive
+ES00605	n	is	no	atorrante	inclusive
+ES00606	n	is	no	cani	inclusive
+ES00607	n	is	no	canis	inclusive
+ES00608	n	is	no	chiringuito	inclusive
+ES00609	n	is	no	chiringuitos	inclusive
+ES00610	n	is	no	choni	inclusive
+ES00611	a	is	no	de medio pelo	inclusive
+ES00612	a	is	no	de todo a cien	inclusive
+ES00613	a	is	no	del tres al cuarto	inclusive
+ES00614	n	is	no	descamisado	inclusive
+ES00615	n	is	no	emulapobre	inclusive
+ES00616	n	is	no	gamín	inclusive
+ES00617	n	is	no	gentecilla	inclusive
+ES00618	n	is	no	gentualla	inclusive
+ES00619	n	is	no	gentuza	inclusive
+ES00620	n	is	no	mantenida	inclusive
+ES00621	n	is	no	mantenido	inclusive
+ES00622	n	is	no	mindundi	inclusive
+ES00623	n	is	no	méndiga	conservative
+ES00624	n	is	no	méndigo	conservative
+ES00625	n	is	no	pagapensiones	inclusive
+ES00626	n	is	no	paguita	inclusive
+ES00627	n	is	no	perroflauta	inclusive
+ES00628	n	is	no	perroflautas	inclusive
+ES00629	n	is	no	pobrezolano	inclusive
+ES00630	n	is	no	pobrezuela	inclusive
+ES00631	n	is	no	poligonera	inclusive
+ES00632	n	is	no	poligonero	inclusive
+ES00633	n	is	no	populacho	inclusive
+ES00634	n	is	no	ralea	inclusive
+ES00635	n	is	no	roto	inclusive
+ES00636	n	is	no	tenducho	inclusive
+ES00637	n	is	no	tienducha	inclusive
+ES00638	n	is	no	villera	inclusive
+ES00639	n	is	no	villero	inclusive
+ES00640	n	is	no	villeros	inclusive
+ES00641	n	is	no	ñera	inclusive
+ES00642	n	is	no	ñero	inclusive
+ES00643	n	is	no	ñeros	inclusive
+ES00644	a	om	yes	amariconado	conservative
+ES00645	v	om	yes	amariconar	conservative
+ES00646	n	om	yes	ano	conservative
+ES00647	a	om	yes	anormal	inclusive
+ES00648	n	om	yes	anormales	inclusive
+ES00649	n	om	yes	arepera	inclusive
+ES00650	n	om	yes	asna	inclusive
+ES00651	n	om	yes	asno	inclusive
+ES00652	n	om	yes	bollera	inclusive
+ES00653	n	om	yes	bolleras	inclusive
+ES00654	n	om	yes	brisco	inclusive
+ES00655	n	om	yes	bujarrón	conservative
+ES00656	n	om	yes	cacorro	inclusive
+ES00657	n	om	yes	cerrú	inclusive
+ES00658	n	om	yes	chulunca	inclusive
+ES00659	n	om	yes	cola	inclusive
+ES00660	n	om	yes	culandrón	conservative
+ES00661	n	om	yes	culerda	inclusive
+ES00662	n	om	yes	culerdo	inclusive
+ES00663	n	om	yes	culerdos	inclusive
+ES00664	n	om	yes	culo	conservative
+ES00665	n	om	yes	desviada	inclusive
+ES00666	a	om	yes	desviado	inclusive
+ES00667	v	om	yes	encular	conservative
+ES00668	n	om	yes	fleto	conservative
+ES00669	n	om	yes	fletos	conservative
+ES00670	p	om	yes	follador de culo	conservative
+ES00671	n	om	yes	hueco	conservative
+ES00672	n	om	yes	huequereque	conservative
+ES00673	n	om	yes	invertido	inclusive
+ES00674	n	om	yes	invertidos	inclusive
+ES00675	n	om	yes	jeva	conservative
+ES00676	n	om	yes	jota	conservative
+ES00677	n	om	yes	jotas	conservative
+ES00678	n	om	yes	joto	conservative
+ES00679	n	om	yes	jotos	conservative
+ES00680	n	om	yes	lencha	inclusive
+ES00681	n	om	yes	loca	inclusive
+ES00682	n	om	yes	mamplora	conservative
+ES00683	n	om	yes	manflora	conservative
+ES00684	n	om	yes	maraco	inclusive
+ES00685	a	om	yes	maricantunga	inclusive
+ES00686	n	om	yes	marico	conservative
+ES00687	n	om	yes	maricona	inclusive
+ES00688	n	om	yes	mariconazo	conservative
+ES00689	n	om	yes	mariconeo	inclusive
+ES00690	n	om	yes	mariconería	conservative
+ES00691	n	om	yes	maricones	conservative
+ES00692	n	om	yes	mariconía	inclusive
+ES00693	a	om	yes	maricota	inclusive
+ES00694	n	om	yes	maricón	conservative
+ES00695	n	om	yes	mariliendre	conservative
+ES00696	n	om	yes	marimacha	inclusive
+ES00697	n	om	yes	marimacho	inclusive
+ES00698	n	om	yes	marimachos	inclusive
+ES00699	n	om	yes	mariposones	inclusive
+ES00700	n	om	yes	mariposón	inclusive
+ES00701	n	om	yes	mariquita	inclusive
+ES00702	n	om	yes	musculoca	inclusive
+ES00703	n	om	yes	nenaza	conservative
+ES00704	n	om	yes	pargo	conservative
+ES00705	n	om	yes	pato	inclusive
+ES00706	v	om	yes	perder aceite	inclusive
+ES00707	n	om	yes	pipián	conservative
+ES00708	n	om	yes	playo	inclusive
+ES00709	n	om	yes	puñal	inclusive
+ES00710	n	om	yes	puñales	inclusive
+ES00711	a	om	yes	rarito	inclusive
+ES00712	n	om	yes	rompeculos	conservative
+ES00713	n	om	yes	sayuelo	inclusive
+ES00714	n	om	yes	soplanucas	conservative
+ES00715	n	om	yes	tortillera	inclusive
+ES00716	n	om	yes	trava	inclusive
+ES00717	n	om	yes	travesti	conservative
+ES00718	n	om	yes	travestis	conservative
+ES00719	n	om	yes	trolo	conservative
+ES00720	n	or	no	banana	conservative
+ES00721	n	or	no	bananas	conservative
+ES00722	n	or	no	champa	inclusive
+ES00723	n	or	no	chichi	conservative
+ES00724	n	or	no	chichis	conservative
+ES00725	n	or	no	chile	conservative
+ES00726	n	or	no	chocha	conservative
+ES00727	n	or	no	chocho	conservative
+ES00728	n	or	no	choro	conservative
+ES00729	n	or	no	concha	inclusive
+ES00730	n	or	no	conejo	conservative
+ES00731	n	or	no	floripondio	inclusive
+ES00732	n	or	no	mamona	conservative
+ES00733	n	or	no	mamones	conservative
+ES00734	n	or	no	mamón	conservative
+ES00735	n	or	no	nabo	inclusive
+ES00736	n	pa	no	achichincle	inclusive
+ES00737	n	pa	no	arenero	inclusive
+ES00738	n	pa	no	cagatintas	conservative
+ES00739	n	pa	no	capanga	inclusive
+ES00740	n	pa	no	chacha	inclusive
+ES00741	n	pa	no	chupatintas	inclusive
+ES00742	n	pa	no	cipayo	inclusive
+ES00743	n	pa	no	cipayos	inclusive
+ES00744	n	pa	no	doméstica	inclusive
+ES00745	n	pa	no	farándula	inclusive
+ES00746	n	pa	no	ganapán	inclusive
+ES00747	n	pa	no	gañán	inclusive
+ES00748	n	pa	no	gobernadorcillo	inclusive
+ES00749	n	pa	no	golondrino	inclusive
+ES00750	n	pa	no	juececillo	inclusive
+ES00751	n	pa	no	mamporrero	inclusive
+ES00752	n	pa	no	matasanos	inclusive
+ES00753	n	pa	no	milico	inclusive
+ES00754	n	pa	no	milicos	inclusive
+ES00755	n	pa	no	militronche	inclusive
+ES00756	n	pa	no	pacos	inclusive
+ES00757	n	pa	no	pacotillero	inclusive
+ES00758	n	pa	no	pajera	conservative
+ES00759	n	pa	no	pajero	conservative
+ES00760	n	pa	no	pajeros	conservative
+ES00761	n	pa	no	perrodista	inclusive
+ES00762	n	pa	no	picacódigo	inclusive
+ES00763	n	pa	no	picapleitos	inclusive
+ES00764	n	pa	no	plumilla	inclusive
+ES00765	n	pa	no	plumífero	inclusive
+ES00766	n	pa	no	polizonte	inclusive
+ES00767	n	pa	no	tinterillo	inclusive
+ES00768	n	pa	no	todólogo	inclusive
+ES00769	n	pr	no	chongo	conservative
+ES00770	n	pr	no	encueratriz	inclusive
+ES00771	n	pr	no	fulana	inclusive
+ES00772	n	pr	no	furcia	inclusive
+ES00773	n	pr	no	golfa	inclusive
+ES00774	n	pr	no	golfas	inclusive
+ES00775	n	pr	no	maraca	inclusive
+ES00776	n	pr	no	mujerzuela	inclusive
+ES00777	n	pr	no	prostituta	conservative
+ES00778	n	pr	no	prostitutas	conservative
+ES00779	n	pr	no	puta	conservative
+ES00780	n	pr	no	puta de quinta	conservative
+ES00781	n	pr	no	putas	conservative
+ES00782	n	pr	no	puterío	conservative
+ES00783	n	pr	no	ramera	inclusive
+ES00784	n	pr	no	ruca	inclusive
+ES00785	n	pr	no	vaca	inclusive
+ES00786	n	pr	no	vacas	inclusive
+ES00787	n	pr	no	vaco	inclusive
+ES00788	n	pr	no	vientre de alquiler	inclusive
+ES00789	n	pr	no	yira	inclusive
+ES00790	n	pr	no	zorra	conservative
+ES00791	n	pr	no	zorras	conservative
+ES00792	n	ps	yes	argensimio	inclusive
+ES00793	n	ps	yes	argenzuela	inclusive
+ES00794	n	ps	yes	bachicha	conservative
+ES00795	v	ps	yes	bajarse al moro	conservative
+ES00796	n	ps	yes	bemba	conservative
+ES00797	a	ps	yes	bereco	inclusive
+ES00798	n	ps	yes	boliguaya	inclusive
+ES00799	n	ps	yes	boliguayo	inclusive
+ES00800	n	ps	yes	boliguayos	inclusive
+ES00801	n	ps	yes	bolillo	inclusive
+ES00802	n	ps	yes	brasuca	inclusive
+ES00803	n	ps	yes	brazuca	conservative
+ES00804	n	ps	yes	cabecita	conservative
+ES00805	n	ps	yes	cabecitas	conservative
+ES00806	n	ps	yes	cachaca	inclusive
+ES00807	n	ps	yes	cachaco	inclusive
+ES00808	n	ps	yes	castellano	inclusive
+ES00809	n	ps	yes	chanate	inclusive
+ES00810	n	ps	yes	charnego	inclusive
+ES00811	n	ps	yes	charnegos	inclusive
+ES00812	n	ps	yes	china	inclusive
+ES00813	n	ps	yes	chino	inclusive
+ES00814	n	ps	yes	chola	inclusive
+ES00815	v	ps	yes	cholerear	inclusive
+ES00816	n	ps	yes	cholero	inclusive
+ES00817	n	ps	yes	cholifacio	inclusive
+ES00818	n	ps	yes	cholo	inclusive
+ES00819	n	ps	yes	cholos	inclusive
+ES00820	n	ps	yes	chombo	inclusive
+ES00821	n	ps	yes	chombos	inclusive
+ES00822	n	ps	yes	chontril	inclusive
+ES00823	n	ps	yes	chúntaro	inclusive
+ES00824	n	ps	yes	congolombiano	inclusive
+ES00825	n	ps	yes	conguito	inclusive
+ES00826	n	ps	yes	conguitos	inclusive
+ES00827	n	ps	yes	cubanoide	inclusive
+ES00828	n	ps	yes	cuico	inclusive
+ES00829	a	ps	yes	curiche	inclusive
+ES00830	n	ps	yes	español	inclusive
+ES00831	n	ps	yes	españoles	inclusive
+ES00832	n	ps	yes	españolete	conservative
+ES00833	n	ps	yes	españoletes	conservative
+ES00834	n	ps	yes	follacabras	conservative
+ES00835	n	ps	yes	franchute	conservative
+ES00836	n	ps	yes	frijolero	conservative
+ES00837	n	ps	yes	gabacho	conservative
+ES00838	n	ps	yes	gabachos	conservative
+ES00839	n	ps	yes	gachupín	conservative
+ES00840	n	ps	yes	gitanada	inclusive
+ES00841	n	ps	yes	griego	inclusive
+ES00842	n	ps	yes	guarachudo	inclusive
+ES00843	n	ps	yes	güero	inclusive
+ES00844	n	ps	yes	huarachudo	inclusive
+ES00845	n	ps	yes	indio	inclusive
+ES00846	n	ps	yes	indios	inclusive
+ES00847	n	ps	yes	jochi	inclusive
+ES00848	n	ps	yes	jovenlandés	inclusive
+ES00849	n	ps	yes	longo	inclusive
+ES00850	n	ps	yes	macaca	conservative
+ES00851	n	ps	yes	macacas	conservative
+ES00852	n	ps	yes	macaco	inclusive
+ES00853	n	ps	yes	macaquito	inclusive
+ES00854	n	ps	yes	machupichu	conservative
+ES00855	n	ps	yes	maicero	inclusive
+ES00856	a	ps	yes	mapuchino	inclusive
+ES00857	n	ps	yes	maqueto	conservative
+ES00858	n	ps	yes	maquetos	conservative
+ES00859	n	ps	yes	mayate	conservative
+ES00860	n	ps	yes	mayates	conservative
+ES00861	n	ps	yes	mejicano	inclusive
+ES00862	n	ps	yes	meteco	inclusive
+ES00863	n	ps	yes	mexichango	inclusive
+ES00864	n	ps	yes	meximono	inclusive
+ES00865	n	ps	yes	mojado	inclusive
+ES00866	n	ps	yes	mojados	inclusive
+ES00867	n	ps	yes	moro	inclusive
+ES00868	n	ps	yes	moromierda	conservative
+ES00869	n	ps	yes	moromierdas	conservative
+ES00870	n	ps	yes	moros	inclusive
+ES00871	a	ps	yes	más negro que los cojones de un burro	conservative
+ES00872	n	ps	yes	naca	inclusive
+ES00873	n	ps	yes	naco	inclusive
+ES00874	n	ps	yes	nacos	inclusive
+ES00875	n	ps	yes	narcolombiano	inclusive
+ES00876	n	ps	yes	negra	inclusive
+ES00877	n	ps	yes	negrata	inclusive
+ES00878	n	ps	yes	negratas	inclusive
+ES00879	n	ps	yes	negro	inclusive
+ES00880	n	ps	yes	negrolombiano	inclusive
+ES00881	n	ps	yes	negros	inclusive
+ES00882	n	ps	yes	oaxaquita	inclusive
+ES00883	n	ps	yes	palestino	inclusive
+ES00884	n	ps	yes	palestinos	inclusive
+ES00885	n	ps	yes	panchito	conservative
+ES00886	n	ps	yes	paqui	inclusive
+ES00887	n	ps	yes	payo	inclusive
+ES00888	n	ps	yes	payoponi	inclusive
+ES00889	n	ps	yes	payos	inclusive
+ES00890	n	ps	yes	peligro amarillo	inclusive
+ES00891	n	ps	yes	peroncho	inclusive
+ES00892	a	ps	yes	perruano	inclusive
+ES00893	n	ps	yes	perruanos	inclusive
+ES00894	n	ps	yes	perrú	inclusive
+ES00895	n	ps	yes	peruca	inclusive
+ES00896	n	ps	yes	perucas	inclusive
+ES00897	n	ps	yes	pocho	inclusive
+ES00898	n	ps	yes	polaco	inclusive
+ES00899	n	ps	yes	polacos	inclusive
+ES00900	n	ps	yes	rojo	inclusive
+ES00901	n	ps	yes	rojos	inclusive
+ES00902	n	ps	yes	saltamuros	conservative
+ES00903	n	ps	yes	salvatrucho	inclusive
+ES00904	n	ps	yes	sudaca	conservative
+ES00905	n	ps	yes	sudacas	conservative
+ES00906	n	ps	yes	tiraflechas	inclusive
+ES00907	v	ps	yes	trabajar como un negro	inclusive
+ES00908	n	ps	yes	veneca	inclusive
+ES00909	n	ps	yes	veneco	inclusive
+ES00910	n	ps	yes	venecos	inclusive
+ES00911	n	ps	yes	whitexican	inclusive
+ES00912	n	ps	yes	yanacona	inclusive
+ES00913	r	qas	no	a calzón quitado	conservative
+ES00914	r	qas	no	a huevo	conservative
+ES00915	p	qas	no	a la chingada	conservative
+ES00916	i	qas	no	a la mierda	conservative
+ES00917	p	qas	no	a tomar por culo	conservative
+ES00918	r	qas	no	a tomar por el culo	conservative
+ES00919	n	qas	no	aborto	conservative
+ES00920	n	qas	no	abortos	conservative
+ES00921	v	qas	no	abrochar	conservative
+ES00922	n	qas	no	acabada	conservative
+ES00923	n	qas	no	acabado	conservative
+ES00924	v	qas	no	acabar	conservative
+ES00925	a	qas	no	acojonante	conservative
+ES00926	v	qas	no	acojonar	conservative
+ES00927	v	qas	no	afilar	conservative
+ES00928	n	qas	no	agallas	conservative
+ES00929	v	qas	no	agarrar a putazos	conservative
+ES00930	v	qas	no	agüevar	conservative
+ES00931	n	qas	no	anal	conservative
+ES00932	v	qas	no	apretar el culo	conservative
+ES00933	n	qas	no	aquí te pillo, aquí te mato	conservative
+ES00934	v	qas	no	arrebatar	conservative
+ES00935	v	qas	no	arrecho	conservative
+ES00936	n	qas	no	autofollador	conservative
+ES00937	n	qas	no	bagayo	inclusive
+ES00938	v	qas	no	bajar al pilón	conservative
+ES00939	a	qas	no	beyako	conservative
+ES00940	n	qas	no	bolita	inclusive
+ES00941	n	qas	no	bolitas	inclusive
+ES00942	n	qas	no	bollok	conservative
+ES00943	n	qas	no	bombilla	inclusive
+ES00944	n	qas	no	bombillo	inclusive
+ES00945	n	qas	no	brida	inclusive
+ES00946	n	qas	no	buchiteo	conservative
+ES00947	n	qas	no	bugayo	conservative
+ES00948	v	qas	no	burrear	conservative
+ES00949	p	qas	no	bésame el culo	conservative
+ES00950	n	qas	no	cabadura	conservative
+ES00951	n	qas	no	cabronazo	conservative
+ES00952	n	qas	no	cabronazos	conservative
+ES00953	n	qas	no	caca	conservative
+ES00954	n	qas	no	cacas	conservative
+ES00955	n	qas	no	cachonda	conservative
+ES00956	n	qas	no	cachondo	conservative
+ES00957	n	qas	no	cagada	conservative
+ES00958	n	qas	no	cagadas	conservative
+ES00959	n	qas	no	cagadera	conservative
+ES00960	n	qas	no	cagadero	conservative
+ES00961	a	qas	no	cagado	conservative
+ES00962	n	qas	no	cagalera	conservative
+ES00963	n	qas	no	cagando	conservative
+ES00964	v	qas	no	cagar	conservative
+ES00965	v	qas	no	cagar a pedos	conservative
+ES00966	v	qas	no	cagar a piñas	conservative
+ES00967	v	qas	no	cagar dinero	conservative
+ES00968	v	qas	no	cagar el palo	conservative
+ES00969	v	qas	no	cagarse en la noticia	conservative
+ES00970	n	qas	no	cagazo	conservative
+ES00971	n	qas	no	cagazón	conservative
+ES00972	n	qas	no	cagones	conservative
+ES00973	n	qas	no	cagón	conservative
+ES00974	n	qas	no	calientapollas	conservative
+ES00975	v	qas	no	callarse como una puta	conservative
+ES00976	n	qas	no	campana	inclusive
+ES00977	n	qas	no	campanas	inclusive
+ES00978	v	qas	no	cangrejear	conservative
+ES00979	n	qas	no	caraculo	conservative
+ES00980	n	qas	no	carajo de mar	conservative
+ES00981	n	qas	no	caraxo	conservative
+ES00982	v	qas	no	carnear	conservative
+ES00983	v	qas	no	cascar	inclusive
+ES00984	v	qas	no	cascársela	conservative
+ES00985	n	qas	no	casucha	inclusive
+ES00986	v	qas	no	cepillar	conservative
+ES00987	n	qas	no	cereguete	conservative
+ES00988	n	qas	no	cerotada	conservative
+ES00989	n	qas	no	cerotazo	conservative
+ES00990	v	qas	no	cerrar el orto	conservative
+ES00991	n	qas	no	chacachaca	conservative
+ES00992	v	qas	no	chantar	conservative
+ES00993	n	qas	no	chaqueta	conservative
+ES00994	n	qas	no	chele	conservative
+ES00995	n	qas	no	chicha	conservative
+ES00996	v	qas	no	chichar	conservative
+ES00997	n	qas	no	chilguete	conservative
+ES00998	v	qas	no	chimar	conservative
+ES00999	n	qas	no	chingada	conservative
+ES01000	n	qas	no	chingadazo	conservative
+ES01001	n	qas	no	chingadazos	conservative
+ES01002	n	qas	no	chingadera	conservative
+ES01003	n	qas	no	chingaderas	conservative
+ES01004	a	qas	no	chingado	conservative
+ES01005	a	qas	no	chingados	conservative
+ES01006	n	qas	no	chingamadral	conservative
+ES01007	v	qas	no	chingar la madre	conservative
+ES01008	v	qas	no	chingarle	conservative
+ES01009	n	qas	no	chingatal	conservative
+ES01010	n	qas	no	chingazal	conservative
+ES01011	n	qas	no	chingo	conservative
+ES01012	n	qas	no	chingones	conservative
+ES01013	n	qas	no	chingos	conservative
+ES01014	a	qas	no	chingue y chingue	conservative
+ES01015	n	qas	no	chinguero	conservative
+ES01016	n	qas	no	chingón	conservative
+ES01017	n	qas	no	chipuste	conservative
+ES01018	i	qas	no	chite	conservative
+ES01019	n	qas	no	choriceo	conservative
+ES01020	v	qas	no	chorrear	conservative
+ES01021	n	qas	no	chuchada	conservative
+ES01022	n	qas	no	chunchucuyo	conservative
+ES01023	n	qas	no	chupada	conservative
+ES01024	n	qas	no	chupamangas	conservative
+ES01025	n	qas	no	chupapollas	conservative
+ES01026	p	qas	no	chupar la polla	conservative
+ES01027	i	qas	no	chupe mantequilla de mi culo	conservative
+ES01028	n	qas	no	chupetón	conservative
+ES01029	v	qas	no	chupársela	conservative
+ES01030	n	qas	no	churria	conservative
+ES01031	n	qas	no	chusma	inclusive
+ES01032	n	qas	no	chusmas	inclusive
+ES01033	v	qas	no	chíngate	conservative
+ES01034	p	qas	no	chúpalo entonces	conservative
+ES01035	n	qas	no	cipa	conservative
+ES01036	v	qas	no	clavársela	conservative
+ES01037	n	qas	no	clítoris	conservative
+ES01038	v	qas	no	coger por los huevos	conservative
+ES01039	n	qas	no	cogida	conservative
+ES01040	n	qas	no	cogidas	conservative
+ES01041	v	qas	no	cogérsela con papel de fumar	conservative
+ES01042	r	qas	no	cojonudamente	conservative
+ES01043	a	qas	no	cojonudo	conservative
+ES01044	n	qas	no	colita	inclusive
+ES01045	n	qas	no	comepollas	conservative
+ES01046	n	qas	no	comer	conservative
+ES01047	a	qas	no	como el coño de la bernarda	conservative
+ES01048	r	qas	no	como el culo	conservative
+ES01049	a	qas	no	como las huevas	conservative
+ES01050	a	qas	no	como si las huevas	conservative
+ES01051	i	qas	no	con dos cojones	conservative
+ES01052	r	qas	no	con el culo al aire	conservative
+ES01053	i	qas	no	concha de tu madre	conservative
+ES01054	n	qas	no	conchatumadre	conservative
+ES01055	i	qas	no	conchatumare	conservative
+ES01056	i	qas	no	conchetumadre	conservative
+ES01057	i	qas	no	conchetumare	conservative
+ES01058	n	qas	no	consolador	conservative
+ES01059	n	qas	no	consoladores	conservative
+ES01060	n	qas	no	coprofagía	conservative
+ES01061	n	qas	no	corrida	conservative
+ES01062	n	qas	no	corridas	conservative
+ES01063	n	qas	no	cortachurro	conservative
+ES01064	v	qas	no	cortarle los cojones	conservative
+ES01065	v	qas	no	costar un cojón	conservative
+ES01066	n	qas	no	coyoma	conservative
+ES01067	n	qas	no	coña	conservative
+ES01068	n	qas	no	coñamentazón	conservative
+ES01069	n	qas	no	coñas	conservative
+ES01070	n	qas	no	coñazo	conservative
+ES01071	n	qas	no	coñito	conservative
+ES01072	n	qas	no	coñitos	conservative
+ES01073	n	qas	no	coñoto	conservative
+ES01074	n	qas	no	coñón	conservative
+ES01075	n	qas	no	cresta	conservative
+ES01076	n	qas	no	creta	conservative
+ES01077	n	qas	no	crica	conservative
+ES01078	n	qas	no	cuacha	conservative
+ES01079	n	qas	no	cuchara	conservative
+ES01080	n	qas	no	cuesco	conservative
+ES01081	n	qas	no	culada	conservative
+ES01082	n	qas	no	culamen	conservative
+ES01083	n	qas	no	culera	conservative
+ES01084	n	qas	no	culero	conservative
+ES01085	n	qas	no	culeros	conservative
+ES01086	n	qas	no	culiada	conservative
+ES01087	n	qas	no	culiado	conservative
+ES01088	a	qas	no	culiao	conservative
+ES01089	n	qas	no	culiaos	conservative
+ES01090	v	qas	no	culiar	conservative
+ES01091	n	qas	no	culito	conservative
+ES01092	n	qas	no	culitos	conservative
+ES01093	n	qas	no	culo del mundo	conservative
+ES01094	n	qas	no	culos	conservative
+ES01095	n	qas	no	culote	conservative
+ES01096	n	qas	no	cum	conservative
+ES01097	n	qas	no	cunillingus	conservative
+ES01098	n	qas	no	currutaca	conservative
+ES01099	n	qas	no	cursiento	conservative
+ES01100	p	qas	no	cómeme el coño	conservative
+ES01101	p	qas	no	cómeme el rabo	conservative
+ES01102	p	qas	no	cómeme la polla	conservative
+ES01103	p	qas	no	cómeme los huevos	conservative
+ES01104	n	qas	no	córneo	conservative
+ES01105	v	qas	no	dar	conservative
+ES01106	v	qas	no	dar el coñazo	conservative
+ES01107	v	qas	no	dar por el culo	conservative
+ES01108	v	qas	no	dar verga	conservative
+ES01109	v	qas	no	darle al tema	conservative
+ES01110	a	qas	no	de cojones	conservative
+ES01111	a	qas	no	de coña	conservative
+ES01112	r	qas	no	de culo	conservative
+ES01113	a	qas	no	de la chingada	conservative
+ES01114	a	qas	no	de la verga	conservative
+ES01115	a	qas	no	de mierda	conservative
+ES01116	a	qas	no	de puta madre	conservative
+ES01117	a	qas	no	del carajo	conservative
+ES01118	r	qas	no	del culo	conservative
+ES01119	a	qas	no	del orto	conservative
+ES01120	v	qas	no	descojonarse	conservative
+ES01121	v	qas	no	descoñetar	conservative
+ES01122	v	qas	no	descubrir américa	inclusive
+ES01123	v	qas	no	descubriste américa	inclusive
+ES01124	v	qas	no	desempalmar	conservative
+ES01125	v	qas	no	desgranar	conservative
+ES01126	v	qas	no	despollarse	conservative
+ES01127	n	qas	no	despolle	conservative
+ES01128	v	qas	no	desturcar	conservative
+ES01129	v	qas	no	detonar	conservative
+ES01130	n	qas	no	devoratulas	conservative
+ES01131	n	qas	no	dique	conservative
+ES01132	n	qas	no	disparos unidos	inclusive
+ES01133	p	qas	no	donde tengas la olla no metas la polla	conservative
+ES01134	n	qas	no	drogas	conservative
+ES01135	n	qas	no	duche	conservative
+ES01136	v	qas	no	echar la papilla	conservative
+ES01137	v	qas	no	echar la pava	conservative
+ES01138	v	qas	no	echarle cojones a algo	conservative
+ES01139	p	qas	no	echarle los calzones	conservative
+ES01140	a	qas	no	empalmado	conservative
+ES01141	v	qas	no	empalmar	conservative
+ES01142	v	qas	no	empedar	conservative
+ES01143	v	qas	no	emperrar	conservative
+ES01144	v	qas	no	empiltrarse	conservative
+ES01145	a	qas	no	empotrable	conservative
+ES01146	n	qas	no	empotrador	conservative
+ES01147	v	qas	no	empotrar	conservative
+ES01148	v	qas	no	emputar	conservative
+ES01149	v	qas	no	emputarse	conservative
+ES01150	v	qas	no	emputecer	conservative
+ES01151	r	qas	no	en la quinta puñeta	conservative
+ES01152	p	qas	no	en tiempos de guerra cualquier agujero es trinchera	conservative
+ES01153	v	qas	no	enchufársela	conservative
+ES01154	v	qas	no	encojonar	conservative
+ES01155	n	qas	no	enculador	conservative
+ES01156	v	qas	no	enmerdar	conservative
+ES01157	v	qas	no	escoñar	conservative
+ES01158	v	qas	no	escoñetar	conservative
+ES01159	n	qas	no	escroto	conservative
+ES01160	n	qas	no	espacio	conservative
+ES01161	n	qas	no	esperma	conservative
+ES01162	v	qas	no	estar en chinga	conservative
+ES01163	v	qas	no	estar hasta la madre	conservative
+ES01164	v	qas	no	estar hasta la verga	conservative
+ES01165	v	qas	no	estar hasta los cojones	conservative
+ES01166	n	qas	no	extrema	conservative
+ES01167	n	qas	no	extremo	conservative
+ES01168	n	qas	no	eyacula	conservative
+ES01169	n	qas	no	eyaculación	conservative
+ES01170	n	qas	no	eyaculado	conservative
+ES01171	v	qas	no	eyacular	conservative
+ES01172	n	qas	no	fagging	conservative
+ES01173	n	qas	no	falopa	conservative
+ES01174	n	qas	no	felación	conservative
+ES01175	n	qas	no	felching	conservative
+ES01176	n	qas	no	fierros	conservative
+ES01177	p	qas	no	fiesta de salchichas	conservative
+ES01178	n	qas	no	figurita	inclusive
+ES01179	v	qas	no	foder	conservative
+ES01180	n	qas	no	folla	conservative
+ES01181	n	qas	no	follabilidad	conservative
+ES01182	a	qas	no	follable	conservative
+ES01183	n	qas	no	follada	conservative
+ES01184	n	qas	no	folladas	conservative
+ES01185	n	qas	no	follado	conservative
+ES01186	n	qas	no	follador	conservative
+ES01187	n	qas	no	folladores	conservative
+ES01188	n	qas	no	follamigo	conservative
+ES01189	n	qas	no	follaniños	conservative
+ES01190	n	qas	no	follas	conservative
+ES01191	n	qas	no	folleteo	conservative
+ES01192	n	qas	no	follo	conservative
+ES01193	n	qas	no	follódromo	conservative
+ES01194	v	qas	no	forrar	conservative
+ES01195	v	qas	no	fregar	conservative
+ES01196	v	qas	no	frotársela	conservative
+ES01197	i	qas	no	fuck	conservative
+ES01198	a	qas	no	fucking	conservative
+ES01199	p	qas	no	fudge packer	conservative
+ES01200	n	qas	no	gachí	conservative
+ES01201	n	qas	no	gallos	conservative
+ES01202	n	qas	no	gamborimbo	conservative
+ES01203	n	qas	no	garcha	conservative
+ES01204	n	qas	no	garco	conservative
+ES01205	n	qas	no	gilipichis	conservative
+ES01206	n	qas	no	goma	conservative
+ES01207	n	qas	no	gorrero	conservative
+ES01208	n	qas	no	goy	inclusive
+ES01209	n	qas	no	grieta	conservative
+ES01210	n	qas	no	grietas	conservative
+ES01211	n	qas	no	guacho	conservative
+ES01212	n	qas	no	guarrilla	conservative
+ES01213	n	qas	no	guasca	conservative
+ES01214	n	qas	no	guevo	conservative
+ES01215	p	qas	no	hacer una paja	conservative
+ES01216	v	qas	no	hacerse el boludo	conservative
+ES01217	v	qas	no	hacerse el pendejo	conservative
+ES01218	p	qas	no	hacerse una paja	conservative
+ES01219	p	qas	no	haciendo el amor	conservative
+ES01220	v	qas	no	hartar	conservative
+ES01221	a	qas	no	hasta el culo	conservative
+ES01222	a	qas	no	hasta la madre	conservative
+ES01223	a	qas	no	hasta la polla	conservative
+ES01224	a	qas	no	hasta la verga	conservative
+ES01225	a	qas	no	hasta los cojones	conservative
+ES01226	p	qas	no	hay que joderse	conservative
+ES01227	n	qas	no	heces	inclusive
+ES01228	n	qas	no	heroína	conservative
+ES01229	n	qas	no	hez	inclusive
+ES01230	n	qas	no	hideputa	conservative
+ES01231	n	qas	no	hideputas	conservative
+ES01232	p	qas	no	hija de puta	conservative
+ES01233	n	qas	no	hijaputa	conservative
+ES01234	n	qas	no	hijo de yuta	conservative
+ES01235	n	qas	no	hijueputez	conservative
+ES01236	n	qas	no	hinchapelotas	conservative
+ES01237	v	qas	no	hinchar	conservative
+ES01238	v	qas	no	hoder	conservative
+ES01239	n	qas	no	holocuento	inclusive
+ES01240	n	qas	no	hore	conservative
+ES01241	i	qas	no	hostia puta	conservative
+ES01242	n	qas	no	huelebicho	conservative
+ES01243	n	qas	no	hueva	conservative
+ES01244	n	qas	no	huevada	conservative
+ES01245	n	qas	no	huevadas	conservative
+ES01246	n	qas	no	huevo	conservative
+ES01247	n	qas	no	huevones	conservative
+ES01248	n	qas	no	huevos	conservative
+ES01249	n	qas	no	huevón	conservative
+ES01250	n	qas	no	incogible	conservative
+ES01251	n	qas	no	incogibles	conservative
+ES01252	n	qas	no	infierno	conservative
+ES01253	a	qas	no	insingable	conservative
+ES01254	n	qas	no	instrumento	conservative
+ES01255	n	qas	no	instrumentos	conservative
+ES01256	v	qas	no	ir	conservative
+ES01257	v	qas	no	irse a hacer puñetas	conservative
+ES01258	v	qas	no	irse a la chucha	conservative
+ES01259	v	qas	no	irse a la verga	conservative
+ES01260	v	qas	no	irse a tomar por culo	conservative
+ES01261	v	qas	no	irse al carajo	conservative
+ES01262	v	qas	no	irse de culo	conservative
+ES01263	v	qas	no	irse por la pata abajo	conservative
+ES01264	v	qas	no	irse por la patilla	conservative
+ES01265	n	qas	no	islas falkland	inclusive
+ES01266	v	qas	no	jalársela	conservative
+ES01267	a	qas	no	jediondo	conservative
+ES01268	n	qas	no	jiñada	conservative
+ES01269	v	qas	no	jiñar	conservative
+ES01270	n	qas	no	joda	conservative
+ES01271	n	qas	no	jodas	conservative
+ES01272	v	qas	no	jode	conservative
+ES01273	n	qas	no	jodedor	conservative
+ES01274	v	qas	no	joderla	conservative
+ES01275	a	qas	no	jodible	conservative
+ES01276	n	qas	no	jodida	conservative
+ES01277	r	qas	no	jodidamente	conservative
+ES01278	v	qas	no	jodidas	conservative
+ES01279	a	qas	no	jodido	conservative
+ES01280	n	qas	no	jodidos	conservative
+ES01281	a	qas	no	jodidísimo	conservative
+ES01282	a	qas	no	jodiente	conservative
+ES01283	v	qas	no	jodiera	conservative
+ES01284	v	qas	no	jodiere	conservative
+ES01285	v	qas	no	jodieses	conservative
+ES01286	v	qas	no	jodiéramos	conservative
+ES01287	n	qas	no	jodión	conservative
+ES01288	v	qas	no	jodo	conservative
+ES01289	v	qas	no	jodáis	conservative
+ES01290	v	qas	no	jodás	conservative
+ES01291	v	qas	no	jodí	conservative
+ES01292	n	qas	no	joputa	conservative
+ES01293	v	qas	no	jódame	conservative
+ES01294	v	qas	no	jódete	conservative
+ES01295	n	qas	no	kapullo	conservative
+ES01296	n	qas	no	kiki	conservative
+ES01297	n	qas	no	kock	conservative
+ES01298	i	qas	no	la concha de la lora	conservative
+ES01299	p	qas	no	la concha de tu madre	conservative
+ES01300	p	qas	no	la polla en vinagre	conservative
+ES01301	i	qas	no	la puta madre	conservative
+ES01302	i	qas	no	la reconcha de la lora	conservative
+ES01303	i	qas	no	la yuta madre	conservative
+ES01304	p	qas	no	labios vaginales	conservative
+ES01305	n	qas	no	ladilla	conservative
+ES01306	n	qas	no	lambeculo	conservative
+ES01307	n	qas	no	lechazo	conservative
+ES01308	n	qas	no	leche	conservative
+ES01309	v	qas	no	lechear	conservative
+ES01310	n	qas	no	leches	conservative
+ES01311	n	qas	no	lechota	conservative
+ES01312	n	qas	no	lefa	conservative
+ES01313	n	qas	no	lefazo	conservative
+ES01314	v	qas	no	llegar al pincho	conservative
+ES01315	n	qas	no	locro	conservative
+ES01316	n	qas	no	lora	conservative
+ES01317	p	qas	no	los cojones	conservative
+ES01318	p	qas	no	los cojones morados	conservative
+ES01319	p	qas	no	los pechos	conservative
+ES01320	n	qas	no	lumi	conservative
+ES01321	v	qas	no	machacársela	conservative
+ES01322	n	qas	no	machete	conservative
+ES01323	n	qas	no	machona	inclusive
+ES01324	n	qas	no	maciza	conservative
+ES01325	n	qas	no	macizorra	conservative
+ES01326	n	qas	no	madral	conservative
+ES01327	n	qas	no	madrazo	conservative
+ES01328	n	qas	no	madrazos	conservative
+ES01329	n	qas	no	madre	conservative
+ES01330	p	qas	no	madre folladora	conservative
+ES01331	v	qas	no	madrear	conservative
+ES01332	n	qas	no	madres	conservative
+ES01333	v	qas	no	majar	conservative
+ES01334	i	qas	no	maldita sea	conservative
+ES01335	p	qas	no	maldito sea	conservative
+ES01336	a	qas	no	malfollado	conservative
+ES01337	n	qas	no	malparido	conservative
+ES01338	n	qas	no	malparidos	conservative
+ES01339	n	qas	no	mamabicho	conservative
+ES01340	n	qas	no	mamada	conservative
+ES01341	n	qas	no	mamadas	conservative
+ES01342	a	qas	no	mamado	conservative
+ES01343	n	qas	no	mamagüevo	conservative
+ES01344	n	qas	no	mamahuevo	conservative
+ES01345	v	qas	no	mamar	conservative
+ES01346	n	qas	no	mamawebo	conservative
+ES01347	v	qas	no	mandar a la mierda	conservative
+ES01348	n	qas	no	manicomio	inclusive
+ES01349	n	qas	no	manuela	conservative
+ES01350	n	qas	no	mapache	conservative
+ES01351	n	qas	no	martillo	conservative
+ES01352	n	qas	no	masoquista	conservative
+ES01353	v	qas	no	masturbarse	conservative
+ES01354	p	qas	no	me cago en dios	conservative
+ES01355	p	qas	no	me cago en el mar	conservative
+ES01356	p	qas	no	me cago en la leche	conservative
+ES01357	i	qas	no	me cago en la mar	conservative
+ES01358	p	qas	no	me cago en la puta	conservative
+ES01359	i	qas	no	me cago en ti	conservative
+ES01360	p	qas	no	me cago en todo	conservative
+ES01361	p	qas	no	me cago en tu puta madre	conservative
+ES01362	p	qas	no	me cago en tu puta madre que te parió	conservative
+ES01363	i	qas	no	me cago en tus muertos	conservative
+ES01364	i	qas	no	me cago en tus vivos	conservative
+ES01365	p	qas	no	me la pela	conservative
+ES01366	p	qas	no	me la suda	conservative
+ES01367	n	qas	no	meadero	conservative
+ES01368	v	qas	no	mear	conservative
+ES01369	n	qas	no	meco	conservative
+ES01370	n	qas	no	mecos	conservative
+ES01371	v	qas	no	meneársela	conservative
+ES01372	v	qas	no	mequear	conservative
+ES01373	a	qas	no	merdoso	conservative
+ES01374	v	qas	no	merecer	conservative
+ES01375	v	qas	no	meter mierda	conservative
+ES01376	n	qas	no	mi3rd@	conservative
+ES01377	n	qas	no	michi	conservative
+ES01378	n	qas	no	mierda de toro	conservative
+ES01379	n	qas	no	mierda pinchada en un palo	conservative
+ES01380	a	qas	no	mierdero	conservative
+ES01381	n	qas	no	mierdificación	conservative
+ES01382	a	qas	no	mierdoso	conservative
+ES01383	p	qas	no	mil pares de cojones	conservative
+ES01384	p	qas	no	mis cojones treinta y tres	conservative
+ES01385	n	qas	no	mojón	conservative
+ES01386	n	qas	no	molesta	conservative
+ES01387	n	qas	no	molesto	conservative
+ES01388	n	qas	no	monda	conservative
+ES01389	n	qas	no	mozcorra	conservative
+ES01390	p	qas	no	mucha mierda	conservative
+ES01391	p	qas	no	muncher alfombra	conservative
+ES01392	p	qas	no	más me crece	conservative
+ES01393	p	qas	no	métetelo por el culo	conservative
+ES01394	n	qas	no	nai	conservative
+ES01395	n	qas	no	nardo	conservative
+ES01396	n	qas	no	nazi	conservative
+ES01397	n	qas	no	nazis	conservative
+ES01398	i	qas	no	ndeara	conservative
+ES01399	n	qas	no	nepe	conservative
+ES01400	r	qas	no	ni cagando	conservative
+ES01401	r	qas	no	ni en pedo	conservative
+ES01402	p	qas	no	ni puta idea	conservative
+ES01403	n	qas	no	niche	inclusive
+ES01404	n	qas	no	niggers	conservative
+ES01405	p	qas	no	no digas mamadas	conservative
+ES01406	p	qas	no	no jodas	conservative
+ES01407	p	qas	no	no mames	conservative
+ES01408	p	qas	no	no te jode	conservative
+ES01409	v	qas	no	no tener cojones	conservative
+ES01410	v	qas	no	no tener huevos	conservative
+ES01411	v	qas	no	no tener madre	conservative
+ES01412	v	qas	no	no tener ni puta idea	conservative
+ES01413	n	qas	no	nopor	conservative
+ES01414	n	qas	no	npi	conservative
+ES01415	n	qas	no	ocho	conservative
+ES01416	n	qas	no	ocote	conservative
+ES01417	p	qas	no	olé tus cojones	conservative
+ES01418	n	qas	no	opa	inclusive
+ES01419	n	qas	no	orgasimo	conservative
+ES01420	n	qas	no	orgasmo	conservative
+ES01421	n	qas	no	orgasmos	conservative
+ES01422	n	qas	no	orina	conservative
+ES01423	n	qas	no	orinando	conservative
+ES01424	n	qas	no	orto	conservative
+ES01425	n	qas	no	pachorriento	inclusive
+ES01426	n	qas	no	paja mental	conservative
+ES01427	n	qas	no	pajilla	conservative
+ES01428	n	qas	no	pajillero	conservative
+ES01429	n	qas	no	pajilleros	conservative
+ES01430	n	qas	no	pajote	conservative
+ES01431	v	qas	no	pajuelear	conservative
+ES01432	n	qas	no	pallaringa	conservative
+ES01433	n	qas	no	palomo	conservative
+ES01434	n	qas	no	papaya	conservative
+ES01435	n	qas	no	papelero	conservative
+ES01436	v	qas	no	parar	conservative
+ES01437	v	qas	no	parir	conservative
+ES01438	n	qas	no	patería	conservative
+ES01439	n	qas	no	pedo	conservative
+ES01440	n	qas	no	pedorro	conservative
+ES01441	n	qas	no	pedorros	conservative
+ES01442	n	qas	no	pedos	conservative
+ES01443	v	qas	no	peer	conservative
+ES01444	v	qas	no	pelar	conservative
+ES01445	n	qas	no	pelota	conservative
+ES01446	n	qas	no	pelotas	conservative
+ES01447	n	qas	no	pelotudazo	conservative
+ES01448	v	qas	no	pelotudear	conservative
+ES01449	n	qas	no	pelotudeces	conservative
+ES01450	n	qas	no	pelotudez	conservative
+ES01451	n	qas	no	pelotudo	conservative
+ES01452	n	qas	no	pelotudos	conservative
+ES01453	n	qas	no	peluche	conservative
+ES01454	n	qas	no	pelusa	conservative
+ES01455	v	qas	no	pelársela	conservative
+ES01456	n	qas	no	pendejada	conservative
+ES01457	n	qas	no	pendejadas	conservative
+ES01458	n	qas	no	pendejez	conservative
+ES01459	v	qas	no	perder el culo	conservative
+ES01460	n	qas	no	perras	conservative
+ES01461	p	qas	no	perro follador	conservative
+ES01462	n	qas	no	peruanada	inclusive
+ES01463	n	qas	no	pervertido	conservative
+ES01464	n	qas	no	pervertidos	conservative
+ES01465	n	qas	no	pezón	conservative
+ES01466	n	qas	no	pijazal	conservative
+ES01467	n	qas	no	pijazo	conservative
+ES01468	n	qas	no	pijeada	conservative
+ES01469	a	qas	no	pijeado	conservative
+ES01470	n	qas	no	pinchazo	conservative
+ES01471	n	qas	no	pinchazos	conservative
+ES01472	n	qas	no	pinche	conservative
+ES01473	n	qas	no	pinches	conservative
+ES01474	n	qas	no	pinchito	conservative
+ES01475	n	qas	no	pincho	conservative
+ES01476	a	qas	no	pinchísimo	conservative
+ES01477	n	qas	no	pintamonas	inclusive
+ES01478	n	qas	no	piricuaco	inclusive
+ES01479	n	qas	no	pirobo	conservative
+ES01480	n	qas	no	piruja	conservative
+ES01481	n	qas	no	pis	conservative
+ES01482	v	qas	no	pisar	conservative
+ES01483	v	qas	no	pisser	conservative
+ES01484	n	qas	no	pitillo	conservative
+ES01485	n	qas	no	plátano	conservative
+ES01486	v	qas	no	poner mirando pa' cuenca	conservative
+ES01487	v	qas	no	ponerle	conservative
+ES01488	n	qas	no	popola	conservative
+ES01489	p	qas	no	por el culo te la hinco	conservative
+ES01490	r	qas	no	por las puras huevas	conservative
+ES01491	n	qas	no	porno	conservative
+ES01492	n	qas	no	pornografía	conservative
+ES01493	n	qas	no	potorro	conservative
+ES01494	n	qas	no	prelefa	conservative
+ES01495	n	qas	no	preñada	inclusive
+ES01496	a	qas	no	preñado	inclusive
+ES01497	n	qas	no	pube	conservative
+ES01498	n	qas	no	pucha	conservative
+ES01499	n	qas	no	puchaina	conservative
+ES01500	n	qas	no	pun	conservative
+ES01501	v	qas	no	pupusear	conservative
+ES01502	n	qas	no	pupusiada	conservative
+ES01503	n	qas	no	pupusona	conservative
+ES01504	n	qas	no	pupusuda	conservative
+ES01505	i	qas	no	puta la huevada	conservative
+ES01506	i	qas	no	puta la wea	conservative
+ES01507	i	qas	no	puta madre	conservative
+ES01508	p	qas	no	puta que te parió	conservative
+ES01509	n	qas	no	putamadral	conservative
+ES01510	n	qas	no	putarrajal	conservative
+ES01511	n	qas	no	putaña	conservative
+ES01512	v	qas	no	putañear	conservative
+ES01513	n	qas	no	putañero	conservative
+ES01514	n	qas	no	puteada	conservative
+ES01515	v	qas	no	putear	conservative
+ES01516	n	qas	no	putimadral	conservative
+ES01517	n	qas	no	putivuelta	conservative
+ES01518	n	qas	no	putiza	conservative
+ES01519	n	qas	no	putón verbenero	conservative
+ES01520	n	qas	no	puñeta	conservative
+ES01521	n	qas	no	puñetas	conservative
+ES01522	p	qas	no	pájaro carpintero	conservative
+ES01523	a	qas	no	que te cagas	conservative
+ES01524	p	qas	no	que te den por el culo	conservative
+ES01525	p	qas	no	que te folle un pez	conservative
+ES01526	p	qas	no	que te follen	conservative
+ES01527	n	qas	no	quejas	conservative
+ES01528	n	qas	no	queque	conservative
+ES01529	v	qas	no	querer cagar más arriba del culo	conservative
+ES01530	n	qas	no	queso	conservative
+ES01531	v	qas	no	quimbar	conservative
+ES01532	r	qas	no	quinto coño	conservative
+ES01533	p	qas	no	qué carajo	conservative
+ES01534	p	qas	no	qué pedo	conservative
+ES01535	p	qas	no	qué puñetas	conservative
+ES01536	p	qas	no	qué tienen que ver los cojones con comer trigo	conservative
+ES01537	p	qas	no	qué verga	conservative
+ES01538	n	qas	no	racista	conservative
+ES01539	n	qas	no	racistas	conservative
+ES01540	n	qas	no	rascacazuelas	inclusive
+ES01541	n	qas	no	reatazo	conservative
+ES01542	i	qas	no	reconchasumadre	conservative
+ES01543	n	qas	no	recto	conservative
+ES01544	v	qas	no	reventar	conservative
+ES01545	n	qas	no	rimming	conservative
+ES01546	v	qas	no	romper las pelotas	conservative
+ES01547	n	qas	no	saco de hueva	conservative
+ES01548	n	qas	no	saco de mierda	conservative
+ES01549	n	qas	no	saco wea	conservative
+ES01550	n	qas	no	salame	inclusive
+ES01551	n	qas	no	salchicha	conservative
+ES01552	p	qas	no	salir de la polla	conservative
+ES01553	p	qas	no	salir de los cojones	conservative
+ES01554	n	qas	no	sanamabiche	conservative
+ES01555	n	qas	no	sangriento	conservative
+ES01556	n	qas	no	sangrientos	conservative
+ES01557	n	qas	no	secuaces	inclusive
+ES01558	n	qas	no	secuaz	inclusive
+ES01559	n	qas	no	semen	conservative
+ES01560	n	qas	no	sentón	conservative
+ES01561	n	qas	no	sereguete	conservative
+ES01562	n	qas	no	sexo	conservative
+ES01563	n	qas	no	sexo débil	inclusive
+ES01564	p	qas	no	sexo oral	conservative
+ES01565	i	qas	no	shit	conservative
+ES01566	n	qas	no	shute	conservative
+ES01567	n	qas	no	sidótico	inclusive
+ES01568	n	qas	no	siete	conservative
+ES01569	p	qas	no	sin arcada no hay mamada	conservative
+ES01570	v	qas	no	singar	conservative
+ES01571	n	qas	no	skank	conservative
+ES01572	n	qas	no	smegma	conservative
+ES01573	n	qas	no	soplagaitas	conservative
+ES01574	n	qas	no	soplapollas	conservative
+ES01575	n	qas	no	soplapolleces	conservative
+ES01576	n	qas	no	soplapollez	conservative
+ES01577	v	qas	no	soplar la vela	conservative
+ES01578	n	qas	no	sorete	conservative
+ES01579	n	qas	no	soretes	conservative
+ES01580	v	qas	no	sudar	conservative
+ES01581	n	qas	no	sádico	conservative
+ES01582	i	qas	no	tamare	conservative
+ES01583	n	qas	no	tanate	conservative
+ES01584	n	qas	no	tata	conservative
+ES01585	v	qas	no	tener agarrado por los cojones	conservative
+ES01586	v	qas	no	tener huevos	conservative
+ES01587	v	qas	no	tirar el fideo	conservative
+ES01588	v	qas	no	tirar la goma	conservative
+ES01589	n	qas	no	tirón	conservative
+ES01590	n	qas	no	tizón	conservative
+ES01591	v	qas	no	tocar los cojones	conservative
+ES01592	v	qas	no	tocar los huevos	conservative
+ES01593	v	qas	no	tocársela	conservative
+ES01594	n	qas	no	tolete	conservative
+ES01595	v	qas	no	tomar por culo	conservative
+ES01596	n	qas	no	toto	conservative
+ES01597	n	qas	no	tragasables	conservative
+ES01598	n	qas	no	trans	inclusive
+ES01599	n	qas	no	transexual	conservative
+ES01600	n	qas	no	travelo	conservative
+ES01601	n	qas	no	travelos	conservative
+ES01602	n	qas	no	trio	conservative
+ES01603	n	qas	no	trucha	inclusive
+ES01604	n	qas	no	truño	conservative
+ES01605	n	qas	no	tuche	conservative
+ES01606	n	qas	no	tula	conservative
+ES01607	v	qas	no	turquear	conservative
+ES01608	p	qas	no	tía buena	conservative
+ES01609	p	qas	no	tócate los cojones	conservative
+ES01610	p	qas	no	un carajo	conservative
+ES01611	r	qas	no	un chingo	conservative
+ES01612	r	qas	no	un huevo	conservative
+ES01613	r	qas	no	un huevo y parte del otro	conservative
+ES01614	p	qas	no	una mierda	conservative
+ES01615	n	qas	no	vaina	conservative
+ES01616	v	qas	no	valer verga	conservative
+ES01617	n	qas	no	valeverguista	conservative
+ES01618	n	qas	no	vergazal	conservative
+ES01619	n	qas	no	vergo	conservative
+ES01620	n	qas	no	vergota	conservative
+ES01621	n	qas	no	vergueada	conservative
+ES01622	v	qas	no	verguear	conservative
+ES01623	a	qas	no	vergón	conservative
+ES01624	p	qas	no	vete a la mierda	conservative
+ES01625	i	qas	no	vete a la verga	conservative
+ES01626	p	qas	no	vete a tomar por culo	conservative
+ES01627	p	qas	no	vete y jódete	conservative
+ES01628	n	qas	no	viagra	conservative
+ES01629	v	qas	no	volar la raja	conservative
+ES01630	v	qas	no	volar verga	conservative
+ES01631	n	qas	no	vulva	conservative
+ES01632	n	qas	no	wang	conservative
+ES01633	n	qas	no	wawi	conservative
+ES01634	n	qas	no	wea	conservative
+ES01635	n	qas	no	weas	conservative
+ES01636	n	qas	no	wtf	conservative
+ES01637	p	qas	no	x clasificado	conservative
+ES01638	n	qas	no	xxx	conservative
+ES01639	i	qas	no	y una polla	conservative
+ES01640	v	qas	no	yacer	conservative
+ES01641	v	qas	no	zorrear	conservative
+ES01642	n	qas	no	zurullo	conservative
+ES01643	n	qas	no	ñacañaca	conservative
+ES01644	n	qas	no	ñaña	inclusive
+ES01645	n	rci	yes	babazorro	inclusive
+ES01646	a	rci	yes	carpetovetónico	inclusive
+ES01647	n	rci	yes	catalanistán	inclusive
+ES01648	n	rci	yes	chilote	inclusive
+ES01649	n	rci	yes	chilotes	inclusive
+ES01650	n	rci	yes	congolombia	inclusive
+ES01651	n	rci	yes	culipardo	inclusive
+ES01652	n	rci	yes	españistán	inclusive
+ES01653	n	rci	yes	eurabia	inclusive
+ES01654	n	rci	yes	gato	inclusive
+ES01655	n	rci	yes	godo	inclusive
+ES01656	n	rci	yes	godolandia	inclusive
+ES01657	n	rci	yes	godos	inclusive
+ES01658	n	rci	yes	gringa	inclusive
+ES01659	n	rci	yes	gringo	inclusive
+ES01660	n	rci	yes	gringos	inclusive
+ES01661	n	rci	yes	gringotenango	inclusive
+ES01662	n	rci	yes	guirilandia	inclusive
+ES01663	n	rci	yes	hambrezolano	inclusive
+ES01664	n	rci	yes	hambrezuela	inclusive
+ES01665	a	rci	yes	hispanistaní	inclusive
+ES01666	n	rci	yes	jovenlandia	inclusive
+ES01667	n	rci	yes	la madre putria	conservative
+ES01668	n	rci	yes	lachinoamérica	inclusive
+ES01669	n	rci	yes	mataulipas	inclusive
+ES01670	n	rci	yes	mesetario	inclusive
+ES01671	n	rci	yes	narcolombia	inclusive
+ES01672	n	rci	yes	negrolombia	inclusive
+ES01673	n	rci	yes	paisucho	inclusive
+ES01674	n	rci	yes	palmero	inclusive
+ES01675	n	rci	yes	pendejistán	inclusive
+ES01676	n	rci	yes	peronia	inclusive
+ES01677	n	rci	yes	perukistaní	inclusive
+ES01678	n	rci	yes	perukistán	inclusive
+ES01679	n	rci	yes	perusalén	inclusive
+ES01680	n	rci	yes	peruyork	inclusive
+ES01681	n	rci	yes	pipope	inclusive
+ES01682	n	rci	yes	poblachón	inclusive
+ES01683	n	rci	yes	pueblucho	inclusive
+ES01684	n	rci	yes	putria	conservative
+ES01685	n	rci	yes	república bananera	inclusive
+ES01686	n	rci	yes	rolo	inclusive
+ES01687	n	rci	yes	uropa	inclusive
+ES01688	n	re	no	abogánster	inclusive
+ES01689	n	re	no	asesinato	conservative
+ES01690	n	re	no	asesinatos	conservative
+ES01691	n	re	no	cana	conservative
+ES01692	n	re	no	canuto	inclusive
+ES01693	v	re	no	chingar	conservative
+ES01694	n	re	no	chonte	conservative
+ES01695	v	re	no	chorear	conservative
+ES01696	n	re	no	chori	inclusive
+ES01697	n	re	no	choriza	conservative
+ES01698	n	re	no	chorizo	conservative
+ES01699	n	re	no	chorizos	conservative
+ES01700	n	re	no	coquero	inclusive
+ES01701	n	re	no	cuilio	inclusive
+ES01702	n	re	no	cuilío	inclusive
+ES01703	n	re	no	cuñadismo	inclusive
+ES01704	n	re	no	fierro	conservative
+ES01705	v	re	no	huevear	conservative
+ES01706	n	re	no	madero	inclusive
+ES01707	n	re	no	malviviente	inclusive
+ES01708	n	re	no	paco	inclusive
+ES01709	a	re	no	paraco	inclusive
+ES01710	n	re	no	pipero	inclusive
+ES01711	n	re	no	pirata	inclusive
+ES01712	n	re	no	quitavidas	inclusive
+ES01713	n	re	no	tamal	conservative
+ES01714	n	re	no	tecato	inclusive
+ES01715	n	re	no	violaciones	conservative
+ES01716	n	re	no	violación	conservative
+ES01717	n	re	no	violador	conservative
+ES01718	n	re	no	violadores	conservative
+ES01719	n	svp	no	aleluyo	inclusive
+ES01720	n	svp	no	amarrete	inclusive
+ES01721	n	svp	no	bautista	inclusive
+ES01722	n	svp	no	biblia	inclusive
+ES01723	n	svp	no	capillita	inclusive
+ES01724	n	svp	no	comilón	conservative
+ES01725	n	svp	no	enojado	conservative
+ES01726	n	svp	no	hostia	conservative
+ES01727	n	svp	no	hostias	conservative
+ES01728	n	svp	no	lambucio	inclusive
+ES01729	n	svp	no	lujuria	conservative
+ES01730	n	svp	no	rata	inclusive
+ES01731	n	svp	no	ratas	inclusive
+ES01732	n	svp	no	trasto	inclusive
+ES01733	n	svp	no	trastos	inclusive

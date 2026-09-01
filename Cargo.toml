@@ -1,10 +1,16 @@
 [package]
 name = "blasphem"
-version = "0.1.0"
+version.workspace = true
 edition = "2024"
 rust-version = "1.85"
 publish = false
 license = "Apache-2.0"
+repository = "https://github.com/sospedra/blasphem"
+
+[workspace.package]
+# The one version every crate, npm package, wheel, and jar in this repository carries.
+# `blasphem-train sync-versions` writes the mirrors; a test fails when one drifts.
+version = "0.1.0"
 
 [workspace]
 members = [
@@ -57,6 +63,7 @@ clap.workspace = true
 csv.workspace = true
 blasphem-language = { path = "crates/blasphem-language", optional = true, default-features = false }
 serde.workspace = true
+serde_json.workspace = true
 sha2.workspace = true
 thiserror.workspace = true
 unicode-security = "0.1.2"
@@ -66,7 +73,6 @@ unicode-general-category = "1.0"
 unicode-script = "0.5"
 
 [dev-dependencies]
-serde_json.workspace = true
 tempfile.workspace = true
 
 [profile.release]
@@ -78,6 +84,15 @@ strip = true
 inherits = "release"
 debug = true
 strip = false
+
+# The profile dist builds with. Identical to release, so the release binary and
+# the reproduce binary share one recipe.
+[profile.dist]
+inherits = "release"
+
+# publish = false hides the binary from dist; opt it back in.
+[package.metadata.dist]
+dist = true
 
 [lints]
 workspace = true

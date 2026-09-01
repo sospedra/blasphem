@@ -1657,7 +1657,6 @@ lemma	category	level
 припадочный	ddp	inclusive
 псих	ddp	inclusive
 ретард	ddp	conservative
-тупак	ddp	conservative
 убожество	ddp	inclusive
 чмо	ddp	inclusive
 чурбак	ddp	conservative
@@ -1951,8 +1950,6 @@ z-быдло	dmc	inclusive
 либерастия	om	conservative
 либерастня	om	conservative
 опидореть	om	conservative
-опускать	om	conservative
-опущенный	om	conservative
 педераст	om	conservative
 педик	om	conservative
 педрила	om	conservative
@@ -2142,7 +2139,7 @@ z-быдло	dmc	inclusive
 бандерлоги	ps	conservative
 бандеровец	ps	conservative
 бандеровцы	ps	conservative
-бармалей	ps	conservative
+бармалей	ps	inclusive
 басурманин	ps	conservative
 белорусня	ps	inclusive
 бош	ps	inclusive

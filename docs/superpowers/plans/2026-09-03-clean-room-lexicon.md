@@ -544,6 +544,10 @@ Measured on the current corpora, the frame miner surfaced `bani` at 17 toxic fra
 
 The frame miner will not find `ddf` or `ddp`. Disability slurs take no distinctive frame in either language.
 
+**A frame ratio is not a dominant-sense verdict, and the two must not be conflated.** The frame miner measures how a word behaves *after an identity head word*. It says nothing about how that word behaves everywhere else. Malay found `onta` at 12 toxic frames to 0 clean and promoted it to `conservative` on the strength of that, having concluded it had no competing everyday sense — but `unta` is the standard Indonesian and Malay word for camel, and a word-boundary count over the whole corpus gives 152 toxic against 67 clean, where the clean hits are ordinary camel and Hajj references: `naik onta`, `burung onta` meaning ostrich, `Nabi Muhammad`.
+
+Both readings were correct about different things. A frame candidate still has to clear Step 5b's two questions on its own, over the full corpus, before it earns `conservative`.
+
 - [ ] **Step 5: Write the sense table**
 
 Build `data/clean-room-v1/{CODE}.senses.tsv` by reading the harvested lemmas and assigning each one a category from its meaning. This is the slow step and it does not automate.

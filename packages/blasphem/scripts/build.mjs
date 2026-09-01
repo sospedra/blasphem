@@ -18,13 +18,13 @@ function clean() {
   for (const file of [...GLUE_FILES, VERSION_FILE]) rmSync(resolve(sources, file), { force: true });
 }
 
-/** The exact versions `assets: "jsdelivr"` pins: this package and the packs it was built beside. */
-function writeVersions() {
-  const own = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8"));
-  const packs = JSON.parse(readFileSync(resolve(projectRoot, "packages/packs/package.json"), "utf8"));
-  const source = `// Written by scripts/build.mjs. Do not edit.\nexport const VERSIONS = { blasphem: ${JSON.stringify(own.version)}, packs: ${JSON.stringify(packs.version)} } as const;\n`;
-  writeFileSync(resolve(sources, VERSION_FILE), source);
-  return { blasphem: own.version, packs: packs.version };
+/** The one version `assets: "jsdelivr"` pins. Every package in the workspace carries it; the build refuses to ship a mismatch. */
+function writeVersion() {
+  const own = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8")).version;
+  const packs = JSON.parse(readFileSync(resolve(projectRoot, "packages/packs/package.json"), "utf8")).version;
+  if (own !== packs) throw new Error(`blasphem is ${own} but @blasphem/packs is ${packs}. Run: cargo run -p blasphem-train -- sync-versions`);
+  writeFileSync(resolve(sources, VERSION_FILE), `// Written by scripts/build.mjs. Do not edit.\nexport const VERSION = ${JSON.stringify(own)};\n`);
+  return own;
 }
 
 /** The private core is never published. Each package carries its own copy. */
@@ -54,7 +54,7 @@ function copyGlue() {
 const crate = readCrate();
 assertWasmBindgen(crate.wasmBindgenVersion);
 clean();
-const versions = writeVersions();
+const version = writeVersion();
 const coreFiles = inlineCore();
 generateGlue(buildWasm(crate, { targetDir }), sources);
 assertClasses();
@@ -62,4 +62,4 @@ compileTypeScript();
 copyGlue();
 const wasmBytes = statSync(resolve(distribution, "blasphem_bg.wasm")).size;
 const glueBytes = statSync(resolve(distribution, "blasphem.js")).size;
-console.log(`status=built wasm_bytes=${wasmBytes} wasm_mb=${(wasmBytes / 1048576).toFixed(2)} glue_bytes=${glueBytes} core_files=${coreFiles} versions=${versions.blasphem}/${versions.packs}`);
+console.log(`status=built wasm_bytes=${wasmBytes} wasm_mb=${(wasmBytes / 1048576).toFixed(2)} glue_bytes=${glueBytes} core_files=${coreFiles} version=${version}`);

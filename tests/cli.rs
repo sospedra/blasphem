@@ -1,4 +1,5 @@
-use std::process::{Command, Output};
+use std::io::Write;
+use std::process::{Command, Output, Stdio};
 
 use tempfile::tempdir;
 
@@ -300,4 +301,134 @@ fn assert_known_auto_output(stdout: &str, expected_first_line: &str, language: &
             .all(|character| character.is_ascii_digit()),
         "language score requires decimal digits"
     );
+}
+
+fn judge(arguments: &[&str], stdin: Option<&str>) -> Output {
+    let mut command = Command::new(env!("CARGO_BIN_EXE_blasphem"));
+    command.arg("judge").args(arguments);
+    let Some(text) = stdin else {
+        return command
+            .stdin(Stdio::null())
+            .output()
+            .expect("run blasphem judge");
+    };
+    let mut child = command
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("spawn blasphem judge");
+    child
+        .stdin
+        .take()
+        .expect("piped stdin")
+        .write_all(text.as_bytes())
+        .expect("write stdin");
+    child.wait_with_output().expect("run blasphem judge")
+}
+
+fn lossy(bytes: &[u8]) -> String {
+    String::from_utf8_lossy(bytes).into_owned()
+}
+
+#[test]
+fn judge_prints_a_safe_verdict_and_exits_zero() {
+    let output = judge(
+        &[
+            "--no-detect",
+            "--locales",
+            "en",
+            "I hope you have a wonderful day",
+        ],
+        None,
+    );
+
+    assert_eq!(output.status.code(), Some(0), "{}", lossy(&output.stderr));
+    assert_eq!(lossy(&output.stdout), "safe=true score=0.29 locale=en\n");
+}
+
+#[test]
+fn judge_exits_one_for_a_nudge() {
+    let output = judge(&["--no-detect", "--locales", "en", "I will kill you"], None);
+
+    assert_eq!(output.status.code(), Some(1), "{}", lossy(&output.stderr));
+    assert_eq!(lossy(&output.stdout), "safe=false score=0.95 locale=en\n");
+}
+
+#[test]
+fn judge_json_matches_the_javascript_contract() {
+    let output = judge(
+        &["--json", "--no-detect", "--locales", "es", "Te voy a matar"],
+        None,
+    );
+
+    assert_eq!(output.status.code(), Some(1), "{}", lossy(&output.stderr));
+    assert_eq!(
+        lossy(&output.stdout),
+        "{\"safe\":false,\"score\":0.95,\"locale\":\"es\",\"grawlix\":null}\n"
+    );
+}
+
+#[test]
+fn judge_masks_the_text_when_asked() {
+    let output = judge(
+        &[
+            "--grawlix",
+            "--no-detect",
+            "--locales",
+            "en",
+            "you are an idiot",
+        ],
+        None,
+    );
+
+    assert_eq!(output.status.code(), Some(1), "{}", lossy(&output.stderr));
+    let stdout = lossy(&output.stdout);
+    assert!(stdout.contains(" grawlix=\""), "{stdout}");
+    assert!(!stdout.contains("idiot"), "{stdout}");
+}
+
+#[test]
+fn judge_reads_one_message_per_stdin_line() {
+    let output = judge(&["--locales", "es"], Some("hello\nTe voy a matar\n"));
+
+    assert_eq!(output.status.code(), Some(1), "{}", lossy(&output.stderr));
+    let stdout = lossy(&output.stdout);
+    let lines: Vec<&str> = stdout.lines().collect();
+    assert_eq!(lines.len(), 2, "{stdout}");
+    assert!(lines[0].starts_with("safe=true "), "{stdout}");
+    assert_eq!(lines[1], "safe=false score=0.95 locale=es");
+}
+
+#[test]
+fn judge_with_empty_stdin_prints_nothing_and_exits_zero() {
+    let output = judge(&["--locales", "en"], None);
+
+    assert_eq!(output.status.code(), Some(0), "{}", lossy(&output.stderr));
+    assert_eq!(lossy(&output.stdout), "");
+}
+
+#[test]
+fn judge_rejects_an_unknown_locale() {
+    let output = judge(&["--locales", "en,xx", "hello"], None);
+
+    assert_eq!(output.status.code(), Some(2));
+    assert!(
+        lossy(&output.stderr).contains("xx"),
+        "{}",
+        lossy(&output.stderr)
+    );
+}
+
+#[test]
+fn top_level_help_shows_judge_and_hides_check() {
+    let output = Command::new(env!("CARGO_BIN_EXE_blasphem"))
+        .arg("--help")
+        .output()
+        .expect("run blasphem --help");
+
+    assert!(output.status.success());
+    let stdout = lossy(&output.stdout);
+    assert!(stdout.contains("judge"), "{stdout}");
+    assert!(!stdout.contains("check"), "{stdout}");
 }

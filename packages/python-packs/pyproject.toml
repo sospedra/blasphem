@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "blasphem-packs"
+version = "0.1.0"
+description = "Per-locale data for blasphem: one .pack and one .detect per language, plus manifest.json."
+license = { text = "CC-BY-NC-SA-4.0" }
+requires-python = ">=3.10"
+
+[tool.hatch.build.targets.wheel]
+packages = ["blasphem_packs"]
+# The data files are copied in by sync_packs.py and are gitignored; list them so hatch includes them anyway.
+artifacts = ["blasphem_packs/*.pack", "blasphem_packs/*.detect", "blasphem_packs/manifest.json"]

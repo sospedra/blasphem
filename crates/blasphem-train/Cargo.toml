@@ -1,6 +1,6 @@
 [package]
 name = "blasphem-train"
-version = "0.1.0"
+version.workspace = true
 edition = "2024"
 rust-version = "1.85"
 publish = false
@@ -9,6 +9,7 @@ license = "Apache-2.0"
 [dependencies]
 blasphem = { path = "../.." }
 blasphem-language = { path = "../blasphem-language" }
+regex = "1"
 anyhow.workspace = true
 bytes = "1.10"
 clap.workspace = true

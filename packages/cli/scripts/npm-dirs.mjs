@@ -1,0 +1,27 @@
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { TARGETS, packageName } from "./targets.mjs";
+
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const { version } = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8"));
+
+for (const target of TARGETS) {
+  const directory = resolve(packageRoot, "npm", target.name);
+  mkdirSync(directory, { recursive: true });
+  const manifest = {
+    name: packageName(target),
+    version,
+    private: true,
+    description: `blasphem command-line binary for ${target.name}, with the language data embedded`,
+    license: "Apache-2.0 AND CC-BY-NC-SA-4.0",
+    os: [target.os],
+    cpu: [target.cpu],
+    ...(target.libc ? { libc: [target.libc] } : {}),
+    files: ["bin", "NOTICE"],
+    engines: { node: ">= 20.6" },
+  };
+  writeFileSync(resolve(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  copyFileSync(resolve(packageRoot, "NOTICE"), resolve(directory, "NOTICE"));
+  console.log(`wrote npm/${target.name}/package.json`);
+}

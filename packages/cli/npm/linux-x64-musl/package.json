@@ -1,0 +1,23 @@
+{
+  "name": "@blasphem/cli-linux-x64-musl",
+  "version": "0.1.0",
+  "private": true,
+  "description": "blasphem command-line binary for linux-x64-musl, with the language data embedded",
+  "license": "Apache-2.0 AND CC-BY-NC-SA-4.0",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "musl"
+  ],
+  "files": [
+    "bin",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">= 20.6"
+  }
+}

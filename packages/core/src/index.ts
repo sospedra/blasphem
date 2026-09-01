@@ -1,4 +1,4 @@
-export { JSDELIVR, jsdelivrBases, resolveBrowserAssets, resolvePacksDirectory, type AssetBases, type PackageVersions } from "./assets.js";
+export { JSDELIVR, jsdelivrBases, resolveBrowserAssets, resolvePacksDirectory, type AssetBases } from "./assets.js";
 export type { Judge, JudgeOptions, Judgement } from "./contract.js";
 export { fail, fromEngineError, type CodedError, type ErrorCode } from "./errors.js";
 export { createJudgeWith } from "./loader.js";

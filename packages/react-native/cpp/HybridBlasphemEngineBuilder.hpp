@@ -22,7 +22,7 @@ public:
 
 private:
   void ensureBuilder();
-  static std::string lastError();
+  std::string builderError() const;
 
   blasphem_builder* builder_ = nullptr;
 };

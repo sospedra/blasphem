@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 import { TARGETS, binaryName, packageName } from "./targets.mjs";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const { version } = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8"));
+// The platform packages pin blasphem's exact version, the way @esbuild/* pin esbuild,
+// so the version comes from blasphem itself and this package carries no second number.
+const { version } = JSON.parse(readFileSync(resolve(packageRoot, "../blasphem/package.json"), "utf8"));
 
 for (const target of TARGETS) {
   const directory = resolve(packageRoot, "npm", target.name);

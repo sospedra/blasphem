@@ -38,17 +38,21 @@ void HybridBlasphemEngineBuilder::add(const std::string& locale, const std::shar
                                         packSha256.has_value() ? packSha256->c_str() : nullptr, detectData, detectLength,
                                         detectSha256.has_value() ? detectSha256->c_str() : nullptr);
   if (status != 0) {
-    throw std::runtime_error(lastError());
+    throw std::runtime_error(builderError());
   }
 }
 
 std::shared_ptr<HybridBlasphemEngineSpec> HybridBlasphemEngineBuilder::build() {
   ensureBuilder();
   blasphem_engine* engine = blasphem_builder_build(builder_);
-  builder_ = nullptr; // consumed, on success and on failure
   if (engine == nullptr) {
-    throw std::runtime_error(lastError());
+    // The builder survives a failed build so its error can be read; drop it afterwards.
+    std::string message = builderError();
+    blasphem_builder_free(builder_);
+    builder_ = nullptr;
+    throw std::runtime_error(message);
   }
+  builder_ = nullptr; // consumed by the successful build
   return std::make_shared<HybridBlasphemEngine>(engine);
 }
 
@@ -58,8 +62,11 @@ void HybridBlasphemEngineBuilder::ensureBuilder() {
   }
 }
 
-std::string HybridBlasphemEngineBuilder::lastError() {
-  const char* message = blasphem_last_error();
+std::string HybridBlasphemEngineBuilder::builderError() const {
+  const char* message = builder_ != nullptr ? blasphem_builder_error(builder_) : nullptr;
+  if (message == nullptr) {
+    message = blasphem_last_error();
+  }
   return message != nullptr ? std::string(message) : std::string("BLASPHEM_PACK_INVALID: unknown native error");
 }
 

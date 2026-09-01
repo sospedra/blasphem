@@ -1,11 +1,11 @@
 import initWasm from "./blasphem.js";
 import { createJudgeWith, createSingleton, fail, resolveBrowserAssets, type AssetBases, type Judge, type JudgeOptions, type Transport } from "./core/index.js";
-import { VERSIONS } from "./version.generated.js";
+import { VERSION } from "./version.generated.js";
 import { buildWasmEngine } from "./wasm-engine.js";
 
 export type { AssetBases, Judge, JudgeOptions, Judgement } from "./core/index.js";
 export { JSDELIVR, LOCALES, jsdelivrBases, type LocaleCode } from "./core/index.js";
-export { VERSIONS } from "./version.generated.js";
+export { VERSION } from "./version.generated.js";
 
 const WASM_FILE = "blasphem_bg.wasm";
 let wasmReady: Promise<unknown> | null = null;
@@ -51,7 +51,7 @@ function browserTransport(bases: AssetBases): Transport {
  * the packs base. `assets` names both: one path, `"jsdelivr"`, or `{ wasm, packs }`.
  */
 export function createJudge(options: JudgeOptions): Promise<Judge> {
-  const bases = resolveBrowserAssets(options?.assets, VERSIONS);
+  const bases = resolveBrowserAssets(options?.assets, VERSION);
   return createJudgeWith(browserTransport(bases), options);
 }
 

@@ -23,7 +23,7 @@ use blasphem_train::evidence::write_canonical_json;
 use blasphem_train::lexicon::{
     BuildOptions, HarvestOptions, WikiSource, build, default_wiki, harvest,
 };
-use blasphem_train::locales_table::write_locales_table;
+use blasphem_train::locales_table::{TableFormat, write_locales_table};
 use blasphem_train::pack::{PackOptions, write_packs};
 use blasphem_train::preparation::{PrepareCorpusOptions, prepare_corpus};
 use blasphem_train::regenerate::{RegenerateOptions, regenerate};
@@ -33,6 +33,7 @@ use blasphem_train::source_manifest::{
     parse_source_catalog, parse_source_observation,
 };
 use blasphem_train::verification::{evaluate_behavior, evaluate_cli_smoke, evaluate_validation};
+use blasphem_train::versions::{check_versions, sync_versions, workspace_version};
 use blasphem_train::{ReqwestTextDetoxClient, TextDetoxHttpClient, parse_eval_rows};
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use reqwest::blocking::Client;
@@ -74,6 +75,7 @@ enum Command {
     LexiconBuild(LexiconBuildArgs),
     Pack(PackArgs),
     LocalesTable(LocalesTableArgs),
+    SyncVersions(SyncVersionsArgs),
 }
 
 #[derive(Debug, Args)]
@@ -262,9 +264,19 @@ struct PackArgs {
 }
 
 #[derive(Debug, Args)]
+struct SyncVersionsArgs {
+    /// Fail when a manifest disagrees instead of rewriting it.
+    #[arg(long)]
+    check: bool,
+}
+
+#[derive(Debug, Args)]
 struct LocalesTableArgs {
     #[arg(long)]
     output: PathBuf,
+    /// ts, go, or python
+    #[arg(long, default_value = "ts")]
+    format: String,
 }
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
@@ -301,7 +313,25 @@ fn main() -> Result<()> {
         Command::LexiconBuild(arguments) => lexicon_build_command(&arguments),
         Command::Pack(arguments) => pack_command(&arguments),
         Command::LocalesTable(arguments) => locales_table_command(&arguments),
+        Command::SyncVersions(arguments) => sync_versions_command(&arguments),
     }
+}
+
+fn sync_versions_command(arguments: &SyncVersionsArgs) -> Result<()> {
+    let root = std::env::current_dir().context("cannot read the current directory")?;
+    let version = workspace_version(&root)?;
+    let report = if arguments.check {
+        check_versions(&root)?
+    } else {
+        sync_versions(&root)?
+    };
+    println!(
+        "status={} version={version} checked={} changed={}",
+        if arguments.check { "checked" } else { "synced" },
+        report.checked,
+        report.changed
+    );
+    Ok(())
 }
 
 fn pack_command(arguments: &PackArgs) -> Result<()> {
@@ -324,7 +354,13 @@ fn pack_command(arguments: &PackArgs) -> Result<()> {
 }
 
 fn locales_table_command(arguments: &LocalesTableArgs) -> Result<()> {
-    write_locales_table(&arguments.output)
+    let format = TableFormat::parse(&arguments.format).ok_or_else(|| {
+        anyhow::anyhow!(
+            "unknown --format {:?}; use ts, go, or python",
+            arguments.format
+        )
+    })?;
+    write_locales_table(&arguments.output, format)
         .with_context(|| format!("cannot write {}", arguments.output.display()))?;
     println!("status=written path={}", arguments.output.display());
     Ok(())

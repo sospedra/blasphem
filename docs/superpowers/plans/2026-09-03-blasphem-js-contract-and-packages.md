@@ -547,3 +547,15 @@ Run, in order, and paste output into the final report:
 7. `git status --short` (no unintended files)
 
 Then amend the spec with the implementation decisions (wasm served from `assets`, builder API, `CODE: detail` messages, tables compiled in, measured slice sizes, packs license per NOTICE) and update `packages/blasphem/README.md`, `TOOLCHAIN.md`, `crates/blasphem-wasm/README.md`.
+
+---
+
+### Task 14: Go, Python, and Java bindings (added 2026-09-04)
+
+**Files:** `crates/blasphem-ffi` (`blasphem_builder_error`, builder survives a failed build), `crates/blasphem-train/src/locales_table.rs` (`--format go|python|java`), `packages/go/*`, `crates/blasphem-python/*` (standalone workspace), `packages/python/*`, `packages/python-packs/*`, `packages/java/*`.
+
+Verification that ran: `go vet ./... && go run ./example ../../packages/packs/dist`; `maturin develop --release` then the README snippet in a Python 3.14 venv, plus `uv build` of the data wheel and `init(["en"])` without `assets`; `javac --release 22 -Xlint:all -Werror` on JDK 25 then `java --enable-native-access=ALL-UNNAMED ... Main`. All three printed `score 0.64`, `locale en`, the grawlix, fail-open on Korean, and `BLASPHEM_LOCALE_UNSUPPORTED` for `xx`.
+
+### Task 15: Svelte and Solid (added 2026-09-04)
+
+Throwaway apps in `/tmp/fw` from `create-vite` templates, tarballs from `pnpm pack`, `blasphem-assets public/blasphem`, `vite build`, then Playwright in Chromium and WebKit reading the rendered verdict. Both passed. README gained the two components and the SSR note.

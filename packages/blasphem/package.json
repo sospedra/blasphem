@@ -24,6 +24,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
+    "blasphem": "./bin/blasphem.mjs",
     "blasphem-assets": "./bin/blasphem-assets.mjs"
   },
   "files": [
@@ -41,6 +42,13 @@
     "test:browser": "node scripts/browser-smoke.mjs"
   },
   "optionalDependencies": {
+    "@blasphem/cli-darwin-arm64": "workspace:*",
+    "@blasphem/cli-darwin-x64": "workspace:*",
+    "@blasphem/cli-linux-arm64-gnu": "workspace:*",
+    "@blasphem/cli-linux-arm64-musl": "workspace:*",
+    "@blasphem/cli-linux-x64-gnu": "workspace:*",
+    "@blasphem/cli-linux-x64-musl": "workspace:*",
+    "@blasphem/cli-win32-x64-msvc": "workspace:*",
     "@blasphem/node-darwin-arm64": "workspace:*",
     "@blasphem/node-darwin-x64": "workspace:*",
     "@blasphem/node-linux-arm64-gnu": "workspace:*",

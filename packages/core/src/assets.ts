@@ -8,19 +8,14 @@ export interface AssetBases {
   packs: string;
 }
 
-/** The versions a build was made from, baked in at build time. */
-export interface PackageVersions {
-  blasphem: string;
-  packs: string;
-}
-
-/** `assets: "jsdelivr"` loads the exact versions this build was tested with from the jsDelivr npm CDN. */
+/** `assets: "jsdelivr"` loads this build's exact version of both packages from the jsDelivr npm CDN. */
 export const JSDELIVR = "jsdelivr";
 
-export function jsdelivrBases(versions: PackageVersions): AssetBases {
+/** `blasphem` and `@blasphem/packs` share one version, baked in at build time. */
+export function jsdelivrBases(version: string): AssetBases {
   return {
-    wasm: `https://cdn.jsdelivr.net/npm/blasphem@${versions.blasphem}/dist`,
-    packs: `https://cdn.jsdelivr.net/npm/@blasphem/packs@${versions.packs}/dist`,
+    wasm: `https://cdn.jsdelivr.net/npm/blasphem@${version}/dist`,
+    packs: `https://cdn.jsdelivr.net/npm/@blasphem/packs@${version}/dist`,
   };
 }
 
@@ -39,8 +34,8 @@ function isBases(value: unknown): value is AssetBases {
  * Omitted or `"jsdelivr"`: the npm CDN at this build's pinned versions.
  * A path serves both from your origin; an object splits them.
  */
-export function resolveBrowserAssets(input: unknown, versions: PackageVersions): AssetBases {
-  if (input === undefined || input === null || input === JSDELIVR) return jsdelivrBases(versions);
+export function resolveBrowserAssets(input: unknown, version: string): AssetBases {
+  if (input === undefined || input === null || input === JSDELIVR) return jsdelivrBases(version);
   if (isBases(input)) return { wasm: trimSlash(input.wasm), packs: trimSlash(input.packs) };
   if (typeof input === "string" && input.trim() !== "") {
     const base = trimSlash(input);

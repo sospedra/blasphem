@@ -1,7 +1,8 @@
+import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { caseTotal, failures, runCases, verdictSignature } from "../tests/cases.mjs";
+import { README_EXAMPLE, SUPPLIED_CASES, caseTotal, failures, invariantsHold, runCases, verdictSignature } from "../tests/cases.mjs";
 import { packageRoot, projectRoot } from "./crate.mjs";
 import { binaryName, hostTarget } from "../../node/scripts/targets.mjs";
 
@@ -44,4 +45,37 @@ if (verdictSignature(first) !== verdictSignature(second)) {
   process.exit(1);
 }
 
-console.log(`status=passed node=${process.version} transport=${first.transport} cases=${caseTotal(first)} wasm_cases=${caseTotal(second)} import_ms=${importMs.toFixed(1)}`);
+// The `blasphem` bin runs the embedded binary from the platform package. Its
+// verdicts must match the pack-based library on the shared cases.
+const launcher = resolve(packageRoot, "bin/blasphem.mjs");
+const cliBinary = target === null ? null : resolve(projectRoot, "packages/cli/npm", target.name, "bin", process.platform === "win32" ? "blasphem.exe" : "blasphem");
+
+function cliJudge(args) {
+  const run = spawnSync(process.execPath, [launcher, "judge", "--json", ...args], { encoding: "utf8" });
+  if (run.error) throw run.error;
+  const line = run.stdout.trim();
+  return { status: run.status, verdict: line === "" ? null : JSON.parse(line), stderr: run.stderr };
+}
+
+function readmeCase() {
+  const expected = README_EXAMPLE.verdict;
+  const { status, verdict, stderr } = cliJudge(["--locales", "en,es", "--grawlix", README_EXAMPLE.text]);
+  const matches = verdict !== null && verdict.safe === expected.safe && Math.abs(verdict.score - expected.score) < 1e-9 && verdict.locale === expected.locale && verdict.grawlix === expected.grawlix;
+  return { case_id: "cli-readme-example", passed: status === 1 && invariantsHold(verdict, true) && matches, status, verdict, stderr };
+}
+
+function suppliedCase([caseId, language, text, expectedNudge]) {
+  const { status, verdict, stderr } = cliJudge(["--no-detect", "--locales", language, text]);
+  const passed = verdict !== null && invariantsHold(verdict, false) && verdict.safe === !expectedNudge && status === (expectedNudge ? 1 : 0);
+  return { case_id: `cli-${caseId}`, passed, status, verdict, stderr };
+}
+
+const cliResults = cliBinary !== null && existsSync(cliBinary) ? [readmeCase(), ...SUPPLIED_CASES.map(suppliedCase)] : null;
+const cliFailed = cliResults?.filter((result) => !result.passed) ?? [];
+if (cliFailed.length > 0) {
+  console.error(`status=failed run=cli cases=${cliResults.length - cliFailed.length}/${cliResults.length}`);
+  console.error(JSON.stringify(cliFailed, null, 2));
+  process.exit(1);
+}
+
+console.log(`status=passed node=${process.version} transport=${first.transport} cases=${caseTotal(first)} wasm_cases=${caseTotal(second)} cli_cases=${cliResults === null ? "skipped" : cliResults.length} import_ms=${importMs.toFixed(1)}`);

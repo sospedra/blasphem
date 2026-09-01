@@ -1,0 +1,22 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "blasphem"
+version = "0.1.0"
+description = "Multilingual pre-send toxicity nudge. init once, judge on every message; the packs load per locale."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Rust",
+  "Operating System :: OS Independent",
+]
+
+[tool.maturin]
+manifest-path = "../../crates/blasphem-python/Cargo.toml"
+python-source = "python"
+module-name = "blasphem._native"
+features = ["pyo3/extension-module"]

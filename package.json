@@ -11,7 +11,9 @@
     "test": "turbo run test",
     "check": "turbo run check",
     "reproduce": "cargo run --release --locked -p blasphem-train -- reproduce",
-    "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate"
+    "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate",
+    "versions": "cargo run --release --locked -p blasphem-train -- sync-versions",
+    "versions:check": "cargo run --release --locked -p blasphem-train -- sync-versions --check"
   },
   "devDependencies": {
     "turbo": "2.10.12"

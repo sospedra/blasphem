@@ -22,6 +22,7 @@ pub mod source_manifest;
 pub mod source_role;
 pub mod textdetox_http;
 pub mod verification;
+pub mod versions;
 
 pub use acquisition::{
     AcquiredTextDetox, TEXTDETOX_REVISION_URL, TextDetoxAcquisitionError, TextDetoxFetchError,

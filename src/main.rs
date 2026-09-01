@@ -1,17 +1,23 @@
+use std::io::{self, BufRead, IsTerminal, Write};
+use std::process::ExitCode;
+use std::str::FromStr;
 use std::{fs, path::PathBuf};
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, anyhow, bail};
 use blasphem::{
-    CandidateViewKind, Language, LanguageDetection, LanguageResolution, LanguageSelection,
-    LanguageSource, MatchLevel, NudgeDetector, PolicyCategory, ReplyTarget,
+    CandidateViewKind, Judge, JudgeOptions, Judgement, Language, LanguageDetection,
+    LanguageResolution, LanguageSelection, LanguageSource, MatchLevel, NudgeDetector,
+    PolicyCategory, ReplyTarget,
 };
 #[cfg(feature = "language-detection")]
 use blasphem::{LanguageDetector, resolve_language};
 use clap::{Args, Parser, Subcommand, ValueEnum};
+use serde::Serialize;
 
 #[derive(Debug, Parser)]
 #[command(
     name = "blasphem",
+    version,
     about = "Experimental multilingual lexical toxicity detector"
 )]
 struct Cli {
@@ -21,7 +27,29 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
+    /// Judge one message, or one message per stdin line.
+    Judge(JudgeArgs),
+    /// Diagnostic policy output over the repository's HurtLex files.
+    #[command(hide = true)]
     Check(CheckArgs),
+}
+
+#[derive(Debug, Args)]
+struct JudgeArgs {
+    /// The message. Without it, every stdin line is one message.
+    text: Option<String>,
+    /// Locales to load, comma separated. Default: all 15.
+    #[arg(long, value_delimiter = ',')]
+    locales: Vec<String>,
+    /// Score every loaded locale instead of routing by detected language.
+    #[arg(long)]
+    no_detect: bool,
+    /// Add the masked text to each verdict.
+    #[arg(long)]
+    grawlix: bool,
+    /// Print one JSON object per verdict: safe, score, locale, grawlix.
+    #[arg(long)]
+    json: bool,
 }
 
 #[derive(Debug, Args)]
@@ -53,10 +81,95 @@ impl From<ReplyTargetArg> for ReplyTarget {
     }
 }
 
-fn main() -> Result<()> {
+/// The JavaScript contract's verdict, field for field.
+#[derive(Serialize)]
+struct JsonVerdict<'a> {
+    safe: bool,
+    score: f64,
+    locale: Option<&'a str>,
+    grawlix: Option<&'a str>,
+}
+
+fn main() -> ExitCode {
     match Cli::parse().command {
-        Command::Check(arguments) => check(&arguments),
+        Command::Judge(arguments) => exit_code(judge(&arguments)),
+        Command::Check(arguments) => exit_code(check(&arguments).map(|()| false)),
     }
+}
+
+/// 0 when nothing nudged, 1 when any verdict nudged, 2 on an error.
+fn exit_code(outcome: Result<bool>) -> ExitCode {
+    match outcome {
+        Ok(false) => ExitCode::SUCCESS,
+        Ok(true) => ExitCode::from(1),
+        Err(error) if is_broken_pipe(&error) => ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("Error: {error:?}");
+            ExitCode::from(2)
+        }
+    }
+}
+
+/// A closed reader, as in `blasphem judge < file | head`, is not an error.
+fn is_broken_pipe(error: &anyhow::Error) -> bool {
+    error
+        .downcast_ref::<io::Error>()
+        .is_some_and(|cause| cause.kind() == io::ErrorKind::BrokenPipe)
+}
+
+fn judge(arguments: &JudgeArgs) -> Result<bool> {
+    let judge = Judge::new(JudgeOptions {
+        locales: parse_locales(&arguments.locales)?,
+        detect_language: !arguments.no_detect,
+        grawlix: arguments.grawlix,
+    })?;
+    let mut stdout = io::stdout().lock();
+    if let Some(text) = &arguments.text {
+        let verdict = judge.judge(text);
+        print_verdict(&mut stdout, &verdict, arguments.json)?;
+        return Ok(!verdict.safe);
+    }
+    if io::stdin().is_terminal() {
+        bail!("no text given: pass TEXT, or pipe one message per line");
+    }
+    let mut nudged = false;
+    for line in io::stdin().lock().lines() {
+        let verdict = judge.judge(&line.context("cannot read stdin")?);
+        print_verdict(&mut stdout, &verdict, arguments.json)?;
+        nudged |= !verdict.safe;
+    }
+    Ok(nudged)
+}
+
+fn parse_locales(codes: &[String]) -> Result<Vec<Language>> {
+    codes
+        .iter()
+        .map(|code| Language::from_str(code).map_err(|_| anyhow!("unsupported locale {code:?}")))
+        .collect()
+}
+
+fn print_verdict(out: &mut impl Write, verdict: &Judgement, json: bool) -> Result<()> {
+    let locale = verdict
+        .locale
+        .map(|language| language.code().to_ascii_lowercase());
+    if json {
+        let line = serde_json::to_string(&JsonVerdict {
+            safe: verdict.safe,
+            score: verdict.score,
+            locale: locale.as_deref(),
+            grawlix: verdict.grawlix.as_deref(),
+        })?;
+        writeln!(out, "{line}")?;
+        return Ok(());
+    }
+    let (safe, score) = (verdict.safe, verdict.score);
+    let locale = locale.as_deref().unwrap_or("none");
+    write!(out, "safe={safe} score={score} locale={locale}")?;
+    if let Some(grawlix) = &verdict.grawlix {
+        write!(out, " grawlix={grawlix:?}")?;
+    }
+    writeln!(out)?;
+    Ok(())
 }
 
 fn check(arguments: &CheckArgs) -> Result<()> {

@@ -23,3 +23,14 @@ node_modules/
 /packages/react-native/android/libs/
 /packages/react-native/cpp/blasphem.h
 /packages/blasphem/src/version.generated.ts
+/packages/python-packs/blasphem_packs/*.pack
+/packages/python-packs/blasphem_packs/*.detect
+/packages/python-packs/blasphem_packs/manifest.json
+/packages/python/**/__pycache__/
+/crates/blasphem-python/target/
+/packages/python/.venv/
+/packages/python-packs/dist/
+/packages/cli/npm/*/bin/
+/packages/python/python/blasphem/_native*.so
+/packages/python/python/blasphem/_native*.pyd
+__pycache__/
