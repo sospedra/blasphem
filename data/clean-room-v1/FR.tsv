@@ -1,0 +1,1009 @@
+id	pos	category	stereotype	lemma	level
+FR00001	n	an	no	blaireau	inclusive
+FR00002	n	an	no	blaireaux	inclusive
+FR00003	n	an	no	bourricot	inclusive
+FR00004	n	an	no	bovin	inclusive
+FR00005	n	an	no	bovinement	inclusive
+FR00006	p	an	no	brebis galeuse	inclusive
+FR00007	n	an	no	buse	inclusive
+FR00008	n	an	no	caniche	inclusive
+FR00009	n	an	no	chameau	inclusive
+FR00010	p	an	no	chien de chrétien	inclusive
+FR00011	p	an	no	chien de la casse	inclusive
+FR00012	n	an	no	chienne	inclusive
+FR00013	p	an	no	chienne de chrétienne	inclusive
+FR00014	p	an	no	chienne de la casse	inclusive
+FR00015	n	an	no	chiennes	inclusive
+FR00016	n	an	no	crapaud	inclusive
+FR00017	n	an	no	crapaude	inclusive
+FR00018	n	an	no	dindasse	inclusive
+FR00019	n	an	no	dinde	inclusive
+FR00020	n	an	no	dindes	inclusive
+FR00021	n	an	no	dindonne	inclusive
+FR00022	n	an	no	guenon	inclusive
+FR00023	n	an	no	hongre	inclusive
+FR00024	v	an	no	loup-cervier	inclusive
+FR00025	p	an	no	mouton noir	inclusive
+FR00026	n	an	no	oie	inclusive
+FR00027	n	an	no	porc	inclusive
+FR00028	n	an	no	porcas	inclusive
+FR00029	n	an	no	porcasse	inclusive
+FR00030	n	an	no	porcin	inclusive
+FR00031	n	an	no	porcs	inclusive
+FR00032	n	an	no	sagouin	inclusive
+FR00033	n	an	no	sagouine	inclusive
+FR00034	n	an	no	salope	conservative
+FR00035	n	an	no	thon	inclusive
+FR00036	p	an	no	triple buse	inclusive
+FR00037	n	an	no	truiasse	inclusive
+FR00038	n	an	no	truie	inclusive
+FR00039	n	an	no	truyasse	inclusive
+FR00040	n	an	no	vache	inclusive
+FR00041	n	an	no	veau	inclusive
+FR00042	n	an	no	veaux	inclusive
+FR00043	n	asf	no	berlingue	inclusive
+FR00044	n	asf	no	bigornette	inclusive
+FR00045	n	asf	no	boucaque	inclusive
+FR00046	n	asf	no	cachina	inclusive
+FR00047	n	asf	no	cagoince	inclusive
+FR00048	n	asf	no	cagouince	inclusive
+FR00049	n	asf	no	chagasse	inclusive
+FR00050	n	asf	no	chagatte	inclusive
+FR00051	n	asf	no	chatte	inclusive
+FR00052	n	asf	no	chiabrena	inclusive
+FR00053	n	asf	no	choune	inclusive
+FR00054	n	asf	no	clito	inclusive
+FR00055	n	asf	no	cramouille	inclusive
+FR00056	n	asf	no	fente	inclusive
+FR00057	n	asf	no	foufoune	inclusive
+FR00058	n	asf	no	foufounette	inclusive
+FR00059	n	asf	no	foune	inclusive
+FR00060	n	asf	no	minou	inclusive
+FR00061	n	asf	no	moule	inclusive
+FR00062	n	asf	no	moule-bite	inclusive
+FR00063	p	asf	no	néo chatte	inclusive
+FR00064	n	asf	no	néo-chatte	inclusive
+FR00065	n	asf	no	plotte	inclusive
+FR00066	n	asf	no	schnek	inclusive
+FR00067	n	asm	no	baise	inclusive
+FR00068	v	asm	no	baiser	inclusive
+FR00069	n	asm	no	baises	inclusive
+FR00070	n	asm	no	baisé	inclusive
+FR00071	n	asm	no	biroute	inclusive
+FR00072	v	asm	no	biroutier	inclusive
+FR00073	n	asm	no	bite	inclusive
+FR00074	n	asm	no	bites	inclusive
+FR00075	n	asm	no	bitte	inclusive
+FR00076	n	asm	no	branle	inclusive
+FR00077	n	asm	no	branles	inclusive
+FR00078	n	asm	no	burne	inclusive
+FR00079	n	asm	no	burnes	inclusive
+FR00080	n	asm	no	burné	inclusive
+FR00081	n	asm	no	chibre	inclusive
+FR00082	p	asm	no	concours de bite	inclusive
+FR00083	n	asm	no	couille	inclusive
+FR00084	p	asm	no	couille de loup	inclusive
+FR00085	p	asm	no	couille de mammouth	inclusive
+FR00086	n	asm	no	couilles	inclusive
+FR00087	n	asm	no	cul	inclusive
+FR00088	n	asm	no	culs	inclusive
+FR00089	v	asm	no	défoncer	inclusive
+FR00090	n	asm	no	encule	inclusive
+FR00091	v	asm	no	enculer	inclusive
+FR00092	n	asm	no	enculé	conservative
+FR00093	n	asm	no	enculés	inclusive
+FR00094	n	asm	no	fdp	inclusive
+FR00095	n	asm	no	fils-de-puterie	inclusive
+FR00096	n	asm	no	filsdeputerie	inclusive
+FR00097	n	asm	no	fion	inclusive
+FR00098	n	asm	no	foutres	inclusive
+FR00099	p	asm	no	garage à bite	inclusive
+FR00100	p	asm	no	garage à bites	inclusive
+FR00101	n	asm	no	gland	inclusive
+FR00102	p	asm	no	gros cul	inclusive
+FR00103	n	asm	no	gros-cul	inclusive
+FR00104	p	asm	no	peau de couille	inclusive
+FR00105	p	asm	no	peau de zob	inclusive
+FR00106	n	asm	no	peigne-cul	inclusive
+FR00107	n	asm	no	peigne-zizi	inclusive
+FR00108	n	asm	no	pine	inclusive
+FR00109	n	asm	no	pogne-cul	inclusive
+FR00110	n	asm	no	popaul	inclusive
+FR00111	n	asm	no	popol	inclusive
+FR00112	n	asm	no	queue	inclusive
+FR00113	n	asm	no	queues	inclusive
+FR00114	n	asm	no	quéquette	inclusive
+FR00115	n	asm	no	raclure	inclusive
+FR00116	p	asm	no	raclure de bidet	inclusive
+FR00117	n	asm	no	rondelle	inclusive
+FR00118	n	asm	no	roubignole	inclusive
+FR00119	n	asm	no	roupette	inclusive
+FR00120	p	asm	no	sac à foutre	inclusive
+FR00121	p	asm	no	sac à merde	inclusive
+FR00122	n	asm	no	sguègue	inclusive
+FR00123	n	asm	no	suce	inclusive
+FR00124	v	asm	no	sucer	inclusive
+FR00125	n	asm	no	teub	inclusive
+FR00126	n	asm	no	teube	inclusive
+FR00127	n	asm	no	teubé	inclusive
+FR00128	n	asm	no	teuch	inclusive
+FR00129	n	asm	no	teucha	inclusive
+FR00130	n	asm	no	torche-cul	inclusive
+FR00131	n	asm	no	torchecul	inclusive
+FR00132	p	asm	no	trou de balle	inclusive
+FR00133	p	asm	no	trou du cul	inclusive
+FR00134	p	asm	no	trou du cul du monde	inclusive
+FR00135	p	asm	no	trou à bites	inclusive
+FR00136	n	asm	no	trouduc	inclusive
+FR00137	n	asm	no	trouducune	inclusive
+FR00138	p	asm	no	trous à bites	inclusive
+FR00139	p	asm	no	tête de gland	inclusive
+FR00140	p	asm	no	tête de nœud	inclusive
+FR00141	v	asm	no	vier	inclusive
+FR00142	n	asm	no	viédase	inclusive
+FR00143	n	asm	no	zboob	inclusive
+FR00144	n	asm	no	zboube	inclusive
+FR00145	n	asm	no	zguègue	inclusive
+FR00146	n	asm	no	zizi	inclusive
+FR00147	v	asm	no	zober	inclusive
+FR00148	n	asm	no	zobé	inclusive
+FR00149	p	cds	no	aller se faire enculer	inclusive
+FR00150	p	cds	no	aller se faire foutre	inclusive
+FR00151	p	cds	no	allez vous faire foutre	inclusive
+FR00152	n	cds	no	baltringue	inclusive
+FR00153	n	cds	no	batard	inclusive
+FR00154	n	cds	no	bitch	inclusive
+FR00155	n	cds	no	bordille	inclusive
+FR00156	n	cds	no	boudin	inclusive
+FR00157	n	cds	no	boulet	inclusive
+FR00158	n	cds	no	branleur	inclusive
+FR00159	n	cds	no	branleurs	inclusive
+FR00160	n	cds	no	bâtard	inclusive
+FR00161	n	cds	no	bâtards	inclusive
+FR00162	n	cds	no	canaille	inclusive
+FR00163	v	cds	no	chier	inclusive
+FR00164	n	cds	no	chiotte	inclusive
+FR00165	n	cds	no	chiottes	inclusive
+FR00166	n	cds	no	connasses	inclusive
+FR00167	p	cds	no	couille molle	inclusive
+FR00168	n	cds	no	crapule	inclusive
+FR00169	n	cds	no	crevure	inclusive
+FR00170	n	cds	no	crevures	inclusive
+FR00171	p	cds	no	ducon fini	inclusive
+FR00172	n	cds	no	emmerdeur	inclusive
+FR00173	n	cds	no	emmerdeuse	inclusive
+FR00174	p	cds	no	enfant de chienne	inclusive
+FR00175	p	cds	no	enfant de garce	inclusive
+FR00176	p	cds	no	enfant de putain	inclusive
+FR00177	p	cds	no	enfant de pute	inclusive
+FR00178	p	cds	no	enfant de salaud	inclusive
+FR00179	n	cds	no	enflure	inclusive
+FR00180	n	cds	no	enflures	inclusive
+FR00181	n	cds	no	enfoirage	inclusive
+FR00182	n	cds	no	enfoiré	inclusive
+FR00183	n	cds	no	enfoirée	inclusive
+FR00184	n	cds	no	enfoirés	inclusive
+FR00185	n	cds	no	faquin	inclusive
+FR00186	p	cds	no	faux cul	inclusive
+FR00187	p	cds	no	faux derche	inclusive
+FR00188	p	cds	no	faux frère	inclusive
+FR00189	p	cds	no	faux jeton	inclusive
+FR00190	n	cds	no	faux-cul	inclusive
+FR00191	n	cds	no	faux-derche	inclusive
+FR00192	n	cds	no	faux-frère	inclusive
+FR00193	n	cds	no	faux-jeton	inclusive
+FR00194	n	cds	no	feignasse	inclusive
+FR00195	n	cds	no	feignasses	inclusive
+FR00196	p	cds	no	ferme ta gueule	inclusive
+FR00197	p	cds	no	fermer sa gueule	inclusive
+FR00198	p	cds	no	fermez vos gueules	inclusive
+FR00199	p	cds	no	fille de pute	inclusive
+FR00200	p	cds	no	fils de bâtard	inclusive
+FR00201	p	cds	no	fils de catin	inclusive
+FR00202	p	cds	no	fils de chien	inclusive
+FR00203	p	cds	no	fils de chienne	inclusive
+FR00204	p	cds	no	fils de garce	inclusive
+FR00205	p	cds	no	fils de putain	inclusive
+FR00206	p	cds	no	fils de pute	inclusive
+FR00207	n	cds	no	foutre	inclusive
+FR00208	n	cds	no	foutu	inclusive
+FR00209	n	cds	no	foutue	inclusive
+FR00210	n	cds	no	foutues	inclusive
+FR00211	n	cds	no	foutus	inclusive
+FR00212	n	cds	no	fripouille	inclusive
+FR00213	n	cds	no	fuck	inclusive
+FR00214	n	cds	no	fucking	inclusive
+FR00215	v	cds	no	fumier	inclusive
+FR00216	n	cds	no	glandeur	inclusive
+FR00217	n	cds	no	glandeuse	inclusive
+FR00218	n	cds	no	glandu	inclusive
+FR00219	n	cds	no	glandue	inclusive
+FR00220	n	cds	no	glandus	inclusive
+FR00221	n	cds	no	goujat	inclusive
+FR00222	n	cds	no	goujate	inclusive
+FR00223	p	cds	no	grande gueule	inclusive
+FR00224	n	cds	no	gredin	inclusive
+FR00225	n	cds	no	guignol	inclusive
+FR00226	n	cds	no	guignols	inclusive
+FR00227	p	cds	no	has been	inclusive
+FR00228	n	cds	no	has-been	inclusive
+FR00229	n	cds	no	hypocrite	inclusive
+FR00230	n	cds	no	hypocrites	inclusive
+FR00231	n	cds	no	ignare	inclusive
+FR00232	n	cds	no	ignares	inclusive
+FR00233	n	cds	no	incompétent	inclusive
+FR00234	n	cds	no	incompétente	inclusive
+FR00235	n	cds	no	ivrogne	inclusive
+FR00236	p	cds	no	la boucler	inclusive
+FR00237	p	cds	no	la fermer	inclusive
+FR00238	n	cds	no	laideron	inclusive
+FR00239	n	cds	no	laideronne	inclusive
+FR00240	n	cds	no	laiderons	inclusive
+FR00241	v	cds	no	loser	inclusive
+FR00242	n	cds	no	lâche	inclusive
+FR00243	n	cds	no	lâches	inclusive
+FR00244	n	cds	no	malandrin	inclusive
+FR00245	n	cds	no	menteuse	inclusive
+FR00246	n	cds	no	merdeux	inclusive
+FR00247	n	cds	no	minable	inclusive
+FR00248	n	cds	no	minables	inclusive
+FR00249	n	cds	no	misérable	inclusive
+FR00250	n	cds	no	moche	inclusive
+FR00251	n	cds	no	moches	inclusive
+FR00252	n	cds	no	nazes	inclusive
+FR00253	p	cds	no	nique ta race	inclusive
+FR00254	n	cds	no	ordure	inclusive
+FR00255	n	cds	no	ordures	inclusive
+FR00256	p	cds	no	petit crisse	inclusive
+FR00257	p	cds	no	petit merdeux	inclusive
+FR00258	p	cds	no	petite bite	inclusive
+FR00259	p	cds	no	petite merde	inclusive
+FR00260	n	cds	no	pitre	inclusive
+FR00261	n	cds	no	pleutre	inclusive
+FR00262	n	cds	no	pochard	inclusive
+FR00263	n	cds	no	pocharde	inclusive
+FR00264	n	cds	no	pochetron	inclusive
+FR00265	n	cds	no	pochetronne	inclusive
+FR00266	n	cds	no	pochtron	inclusive
+FR00267	n	cds	no	pochtronne	inclusive
+FR00268	n	cds	no	poivrot	inclusive
+FR00269	n	cds	no	poltron	inclusive
+FR00270	n	cds	no	poltronne	inclusive
+FR00271	p	cds	no	pot de merde	inclusive
+FR00272	p	cds	no	poule mouillée	inclusive
+FR00273	n	cds	no	pourri	inclusive
+FR00274	n	cds	no	pourrie	inclusive
+FR00275	n	cds	no	pourries	inclusive
+FR00276	n	cds	no	pourris	inclusive
+FR00277	n	cds	no	pourriture	inclusive
+FR00278	n	cds	no	pourritures	inclusive
+FR00279	n	cds	no	raclures	inclusive
+FR00280	p	cds	no	roi des cons	inclusive
+FR00281	p	cds	no	sagouin de merde	inclusive
+FR00282	n	cds	no	salaud	inclusive
+FR00283	n	cds	no	salaude	inclusive
+FR00284	n	cds	no	salauds	inclusive
+FR00285	n	cds	no	salaupard	inclusive
+FR00286	p	cds	no	sale con	inclusive
+FR00287	p	cds	no	sale gueule	inclusive
+FR00288	n	cds	no	saligaud	inclusive
+FR00289	n	cds	no	saligaude	inclusive
+FR00290	n	cds	no	salop	inclusive
+FR00291	n	cds	no	salopard	inclusive
+FR00292	n	cds	no	salopards	inclusive
+FR00293	n	cds	no	saloperie	inclusive
+FR00294	n	cds	no	salopes	inclusive
+FR00295	n	cds	no	sans-couilles	inclusive
+FR00296	n	cds	no	soiffard	inclusive
+FR00297	n	cds	no	soiffarde	inclusive
+FR00298	n	cds	no	soulard	inclusive
+FR00299	n	cds	no	soularde	inclusive
+FR00300	n	cds	no	stupide	inclusive
+FR00301	n	cds	no	sycophante	inclusive
+FR00302	p	cds	no	ta gueule	inclusive
+FR00303	p	cds	no	ta race	inclusive
+FR00304	n	cds	no	tache	inclusive
+FR00305	n	cds	no	taches	inclusive
+FR00306	p	cds	no	taire sa gueule	inclusive
+FR00307	p	cds	no	tas de merde	inclusive
+FR00308	v	cds	no	thénardier	inclusive
+FR00309	n	cds	no	tocard	inclusive
+FR00310	n	cds	no	tocards	inclusive
+FR00311	p	cds	no	trou de chiotte	inclusive
+FR00312	p	cds	no	trou à merde	inclusive
+FR00313	p	cds	no	tête de cochon	inclusive
+FR00314	p	cds	no	tête de con	inclusive
+FR00315	p	cds	no	tête de linotte	inclusive
+FR00316	p	cds	no	tête de mort	inclusive
+FR00317	p	cds	no	tête de mule	inclusive
+FR00318	p	cds	no	tête de veau	inclusive
+FR00319	p	cds	no	va te faire enculer	inclusive
+FR00320	p	cds	no	va te faire foutre	inclusive
+FR00321	n	cds	no	vaurien	inclusive
+FR00322	n	cds	no	vaurienne	inclusive
+FR00323	n	cds	no	vendu	inclusive
+FR00324	n	cds	no	vendus	inclusive
+FR00325	p	cds	no	vieille conne	inclusive
+FR00326	p	cds	no	vieux con	inclusive
+FR00327	p	cds	no	vos gueules	inclusive
+FR00328	n	cds	no	voyou	inclusive
+FR00329	n	ddf	yes	avorton	conservative
+FR00330	n	ddf	yes	baleine	conservative
+FR00331	n	ddf	yes	cageot	inclusive
+FR00332	n	ddf	yes	cotorep	conservative
+FR00333	n	ddf	yes	cul-de-jatte	conservative
+FR00334	p	ddf	yes	face de bœuf	inclusive
+FR00335	p	ddf	yes	face de craie	inclusive
+FR00336	p	ddf	yes	face de rat	inclusive
+FR00337	n	ddf	yes	handic	conservative
+FR00338	n	ddf	yes	mégères	inclusive
+FR00339	n	ddf	yes	nabot	conservative
+FR00340	n	ddf	yes	nabote	conservative
+FR00341	n	ddf	yes	nabotte	conservative
+FR00342	n	ddf	yes	nez-de-bœuf	inclusive
+FR00343	n	ddf	yes	pied-bot	conservative
+FR00344	p	ddf	yes	planche à repasser	conservative
+FR00345	n	ddf	yes	rombière	inclusive
+FR00346	n	ddf	yes	rombières	inclusive
+FR00347	n	ddf	yes	rouquasse	inclusive
+FR00348	n	ddf	yes	sorcières	inclusive
+FR00349	n	ddf	yes	tignasse	inclusive
+FR00350	p	ddf	yes	vieille barbe	inclusive
+FR00351	p	ddf	yes	vieille chouette	inclusive
+FR00352	p	ddf	yes	vieille peau	inclusive
+FR00353	p	ddf	yes	vieux crabe	inclusive
+FR00354	p	ddf	yes	vieux croûton	inclusive
+FR00355	p	ddf	yes	vieux tableau	inclusive
+FR00356	n	ddp	yes	abruti	inclusive
+FR00357	n	ddp	yes	abrutis	inclusive
+FR00358	n	ddp	yes	andouille	inclusive
+FR00359	n	ddp	yes	archicon	inclusive
+FR00360	p	ddp	yes	asile de fous	conservative
+FR00361	n	ddp	yes	attardé	conservative
+FR00362	n	ddp	yes	attardée	conservative
+FR00363	n	ddp	yes	attardés	conservative
+FR00364	n	ddp	yes	autiste	inclusive
+FR00365	n	ddp	yes	bolos	inclusive
+FR00366	p	ddp	yes	bête comme ses pieds	inclusive
+FR00367	p	ddp	yes	bête comme un camion	inclusive
+FR00368	p	ddp	yes	bête comme un chou	inclusive
+FR00369	p	ddp	yes	bête comme un cochon	inclusive
+FR00370	p	ddp	yes	bête comme un cygne	inclusive
+FR00371	p	ddp	yes	bête comme un âne	inclusive
+FR00372	p	ddp	yes	bête à pleurer	inclusive
+FR00373	n	ddp	yes	con	inclusive
+FR00374	n	ddp	yes	conasse	inclusive
+FR00375	n	ddp	yes	conaud	inclusive
+FR00376	v	ddp	yes	conchier	inclusive
+FR00377	n	ddp	yes	concombre	inclusive
+FR00378	n	ddp	yes	connard	inclusive
+FR00379	n	ddp	yes	connarde	inclusive
+FR00380	n	ddp	yes	connards	inclusive
+FR00381	n	ddp	yes	conne	inclusive
+FR00382	n	ddp	yes	conneau	inclusive
+FR00383	n	ddp	yes	connerie	inclusive
+FR00384	n	ddp	yes	conneries	inclusive
+FR00385	n	ddp	yes	connes	inclusive
+FR00386	n	ddp	yes	cons	inclusive
+FR00387	n	ddp	yes	cornichon	inclusive
+FR00388	n	ddp	yes	couillon	inclusive
+FR00389	n	ddp	yes	couillons	inclusive
+FR00390	n	ddp	yes	cruchon	inclusive
+FR00391	n	ddp	yes	crétin	inclusive
+FR00392	n	ddp	yes	crétinard	inclusive
+FR00393	n	ddp	yes	crétine	inclusive
+FR00394	n	ddp	yes	crétinocratie	inclusive
+FR00395	n	ddp	yes	crétins	inclusive
+FR00396	p	ddp	yes	du schnoc	inclusive
+FR00397	n	ddp	yes	duchnoc	inclusive
+FR00398	n	ddp	yes	duchnoque	inclusive
+FR00399	n	ddp	yes	ducon	inclusive
+FR00400	n	ddp	yes	ducon-la-joie	inclusive
+FR00401	n	ddp	yes	duconnot	inclusive
+FR00402	n	ddp	yes	dugland	inclusive
+FR00403	n	ddp	yes	duschnock	inclusive
+FR00404	n	ddp	yes	débile	inclusive
+FR00405	p	ddp	yes	débile mental	conservative
+FR00406	p	ddp	yes	débile mentos	inclusive
+FR00407	n	ddp	yes	débiles	inclusive
+FR00408	n	ddp	yes	ganais	inclusive
+FR00409	n	ddp	yes	gogol	conservative
+FR00410	n	ddp	yes	gogol88	conservative
+FR00411	n	ddp	yes	gogole	conservative
+FR00412	n	ddp	yes	gogolerie	conservative
+FR00413	n	ddp	yes	gogolito	conservative
+FR00414	p	ddp	yes	handicapé mental	conservative
+FR00415	n	ddp	yes	idiot	inclusive
+FR00416	p	ddp	yes	idiot de	inclusive
+FR00417	p	ddp	yes	idiot utile	inclusive
+FR00418	n	ddp	yes	idiote	inclusive
+FR00419	p	ddp	yes	idiote utile	inclusive
+FR00420	n	ddp	yes	idiots	inclusive
+FR00421	n	ddp	yes	imbécile	inclusive
+FR00422	p	ddp	yes	imbécile heureux	inclusive
+FR00423	n	ddp	yes	imbéciles	inclusive
+FR00424	n	ddp	yes	légume	conservative
+FR00425	p	ddp	yes	malade mental	inclusive
+FR00426	n	ddp	yes	minus	inclusive
+FR00427	n	ddp	yes	mongol	conservative
+FR00428	p	ddp	yes	mongol à batteries	conservative
+FR00429	n	ddp	yes	mongole	conservative
+FR00430	n	ddp	yes	mongolien	conservative
+FR00431	n	ddp	yes	mongolienne	inclusive
+FR00432	v	ddp	yes	mongoliser	conservative
+FR00433	n	ddp	yes	naze	inclusive
+FR00434	n	ddp	yes	nigaud	inclusive
+FR00435	n	ddp	yes	nul	inclusive
+FR00436	p	ddp	yes	nul de chez nul	inclusive
+FR00437	p	ddp	yes	nul à chier	inclusive
+FR00438	n	ddp	yes	nulach	inclusive
+FR00439	n	ddp	yes	nulach'	inclusive
+FR00440	n	ddp	yes	nulle	inclusive
+FR00441	n	ddp	yes	nullissime	inclusive
+FR00442	n	ddp	yes	nullité	inclusive
+FR00443	n	ddp	yes	nuls	inclusive
+FR00444	p	ddp	yes	pauv' con	inclusive
+FR00445	n	ddp	yes	schnock	inclusive
+FR00446	n	ddp	yes	schnoque	inclusive
+FR00447	n	ddp	yes	segpa	conservative
+FR00448	n	ddp	yes	stupides	inclusive
+FR00449	p	ddp	yes	triple andouille	inclusive
+FR00450	p	ddp	yes	triple bête	inclusive
+FR00451	n	ddp	yes	triso	conservative
+FR00452	n	ddp	yes	trisomique	conservative
+FR00453	n	ddp	yes	ultracon	inclusive
+FR00454	n	dmc	no	anarcho-fasciste	inclusive
+FR00455	n	dmc	no	ayatollah	inclusive
+FR00456	n	dmc	no	ayatollahs	inclusive
+FR00457	n	dmc	no	christo-fasciste	inclusive
+FR00458	n	dmc	no	collabo	inclusive
+FR00459	n	dmc	no	collaborateur	inclusive
+FR00460	n	dmc	no	collaboratrice	inclusive
+FR00461	n	dmc	no	collabos	inclusive
+FR00462	n	dmc	no	complotiste	inclusive
+FR00463	n	dmc	no	droit-de-l'hommisme	inclusive
+FR00464	n	dmc	no	droit-de-l'hommiste	inclusive
+FR00465	n	dmc	no	droitard	inclusive
+FR00466	n	dmc	no	droitarde	inclusive
+FR00467	n	dmc	no	droitardé	inclusive
+FR00468	n	dmc	no	droiteuse	inclusive
+FR00469	n	dmc	no	droiteux	inclusive
+FR00470	n	dmc	no	dégénéré	inclusive
+FR00471	n	dmc	no	dégénérée	inclusive
+FR00472	n	dmc	no	dégénérés	inclusive
+FR00473	v	dmc	no	démacroniser	inclusive
+FR00474	n	dmc	no	edgelord	inclusive
+FR00475	n	dmc	no	enwoké	inclusive
+FR00476	n	dmc	no	fachiste	inclusive
+FR00477	n	dmc	no	facho	inclusive
+FR00478	n	dmc	no	fachos	inclusive
+FR00479	n	dmc	no	fachotte	inclusive
+FR00480	n	dmc	no	fasciste	inclusive
+FR00481	n	dmc	no	fascistes	inclusive
+FR00482	p	dmc	no	fils de pétain	inclusive
+FR00483	n	dmc	no	féminazi	inclusive
+FR00484	n	dmc	no	féminazie	inclusive
+FR00485	n	dmc	no	féminazis	inclusive
+FR00486	n	dmc	no	féminazisme	inclusive
+FR00487	n	dmc	no	gauchiasse	inclusive
+FR00488	n	dmc	no	gauchiasses	inclusive
+FR00489	n	dmc	no	gauchisant	inclusive
+FR00490	n	dmc	no	gauchiste	inclusive
+FR00491	n	dmc	no	gauchistes	inclusive
+FR00492	n	dmc	no	gaucho	inclusive
+FR00493	n	dmc	no	gauchofachiste	inclusive
+FR00494	n	dmc	no	gauchofasciste	inclusive
+FR00495	n	dmc	no	gauchos	inclusive
+FR00496	p	dmc	no	homme soja	inclusive
+FR00497	n	dmc	no	islamo-gauchisme	inclusive
+FR00498	n	dmc	no	islamo-gauchiste	inclusive
+FR00499	n	dmc	no	islamogauchiste	inclusive
+FR00500	n	dmc	no	journalopes	inclusive
+FR00501	n	dmc	no	kapo	inclusive
+FR00502	n	dmc	no	karen	inclusive
+FR00503	n	dmc	no	laïcard	inclusive
+FR00504	n	dmc	no	laïcarde	inclusive
+FR00505	n	dmc	no	laïcardise	inclusive
+FR00506	n	dmc	no	macronade	inclusive
+FR00507	n	dmc	no	nazi	inclusive
+FR00508	n	dmc	no	nazillon	inclusive
+FR00509	n	dmc	no	nazillonne	inclusive
+FR00510	n	dmc	no	nazillons	inclusive
+FR00511	n	dmc	no	nazis	inclusive
+FR00512	n	dmc	no	parasite	inclusive
+FR00513	n	dmc	no	parasites	inclusive
+FR00514	n	dmc	no	poutinesque	inclusive
+FR00515	n	dmc	no	poutino-pétainiste	inclusive
+FR00516	n	dmc	no	poutinolâtre	inclusive
+FR00517	n	dmc	no	poutinolâtrie	inclusive
+FR00518	n	dmc	no	pseudo-féministe	inclusive
+FR00519	n	dmc	no	pseudo-gauche	inclusive
+FR00520	n	dmc	no	quisling	inclusive
+FR00521	n	dmc	no	sjw	inclusive
+FR00522	n	dmc	no	social-traître	inclusive
+FR00523	n	dmc	no	sociale-traître	inclusive
+FR00524	n	dmc	no	souchien	inclusive
+FR00525	n	dmc	no	souchienne	inclusive
+FR00526	n	dmc	no	tankie	inclusive
+FR00527	n	dmc	no	trumpisation	inclusive
+FR00528	v	dmc	no	trumpiser	inclusive
+FR00529	n	dmc	no	vatnik	inclusive
+FR00530	n	dmc	no	vichyard	inclusive
+FR00531	n	dmc	no	victimisme	inclusive
+FR00532	n	dmc	no	woke	inclusive
+FR00533	n	dmc	no	wokelangue	inclusive
+FR00534	n	dmc	no	wokipedia	inclusive
+FR00535	n	dmc	no	wokipédia	inclusive
+FR00536	n	dmc	no	wokisation	inclusive
+FR00537	v	dmc	no	wokiser	inclusive
+FR00538	n	dmc	no	wokisme	inclusive
+FR00539	n	dmc	no	wokistan	inclusive
+FR00540	n	dmc	no	wokiste	inclusive
+FR00541	n	dmc	no	zemmouristan	inclusive
+FR00542	n	dmc	no	éco-fasciste	inclusive
+FR00543	n	dmc	no	écofasciste	inclusive
+FR00544	n	is	no	allocs	inclusive
+FR00545	n	is	no	baltringues	inclusive
+FR00546	n	is	no	beauf	inclusive
+FR00547	n	is	no	beaufs	inclusive
+FR00548	n	is	no	bourgeois	inclusive
+FR00549	n	is	no	bouseuse	inclusive
+FR00550	n	is	no	bouseux	inclusive
+FR00551	n	is	no	bouzeux	inclusive
+FR00552	n	is	no	caillera	inclusive
+FR00553	n	is	no	cassos	inclusive
+FR00554	n	is	no	cassosserie	inclusive
+FR00555	n	is	no	clodo	inclusive
+FR00556	n	is	no	colon	inclusive
+FR00557	n	is	no	cul-terreux	inclusive
+FR00558	n	is	no	gueuse	inclusive
+FR00559	n	is	no	gueuserie	inclusive
+FR00560	n	is	no	gueux	inclusive
+FR00561	n	is	no	habitant	inclusive
+FR00562	n	is	no	habitante	inclusive
+FR00563	n	is	no	habitantes	inclusive
+FR00564	n	is	no	habitants	inclusive
+FR00565	n	is	no	harki	inclusive
+FR00566	v	is	no	lascar	inclusive
+FR00567	p	is	no	pas d'allure	inclusive
+FR00568	n	is	no	pecque	inclusive
+FR00569	n	is	no	pignouf	inclusive
+FR00570	n	is	no	pignoufe	inclusive
+FR00571	n	is	no	plouc	inclusive
+FR00572	n	is	no	ploucasse	inclusive
+FR00573	n	is	no	prolo	inclusive
+FR00574	n	is	no	prolos	inclusive
+FR00575	n	is	no	pécrasse	inclusive
+FR00576	n	is	no	péquenaud	inclusive
+FR00577	n	is	no	péquenaude	inclusive
+FR00578	n	is	no	péquenot	inclusive
+FR00579	n	is	no	péquenote	inclusive
+FR00580	n	is	no	racaille	inclusive
+FR00581	n	is	no	racailles	inclusive
+FR00582	p	is	no	sans allure	inclusive
+FR00583	n	is	no	sans-dents	inclusive
+FR00584	n	is	no	sans-dessein	inclusive
+FR00585	n	is	no	sans-génie	inclusive
+FR00586	n	is	no	thug	inclusive
+FR00587	n	is	no	zonard	inclusive
+FR00588	n	is	no	zonarde	inclusive
+FR00589	p	om	yes	cancer gay	conservative
+FR00590	p	om	yes	femme trans-identifiée	conservative
+FR00591	p	om	yes	femme transmasculine	conservative
+FR00592	n	om	yes	fif	conservative
+FR00593	n	om	yes	fifi	conservative
+FR00594	n	om	yes	fiotte	conservative
+FR00595	n	om	yes	fiottes	conservative
+FR00596	n	om	yes	gayrope	conservative
+FR00597	n	om	yes	gaystapo	conservative
+FR00598	n	om	yes	gestapette	conservative
+FR00599	n	om	yes	gouinasse	conservative
+FR00600	n	om	yes	gouine	conservative
+FR00601	n	om	yes	gouinerie	conservative
+FR00602	n	om	yes	gouinette	conservative
+FR00603	p	om	yes	grande folle	conservative
+FR00604	n	om	yes	homintern	conservative
+FR00605	p	om	yes	homme trans-identifié	conservative
+FR00606	p	om	yes	homme transidentifié	conservative
+FR00607	n	om	yes	homopropagande	conservative
+FR00608	n	om	yes	homosexualisme	conservative
+FR00609	n	om	yes	lgbtiste	conservative
+FR00610	n	om	yes	lgbtqazerty	conservative
+FR00611	n	om	yes	lopard	conservative
+FR00612	n	om	yes	lope	conservative
+FR00613	n	om	yes	lopette	conservative
+FR00614	p	om	yes	mafia lavande	conservative
+FR00615	n	om	yes	makoumé	conservative
+FR00616	n	om	yes	moumoune	conservative
+FR00617	n	om	yes	pd	conservative
+FR00618	p	om	yes	propagande lgbt	conservative
+FR00619	n	om	yes	pédale	conservative
+FR00620	n	om	yes	pédales	conservative
+FR00621	n	om	yes	pédoque	conservative
+FR00622	n	om	yes	pédoule	conservative
+FR00623	n	om	yes	pédé	conservative
+FR00624	p	om	yes	pédé comme un grec	conservative
+FR00625	p	om	yes	pédé comme un phoque	conservative
+FR00626	n	om	yes	shemale	conservative
+FR00627	n	om	yes	sidatorium	conservative
+FR00628	n	om	yes	sidaïque	conservative
+FR00629	n	om	yes	taboune	conservative
+FR00630	n	om	yes	tafiole	conservative
+FR00631	n	om	yes	tafiotte	conservative
+FR00632	n	om	yes	tantouserie	conservative
+FR00633	n	om	yes	tantouze	conservative
+FR00634	n	om	yes	tapette	conservative
+FR00635	n	om	yes	tapettes	conservative
+FR00636	n	om	yes	tapettitude	conservative
+FR00637	n	om	yes	tapiole	conservative
+FR00638	n	om	yes	tarlouze	conservative
+FR00639	n	om	yes	trav	inclusive
+FR00640	n	om	yes	travelo	conservative
+FR00641	n	om	yes	travelos	conservative
+FR00642	n	om	yes	troon	conservative
+FR00643	n	om	yes	zemel	conservative
+FR00644	p	om	yes	être pédé comme un foc	conservative
+FR00645	p	om	yes	être pédé comme un phoque	conservative
+FR00646	n	pa	no	flic	inclusive
+FR00647	n	pa	no	flicaille	inclusive
+FR00648	v	pa	no	flicailler	inclusive
+FR00649	n	pa	no	flicaillon	inclusive
+FR00650	n	pa	no	garde-chiourme	inclusive
+FR00651	n	pa	no	loufiat	inclusive
+FR00652	n	pa	no	maton	inclusive
+FR00653	n	pa	no	matonne	inclusive
+FR00654	n	pa	no	poulaille	inclusive
+FR00655	n	pa	no	poulet	inclusive
+FR00656	p	pr	no	bottes de guidoune	inclusive
+FR00657	n	pr	no	catin	inclusive
+FR00658	n	pr	no	charmouta	inclusive
+FR00659	p	pr	no	femme publique	inclusive
+FR00660	n	pr	no	forlaque	inclusive
+FR00661	n	pr	no	gaupe	inclusive
+FR00662	n	pr	no	gourdasse	inclusive
+FR00663	n	pr	no	gourgandine	inclusive
+FR00664	n	pr	no	goyau	inclusive
+FR00665	n	pr	no	grognasse	inclusive
+FR00666	n	pr	no	guidoune	inclusive
+FR00667	n	pr	no	journalope	inclusive
+FR00668	n	pr	no	journapute	inclusive
+FR00669	n	pr	no	lorpidon	inclusive
+FR00670	n	pr	no	lourpidon	inclusive
+FR00671	v	pr	no	michetonner	inclusive
+FR00672	n	pr	no	michetonneuse	inclusive
+FR00673	n	pr	no	michto	inclusive
+FR00674	n	pr	no	morue	inclusive
+FR00675	n	pr	no	plote	inclusive
+FR00676	p	pr	no	plotte à cash	inclusive
+FR00677	n	pr	no	pouffe	inclusive
+FR00678	n	pr	no	pouffiasse	inclusive
+FR00679	n	pr	no	poufiasse	inclusive
+FR00680	n	pr	no	prostipute	inclusive
+FR00681	n	pr	no	putain	inclusive
+FR00682	n	pr	no	putains	inclusive
+FR00683	n	pr	no	putasse	inclusive
+FR00684	n	pr	no	putasses	inclusive
+FR00685	n	pr	no	pute	conservative
+FR00686	p	pr	no	pute borgne	inclusive
+FR00687	p	pr	no	pute de luxe	inclusive
+FR00688	n	pr	no	puterie	inclusive
+FR00689	n	pr	no	putes	inclusive
+FR00690	n	pr	no	radasse	inclusive
+FR00691	n	pr	no	roulure	inclusive
+FR00692	n	pr	no	suces	inclusive
+FR00693	n	pr	no	tchoin	inclusive
+FR00694	n	pr	no	traînée	inclusive
+FR00695	n	ps	yes	abid	conservative
+FR00696	n	ps	yes	alboche	conservative
+FR00697	n	ps	yes	amerikkkain	conservative
+FR00698	n	ps	yes	amerikkke	conservative
+FR00699	n	ps	yes	amerlo	inclusive
+FR00700	n	ps	yes	amerlok	inclusive
+FR00701	n	ps	yes	amerloque	inclusive
+FR00702	n	ps	yes	amerlot	inclusive
+FR00703	p	ps	yes	américain à trait d'union	inclusive
+FR00704	n	ps	yes	angliche	inclusive
+FR00705	n	ps	yes	anthropopithèque	conservative
+FR00706	n	ps	yes	archiboche	conservative
+FR00707	n	ps	yes	babouin	conservative
+FR00708	n	ps	yes	babouins	conservative
+FR00709	n	ps	yes	babtou	inclusive
+FR00710	n	ps	yes	bamboula	conservative
+FR00711	n	ps	yes	banania	conservative
+FR00712	n	ps	yes	belche	inclusive
+FR00713	n	ps	yes	belgeois	inclusive
+FR00714	n	ps	yes	belgeoisant	inclusive
+FR00715	n	ps	yes	belgeoise	inclusive
+FR00716	n	ps	yes	belgicain	inclusive
+FR00717	n	ps	yes	beurette	conservative
+FR00718	n	ps	yes	bicot	conservative
+FR00719	n	ps	yes	bicotte	conservative
+FR00720	n	ps	yes	boche	conservative
+FR00721	n	ps	yes	boches	conservative
+FR00722	n	ps	yes	bochesse	conservative
+FR00723	p	ps	yes	bois d'ébène	conservative
+FR00724	n	ps	yes	boucaques	conservative
+FR00725	n	ps	yes	bougnoul	conservative
+FR00726	n	ps	yes	bougnoule	conservative
+FR00727	n	ps	yes	bougnoules	conservative
+FR00728	n	ps	yes	bougnoulie	conservative
+FR00729	n	ps	yes	bougnoulisation	conservative
+FR00730	v	ps	yes	bougnouliser	conservative
+FR00731	n	ps	yes	bougnouls	conservative
+FR00732	n	ps	yes	bougnègre	conservative
+FR00733	n	ps	yes	bounty	conservative
+FR00734	n	ps	yes	bridé	conservative
+FR00735	n	ps	yes	bridée	conservative
+FR00736	n	ps	yes	cafre	conservative
+FR00737	n	ps	yes	canaque	conservative
+FR00738	n	ps	yes	chaouch	conservative
+FR00739	n	ps	yes	chimpanzé	conservative
+FR00740	n	ps	yes	chinetoc	conservative
+FR00741	n	ps	yes	chinetoque	conservative
+FR00742	n	ps	yes	chinqui-chinque	conservative
+FR00743	n	ps	yes	chintok	conservative
+FR00744	n	ps	yes	chleuh	conservative
+FR00745	n	ps	yes	congoïde	conservative
+FR00746	n	ps	yes	congoïdes	conservative
+FR00747	n	ps	yes	crouillat	conservative
+FR00748	n	ps	yes	crouille	conservative
+FR00749	n	ps	yes	crouïa	conservative
+FR00750	n	ps	yes	dhimmi	conservative
+FR00751	n	ps	yes	dhimmitude	conservative
+FR00752	n	ps	yes	doryphore	conservative
+FR00753	v	ps	yes	débougnouliser	conservative
+FR00754	p	ps	yes	en juif	conservative
+FR00755	n	ps	yes	enjuivement	conservative
+FR00756	v	ps	yes	enjuiver	conservative
+FR00757	n	ps	yes	espingoin	conservative
+FR00758	n	ps	yes	espingouin	conservative
+FR00759	n	ps	yes	espingouine	conservative
+FR00760	n	ps	yes	espingouins	conservative
+FR00761	n	ps	yes	eurabia	conservative
+FR00762	n	ps	yes	eurabie	conservative
+FR00763	n	ps	yes	fatma	conservative
+FR00764	n	ps	yes	fdps	conservative
+FR00765	n	ps	yes	fell	conservative
+FR00766	n	ps	yes	fellouze	conservative
+FR00767	n	ps	yes	feuj	conservative
+FR00768	n	ps	yes	franchimand	conservative
+FR00769	v	ps	yes	franchimandéger	conservative
+FR00770	n	ps	yes	francimand	conservative
+FR00771	n	ps	yes	francimanda	conservative
+FR00772	v	ps	yes	francimandéjer	conservative
+FR00773	n	ps	yes	fransquillon	conservative
+FR00774	n	ps	yes	fridolin	conservative
+FR00775	n	ps	yes	fritz	conservative
+FR00776	n	ps	yes	giaour	conservative
+FR00777	p	ps	yes	gnome de zurich	conservative
+FR00778	n	ps	yes	goddam	conservative
+FR00779	n	ps	yes	goddon	conservative
+FR00780	n	ps	yes	godon	conservative
+FR00781	n	ps	yes	gook	conservative
+FR00782	n	ps	yes	gringa	inclusive
+FR00783	n	ps	yes	gringo	inclusive
+FR00784	n	ps	yes	gwaï-lo	conservative
+FR00785	n	ps	yes	gweilo	conservative
+FR00786	v	ps	yes	gwer	inclusive
+FR00787	n	ps	yes	halouf	conservative
+FR00788	n	ps	yes	islamo-racaille	conservative
+FR00789	n	ps	yes	islamoracaille	conservative
+FR00790	n	ps	yes	ivan	conservative
+FR00791	n	ps	yes	jap	conservative
+FR00792	n	ps	yes	japonègre	conservative
+FR00793	n	ps	yes	jaunet	conservative
+FR00794	n	ps	yes	judapo	conservative
+FR00795	n	ps	yes	judéo-bellicisme	conservative
+FR00796	n	ps	yes	judéo-belliciste	conservative
+FR00797	n	ps	yes	judéo-bolchevisme	conservative
+FR00798	n	ps	yes	judéo-bolchévisme	conservative
+FR00799	n	ps	yes	judéo-maçonnique	conservative
+FR00800	n	ps	yes	judéobellicisme	conservative
+FR00801	n	ps	yes	judéobelliciste	conservative
+FR00802	n	ps	yes	judéocrature	conservative
+FR00803	n	ps	yes	judéoservile	conservative
+FR00804	v	ps	yes	juiver	conservative
+FR00805	n	ps	yes	juiverie	conservative
+FR00806	v	ps	yes	kaffir	conservative
+FR00807	n	ps	yes	katsap	conservative
+FR00808	n	ps	yes	khokhol	conservative
+FR00809	n	ps	yes	kraut	conservative
+FR00810	n	ps	yes	krouia	conservative
+FR00811	v	ps	yes	kroumir	conservative
+FR00812	p	ps	yes	kung flu	conservative
+FR00813	n	ps	yes	kébabisation	conservative
+FR00814	p	ps	yes	manger en juif	conservative
+FR00815	p	ps	yes	mangeur de choucroute	conservative
+FR00816	p	ps	yes	mangeur de rosbeef	conservative
+FR00817	n	ps	yes	melon	conservative
+FR00818	n	ps	yes	moricaud	conservative
+FR00819	n	ps	yes	moricaude	conservative
+FR00820	n	ps	yes	moukère	conservative
+FR00821	n	ps	yes	mouquère	conservative
+FR00822	n	ps	yes	nazie	conservative
+FR00823	n	ps	yes	nazislamisme	conservative
+FR00824	n	ps	yes	nazislamiste	conservative
+FR00825	n	ps	yes	negro	conservative
+FR00826	n	ps	yes	nhaqué	conservative
+FR00827	n	ps	yes	niac	conservative
+FR00828	n	ps	yes	niafou	conservative
+FR00829	n	ps	yes	niak	conservative
+FR00830	n	ps	yes	niakoué	conservative
+FR00831	n	ps	yes	niaqué	conservative
+FR00832	n	ps	yes	nikoumouk	conservative
+FR00833	n	ps	yes	noirillon	conservative
+FR00834	p	ps	yes	noix de coco	conservative
+FR00835	n	ps	yes	non-souchien	conservative
+FR00836	n	ps	yes	nèg	conservative
+FR00837	n	ps	yes	nègre	conservative
+FR00838	p	ps	yes	nègre de rebut	conservative
+FR00839	n	ps	yes	nègres	conservative
+FR00840	n	ps	yes	négraille	conservative
+FR00841	n	ps	yes	négresse	conservative
+FR00842	p	ps	yes	négresse de maison	conservative
+FR00843	n	ps	yes	négrillon	conservative
+FR00844	n	ps	yes	négrillonne	conservative
+FR00845	n	ps	yes	négrite	conservative
+FR00846	n	ps	yes	négro	conservative
+FR00847	n	ps	yes	négropolitain	conservative
+FR00848	n	ps	yes	négropolitaine	conservative
+FR00849	n	ps	yes	négros	conservative
+FR00850	n	ps	yes	négroïde	conservative
+FR00851	n	ps	yes	oqtf	conservative
+FR00852	n	ps	yes	pallywood	conservative
+FR00853	n	ps	yes	parigot	inclusive
+FR00854	n	ps	yes	parigote	inclusive
+FR00855	n	ps	yes	parigots	inclusive
+FR00856	p	ps	yes	parler nègre	conservative
+FR00857	n	ps	yes	pds	conservative
+FR00858	p	ps	yes	petit blanc	inclusive
+FR00859	p	ps	yes	petit nègre	conservative
+FR00860	n	ps	yes	petit-nègre	conservative
+FR00861	n	ps	yes	pigs	conservative
+FR00862	n	ps	yes	pithécanthrope	conservative
+FR00863	n	ps	yes	polack	conservative
+FR00864	n	ps	yes	polak	conservative
+FR00865	n	ps	yes	polaque	conservative
+FR00866	n	ps	yes	pollack	conservative
+FR00867	n	ps	yes	portos	conservative
+FR00868	n	ps	yes	pédés	conservative
+FR00869	n	ps	yes	quarteron	conservative
+FR00870	n	ps	yes	raton	conservative
+FR00871	n	ps	yes	ratonnade	conservative
+FR00872	n	ps	yes	ricain	inclusive
+FR00873	n	ps	yes	ricaine	inclusive
+FR00874	n	ps	yes	ricaines	inclusive
+FR00875	n	ps	yes	ricains	inclusive
+FR00876	n	ps	yes	rital	conservative
+FR00877	n	ps	yes	ritale	conservative
+FR00878	p	ps	yes	roi nègre	conservative
+FR00879	n	ps	yes	romanichel	conservative
+FR00880	n	ps	yes	rosbif	conservative
+FR00881	n	ps	yes	rosbifs	inclusive
+FR00882	n	ps	yes	roumi	conservative
+FR00883	n	ps	yes	ruskoff	conservative
+FR00884	n	ps	yes	ruskov	conservative
+FR00885	n	ps	yes	russkoff	conservative
+FR00886	n	ps	yes	ruzze	conservative
+FR00887	n	ps	yes	ruzzie	conservative
+FR00888	n	ps	yes	schleu	conservative
+FR00889	n	ps	yes	schleue	conservative
+FR00890	n	ps	yes	schwob	conservative
+FR00891	n	ps	yes	singe	conservative
+FR00892	n	ps	yes	singes	conservative
+FR00893	n	ps	yes	sionard	conservative
+FR00894	n	ps	yes	sous-race	conservative
+FR00895	n	ps	yes	teuton	conservative
+FR00896	n	ps	yes	teutonne	conservative
+FR00897	p	ps	yes	travail d'arabe	conservative
+FR00898	p	ps	yes	travailler comme un nègre	conservative
+FR00899	p	ps	yes	tête de nègre	conservative
+FR00900	n	ps	yes	ukrojaz	conservative
+FR00901	n	ps	yes	ukronazi	conservative
+FR00902	n	ps	yes	ukronazie	conservative
+FR00903	n	ps	yes	untermensch	conservative
+FR00904	p	ps	yes	y'a bon	conservative
+FR00905	n	ps	yes	youp	conservative
+FR00906	n	ps	yes	youpin	conservative
+FR00907	n	ps	yes	youpine	conservative
+FR00908	n	ps	yes	youpinerie	conservative
+FR00909	n	ps	yes	youpinisation	conservative
+FR00910	v	ps	yes	youpiniser	conservative
+FR00911	n	ps	yes	youtre	conservative
+FR00912	n	ps	yes	youtron	conservative
+FR00913	n	qas	no	bimbo	inclusive
+FR00914	n	qas	no	blondasse	inclusive
+FR00915	n	qas	no	bêcheur	inclusive
+FR00916	n	qas	no	bêcheuse	inclusive
+FR00917	p	qas	no	femme au volant, mort au tournant	inclusive
+FR00918	p	qas	no	femme objet	inclusive
+FR00919	n	qas	no	femme-objet	inclusive
+FR00920	p	qas	no	folle chiffon	inclusive
+FR00921	n	qas	no	harpie	inclusive
+FR00922	n	qas	no	macho	inclusive
+FR00923	n	qas	no	mégère	inclusive
+FR00924	n	qas	no	pitoune	inclusive
+FR00925	n	qas	no	pouf	inclusive
+FR00926	n	qas	no	prétentiard	inclusive
+FR00927	p	qas	no	sexe faible	inclusive
+FR00928	n	qas	no	snob	inclusive
+FR00929	n	qas	no	snobinard	inclusive
+FR00930	n	qas	no	snobinarde	inclusive
+FR00931	n	qas	no	sorcière	inclusive
+FR00932	n	qas	no	succube	inclusive
+FR00933	p	qas	no	vipère lubrique	inclusive
+FR00934	n	qas	no	virago	inclusive
+FR00935	n	rci	yes	angryphone	inclusive
+FR00936	n	rci	yes	bloke	inclusive
+FR00937	n	rci	yes	newfie	inclusive
+FR00938	n	re	no	indic	inclusive
+FR00939	n	re	no	indic'	inclusive
+FR00940	n	re	no	mouchard	inclusive
+FR00941	n	re	no	poucave	inclusive
+FR00942	n	re	no	stool	inclusive
+FR00943	n	svp	no	asti	inclusive
+FR00944	p	svp	no	bon dieu de	inclusive
+FR00945	n	svp	no	bordel	inclusive
+FR00946	n	svp	no	caca	inclusive
+FR00947	n	svp	no	calice	inclusive
+FR00948	n	svp	no	calotin	inclusive
+FR00949	n	svp	no	calotine	inclusive
+FR00950	n	svp	no	calotinocratie	inclusive
+FR00951	n	svp	no	cathos	inclusive
+FR00952	n	svp	no	ciboire	inclusive
+FR00953	v	svp	no	contrecrisser	inclusive
+FR00954	n	svp	no	criss	inclusive
+FR00955	n	svp	no	crisse	inclusive
+FR00956	p	svp	no	crisser la paix	inclusive
+FR00957	p	svp	no	crisser son camp	inclusive
+FR00958	n	svp	no	curaille	inclusive
+FR00959	n	svp	no	curaillon	inclusive
+FR00960	n	svp	no	cureton	inclusive
+FR00961	n	svp	no	curotin	inclusive
+FR00962	n	svp	no	câliboire	inclusive
+FR00963	n	svp	no	câlice	inclusive
+FR00964	n	svp	no	câlisse	inclusive
+FR00965	v	svp	no	câlisser	inclusive
+FR00966	v	svp	no	décalisser	inclusive
+FR00967	v	svp	no	décrisser	inclusive
+FR00968	v	svp	no	décâlicer	inclusive
+FR00969	v	svp	no	décâlisser	inclusive
+FR00970	p	svp	no	en ciboire	inclusive
+FR00971	p	svp	no	en crisse	inclusive
+FR00972	p	svp	no	en câlisse	inclusive
+FR00973	p	svp	no	en sacrament	inclusive
+FR00974	p	svp	no	en tabarnac	inclusive
+FR00975	p	svp	no	en tabarnak	inclusive
+FR00976	v	svp	no	enfer	inclusive
+FR00977	n	svp	no	esti	inclusive
+FR00978	n	svp	no	estie	inclusive
+FR00979	n	svp	no	marde	inclusive
+FR00980	n	svp	no	merde	inclusive
+FR00981	n	svp	no	merdes	inclusive
+FR00982	n	svp	no	mécréant	inclusive
+FR00983	n	svp	no	mécréants	inclusive
+FR00984	p	svp	no	nom de dieu de	inclusive
+FR00985	n	svp	no	osti	inclusive
+FR00986	n	svp	no	ostie	inclusive
+FR00987	n	svp	no	papalin	inclusive
+FR00988	n	svp	no	papaline	inclusive
+FR00989	n	svp	no	papisme	inclusive
+FR00990	n	svp	no	papiste	inclusive
+FR00991	n	svp	no	pisse	inclusive
+FR00992	p	svp	no	punaise de sacristie	inclusive
+FR00993	p	svp	no	putain de	inclusive
+FR00994	n	svp	no	ratichon	inclusive
+FR00995	n	svp	no	sacrament	inclusive
+FR00996	v	svp	no	sacrer	inclusive
+FR00997	p	svp	no	sacrer son camp	inclusive
+FR00998	n	svp	no	saint-chrême	inclusive
+FR00999	n	svp	no	saint-ciboire	inclusive
+FR01000	n	svp	no	saint-crême	inclusive
+FR01001	n	svp	no	saint-sacrament	inclusive
+FR01002	n	svp	no	saint-simonaque	inclusive
+FR01003	p	svp	no	se contrecrisser	inclusive
+FR01004	n	svp	no	tabarnac	inclusive
+FR01005	n	svp	no	tabarnak	inclusive
+FR01006	v	svp	no	tabarnaquer	inclusive
+FR01007	n	svp	no	tabernacle	inclusive
+FR01008	n	svp	no	viarge	inclusive
