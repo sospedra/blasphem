@@ -13,7 +13,7 @@ const COPIED_ENTRIES: [&str; 10] = [
     "crates",
     "corpus",
     "data/raw-v1",
-    "data/hurtlex",
+    "data/clean-room-v1",
     "resources",
     "tests",
     "samples",
@@ -28,7 +28,7 @@ fn reproduce_rejects_one_changed_raw_byte() {
     let root = temporary.path().join("clone");
     copy_project(&root);
 
-    let target = root.join("data/raw-v1/hurtlex/EN/1.2/hurtlex_EN.tsv");
+    let target = root.join("data/clean-room-v1/EN.tsv");
     let mut bytes = std::fs::read(&target).expect("readable raw source");
     let last = bytes.len() - 1;
     bytes[last] ^= 0x20;
@@ -41,10 +41,7 @@ fn reproduce_rejects_one_changed_raw_byte() {
         .expect("runs reproduce");
     assert!(!output.status.success(), "a changed raw byte must fail");
     let message = String::from_utf8_lossy(&output.stderr);
-    assert!(
-        message.contains("hurtlex/EN/1.2/hurtlex_EN.tsv"),
-        "{message}"
-    );
+    assert!(message.contains("data/clean-room-v1/EN.tsv"), "{message}");
 }
 
 fn copy_project(root: &Path) {

@@ -58,7 +58,7 @@ struct CheckArgs {
     language: LanguageSelection,
     #[arg(long)]
     text: String,
-    #[arg(long, default_value = "data/raw-v1/hurtlex")]
+    #[arg(long, default_value = "data/clean-room-v1")]
     data_dir: PathBuf,
     #[arg(long, value_enum, default_value_t = ReplyTargetArg::Unknown)]
     reply_target: ReplyTargetArg,
@@ -194,9 +194,7 @@ fn check(arguments: &CheckArgs) -> Result<()> {
 
     let path = arguments
         .data_dir
-        .join(language.storage_code())
-        .join("1.2")
-        .join(format!("hurtlex_{}.tsv", language.storage_code()));
+        .join(format!("{}.tsv", language.storage_code()));
     let hurtlex = fs::read(&path).with_context(|| {
         format!(
             "cannot read required {} HurtLex data at {}",

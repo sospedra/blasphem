@@ -1,0 +1,777 @@
+# Publishes what `release.yml` built. cargo-dist owns the GitHub Release and the
+# standalone binaries; this workflow owns npm, PyPI, the Go module tag, the
+# Swift distribution repository, and Maven Central.
+#
+# It starts from the Release run, not from the tag, so a failed build never
+# reaches a registry. npm, PyPI, and Go authenticate over OIDC. Maven Central
+# and the Swift repository hold five repository secrets: MAVEN_CENTRAL_USERNAME,
+# MAVEN_CENTRAL_PASSWORD, SIGNING_KEY, SIGNING_PASSWORD, BLASPHEM_SWIFT_DEPLOY_KEY.
+name: Publish
+
+on:
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The release tag to publish, for example v0.1.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  WASM_BINDGEN_VERSION: "0.2.127"
+  PNPM_VERSION: "11.13.0"
+
+jobs:
+  plan:
+    name: plan
+    runs-on: ubuntu-24.04
+    # A manual run always proceeds. A Release run proceeds only when it passed
+    # and its tag is a version tag, which excludes the packages/go/* tag below.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       startsWith(github.event.workflow_run.head_branch, 'v'))
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.event.workflow_run.head_branch }}
+
+      - name: Resolve the tag and check it against the workspace version
+        id: resolve
+        env:
+          TAG: ${{ inputs.tag || github.event.workflow_run.head_branch }}
+        run: |
+          set -euo pipefail
+          workspace=$(awk '/^\[workspace\.package\]/{inside=1;next} /^\[/{inside=0} inside && /^version = /{gsub(/"/,"",$3); print $3; exit}' Cargo.toml)
+          if [ "${TAG#v}" != "$workspace" ]; then
+            echo "tag $TAG does not match the workspace version $workspace" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$workspace" >> "$GITHUB_OUTPUT"
+          echo "status=planned tag=$TAG version=$workspace"
+
+  packs:
+    name: packs
+    needs: plan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-packs-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Build the packs
+        run: node packages/packs/scripts/build.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packs-dist
+          path: packages/packs/dist
+          if-no-files-found: error
+
+  wasm:
+    name: wasm
+    needs: plan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-wasm-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version ${{ env.WASM_BINDGEN_VERSION }} --locked
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the browser package
+        run: node packages/blasphem/scripts/build.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blasphem-dist
+          path: packages/blasphem/dist
+          if-no-files-found: error
+
+  napi:
+    name: napi (${{ matrix.target }})
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: darwin-arm64, triple: aarch64-apple-darwin, runner: macos-15 }
+          - { target: darwin-x64, triple: x86_64-apple-darwin, runner: macos-15 }
+          - { target: linux-x64-gnu, triple: x86_64-unknown-linux-gnu, runner: ubuntu-24.04 }
+          - { target: linux-arm64-gnu, triple: aarch64-unknown-linux-gnu, runner: ubuntu-24.04-arm }
+          - { target: linux-x64-musl, triple: x86_64-unknown-linux-musl, runner: ubuntu-24.04, musl: true }
+          - { target: linux-arm64-musl, triple: aarch64-unknown-linux-musl, runner: ubuntu-24.04-arm, musl: true }
+          - { target: win32-x64-msvc, triple: x86_64-pc-windows-msvc, runner: windows-2022 }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install the musl toolchain
+        if: matrix.musl
+        run: sudo apt-get update && sudo apt-get install --yes musl-tools
+
+      - name: Add the Rust target
+        run: rustup target add ${{ matrix.triple }}
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/npm-node
+          key: cargo-napi-${{ matrix.target }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Write the platform manifest
+        run: node packages/node/scripts/npm-dirs.mjs
+
+      - name: Build the engine
+        # A musl cdylib links statically by default and then will not load as a
+        # Node addon, so musl builds turn crt-static off.
+        env:
+          RUSTFLAGS: ${{ matrix.musl && '-C target-feature=-crt-static' || '' }}
+        run: node packages/node/scripts/build.mjs --target ${{ matrix.target }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: napi-${{ matrix.target }}
+          path: packages/node/npm/${{ matrix.target }}
+          if-no-files-found: error
+
+  cli:
+    name: cli
+    needs: plan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Write the platform manifests
+        run: node packages/cli/scripts/npm-dirs.mjs
+
+      - name: Fill the platform packages from the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node packages/cli/scripts/fetch-release.mjs --tag ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cli-npm
+          path: packages/cli/npm
+          if-no-files-found: error
+
+  react-native:
+    name: react-native
+    needs: plan
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Add the mobile Rust targets
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/ffi
+          key: cargo-ffi-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the XCFramework and the Android archives
+        run: node packages/react-native/scripts/rust.mjs
+
+      - name: Build the TypeScript
+        run: node packages/react-native/scripts/build.mjs
+
+      - name: Collect the artifacts
+        run: |
+          set -euo pipefail
+          tar -czf react-native.tar.gz -C packages/react-native \
+            dist ios/BlasphemFFI.xcframework android/libs cpp/blasphem.h
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: react-native
+          path: react-native.tar.gz
+          if-no-files-found: error
+
+  npm:
+    name: npm
+    needs: [plan, packs, wasm, napi, cli, react-native]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      - name: Use an npm that speaks Trusted Publishing
+        run: |
+          npm install --global npm@^11.5.1
+          npm --version
+
+      - uses: actions/download-artifact@v4
+        with: { name: packs-dist, path: packages/packs/dist }
+
+      - uses: actions/download-artifact@v4
+        with: { name: blasphem-dist, path: packages/blasphem/dist }
+
+      - uses: actions/download-artifact@v4
+        with: { pattern: napi-*, path: packages/node/npm, merge-multiple: false }
+
+      - uses: actions/download-artifact@v4
+        with: { name: cli-npm, path: packages/cli/npm }
+
+      - uses: actions/download-artifact@v4
+        with: { name: react-native, path: . }
+
+      - name: Place the artifacts
+        run: |
+          set -euo pipefail
+          # download-artifact names each napi directory after its artifact.
+          for directory in packages/node/npm/napi-*; do
+            target="${directory#packages/node/npm/napi-}"
+            mkdir -p "packages/node/npm/$target"
+            cp -R "$directory"/. "packages/node/npm/$target/"
+            rm -rf "$directory"
+          done
+          tar -xzf react-native.tar.gz -C packages/react-native
+          chmod +x packages/cli/npm/*/bin/blasphem || true
+          ls -l packages/node/npm/*/*.node
+          ls -l packages/cli/npm/*/bin/*
+
+      - name: Publish
+        run: node scripts/publish-npm.mjs
+
+  wheels:
+    name: wheels (${{ matrix.target }})
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: darwin-arm64, triple: aarch64-apple-darwin, runner: macos-15 }
+          - { target: darwin-x64, triple: x86_64-apple-darwin, runner: macos-15 }
+          - { target: linux-x64-gnu, triple: x86_64-unknown-linux-gnu, runner: ubuntu-24.04, manylinux: auto }
+          - { target: linux-arm64-gnu, triple: aarch64-unknown-linux-gnu, runner: ubuntu-24.04-arm, manylinux: auto }
+          - { target: linux-x64-musl, triple: x86_64-unknown-linux-musl, runner: ubuntu-24.04, manylinux: musllinux_1_2 }
+          - { target: linux-arm64-musl, triple: aarch64-unknown-linux-musl, runner: ubuntu-24.04-arm, manylinux: musllinux_1_2 }
+          - { target: win32-x64-msvc, triple: x86_64-pc-windows-msvc, runner: windows-2022 }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Build the wheel
+        # pyo3 abi3-py310 means one wheel per platform covers every supported Python.
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.triple }}
+          manylinux: ${{ matrix.manylinux }}
+          working-directory: packages/python
+          args: --release --locked --out dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.target }}
+          path: packages/python/dist
+          if-no-files-found: error
+
+  sdists:
+    name: sdists
+    needs: [plan, packs]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/download-artifact@v4
+        with: { name: packs-dist, path: packages/packs/dist }
+
+      - name: Build the blasphem source distribution
+        uses: PyO3/maturin-action@v1
+        with:
+          command: sdist
+          working-directory: packages/python
+          args: --out dist
+
+      - name: Build the blasphem-packs wheel and source distribution
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade build
+          python packages/python-packs/sync_packs.py
+          python -m build --outdir packages/python-packs/dist packages/python-packs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist-blasphem
+          path: packages/python/dist
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-blasphem-packs
+          path: packages/python-packs/dist
+          if-no-files-found: error
+
+  pypi:
+    name: pypi
+    needs: [plan, wheels, sdists]
+    runs-on: ubuntu-24.04
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wheel-*
+          path: blasphem
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sdist-blasphem
+          path: blasphem
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-blasphem-packs
+          path: blasphem-packs
+
+      - run: ls -l blasphem blasphem-packs
+
+      - name: Publish blasphem
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: blasphem
+          skip-existing: true
+
+      - name: Publish blasphem-packs
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: blasphem-packs
+          skip-existing: true
+
+  go:
+    name: go
+    needs: plan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: packages/go/go.mod
+
+      - name: The embedded core must be committed
+        # `go:embed` reads the git tree, so the module proxy serves whatever is
+        # tagged. An untracked wasm file makes `go get` fail for everyone.
+        run: |
+          set -euo pipefail
+          if ! git ls-files --error-unmatch packages/go/blasphem_ffi.wasm >/dev/null 2>&1; then
+            echo "packages/go/blasphem_ffi.wasm is not tracked; go get would fail" >&2
+            exit 1
+          fi
+
+      - name: Build and vet the module
+        run: |
+          set -euo pipefail
+          cd packages/go
+          CGO_ENABLED=0 go build ./...
+          go vet ./...
+
+      - name: Tag the module
+        # The push uses GITHUB_TOKEN, so GitHub raises no event for it and
+        # release.yml does not fire a second time on this tag.
+        env:
+          TAG: packages/go/v${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "status=exists tag=$TAG"
+            exit 0
+          fi
+          git tag "$TAG" "${{ needs.plan.outputs.tag }}"
+          git push origin "$TAG"
+          echo "status=tagged tag=$TAG"
+
+      - name: Warm the module proxy
+        env:
+          GOPROXY: https://proxy.golang.org
+          GOFLAGS: -mod=mod
+        run: |
+          set -euo pipefail
+          cd "$(mktemp -d)"
+          go mod init warm
+          go get "github.com/sospedra/blasphem/packages/go@v${{ needs.plan.outputs.version }}"
+
+  swift:
+    name: swift
+    needs: [plan, packs]
+    runs-on: macos-15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Add the Apple Rust targets
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/ffi
+          key: cargo-ffi-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Build the XCFramework
+        run: node packages/swift/scripts/xcframework.mjs
+
+      - name: Upload the XCFramework to the Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ needs.plan.outputs.tag }} packages/swift/BlasphemFFI.xcframework.zip --clobber
+
+      - name: Compute the checksum
+        id: checksum
+        run: echo "sum=$(swift package compute-checksum packages/swift/BlasphemFFI.xcframework.zip)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v4
+        with: { name: packs-dist, path: packages/packs/dist }
+
+      - name: Install the deploy key
+        env:
+          DEPLOY_KEY: ${{ secrets.BLASPHEM_SWIFT_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/blasphem_swift
+          chmod 600 ~/.ssh/blasphem_swift
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          echo "GIT_SSH_COMMAND=ssh -i $HOME/.ssh/blasphem_swift -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+
+      - name: Publish sospedra/blasphem-swift
+        run: |
+          node packages/swift/scripts/distribution.mjs \
+            --version ${{ needs.plan.outputs.version }} \
+            --checksum ${{ steps.checksum.outputs.sum }} \
+            --repo git@github.com:sospedra/blasphem-swift.git
+
+  android:
+    name: android
+    needs: [plan, packs]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Add the Android Rust targets
+        run: rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-jni-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Install cargo-ndk
+        run: cargo install cargo-ndk --version 4.1.2 --locked
+
+      - name: Build the JNI libraries
+        # Google Play requires 16 KB page alignment for apps targeting API 35 and later.
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_LATEST_HOME }}
+          RUSTFLAGS: -C link-arg=-Wl,-z,max-page-size=16384
+        run: |
+          set -euo pipefail
+          cargo ndk --platform 24 -t arm64-v8a -t armeabi-v7a -t x86_64 \
+            -o packages/android/engine/src/main/jniLibs build --release --locked -p blasphem-jni
+          readelf="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf"
+          for abi in arm64-v8a x86_64; do
+            "$readelf" -l "packages/android/engine/src/main/jniLibs/$abi/libblasphem_jni.so" \
+              | awk -v abi="$abi" '/^ *LOAD/ && $NF != "0x4000" { print abi ": LOAD segment not aligned to 16 KB: " $0; bad = 1 } END { exit bad }'
+          done
+
+      - uses: actions/download-artifact@v4
+        with: { name: packs-dist, path: packages/packs/dist }
+
+      - name: Sync the packs into the asset modules
+        run: node packages/android/scripts/sync-packs.mjs
+
+      - name: Build every AAR
+        working-directory: packages/android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Enable KVM for the emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run the instrumented smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          working-directory: packages/android
+          script: ./gradlew :engine:connectedDebugAndroidTest --no-daemon
+
+      - name: Publish to the Central Portal
+        working-directory: packages/android
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-configuration-cache
+
+  verify:
+    name: verify (${{ matrix.runner }})
+    needs: [plan, npm, pypi, swift, android]
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, macos-15, windows-2022]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Judge through the published command-line binary
+        shell: bash
+        # `judge` exits 0 when the text is safe and 1 when it is not, so both
+        # codes are part of the contract this step checks.
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          npx --yes "blasphem@$VERSION" judge "good morning everyone"
+          set +e
+          npx --yes "blasphem@$VERSION" judge "you are a stupid loser"
+          code=$?
+          set -e
+          if [ "$code" -ne 1 ]; then
+            echo "judge returned $code for an unsafe text, expected 1" >&2
+            exit 1
+          fi
+
+      - name: Judge through the published wheel
+        shell: bash
+        # blasphem finds the packs through the installed blasphem-packs, so this
+        # checks that the two distributions work together.
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          python -m pip install "blasphem==$VERSION" "blasphem-packs==$VERSION"
+          python -c "import blasphem; blasphem.init(['en']); v = blasphem.judge('you are a stupid loser'); print(v); assert v.safe is False, v"
+
+      - name: Judge through the published Swift package
+        if: matrix.runner == 'macos-15'
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          scratch=$(mktemp -d)
+          mkdir -p "$scratch/Sources/Scratch"
+          cat > "$scratch/Package.swift" <<EOF
+          // swift-tools-version: 5.9
+          import PackageDescription
+          let package = Package(
+              name: "Scratch",
+              platforms: [.macOS(.v12)],
+              dependencies: [.package(url: "https://github.com/sospedra/blasphem-swift.git", exact: "$VERSION")],
+              targets: [
+                  .executableTarget(name: "Scratch", dependencies: [
+                      .product(name: "Blasphem", package: "blasphem-swift"),
+                      .product(name: "BlasphemPackEN", package: "blasphem-swift"),
+                      .product(name: "BlasphemPackES", package: "blasphem-swift"),
+                      .product(name: "BlasphemDetectEN", package: "blasphem-swift"),
+                      .product(name: "BlasphemDetectES", package: "blasphem-swift"),
+                  ]),
+              ]
+          )
+          EOF
+          cat > "$scratch/Sources/Scratch/main.swift" <<'EOF'
+          import Blasphem
+          let judge = try Judge(locales: ["en", "es"], detectLanguage: true, grawlix: true)
+          let verdict = try judge.judge("you are a stupid loser")
+          print(verdict)
+          guard verdict.safe == false, verdict.locale == "en" else { fatalError("unexpected verdict") }
+          EOF
+          cd "$scratch" && swift run Scratch
+
+      - uses: actions/checkout@v4
+        if: matrix.runner == 'ubuntu-24.04'
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+          path: source
+
+      - uses: actions/setup-java@v4
+        if: matrix.runner == 'ubuntu-24.04'
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Resolve the published Android artifacts
+        if: matrix.runner == 'ubuntu-24.04'
+        # Central publishes within minutes but promises no bound; the poll stops
+        # at 30 minutes and a rerun of this job is the remedy.
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          base="https://repo1.maven.org/maven2/me/sospedra/blasphem"
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail --head "$base/blasphem/$VERSION/blasphem-$VERSION.pom" >/dev/null; then break; fi
+            if [ "$attempt" -eq 60 ]; then echo "blasphem $VERSION is not on Maven Central after 30 minutes" >&2; exit 1; fi
+            sleep 30
+          done
+          scratch=$(mktemp -d)
+          cat > "$scratch/settings.gradle.kts" <<'EOF'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "scratch"
+          EOF
+          cat > "$scratch/build.gradle.kts" <<EOF
+          plugins { id("com.android.application") version "8.13.1" }
+          android { namespace = "me.sospedra.blasphem.scratch"; compileSdk = 35; defaultConfig { minSdk = 24 } }
+          dependencies {
+              implementation(platform("me.sospedra.blasphem:blasphem-bom:$VERSION"))
+              implementation("me.sospedra.blasphem:blasphem")
+              implementation("me.sospedra.blasphem:blasphem-pack-es")
+          }
+          // AGP creates the variant configurations after evaluation, so resolve inside the task.
+          tasks.register("listAars") {
+              doLast {
+                  val aars = configurations.getByName("releaseRuntimeClasspath").incoming.artifactView {
+                      attributes { attribute(Attribute.of("artifactType", String::class.java), "aar") }
+                  }.files
+                  aars.forEach { println(it.absolutePath) }
+              }
+          }
+          EOF
+          source/packages/android/gradlew -p "$scratch" -q listAars --no-daemon > "$scratch/aars.txt"
+          cat "$scratch/aars.txt"
+          for aar in $(cat "$scratch/aars.txt"); do unzip -l "$aar"; done > "$scratch/entries.txt"
+          for entry in jni/arm64-v8a/libblasphem_jni.so jni/armeabi-v7a/libblasphem_jni.so jni/x86_64/libblasphem_jni.so assets/blasphem/es.pack; do
+            grep -q " $entry\$" "$scratch/entries.txt" || { echo "$entry is missing from the published AARs" >&2; exit 1; }
+          done
+          echo "status=verified aars=$(wc -l < "$scratch/aars.txt")"

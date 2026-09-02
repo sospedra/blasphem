@@ -1143,7 +1143,7 @@ fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
             "--language-model",
             &path("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
             "--hurtlex-root",
-            &path("data/raw-v1/hurtlex"),
+            &path("data/clean-room-v1"),
             "--output",
             output.to_str().expect("UTF-8 path"),
         ])

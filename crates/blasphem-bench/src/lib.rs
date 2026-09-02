@@ -12,10 +12,15 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use thiserror::Error;
 
+mod accuracy;
 mod auto;
 mod benchmark;
 mod size;
 
+pub use accuracy::{
+    AccuracyConfig, AccuracyError, AccuracyRun, LanguageAccuracy, print_comparison, run_accuracy,
+    sync_embedded_digests,
+};
 pub use auto::{
     AutoCorpusEvaluation, AutoCorpusEvidence, AutoEvidenceError, AutoSizeEvidence,
     AutoValidationConfig, AutoValidationEvidence, BrowserBuildEvidence, CParityEvidence,

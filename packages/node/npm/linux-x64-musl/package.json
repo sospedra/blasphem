@@ -1,9 +1,17 @@
 {
   "name": "@blasphem/node-linux-x64-musl",
   "version": "0.1.0",
-  "private": true,
   "description": "blasphem native engine for linux-x64-musl",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/node/npm/linux-x64-musl"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "os": [
     "linux"
   ],

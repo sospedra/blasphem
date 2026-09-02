@@ -1,9 +1,17 @@
 {
   "name": "@blasphem/node-darwin-x64",
   "version": "0.1.0",
-  "private": true,
   "description": "blasphem native engine for darwin-x64",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/node/npm/darwin-x64"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "os": [
     "darwin"
   ],

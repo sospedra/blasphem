@@ -1,6 +1,6 @@
 //! One version for everything. The root `Cargo.toml` `[workspace.package]`
 //! defines it; every crate inherits it; this module writes it into the npm,
-//! Python, and standalone-crate manifests that cannot inherit.
+//! Python, Gradle, and standalone-crate manifests that cannot inherit.
 
 use std::fs;
 use std::io;
@@ -69,6 +69,10 @@ fn mirrors(root: &Path) -> Result<Vec<Mirror>, VersionsError> {
         Mirror {
             path: root.join("packages/python-packs/pyproject.toml"),
             pattern: toml(),
+        },
+        Mirror {
+            path: root.join("packages/android/gradle.properties"),
+            pattern: Regex::new(r"(?m)^VERSION_NAME=(.+)$").expect("valid regex"),
         },
     ];
     for package in ["blasphem", "cli", "core", "node", "packs", "react-native"] {

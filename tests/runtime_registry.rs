@@ -4,10 +4,8 @@ use blasphem::{Language, NudgeDetector, PackInput, PackSource, ReplyTarget, Rule
 
 fn hurtlex_bytes(language: Language) -> Vec<u8> {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("data/raw-v1/hurtlex")
-        .join(language.storage_code())
-        .join("1.2")
-        .join(format!("hurtlex_{}.tsv", language.storage_code()));
+        .join("data/clean-room-v1")
+        .join(format!("{}.tsv", language.storage_code()));
     std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
 }
 
@@ -200,8 +198,7 @@ fn judge_returns_grawlix_only_when_requested() {
     .expect("judge builds");
     let masked = judge.judge("you are a stupid loser").grawlix;
 
-    // This exact string appears in README.md and in the package README.
-    assert_eq!(masked.as_deref(), Some("you are a @#$%&! loser"));
+    assert_eq!(masked.as_deref(), Some("you are a @#$%&! @#$%&"));
 }
 
 #[test]

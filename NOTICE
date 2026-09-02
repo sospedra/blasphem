@@ -15,18 +15,75 @@ The corpora and lexica below keep their own recorded licenses.
 - Sources: 2
 - Status: the upstream license is unresolved. This record claims no permission.
 
-## hurtlex
+## clean-room-v1 lexica
 
-- License: CC-BY-SA-4.0
+- Status: this repository no longer ships HurtLex. HurtLex's actual license
+  is CC BY-NC-SA 4.0 (NonCommercial), never CC-BY-SA-4.0 as an earlier
+  version of this file claimed. The NonCommercial term is the reason this
+  project built its own lexica from scratch. `data/raw-v1/hurtlex/` and
+  `data/hurtlex/` are deleted, and no HurtLex bytes remain in this
+  repository or in any built artifact.
+- The fifteen lexica under `data/clean-room-v1/` replace HurtLex. Each is an
+  independent work assembled from the sources below, reviewed lemma by
+  lemma against the project's own category scheme. Share-alike survives
+  this change: it now runs against Wiktionary, not HurtLex.
+
+## wiktionary
+
+- License: CC BY-SA 4.0
 - License URL: https://creativecommons.org/licenses/by-sa/4.0/
-- License year: 2025
-- Citation: Bassignana et al., 2018. HurtLex: A Multilingual Lexicon of Words to Hurt.
+- License year: 2026
+- Citation: Wiktionary contributors. English Wiktionary
+  (https://en.wiktionary.org) and the native-language Wiktionaries for
+  French, Japanese, Turkish, Russian, Portuguese, Italian, Korean,
+  Indonesian, Vietnamese, Chinese, Arabic, German, and Hindi.
 - Sources: 15
-- Status: share-alike. This repository redistributes all 15 HurtLex files
-  under `data/raw-v1/hurtlex/` and embeds them via `include_bytes!` in
-  `crates/blasphem-wasm/src/lib.rs`. Any redistribution of this repository,
-  or of a derivative lexicon built from these files, must carry the
-  CC-BY-SA-4.0 license and attribution.
+- Status: share-alike. This repository harvests category listings from
+  Wiktionary into `data/clean-room-v1/`. Any redistribution of this data,
+  or of a derivative lexicon built from it, must carry the CC BY-SA 4.0
+  license and attribution.
+
+## ldnoobw
+
+- License: CC BY 4.0
+- License URL: https://creativecommons.org/licenses/by/4.0/
+- License year: 2026
+- Citation: LDNOOBW, List of Dirty, Naughty, Obscene, and Otherwise Bad
+  Words (https://github.com/LDNOOBW).
+- Sources: 15
+- Status: attribution only. Mined for candidate terms across all fifteen
+  clean-room lexica.
+
+## washyourmouth
+
+- License: MIT
+- License URL: https://opensource.org/licenses/MIT
+- License year: 2026
+- Citation: washyourmouth word list.
+- Sources: 15
+- Status: permissive, attribution requested. Mined for candidate terms
+  across all fifteen clean-room lexica.
+
+## textdetox multilingual_toxic_lexicon
+
+- License: OpenRAIL++
+- License URL: https://www.licenses.ai/blog/2022/8/26/bigscience-open-rail-m-license
+- License year: 2026
+- Citation: TextDetox multilingual toxic lexicon
+  (https://huggingface.co/datasets/textdetox/multilingual_toxic_lexicon).
+- Sources: up to 15
+- Status: use-restricted, not an OSI-approved license. This is a separate
+  class from the CC sources above: OpenRAIL++ carries behavioral use
+  restrictions rather than a share-alike or attribution-only term. Mined
+  for candidate terms; kept out of the CC accounting so its terms are not
+  understated by folding it in with them.
+
+## vietnamese candidate corpora
+
+- `zerostratos/vietnamese_toxic_core`: Apache-2.0.
+- `uitnlp/vihsd` (UIT-ViHSD): MIT.
+- Status: both mined for Vietnamese candidate terms only. Neither corpus is
+  redistributed; neither is part of `corpus/`.
 
 ## ibrohim-budi
 

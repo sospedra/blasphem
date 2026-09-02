@@ -17,7 +17,7 @@ fn size_command_writes_canonical_experimental_evidence() {
         .arg("--model-manifest")
         .arg(project_root.join("resources/models/multilingual-v2/manifest.json"))
         .arg("--hurtlex-root")
-        .arg(project_root.join("data/raw-v1/hurtlex"))
+        .arg(project_root.join("data/clean-room-v1"))
         .arg("--target-triple")
         .arg("aarch64-apple-darwin")
         .arg("--output")

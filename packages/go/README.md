@@ -1,7 +1,10 @@
 # blasphem (Go)
 
-Multilingual pre-send toxicity nudge over the Rust core, through cgo and the C
-ABI in `crates/blasphem-ffi`. Same contract as the JavaScript package.
+Multilingual pre-send toxicity nudge over the Rust core. The core is
+`crates/blasphem-ffi` compiled to WebAssembly and embedded in the module;
+[wazero](https://wazero.io) runs it. No cgo, no C compiler, `CGO_ENABLED=0`
+builds, and cross-compiling works. Go 1.25 or later. Same contract as the
+JavaScript package.
 
 ```go
 import blasphem "github.com/sospedra/blasphem/packages/go"
@@ -35,13 +38,24 @@ Detection is on by default.
 `CodeLocaleUnsupported`, `CodeLocaleMissing`, `CodeAssetsRequired`,
 `CodeFetchFailed`, `CodeDigestMismatch`, `CodeFormatVersion`, `CodePackInvalid`.
 
-## Build and try
+## Engine
+
+`blasphem_ffi.wasm` is the compiled core, committed next to the Go files. It
+carries no packs. Every `Instance` runs its own copy behind one mutex. The
+first `Instance` in a process spends about 150 ms turning the engine into
+machine code; the ones after start in under a millisecond.
+
+Rebuild the file after a Rust change, at the repository root:
 
 ```bash
-cargo build --release -p blasphem-ffi        # repository root
-cd packages/go && go run ./example ../../packages/packs/dist
+cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
+cp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/
 ```
 
-The cgo directives find the header and `libblasphem_ffi.a` under `target/release`
-relative to this directory. A published module vendors one archive per platform
-and points `#cgo LDFLAGS` at it.
+CI runs the same build and fails when the bytes differ from the committed file.
+
+## Try
+
+```bash
+cd packages/go && go run ./example ../../packages/packs/dist
+```

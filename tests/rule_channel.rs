@@ -25,13 +25,10 @@ fn every_language_resolves_to_one_static_rule_path() {
 
 #[test]
 fn every_locked_hurtlex_file_builds_its_matching_language_channel() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("data/raw-v1/hurtlex");
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("data/clean-room-v1");
 
     for language in Language::ALL {
-        let path = root
-            .join(language.storage_code())
-            .join("1.2")
-            .join(format!("hurtlex_{}.tsv", language.storage_code()));
+        let path = root.join(format!("{}.tsv", language.storage_code()));
         let bytes =
             std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()));
         RuleChannel::from_hurtlex_bytes(language, Some(&bytes))
@@ -41,7 +38,7 @@ fn every_locked_hurtlex_file_builds_its_matching_language_channel() {
 
 #[test]
 fn supplied_cjk_messages_pass_through_the_shared_channel() {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("data/raw-v1/hurtlex");
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("data/clean-room-v1");
     let cases = [
         (
             Language::Zh,
@@ -61,10 +58,7 @@ fn supplied_cjk_messages_pass_through_the_shared_channel() {
     ];
 
     for (language, toxic, clean) in cases {
-        let path = root
-            .join(language.storage_code())
-            .join("1.2")
-            .join(format!("hurtlex_{}.tsv", language.storage_code()));
+        let path = root.join(format!("{}.tsv", language.storage_code()));
         let bytes =
             std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()));
         let channel =

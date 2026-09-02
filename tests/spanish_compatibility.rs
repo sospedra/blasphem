@@ -46,7 +46,7 @@ fn check(text: &str) -> String {
             "--language",
             "ES",
             "--data-dir",
-            "data/raw-v1/hurtlex",
+            "data/clean-room-v1",
             "--text",
             text,
         ])
@@ -62,13 +62,13 @@ fn spanish_product_results_are_frozen() {
         check("Te voy a matar").starts_with("ok=false score=95 threshold=50 should_nudge=true")
     );
     assert!(
-        check("No te voy a matar").starts_with("ok=true score=20 threshold=50 should_nudge=false")
+        check("No te voy a matar").starts_with("ok=true score=23 threshold=50 should_nudge=false")
     );
 }
 
 #[test]
 fn spanish_runtime_matches_the_legacy_policy_for_the_complete_behavior_panel() {
-    let hurtlex = include_bytes!("../data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv");
+    let hurtlex = include_bytes!("../data/clean-room-v1/ES.tsv");
     let entries = parse_hurtlex(&hurtlex[..], "ES")
         .expect("Spanish HurtLex")
         .into_iter()

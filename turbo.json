@@ -23,7 +23,7 @@
         "$TURBO_ROOT$/.cargo/**",
         "$TURBO_ROOT$/src/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/data/raw-v1/hurtlex/**",
+        "$TURBO_ROOT$/data/clean-room-v1/**",
         "$TURBO_ROOT$/resources/models/**"
       ],
       "outputs": [
@@ -53,7 +53,7 @@
         "$TURBO_ROOT$/.cargo/**",
         "$TURBO_ROOT$/src/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/data/raw-v1/hurtlex/**",
+        "$TURBO_ROOT$/data/clean-room-v1/**",
         "$TURBO_ROOT$/resources/models/**"
       ],
       "outputs": [

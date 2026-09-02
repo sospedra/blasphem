@@ -100,8 +100,12 @@ Add rows without writing code.
    The corpus is the only copy the compiler reads.
 6. Open a pull request.
 
-`prepare` needs raw upstream files under `data/raw-v1`. This repository ships
-only the HurtLex lexicon there, so supply your own source files for this path.
+`prepare` needs raw upstream files under `data/raw-v1`. This repository no
+longer ships a lexicon there: HurtLex is removed, and the clean-room lexica
+under `data/clean-room-v1` build through `lexicon-harvest` and
+`lexicon-build`, not through `prepare`. Supply your own source files under
+`data/raw-v1` for the other dataset types `prepare` covers. See
+`docs/clean-room-lexicon-report.md` for the lexicon build path.
 
 ## The custom path: a typed adapter
 

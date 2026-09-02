@@ -673,7 +673,7 @@ fn frozen_source(
 /// Spanish manifest entries pin the frozen HurtLex ES digest, so the fixture uses the real file.
 fn hurtlex_fixture_bytes(language: Language) -> Vec<u8> {
     if language == Language::Es {
-        return fs::read(project_root().join("data/raw-v1/hurtlex/ES/1.2/hurtlex_ES.tsv"))
+        return fs::read(project_root().join("data/clean-room-v1/ES.tsv"))
             .expect("Spanish HurtLex data");
     }
     b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n".to_vec()

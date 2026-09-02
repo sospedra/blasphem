@@ -1,0 +1,3216 @@
+{
+  "storage_code": "TR",
+  "language_name": "Turkish",
+  "harvest_sha256": "96853496474b2a18a5ca045103fa0001cef4d9c1b3829dfc7267ba0b3f49d9ba",
+  "entries": 401,
+  "entries_detail": [
+    {
+      "id": "TR00001",
+      "lemma": "bok böceği",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00002",
+      "lemma": "davar",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00003",
+      "lemma": "domuz",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00004",
+      "lemma": "eşek",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00005",
+      "lemma": "eşek beceren",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00006",
+      "lemma": "eşşek",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00007",
+      "lemma": "fare",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00008",
+      "lemma": "hayvan",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00009",
+      "lemma": "inek",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00010",
+      "lemma": "it",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00011",
+      "lemma": "itoğluit",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00012",
+      "lemma": "kancık",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00013",
+      "lemma": "keçi",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00014",
+      "lemma": "koyun",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00015",
+      "lemma": "köpek",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00016",
+      "lemma": "köpek beceren",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00017",
+      "lemma": "leş",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00018",
+      "lemma": "çakal",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00019",
+      "lemma": "çomar",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00020",
+      "lemma": "öküz",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00021",
+      "lemma": "am",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00022",
+      "lemma": "amcık",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00023",
+      "lemma": "amcıklar",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00024",
+      "lemma": "amcıklara",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00025",
+      "lemma": "amcıklarda",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00026",
+      "lemma": "amcıklardan",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00027",
+      "lemma": "amcıkları",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00028",
+      "lemma": "amcıkların",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00029",
+      "lemma": "amcıkta",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00030",
+      "lemma": "amcıktan",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00031",
+      "lemma": "amcığa",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00032",
+      "lemma": "amcığı",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00033",
+      "lemma": "amcığın",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00034",
+      "lemma": "amina",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00035",
+      "lemma": "amini",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00036",
+      "lemma": "amk",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00037",
+      "lemma": "amlar",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00038",
+      "lemma": "amq",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00039",
+      "lemma": "amı",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00040",
+      "lemma": "amına",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00041",
+      "lemma": "amına koduğum",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00042",
+      "lemma": "amına koduğumun",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00043",
+      "lemma": "amına koyayım",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00044",
+      "lemma": "amınakoyim",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00045",
+      "lemma": "mk",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00046",
+      "lemma": "mq",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00047",
+      "lemma": "alet",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00048",
+      "lemma": "dalyarak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00049",
+      "lemma": "kamış",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00050",
+      "lemma": "kuş",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00051",
+      "lemma": "malafat",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00052",
+      "lemma": "sik",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00053",
+      "lemma": "sike",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00054",
+      "lemma": "siker sikmez",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00055",
+      "lemma": "siki",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00056",
+      "lemma": "sikilir sikilmez",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00057",
+      "lemma": "sikim",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00058",
+      "lemma": "sikin",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00059",
+      "lemma": "sikler",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00060",
+      "lemma": "siklerde",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00061",
+      "lemma": "siklerden",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00062",
+      "lemma": "siklere",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00063",
+      "lemma": "sikleri",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00064",
+      "lemma": "siklerin",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00065",
+      "lemma": "sikmemek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00066",
+      "lemma": "sikte",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00067",
+      "lemma": "sikten",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00068",
+      "lemma": "siktirir siktirmez",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00069",
+      "lemma": "taşak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00070",
+      "lemma": "taşaklar",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00071",
+      "lemma": "taşaklara",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00072",
+      "lemma": "taşaklarda",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00073",
+      "lemma": "taşaklardan",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00074",
+      "lemma": "taşakları",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00075",
+      "lemma": "taşakların",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00076",
+      "lemma": "taşakta",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00077",
+      "lemma": "taşaktan",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00078",
+      "lemma": "yarak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00079",
+      "lemma": "yaraklar",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00080",
+      "lemma": "yaraklara",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00081",
+      "lemma": "yaraklarda",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00082",
+      "lemma": "yaraklardan",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00083",
+      "lemma": "yarakları",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00084",
+      "lemma": "yarakların",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00085",
+      "lemma": "yarakta",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00086",
+      "lemma": "yaraktan",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00087",
+      "lemma": "yarrak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00088",
+      "lemma": "çük",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00089",
+      "lemma": "almancı",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00090",
+      "lemma": "alçak",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00091",
+      "lemma": "aşağılık",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00092",
+      "lemma": "barbar",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00093",
+      "lemma": "bayır turpu",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00094",
+      "lemma": "bozuntu",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00095",
+      "lemma": "bozuntusu",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00096",
+      "lemma": "densiz",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00097",
+      "lemma": "döküntü",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00098",
+      "lemma": "düşük",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00099",
+      "lemma": "güruh",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00100",
+      "lemma": "hadsiz",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00101",
+      "lemma": "haspa",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00102",
+      "lemma": "herbokolog",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00103",
+      "lemma": "hiç",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00104",
+      "lemma": "kasıntı",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00105",
+      "lemma": "kokmuş",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00106",
+      "lemma": "lavuk",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00107",
+      "lemma": "madara",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00108",
+      "lemma": "paçavra",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00109",
+      "lemma": "paçoz",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00110",
+      "lemma": "pislik",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00111",
+      "lemma": "pisliği",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00112",
+      "lemma": "piç",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00113",
+      "lemma": "piçi",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00114",
+      "lemma": "piçler",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00115",
+      "lemma": "piçlik",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00116",
+      "lemma": "süprüntü",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00117",
+      "lemma": "sığıntı",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00118",
+      "lemma": "ukala",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00119",
+      "lemma": "utanmaz",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00120",
+      "lemma": "veledizina",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00121",
+      "lemma": "velet",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00122",
+      "lemma": "yalaka",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00123",
+      "lemma": "yalakası",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00124",
+      "lemma": "yavşak",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00125",
+      "lemma": "zavalli",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00126",
+      "lemma": "özenti",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00127",
+      "lemma": "şerefsiz",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00128",
+      "lemma": "şerefsizdir",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00129",
+      "lemma": "şerefsizin",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00130",
+      "lemma": "şerefsizler",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00131",
+      "lemma": "şerefsizlerin",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00132",
+      "lemma": "ampüte",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00133",
+      "lemma": "boyunsakal",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00134",
+      "lemma": "cüce",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00135",
+      "lemma": "dört göz",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00136",
+      "lemma": "ihtiyar",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00137",
+      "lemma": "kocakarı",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00138",
+      "lemma": "moruk",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00139",
+      "lemma": "pasaklı",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00140",
+      "lemma": "ucube",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00141",
+      "lemma": "yarım porsiyon",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00142",
+      "lemma": "yer cücesi",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00143",
+      "lemma": "şişko",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00144",
+      "lemma": "akıl hastası",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00145",
+      "lemma": "angut",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00146",
+      "lemma": "aptal",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00147",
+      "lemma": "aptallık",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00148",
+      "lemma": "beyinsiz",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00149",
+      "lemma": "embesil",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00150",
+      "lemma": "enayi",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00151",
+      "lemma": "geri kalmış",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00152",
+      "lemma": "gerizekalı",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00153",
+      "lemma": "gerzek",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00154",
+      "lemma": "keriz",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00155",
+      "lemma": "kerizci",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00156",
+      "lemma": "kuş beyinli",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00157",
+      "lemma": "mal",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00158",
+      "lemma": "manyak",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00159",
+      "lemma": "moğol",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00160",
+      "lemma": "salak",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00161",
+      "lemma": "salaklar",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00162",
+      "lemma": "saloz",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00163",
+      "lemma": "sazan",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00164",
+      "lemma": "özürlü",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00165",
+      "lemma": "şaban",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00166",
+      "lemma": "şabanlık",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00167",
+      "lemma": "aktrol",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00168",
+      "lemma": "duyar kasmak",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00169",
+      "lemma": "dönek",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00170",
+      "lemma": "feminazi",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00171",
+      "lemma": "gerici",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00172",
+      "lemma": "hain",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00173",
+      "lemma": "hainleri",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00174",
+      "lemma": "incel",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00175",
+      "lemma": "kepaze",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00176",
+      "lemma": "oktrol",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00177",
+      "lemma": "sosyal faşizm",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00178",
+      "lemma": "vicdan mastürbasyonu",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00179",
+      "lemma": "yobaz",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00180",
+      "lemma": "yobazlar",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00181",
+      "lemma": "hırt",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00182",
+      "lemma": "hırtiye",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00183",
+      "lemma": "hışır",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00184",
+      "lemma": "kokoz",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00185",
+      "lemma": "köylü",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00186",
+      "lemma": "kıro",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00187",
+      "lemma": "tinerci",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00188",
+      "lemma": "varoş",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00189",
+      "lemma": "yarma",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00190",
+      "lemma": "götveren",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00191",
+      "lemma": "ibne",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00192",
+      "lemma": "ibneler",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00193",
+      "lemma": "livata",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00194",
+      "lemma": "oğlancı",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00195",
+      "lemma": "puşt",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00196",
+      "lemma": "puşt olmak",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00197",
+      "lemma": "puştluk",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00198",
+      "lemma": "top",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00199",
+      "lemma": "travesti",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00200",
+      "lemma": "yandan çarklı",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00201",
+      "lemma": "hıyar",
+      "category": "or",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00202",
+      "lemma": "kapı kulu",
+      "category": "pa",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00203",
+      "lemma": "fahişe",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00204",
+      "lemma": "fahişeler",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00205",
+      "lemma": "gavat",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00206",
+      "lemma": "kahpe",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00207",
+      "lemma": "kaltak",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00208",
+      "lemma": "kaltaklar",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00209",
+      "lemma": "kaltaklara",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00210",
+      "lemma": "kaltaklarda",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00211",
+      "lemma": "kaltaklardan",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00212",
+      "lemma": "kaltakları",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00213",
+      "lemma": "kaltakların",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00214",
+      "lemma": "kaltakta",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00215",
+      "lemma": "kaltaktan",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00216",
+      "lemma": "kavat",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00217",
+      "lemma": "kaşar",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00218",
+      "lemma": "kevaşe",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00219",
+      "lemma": "kırmızıfener",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00220",
+      "lemma": "orosbu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00221",
+      "lemma": "orospu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00222",
+      "lemma": "orospu evladı",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00223",
+      "lemma": "orospu çocuğu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00224",
+      "lemma": "orospuda",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00225",
+      "lemma": "orospudan",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00226",
+      "lemma": "orospular",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00227",
+      "lemma": "orospulara",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00228",
+      "lemma": "orospularda",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00229",
+      "lemma": "orospulardan",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00230",
+      "lemma": "orospuları",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00231",
+      "lemma": "orospuların",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00232",
+      "lemma": "orospunun",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00233",
+      "lemma": "orospuya",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00234",
+      "lemma": "orospuyu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00235",
+      "lemma": "oruspu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00236",
+      "lemma": "pezevenk",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00237",
+      "lemma": "pezo",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00238",
+      "lemma": "sürtük",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00239",
+      "lemma": "yollu",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00240",
+      "lemma": "ırzı kırık",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00241",
+      "lemma": "şıllık",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00242",
+      "lemma": "şırfıntı",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00243",
+      "lemma": "arap",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00244",
+      "lemma": "dağ türkü",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00245",
+      "lemma": "dönme",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00246",
+      "lemma": "gâvur",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00247",
+      "lemma": "kanzi",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00248",
+      "lemma": "kâfir",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00249",
+      "lemma": "kömür",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00250",
+      "lemma": "kürdo",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00251",
+      "lemma": "moskof gâvuru",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00252",
+      "lemma": "müslo",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00253",
+      "lemma": "nataşa",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00254",
+      "lemma": "paki",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00255",
+      "lemma": "poşa",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00256",
+      "lemma": "türko",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00257",
+      "lemma": "çekik gözlü",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00258",
+      "lemma": "çingene",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00259",
+      "lemma": "çingenede",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00260",
+      "lemma": "çingeneden",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00261",
+      "lemma": "çingeneler",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00262",
+      "lemma": "çingenelerde",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00263",
+      "lemma": "çingenelerden",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00264",
+      "lemma": "çingenelere",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00265",
+      "lemma": "çingeneleri",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00266",
+      "lemma": "çingenelerin",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00267",
+      "lemma": "çingenenin",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00268",
+      "lemma": "çingeneye",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00269",
+      "lemma": "çingeneyi",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00270",
+      "lemma": "azdım",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00271",
+      "lemma": "azgin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00272",
+      "lemma": "ağzına sıçmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00273",
+      "lemma": "bok",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00274",
+      "lemma": "boktan",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00275",
+      "lemma": "bokunu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00276",
+      "lemma": "boğulun",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00277",
+      "lemma": "boşalma",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00278",
+      "lemma": "boşalmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00279",
+      "lemma": "büzük",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00280",
+      "lemma": "defol",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00281",
+      "lemma": "defolma",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00282",
+      "lemma": "defolmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00283",
+      "lemma": "domalmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00284",
+      "lemma": "döl",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00285",
+      "lemma": "dübür",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00286",
+      "lemma": "düzmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00287",
+      "lemma": "fuckbuddy",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00288",
+      "lemma": "gebermek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00289",
+      "lemma": "göt",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00290",
+      "lemma": "göte",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00291",
+      "lemma": "götler",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00292",
+      "lemma": "götlerde",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00293",
+      "lemma": "götlerden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00294",
+      "lemma": "götlere",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00295",
+      "lemma": "götleri",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00296",
+      "lemma": "götlerin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00297",
+      "lemma": "götte",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00298",
+      "lemma": "götten",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00299",
+      "lemma": "götverende",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00300",
+      "lemma": "götverenden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00301",
+      "lemma": "götverene",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00302",
+      "lemma": "götvereni",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00303",
+      "lemma": "götverenin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00304",
+      "lemma": "götverenler",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00305",
+      "lemma": "götverenlerde",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00306",
+      "lemma": "götverenlerden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00307",
+      "lemma": "götverenlere",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00308",
+      "lemma": "götverenleri",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00309",
+      "lemma": "götverenlerin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00310",
+      "lemma": "götü",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00311",
+      "lemma": "götüm",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00312",
+      "lemma": "götün",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00313",
+      "lemma": "götünden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00314",
+      "lemma": "götüne",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00315",
+      "lemma": "götünü",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00316",
+      "lemma": "götünüz",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00317",
+      "lemma": "halt",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00318",
+      "lemma": "herif",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00319",
+      "lemma": "herifler",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00320",
+      "lemma": "kodumun",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00321",
+      "lemma": "koyim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00322",
+      "lemma": "köklemek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00323",
+      "lemma": "kız gibi",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00324",
+      "lemma": "kıç",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00325",
+      "lemma": "makat",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00326",
+      "lemma": "otuz birci",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00327",
+      "lemma": "otuz bircide",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00328",
+      "lemma": "otuz birciden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00329",
+      "lemma": "otuz birciler",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00330",
+      "lemma": "otuz bircilerde",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00331",
+      "lemma": "otuz bircilerden",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00332",
+      "lemma": "otuz bircilere",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00333",
+      "lemma": "otuz bircileri",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00334",
+      "lemma": "otuz bircilerin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00335",
+      "lemma": "otuz bircinin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00336",
+      "lemma": "otuz birciye",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00337",
+      "lemma": "otuz birciyi",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00338",
+      "lemma": "otuzbir",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00339",
+      "lemma": "palavra",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00340",
+      "lemma": "patlak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00341",
+      "lemma": "saksocu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00342",
+      "lemma": "saksocuda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00343",
+      "lemma": "saksocudan",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00344",
+      "lemma": "saksocular",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00345",
+      "lemma": "saksoculara",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00346",
+      "lemma": "saksocularda",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00347",
+      "lemma": "saksoculardan",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00348",
+      "lemma": "saksocuları",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00349",
+      "lemma": "saksocuların",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00350",
+      "lemma": "saksocunun",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00351",
+      "lemma": "saksocuya",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00352",
+      "lemma": "saksocuyu",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00353",
+      "lemma": "siker",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00354",
+      "lemma": "sikerim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00355",
+      "lemma": "sikeyim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00356",
+      "lemma": "sikici",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00357",
+      "lemma": "sikik",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00358",
+      "lemma": "sikilmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00359",
+      "lemma": "sikimsonik",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00360",
+      "lemma": "sikindirik",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00361",
+      "lemma": "sikiyim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00362",
+      "lemma": "sikiş",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00363",
+      "lemma": "sikişelim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00364",
+      "lemma": "sikişmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00365",
+      "lemma": "sikmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00366",
+      "lemma": "siktir",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00367",
+      "lemma": "siktir git",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00368",
+      "lemma": "siktirboktan",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00369",
+      "lemma": "siktirici",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00370",
+      "lemma": "siktirin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00371",
+      "lemma": "siktirip gitmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00372",
+      "lemma": "siktirmek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00373",
+      "lemma": "siktiğim",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00374",
+      "lemma": "siktiğimin",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00375",
+      "lemma": "sokayım",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00376",
+      "lemma": "sokmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00377",
+      "lemma": "soktuğum",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00378",
+      "lemma": "soktuğumun",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00379",
+      "lemma": "sıçayım",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00380",
+      "lemma": "sıçmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00381",
+      "lemma": "ulan",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00382",
+      "lemma": "yuh",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00383",
+      "lemma": "zilli",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00384",
+      "lemma": "zıbarmak",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00385",
+      "lemma": "muz cumhuriyeti",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00386",
+      "lemma": "at hırsızı",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00387",
+      "lemma": "bebek katili",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00388",
+      "lemma": "kumpas",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00389",
+      "lemma": "madrabaz",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00390",
+      "lemma": "torbacı",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00391",
+      "lemma": "tırnakçı",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00392",
+      "lemma": "tırtıkçı",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00393",
+      "lemma": "ırz düşmanı",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00394",
+      "lemma": "cehennem",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00395",
+      "lemma": "kahretsin",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00396",
+      "lemma": "kahrolası",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00397",
+      "lemma": "lanet",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00398",
+      "lemma": "lanet olası",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00399",
+      "lemma": "lanet olsun",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00400",
+      "lemma": "zıkkım",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "TR00401",
+      "lemma": "zıkkımlanmak",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    }
+  ]
+}

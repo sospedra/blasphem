@@ -134,6 +134,12 @@ struct CompileArgs {
     source_lock: PathBuf,
     #[arg(long)]
     hurtlex_root: PathBuf,
+    /// Reads `{hurtlex_root}/{STORAGE_CODE}.tsv` instead of the nested
+    /// HurtLex layout `{hurtlex_root}/{STORAGE_CODE}/1.2/hurtlex_{STORAGE_CODE}.tsv`.
+    /// The clean-room lexica are flat; the `1.2` segment is a HurtLex
+    /// version number that means nothing for them.
+    #[arg(long)]
+    flat_lexicon_root: bool,
     #[arg(long, default_value = "tests/fixtures/behavior")]
     behavior_root: PathBuf,
     #[arg(long)]
@@ -187,7 +193,7 @@ struct CliSmokeArgs {
 struct SetupArgs {
     #[arg(long, default_value = DEFAULT_LANGUAGES)]
     languages: String,
-    #[arg(long, default_value = "data/hurtlex")]
+    #[arg(long)]
     data_dir: PathBuf,
 }
 
@@ -195,7 +201,7 @@ struct SetupArgs {
 struct EvalArgs {
     #[arg(long)]
     input: PathBuf,
-    #[arg(long, default_value = "data/hurtlex")]
+    #[arg(long)]
     data_dir: PathBuf,
     #[arg(long, value_enum, default_value_t = MinimumActionArg::Review)]
     minimum_action: MinimumActionArg,
@@ -274,7 +280,7 @@ struct SyncVersionsArgs {
 struct LocalesTableArgs {
     #[arg(long)]
     output: PathBuf,
-    /// ts, go, or python
+    /// ts, go, python, swift, or kotlin
     #[arg(long, default_value = "ts")]
     format: String,
 }
@@ -356,7 +362,7 @@ fn pack_command(arguments: &PackArgs) -> Result<()> {
 fn locales_table_command(arguments: &LocalesTableArgs) -> Result<()> {
     let format = TableFormat::parse(&arguments.format).ok_or_else(|| {
         anyhow::anyhow!(
-            "unknown --format {:?}; use ts, go, or python",
+            "unknown --format {:?}; use ts, go, python, swift, or kotlin",
             arguments.format
         )
     })?;

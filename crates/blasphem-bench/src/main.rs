@@ -2,7 +2,8 @@ use std::{fs, path::PathBuf, process::Command};
 
 use anyhow::{Context, Result, bail};
 use blasphem_bench::{
-    AutoValidationConfig, collect_size_evidence, run_auto_validation, run_benchmark,
+    AccuracyConfig, AccuracyRun, AutoValidationConfig, collect_size_evidence, print_comparison,
+    run_accuracy, run_auto_validation, run_benchmark,
 };
 use clap::{Parser, Subcommand};
 use serde::Serialize;
@@ -19,6 +20,30 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum EvidenceCommand {
+    /// Retrain, rebuild, and judge the shipped binary over the corpus test split.
+    Accuracy {
+        /// Repository root. Defaults to the current directory.
+        #[arg(long)]
+        project_root: Option<PathBuf>,
+        /// Measure this binary as is, skipping retrain and rebuild.
+        #[arg(long)]
+        binary: Option<PathBuf>,
+        /// The commit the measured assets come from.
+        #[arg(long, default_value = "HEAD")]
+        commit: String,
+        /// Run name. Defaults to the short commit.
+        #[arg(long)]
+        label: Option<String>,
+        /// Defaults to benchmark/runs/<label>.json.
+        #[arg(long)]
+        output: Option<PathBuf>,
+        /// Defaults to benchmark/baseline.json.
+        #[arg(long)]
+        baseline: Option<PathBuf>,
+        /// Validation report to read. Defaults to reports/multilingual-validation.json.
+        #[arg(long)]
+        validation_report: Option<PathBuf>,
+    },
     Auto {
         #[arg(long)]
         texts: PathBuf,
@@ -77,6 +102,49 @@ enum EvidenceCommand {
 
 fn main() -> Result<()> {
     match Cli::parse().command {
+        EvidenceCommand::Accuracy {
+            project_root,
+            binary,
+            commit,
+            label,
+            output,
+            baseline,
+            validation_report,
+        } => {
+            let project_root = match project_root {
+                Some(root) => root,
+                None => std::env::current_dir().context("cannot read the current directory")?,
+            };
+            let run = run_accuracy(&AccuracyConfig {
+                project_root: project_root.clone(),
+                binary,
+                commit,
+                label,
+                validation_report,
+            })?;
+            let output = output.unwrap_or_else(|| {
+                project_root
+                    .join("benchmark/runs")
+                    .join(format!("{}.json", run.label))
+            });
+            write_canonical(&output, &run)?;
+            println!(
+                "status=measured languages={} retrained={} validation_pooled_recall={:?} test_pooled_recall={:?} output={}",
+                run.validation.languages.len(),
+                run.retrained,
+                run.validation.pooled.metrics.recall,
+                run.test.pooled.metrics.recall,
+                output.display(),
+            );
+            let baseline = baseline.unwrap_or_else(|| project_root.join("benchmark/baseline.json"));
+            if baseline.exists() && baseline.canonicalize().ok() != output.canonicalize().ok() {
+                let bytes = fs::read(&baseline)
+                    .with_context(|| format!("cannot read baseline {}", baseline.display()))?;
+                let baseline: AccuracyRun = serde_json::from_slice(&bytes)
+                    .with_context(|| format!("cannot parse baseline {}", baseline.display()))?;
+                print_comparison(&baseline, &run);
+            }
+        }
         EvidenceCommand::Auto {
             texts,
             labels,

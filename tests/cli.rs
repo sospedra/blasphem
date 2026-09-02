@@ -48,7 +48,7 @@ fn check_help_exposes_only_the_product_resource_controls() {
     let stdout = String::from_utf8(output.stdout).expect("UTF-8 output");
     assert!(stdout.contains("--language <LANGUAGE>"));
     assert!(!stdout.contains("default: auto"));
-    assert!(stdout.contains("default: data/raw-v1/hurtlex"));
+    assert!(stdout.contains("default: data/clean-room-v1"));
     assert!(!stdout.contains("--include-inclusive"));
 }
 
@@ -81,7 +81,7 @@ fn check_rejects_a_missing_required_hurtlex_file() {
     assert!(!output.status.success());
     let stderr = String::from_utf8(output.stderr).expect("UTF-8 error");
     assert!(stderr.contains("EN"));
-    assert!(stderr.contains("EN/1.2/hurtlex_EN.tsv"));
+    assert!(stderr.contains("EN.tsv"));
 }
 
 #[test]
@@ -101,7 +101,7 @@ fn check_prints_the_prediction_and_match() {
 fn check_prints_the_sparse_channel_status() {
     let stdout = stdout(run("ES", "La gente del pueblo habló con la policía."));
 
-    assert!(stdout.contains("sparse_score=12"));
+    assert!(stdout.contains("sparse_score=14"));
 }
 
 #[test]
@@ -124,11 +124,11 @@ fn spanish_check_nudges_harm_and_preserves_safe_context() {
         ),
         (
             "No te voy a matar",
-            "ok=true score=20 threshold=50 should_nudge=false",
+            "ok=true score=23 threshold=50 should_nudge=false",
         ),
         (
             "Te voy a matar de risa",
-            "ok=true score=20 threshold=50 should_nudge=false",
+            "ok=true score=23 threshold=50 should_nudge=false",
         ),
     ] {
         let stdout = stdout(run("ES", text));

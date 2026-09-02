@@ -159,7 +159,7 @@ fn validation_evidence_matches_each_canonical_manifest_matrix() {
     let evidence = evaluate_validation(
         &project.join("corpus"),
         &model_path,
-        &project.join("data/raw-v1/hurtlex"),
+        &project.join("data/clean-room-v1"),
     )
     .expect("final-path validation");
 
@@ -187,7 +187,7 @@ fn behavior_evidence_scores_all_360_cases_through_the_public_path() {
         &project.join("tests/fixtures/behavior"),
         &project.join("corpus"),
         &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("data/raw-v1/hurtlex"),
+        &project.join("data/clean-room-v1"),
     )
     .expect("final-path behavior evidence");
 
@@ -221,7 +221,7 @@ fn native_smoke_evidence_scores_all_60_cases_through_the_public_path() {
 
     let evidence = evaluate_cli_smoke(
         &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("data/raw-v1/hurtlex"),
+        &project.join("data/clean-room-v1"),
     )
     .expect("native smoke evidence");
 
@@ -797,10 +797,8 @@ fn project_root() -> std::path::PathBuf {
 
 fn detector(language: Language) -> NudgeDetector {
     let path = project_root()
-        .join("data/raw-v1/hurtlex")
-        .join(language.storage_code())
-        .join("1.2")
-        .join(format!("hurtlex_{}.tsv", language.storage_code()));
+        .join("data/clean-room-v1")
+        .join(format!("{}.tsv", language.storage_code()));
     let bytes = fs::read(path).expect("HurtLex bytes");
     NudgeDetector::from_hurtlex_bytes(language, Some(&bytes)).expect("fixed-language detector")
 }

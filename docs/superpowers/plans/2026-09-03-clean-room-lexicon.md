@@ -602,6 +602,30 @@ print('added  :',len(after-before))
 
 Every lemma in `removed` gets a named reason in the report. This is not bureaucracy: Chinese removed `太平公主` and Japanese removed `パンパン` with no mention in either report, and both were found only because a reviewer diffed the lemma sets after noticing the arithmetic was off by one. An undisclosed removal is the one change nobody can audit — it looks identical whether it deleted a neutral word correctly or a real slur by accident.
 
+- [ ] **Step 5c: Check that `inclusive` is not where your recall went**
+
+**`inclusive` means off.** `src/rules/channel.rs:126` filters the rule channel to `MatchLevel::Conservative` before anything is matched. An inclusive row never loads, never fires, and contributes nothing. It is not a lower severity tier. It is a deletion that keeps the row in the file.
+
+This was discovered after all fifteen languages were built, and it had cost English 71% of its true positives, French 85%, Portuguese 55%. Not because words were missing — because implementers had parked the generic-vulgarity tier at `inclusive` believing that was a hedge. English recovered from 22 true positives to 76 by promoting 500 rows already in its table; only 9 words were actually new.
+
+So before you build, run the rule-channel comparison against the HurtLex baseline on the test split:
+
+```bash
+python3 -c "
+import csv
+rows=[r for r in csv.DictReader(open('corpus/{CODE}.tsv'),delimiter='\t') if r['split']=='test']
+with open('/tmp/{CODE}-test.tsv','w',newline='') as f:
+    w=csv.writer(f,delimiter='\t',lineterminator='\n'); w.writerow(['language','label','text'])
+    for r in rows: w.writerow(['{CODE}',r['label'],r['text'].replace('\t',' ')])
+"
+mkdir -p /tmp/{CODE}-new && cp data/clean-room-v1/{CODE}.tsv /tmp/{CODE}-new/hurtlex_{CODE}.tsv
+cargo run --release -p blasphem-train -- eval --input /tmp/{CODE}-test.tsv --data-dir /tmp/{CODE}-new
+```
+
+Compare TP and FP against the HurtLex run on the same input. The gate is **TP at or above 90% of HurtLex's, FP at or below 50% of HurtLex's.** If TP is short, the first place to look is your own inclusive rows, not the drops file. Diff the rows HurtLex flags correctly that you miss, read them, and promote the inclusive entries responsible — after the two questions, never before.
+
+Report both numbers in every language's report. A precision win reported without its recall column beside it is how the collapse went unnoticed across fifteen languages.
+
 - [ ] **Step 6: Build**
 
 ```bash
@@ -746,6 +770,10 @@ git commit -m "Point the runtime at the clean-room lexica"
 ---
 
 ## Task 5: Recompile and gate
+
+> **Read this before trusting the gate below.** `validation_metrics.f1` in the manifest does not measure the lexicon. The prediction at `compiler.rs:590` is `rule_should_nudge || model_says_yes`, the model is trained on the corpus alone by `train_weights`, and on the validation split the model already flags every row the lexicon flags. So the OR is unchanged whether a language's lexicon has 780 entries or 2 — verified by gutting German to 2 rows and re-running: identical tp=301 fp=33. Fourteen of fifteen compiled artifacts came out bit-identical after the swap. Spanish alone moved, 0.4228 to 0.5476, because it is the only language on the legacy `EsLegacyV1` encoding path.
+>
+> The gate that does measure the lexicon is the rule-channel comparison in Task 3 Step 5c: `eval` on the test split, new lexicon against HurtLex, same input. Run Task 5 for the provenance chain and the model artifacts. Do not read its F1 column as evidence about the lexicon.
 
 **Files:**
 - Modify: `resources/models/multilingual-v2/*.bin`

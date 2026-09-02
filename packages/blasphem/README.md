@@ -2,9 +2,13 @@
 
 Experimental multilingual pre-send toxicity nudge. Deterministic rules, one lexicon and one sparse integer table per language, compiled to WebAssembly and to a native Node binary. No AI runtime. No network request after the judge is built.
 
-The package carries code only, 1.13 MB of wasm. Language data lives in `@blasphem/packs`, one `.pack` and one `.detect` file per language, and a judge loads only the locales you ask for.
+The package carries code only, 1.15 MB of wasm. Language data lives in `@blasphem/packs`, one `.pack` and one `.detect` file per language, and a judge loads only the locales you ask for.
 
-This package is private and unpublished. Build it from the repository:
+```bash
+pnpm add blasphem @blasphem/packs
+```
+
+Or build it from the repository:
 
 ```bash
 pnpm install --frozen-lockfile
@@ -41,7 +45,7 @@ Several judges at once, for example one per language on a moderation page, come 
 | browser, `assets: { wasm, packs }` | the `wasm` base | the `packs` base |
 | Node | `@blasphem/node-<os>-<cpu>` when installed, else the wasm in this package | the installed `@blasphem/packs`, or `assets` as a directory |
 
-The default needs nothing copied and nothing configured. Both packages are pinned to this build's version, exported as `VERSION`, jsDelivr answers with `Access-Control-Allow-Origin: *`, serves `.wasm` as `application/wasm`, and caches exact versions for a year. Every file is verified against `manifest.json` before it parses. The preset serves bytes once both packages are published.
+The default needs nothing copied and nothing configured. Both packages are pinned to this build's version, exported as `VERSION`, jsDelivr answers with `Access-Control-Allow-Origin: *`, serves `.wasm` as `application/wasm`, and caches exact versions for a year. Every file is verified against `manifest.json` before it parses. Both packages are on npm, so the preset needs no setup at all.
 
 Self-hosting: `pnpm add @blasphem/packs`, then `blasphem-assets public/blasphem` copies the wasm and the packs into one directory (32 files, 10.34 MB), and `assets: "/blasphem"` points at it. Serve `.wasm` as `application/wasm`. The browser entry never resolves a path from `import.meta.url`.
 
@@ -153,11 +157,11 @@ SvelteKit and SolidStart render on the server with Vite SSR, which leaves `node_
 
 The same contract, over the same Rust core:
 
-| Language | Package | Runtime path |
+| Language | Install | Runtime path |
 | --- | --- | --- |
-| Go | `packages/go` | wazero over `crates/blasphem-ffi` compiled to WebAssembly, no cgo |
-| Python | `packages/python`, `packages/python-packs` | PyO3 extension, abi3 for Python 3.10 and later |
-| React Native | `packages/react-native` | Nitro Modules over `crates/blasphem-ffi` |
+| Go | `go get github.com/sospedra/blasphem/packages/go` | wazero over `crates/blasphem-ffi` compiled to WebAssembly, no cgo |
+| Python | `pip install blasphem blasphem-packs` | PyO3 extension, abi3 for Python 3.10 and later |
+| React Native | `pnpm add @blasphem/react-native @blasphem/packs` | Nitro Modules over `crates/blasphem-ffi` |
 
 Each has `init`, `judge`, `ready`, `close`, a multi-instance judge type, the same `Judgement` fields, and the same error codes.
 

@@ -1,0 +1,17 @@
+[package]
+name = "blasphem-jni"
+version.workspace = true
+edition = "2024"
+rust-version = "1.85"
+publish = false
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+blasphem = { path = "../..", default-features = false, features = ["language-detection"] }
+jni = "0.21"
+
+[lints]
+workspace = true

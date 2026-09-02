@@ -489,7 +489,7 @@ fn manifest_entry_stub(language: Language) -> ModelManifestEntry {
 /// Spanish manifest entries pin the frozen HurtLex ES digest.
 fn hurtlex_digest(language: Language) -> Sha256Digest {
     if language == Language::Es {
-        return "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba"
+        return "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc"
             .to_owned()
             .try_into()
             .expect("frozen Spanish HurtLex digest");

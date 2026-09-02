@@ -44,7 +44,7 @@ fn cli_smoke_writes_canonical_60_case_evidence() {
     let directory = tempdir().expect("temporary directory");
     let report = directory.path().join("nested/smoke.json");
     let model_manifest = project.join("resources/models/multilingual-v2/manifest.json");
-    let hurtlex_root = project.join("data/raw-v1/hurtlex");
+    let hurtlex_root = project.join("data/clean-room-v1");
 
     let output = blasphem_train_command(&[
         "cli-smoke",

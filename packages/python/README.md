@@ -3,6 +3,13 @@
 Multilingual pre-send toxicity nudge over the Rust core, as a PyO3 extension.
 Same contract as the JavaScript package.
 
+```bash
+pip install blasphem blasphem-packs
+```
+
+The wheel is abi3 and covers Python 3.10 and later on macOS, Linux (glibc and
+musl), and Windows.
+
 ```python
 import blasphem
 

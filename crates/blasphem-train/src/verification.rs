@@ -1277,10 +1277,7 @@ fn load_detector(
     entry: &ModelManifestEntry,
     hurtlex_root: &Path,
 ) -> Result<NudgeDetector, VerificationError> {
-    let path = hurtlex_root
-        .join(language.storage_code())
-        .join("1.2")
-        .join(format!("hurtlex_{}.tsv", language.storage_code()));
+    let path = hurtlex_root.join(format!("{}.tsv", language.storage_code()));
     let bytes = read_evidence_input(&path)?;
     let expected = entry
         .hurtlex_sha256

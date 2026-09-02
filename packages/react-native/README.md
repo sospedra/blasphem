@@ -1,20 +1,37 @@
 # @blasphem/react-native
 
-The `blasphem` pre-send nudge for React Native, on Nitro Modules. Same
-`createJudge` contract as the web package. The engine is the Rust core behind
-a C ABI, wrapped by C++ HybridObjects; `judge()` is synchronous over JSI.
+The `blasphem` pre-send nudge for React Native, on Nitro Modules. Same `init`
+and `judge` contract as the web package. The engine is the Rust core behind a
+C ABI, wrapped by C++ HybridObjects; `judge()` is synchronous over JSI.
 
-This package is private and unpublished.
+```bash
+pnpm add @blasphem/react-native @blasphem/packs
+```
+
+`react-native-nitro-modules` is a peer dependency. `blasphem` is an optional
+peer, needed only when the application also targets the web.
 
 ## Use
 
 ```ts
-import { createJudge } from "@blasphem/react-native";
+import { init, judge } from "@blasphem/react-native";
 
-const judge = await createJudge({ locales: ["en", "es"], detectLanguage: true, grawlix: true });
-judge.judge("you are a stupid loser"); // { safe: false, score: 0.64, locale: "en", grawlix: "you are a @#$%&! loser" }
-judge.close();
+await init({ locales: ["en", "es"], grawlix: true });
+
+const v = judge("you are a stupid loser");
+v.safe;    // false
+v.score;   // 0.64
+v.locale;  // "en"
+v.grawlix; // "you are a @#$%&! loser"
 ```
+
+`init` loads the locales once and installs one judge for the module. `judge()`
+is synchronous, so it runs on every keystroke. Before `init` resolves, and
+after `close()`, it returns the fail-open verdict and never throws. `ready()`
+says which.
+
+`createJudge(options)` returns an independent `Judge` with its own `judge()`
+and `close()`, when one per module is not enough.
 
 `assets` is ignored here. Packs come from the app bundle.
 
@@ -33,11 +50,12 @@ verified against the manifest digest before it parses.
 
 ## Expo web and react-native-web
 
-The `browser` export condition re-exports `createJudge` from `blasphem`, an
-optional peer. Install `blasphem` and pass `assets` when the app also targets
-the web. The web page then needs the Content Security Policy from the
-`blasphem` README: `script-src 'wasm-unsafe-eval'` and the `assets` origins in
-`connect-src`. Native builds have no CSP.
+The `browser` export condition re-exports `init`, `judge`, `ready`, `close`,
+and `createJudge` from `blasphem`, an optional peer. Install `blasphem` and
+pass `assets` when the app also targets the web. The web page then needs the
+Content Security Policy from the `blasphem` README: `script-src
+'wasm-unsafe-eval'` and the `assets` origins in `connect-src`. Native builds
+have no CSP.
 
 ## Build
 

@@ -1,0 +1,250 @@
+id	pos	category	stereotype	lemma	level
+ID00001	p	an	no	anak anjing	conservative
+ID00002	n	an	no	andjing	conservative
+ID00003	n	an	no	anjing	conservative
+ID00004	n	an	no	anjing2	conservative
+ID00005	n	an	no	asu	conservative
+ID00006	n	an	no	babi	conservative
+ID00007	n	an	no	babon	inclusive
+ID00008	n	an	no	binatang	conservative
+ID00009	n	an	no	kadal	inclusive
+ID00010	n	an	no	katak	inclusive
+ID00011	n	an	no	kunyuk	conservative
+ID00012	n	asf	no	itil	conservative
+ID00013	n	asf	no	meki	inclusive
+ID00014	n	asf	no	memek	conservative
+ID00015	n	asf	no	nenen	inclusive
+ID00016	n	asf	no	nonok	inclusive
+ID00017	n	asf	no	pepek	conservative
+ID00018	n	asf	no	puki	conservative
+ID00019	n	asf	no	pukimak	conservative
+ID00020	n	asf	no	pundek	inclusive
+ID00021	n	asf	no	tempik	conservative
+ID00022	n	asf	no	tetek	inclusive
+ID00023	n	asf	no	toket	conservative
+ID00024	n	asm	no	burit	conservative
+ID00025	n	asm	no	coli	conservative
+ID00026	n	asm	no	colmek	conservative
+ID00027	n	asm	no	colmekin	conservative
+ID00028	n	asm	no	crot	inclusive
+ID00029	p	asm	no	crot dalam	inclusive
+ID00030	n	asm	no	cuki	inclusive
+ID00031	n	asm	no	cukimai	conservative
+ID00032	n	asm	no	entot	conservative
+ID00033	n	asm	no	ewe	conservative
+ID00034	n	asm	no	fuck	conservative
+ID00035	p	asm	no	hisap batang	conservative
+ID00036	n	asm	no	janco	inclusive
+ID00037	n	asm	no	jembut	inclusive
+ID00038	p	asm	no	kepala butuh	conservative
+ID00039	n	asm	no	kimai	inclusive
+ID00040	n	asm	no	kimak	conservative
+ID00041	n	asm	no	kocokin	conservative
+ID00042	n	asm	no	konak	conservative
+ID00043	n	asm	no	konek	conservative
+ID00044	n	asm	no	kongkek	inclusive
+ID00045	n	asm	no	kontol	conservative
+ID00046	n	asm	no	kote	inclusive
+ID00047	n	asm	no	kotek	inclusive
+ID00048	n	asm	no	lancau	inclusive
+ID00049	n	asm	no	lanjiao	inclusive
+ID00050	p	asm	no	lubang pantat	conservative
+ID00051	n	asm	no	mengancuk	inclusive
+ID00052	n	asm	no	mengentot	conservative
+ID00053	n	asm	no	ngaceng	conservative
+ID00054	n	asm	no	ngentot	conservative
+ID00055	n	asm	no	ngewe	conservative
+ID00056	n	asm	no	ngocok	inclusive
+ID00057	n	asm	no	otong	conservative
+ID00058	n	asm	no	palat	inclusive
+ID00059	n	asm	no	palkon	inclusive
+ID00060	n	asm	no	pantek	conservative
+ID00061	v	asm	no	peler	conservative
+ID00062	n	asm	no	perdom	inclusive
+ID00063	n	asm	no	sepong	inclusive
+ID00064	n	asm	no	sepongin	inclusive
+ID00065	n	asm	no	shit	inclusive
+ID00066	p	asm	no	si kontol panjang	conservative
+ID00067	p	asm	no	sikontol panjang	conservative
+ID00068	n	asm	no	silit	conservative
+ID00069	n	asm	no	titit	conservative
+ID00070	n	asm	no	wikwik	inclusive
+ID00071	p	cds	no	anak haram	conservative
+ID00072	p	cds	no	anak jadah	conservative
+ID00073	p	cds	no	anak zadah	conservative
+ID00074	n	cds	no	anjay	inclusive
+ID00075	v	cds	no	anjir	inclusive
+ID00076	n	cds	no	bacot	conservative
+ID00077	p	cds	no	bahasa kentut	inclusive
+ID00078	n	cds	no	bajingan	conservative
+ID00079	n	cds	no	bangsad	conservative
+ID00080	n	cds	no	bangsat	conservative
+ID00081	n	cds	no	bedebah	conservative
+ID00082	n	cds	no	bejat	conservative
+ID00083	n	cds	no	biadab	conservative
+ID00084	v	cds	no	bjir	inclusive
+ID00085	n	cds	no	brekmok	inclusive
+ID00086	n	cds	no	brengsek	conservative
+ID00087	n	cds	no	buset	inclusive
+ID00088	n	cds	no	cenblu	inclusive
+ID00089	n	cds	no	cincong	inclusive
+ID00090	n	cds	no	cocot	conservative
+ID00091	n	cds	no	congor	conservative
+ID00092	p	cds	no	haram jadah	conservative
+ID00093	p	cds	no	haram zadah	conservative
+ID00094	n	cds	no	jadah	conservative
+ID00095	n	cds	no	jancok	conservative
+ID00096	n	cds	no	jancuk	conservative
+ID00097	n	cds	no	jijay	inclusive
+ID00098	n	cds	no	kacrut	inclusive
+ID00099	n	cds	no	kampang	conservative
+ID00100	v	cds	no	njir	inclusive
+ID00101	n	cds	no	sontoloyo	inclusive
+ID00102	n	ddf	yes	buncit	inclusive
+ID00103	n	ddf	yes	gendut	inclusive
+ID00104	n	ddf	yes	monyong	inclusive
+ID00105	n	ddf	yes	picek	conservative
+ID00106	n	ddp	yes	70l0l	inclusive
+ID00107	n	ddp	yes	ahmak	inclusive
+ID00108	n	ddp	yes	bahlul	conservative
+ID00109	n	ddp	yes	bangang	inclusive
+ID00110	n	ddp	yes	bego	conservative
+ID00111	n	ddp	yes	beloon	inclusive
+ID00112	n	ddp	yes	bodoh	inclusive
+ID00113	n	ddp	yes	bongok	inclusive
+ID00114	n	ddp	yes	dongok	inclusive
+ID00115	n	ddp	yes	dungu	conservative
+ID00116	n	ddp	yes	geblek	conservative
+ID00117	n	ddp	yes	goblok	conservative
+ID00118	n	ddp	yes	goblok2	conservative
+ID00119	n	ddp	yes	ongok	inclusive
+ID00120	n	ddp	yes	plonga-plongo	inclusive
+ID00121	p	ddp	yes	tanjung rambutan	inclusive
+ID00122	n	ddp	yes	tolol	conservative
+ID00123	n	ddp	yes	wowo	inclusive
+ID00124	n	dmc	no	boneka	inclusive
+ID00125	n	dmc	no	borjuis	inclusive
+ID00126	n	dmc	no	cebong	conservative
+ID00127	n	dmc	no	cebong2	conservative
+ID00128	n	dmc	no	cocoklogi	inclusive
+ID00129	n	dmc	no	kampret	conservative
+ID00130	n	dmc	no	kampret2	conservative
+ID00131	n	dmc	no	komunis	inclusive
+ID00132	n	dmc	no	konoha	inclusive
+ID00133	n	dmc	no	libhanat	conservative
+ID00134	n	dmc	no	libtolol	conservative
+ID00135	n	dmc	no	macai	inclusive
+ID00136	n	dmc	no	mahafiraun	inclusive
+ID00137	n	dmc	no	pencitraan	inclusive
+ID00138	n	dmc	no	politahi	conservative
+ID00139	n	dmc	no	politaik	conservative
+ID00140	n	dmc	no	prabodoh	conservative
+ID00141	n	dmc	no	prindapan	inclusive
+ID00142	n	dmc	no	sepilis	conservative
+ID00143	n	dmc	no	setanyahu	inclusive
+ID00144	p	dmc	no	tahi konspirasi	inclusive
+ID00145	n	dmc	no	wakanda	inclusive
+ID00146	p	is	no	anak kolong	inclusive
+ID00147	n	is	no	babu	conservative
+ID00148	n	is	no	gundik	inclusive
+ID00149	n	is	no	jongos	inclusive
+ID00150	n	is	no	kacung	inclusive
+ID00151	n	is	no	rendahan	inclusive
+ID00152	p	is	no	sdm rendah	inclusive
+ID00153	n	is	no	udik	inclusive
+ID00154	n	om	yes	banci	conservative
+ID00155	n	om	yes	banci2	conservative
+ID00156	n	om	yes	bencong	conservative
+ID00157	n	om	yes	bencong-bencong	conservative
+ID00158	n	om	yes	boti	inclusive
+ID00159	p	om	yes	budaya songsang	conservative
+ID00160	p	om	yes	geng pelangi	conservative
+ID00161	n	om	yes	homo	conservative
+ID00162	p	om	yes	kaum belok	conservative
+ID00163	n	om	yes	kunyit	inclusive
+ID00164	n	om	yes	pondan	conservative
+ID00165	n	om	yes	semburit	conservative
+ID00166	p	pr	no	anak sundal	conservative
+ID00167	p	pr	no	ayam kampus	conservative
+ID00168	n	pr	no	barua	conservative
+ID00169	n	pr	no	cabo	inclusive
+ID00170	n	pr	no	jalang	inclusive
+ID00171	n	pr	no	lanji	inclusive
+ID00172	n	pr	no	lonte	conservative
+ID00173	n	pr	no	pecun	conservative
+ID00174	n	pr	no	pelacur	inclusive
+ID00175	n	pr	no	perek	conservative
+ID00176	n	pr	no	sundal	inclusive
+ID00177	n	ps	yes	amoi	inclusive
+ID00178	n	ps	yes	aseng	inclusive
+ID00179	n	ps	yes	bani	inclusive
+ID00180	n	ps	yes	bidaah	inclusive
+ID00181	n	ps	yes	cainis	conservative
+ID00182	n	ps	yes	cina	inclusive
+ID00183	p	ps	yes	cina apek	conservative
+ID00184	n	ps	yes	cina-cina	conservative
+ID00185	n	ps	yes	cina2	conservative
+ID00186	n	ps	yes	fankui	conservative
+ID00187	p	ps	yes	harga yahudi	conservative
+ID00188	v	ps	yes	inlander	conservative
+ID00189	p	ps	yes	islam ktp	inclusive
+ID00190	n	ps	yes	isriwil	inclusive
+ID00191	n	ps	yes	jakun	inclusive
+ID00192	v	ps	yes	jawir	conservative
+ID00193	p	ps	yes	kadal gurun	conservative
+ID00194	n	ps	yes	kadrun	conservative
+ID00195	v	ps	yes	kafir	inclusive
+ID00196	n	ps	yes	kakerlak	conservative
+ID00197	v	ps	yes	kapir	inclusive
+ID00198	n	ps	yes	kekafiran	inclusive
+ID00199	n	ps	yes	keling	conservative
+ID00200	n	ps	yes	kristod	inclusive
+ID00201	n	ps	yes	malaun	inclusive
+ID00202	n	ps	yes	meleis	conservative
+ID00203	n	ps	yes	negro	conservative
+ID00204	n	ps	yes	onta	inclusive
+ID00205	p	ps	yes	penunggang agama	inclusive
+ID00206	n	ps	yes	sakai	conservative
+ID00207	n	ps	yes	singkek	conservative
+ID00208	n	ps	yes	sirewel	inclusive
+ID00209	n	ps	yes	takfiri	conservative
+ID00210	n	ps	yes	tiko	conservative
+ID00211	n	ps	yes	unta	inclusive
+ID00212	p	qas	no	budaya kuning	inclusive
+ID00213	n	qas	no	cabe-cabean	conservative
+ID00214	n	qas	no	cabul	inclusive
+ID00215	n	qas	no	keminggris	inclusive
+ID00216	n	qas	no	lebai	inclusive
+ID00217	n	qas	no	matre	inclusive
+ID00218	n	qas	no	mesum	inclusive
+ID00219	n	qas	no	nolep	inclusive
+ID00220	n	qas	no	sange	inclusive
+ID00221	n	qas	no	sengkek	inclusive
+ID00222	p	qas	no	sok suci	inclusive
+ID00223	n	rci	yes	banglasia	conservative
+ID00224	n	rci	yes	indogsial	conservative
+ID00225	n	rci	yes	jawakarta	inclusive
+ID00226	n	rci	yes	malaydesh	conservative
+ID00227	n	rci	yes	malingsia	conservative
+ID00228	n	rci	yes	malingsial	conservative
+ID00229	n	rci	yes	malon	conservative
+ID00230	n	rci	yes	mamarika	inclusive
+ID00231	p	rci	yes	rejim zionis	inclusive
+ID00232	p	rci	yes	republik pisang	conservative
+ID00233	p	re	no	duit kopi	inclusive
+ID00234	n	svp	no	bangka	inclusive
+ID00235	n	svp	no	celaka	inclusive
+ID00236	n	svp	no	jahanam	inclusive
+ID00237	n	svp	no	keparat	conservative
+ID00238	n	svp	no	koit	inclusive
+ID00239	n	svp	no	lahabau	inclusive
+ID00240	n	svp	no	lahanat	inclusive
+ID00241	n	svp	no	laknatullah	conservative
+ID00242	n	svp	no	mampus	conservative
+ID00243	v	svp	no	modar	conservative
+ID00244	p	svp	no	pergi mampus	conservative
+ID00245	n	svp	no	persetan	inclusive
+ID00246	n	svp	no	setan	inclusive
+ID00247	n	svp	no	sial	inclusive
+ID00248	n	svp	no	sialan	conservative
+ID00249	n	svp	no	waknat	inclusive

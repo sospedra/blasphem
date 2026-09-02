@@ -1,9 +1,17 @@
 {
   "name": "@blasphem/node-win32-x64-msvc",
   "version": "0.1.0",
-  "private": true,
   "description": "blasphem native engine for win32-x64-msvc",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/node/npm/win32-x64-msvc"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "os": [
     "win32"
   ],

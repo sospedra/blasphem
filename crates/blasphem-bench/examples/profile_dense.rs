@@ -20,10 +20,8 @@ fn main() -> Result<()> {
             })
             .context("missing dense fixture")?;
         let hurtlex_path = root
-            .join("data/raw-v1/hurtlex")
-            .join(language.storage_code())
-            .join("1.2")
-            .join(format!("hurtlex_{}.tsv", language.storage_code()));
+            .join("data/clean-room-v1")
+            .join(format!("{}.tsv", language.storage_code()));
         let hurtlex = fs::read(&hurtlex_path)?;
         let entries = parse_hurtlex(hurtlex.as_slice(), language.storage_code())?
             .into_iter()

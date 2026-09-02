@@ -36,9 +36,7 @@ fn pack(language: Language) -> Vec<u8> {
         format!("{}-sparse-v2.bin", storage.to_ascii_lowercase())
     };
     let artifact = read(&format!("resources/models/multilingual-v2/{artifact_name}"));
-    let lexicon = read(&format!(
-        "data/raw-v1/hurtlex/{storage}/1.2/hurtlex_{storage}.tsv"
-    ));
+    let lexicon = read(&format!("data/clean-room-v1/{storage}.tsv"));
     blasphem::encode_pack(&PackInput {
         language,
         rule_pack_version: rule_pack_version(language),
@@ -89,7 +87,7 @@ fn engine_scores_english_and_masks_on_request() {
     assert!(!verdict.safe);
     assert_eq!(verdict.score, 0.64);
     assert_eq!(verdict.locale.as_deref(), Some("en"));
-    assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! loser"));
+    assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! @#$%&"));
 }
 
 #[test]

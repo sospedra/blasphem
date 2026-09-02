@@ -20,7 +20,7 @@ fn every_current_source_declares_the_baseline_role() {
     let file = std::fs::File::open(path).expect("readable source lock");
     let lock =
         blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
-    assert_eq!(lock.sources.len(), 38);
+    assert_eq!(lock.sources.len(), 88);
     for source in &lock.sources {
         assert_eq!(
             source.source_role,
@@ -568,13 +568,13 @@ fn source_identifiers_use_the_dataset_revision_split_and_native_id() {
 }
 
 #[test]
-fn the_source_lock_registers_spanish_as_the_thirty_eighth_input() {
+fn the_source_lock_registers_the_spanish_textdetox_input() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../resources/datasets/source-lock-v1.json");
     let file = std::fs::File::open(path).expect("readable source lock");
     let lock =
         blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
-    assert_eq!(lock.sources.len(), 38);
+    assert_eq!(lock.sources.len(), 88);
     let spanish = lock
         .sources
         .iter()
@@ -671,7 +671,7 @@ fn every_frozen_source_states_the_upstream_license_year() {
     let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
     let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
 
-    assert_eq!(lock.sources.len(), 38);
+    assert_eq!(lock.sources.len(), 88);
     for source in &lock.sources {
         assert!(
             (1990..=2026).contains(&source.license_year),

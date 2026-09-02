@@ -42,6 +42,12 @@ void blasphem_judgement_free(blasphem_judgement judgement);
 void blasphem_text_free(char *text);
 void blasphem_engine_free(blasphem_engine *engine);
 
+/* Bytes for pointer arguments when the host cannot share memory with this library, such as a
+   WebAssembly runtime. Aligned to 8. NULL when len is 0 or memory is exhausted. Free with
+   blasphem_free and the same len. */
+uint8_t *blasphem_alloc(size_t len);
+void blasphem_free(uint8_t *pointer, size_t len);
+
 /* Thread-local fallback. Prefer blasphem_builder_error. Valid until the next failing call on the same thread. */
 const char *blasphem_last_error(void);
 

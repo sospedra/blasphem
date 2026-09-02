@@ -617,8 +617,8 @@ fn explicit_spanish_analysis_loads_the_compiled_sparse_channel() {
         AnalysisContext::for_language("ES"),
     );
 
-    assert_eq!(result.sparse_score, Some(12));
-    assert_eq!(result.nudge().score, 12);
+    assert_eq!(result.sparse_score, Some(14));
+    assert_eq!(result.nudge().score, 14);
     assert!(!result.nudge().should_nudge);
 }
 
@@ -1555,8 +1555,8 @@ fn local_hurtlex_detector() -> &'static Detector {
         for language in ["AR", "DE", "EN", "ES", "FR", "IT", "PT", "RU"] {
             let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
                 .join("data")
-                .join("hurtlex")
-                .join(format!("hurtlex_{language}.tsv"));
+                .join("clean-room-v1")
+                .join(format!("{language}.tsv"));
             let file = File::open(&path).unwrap_or_else(|error| {
                 panic!("cannot open local HurtLex file {}: {error}", path.display())
             });

@@ -13,7 +13,8 @@
     "reproduce": "cargo run --release --locked -p blasphem-train -- reproduce",
     "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate",
     "versions": "cargo run --release --locked -p blasphem-train -- sync-versions",
-    "versions:check": "cargo run --release --locked -p blasphem-train -- sync-versions --check"
+    "versions:check": "cargo run --release --locked -p blasphem-train -- sync-versions --check",
+    "publish:npm": "node scripts/publish-npm.mjs"
   },
   "devDependencies": {
     "turbo": "2.10.12"

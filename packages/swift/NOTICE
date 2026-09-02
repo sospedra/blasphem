@@ -1,0 +1,71 @@
+Blasphem Swift package (sospedra/blasphem-swift, BlasphemPack* and BlasphemDetect* products)
+Copyright 2026 Rubén Sospedra
+
+This package redistributes third-party data.
+
+Clean-room lexica for AR, DE, EN, ES, FR, HI, ID, IT, JA, KO, PT, RU, TR, VI, ZH
+  This package no longer embeds HurtLex. HurtLex is CC BY-NC-SA 4.0
+  (NonCommercial), and that term is why this project replaced it. The
+  lexica below are original works assembled from license-clean sources.
+
+  English Wiktionary and the native Wiktionaries (fr, ja, tr, ru, pt, it,
+  ko, id, vi, zh, ar, de, hi)
+    Source: https://en.wiktionary.org and the corresponding native wiki
+    License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/
+    Share-alike: any redistribution of this data, or of a derivative
+    lexicon built from it, must carry CC BY-SA 4.0 and attribution.
+
+  LDNOOBW (List of Dirty, Naughty, Obscene, and Otherwise Bad Words)
+    Source: https://github.com/LDNOOBW
+    License: CC BY 4.0, attribution only
+
+  washyourmouth
+    License: MIT
+
+  textdetox multilingual_toxic_lexicon
+    Source: https://huggingface.co/datasets/textdetox/multilingual_toxic_lexicon
+    License: OpenRAIL++, a use-restricted license, not an OSI-approved one.
+    Recorded as its own class rather than folded in with the CC sources
+    above, since its terms differ from share-alike or attribution-only.
+
+  Vietnamese candidate mining only, not redistributed
+    zerostratos/vietnamese_toxic_core, Apache-2.0
+    uitnlp/vihsd (UIT-ViHSD), MIT
+
+  The NonCommercial term is gone from this package. Share-alike remains,
+  carried by Wiktionary rather than HurtLex.
+
+Language identification slices derived from ELDC
+  Source: https://github.com/nitotm/eldc
+  Revision: a0301db809ff2e48a418018aa5359fb0c4354eb8
+  License: Apache-2.0
+  The .detect files carry fifteen language profiles from the upstream model.
+
+Sparse tables (*-sparse-v2.bin, es-chargram-v1.bin)
+  Trained in this repository from the corpora recorded in
+  resources/datasets/source-lock-v1.json. See that file for each source's license.
+
+The sparse toxicity tables were trained on these corpora. The tables contain
+hashed integer weights and no corpus text.
+
+  TextDetox multilingual toxicity dataset (AR, DE, EN, FR, HI, IT, JA, RU, ZH)
+    https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset
+    CC BY 4.0
+  Ibrohim and Budi, 2019 (ID)
+    https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection
+    CC BY 4.0
+  ToLD-Br, Leite et al., 2020 (PT)
+    https://github.com/joaoaleite/ToLD-Br
+    CC BY 4.0
+  OffensEval-TR, Çöltekin, 2020 (TR)
+    https://coltekin.github.io/offensive-turkish/
+    CC BY 4.0
+  ViHOS (VI)
+    https://github.com/phusroyal/ViHOS
+    CC BY 4.0
+  K-MHaS, Lee et al., 2022 (KO)
+    https://github.com/adlnlp/K-MHaS
+    CC BY-SA 4.0
+  GermEval 2018, Wiegand, Siegel, and Ruppenhofer, 2018 (DE)
+    https://github.com/uds-lsv/GermEval-2018-Data
+    License not asserted by the source

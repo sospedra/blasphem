@@ -2,7 +2,20 @@
 
 Blasphem is a deterministic pre-send toxicity nudge. It checks a message before send, across 15 languages. It runs no neural model and no AI runtime.
 
-It ships a command-line binary, a browser WASM build, and Node bindings. The evidence status is experimental.
+It ships a Rust library, a command-line binary, a browser and Node package, a React Native package, a Python extension, and a Go module. Every one answers the same judge contract. The evidence status is experimental.
+
+## Install
+
+| Runtime | Command |
+| --- | --- |
+| Command line | `curl --proto '=https' --tlsv1.2 -LsSf https://github.com/sospedra/blasphem/releases/latest/download/blasphem-installer.sh \| sh` |
+| Node, browser | `pnpm add blasphem @blasphem/packs` |
+| React Native | `pnpm add @blasphem/react-native @blasphem/packs` |
+| Python | `pip install blasphem blasphem-packs` |
+| Go | `go get github.com/sospedra/blasphem/packages/go` |
+| Rust | `cargo add --git https://github.com/sospedra/blasphem blasphem` |
+
+The command-line binary embeds all fifteen languages. Every other runtime loads language data from the packs, so both names go together.
 
 ## Command line
 
@@ -39,11 +52,7 @@ cargo build --release --locked --bin blasphem
 
 See `CONTRIBUTING.md` to add training data, `LICENSE` for the first-party license, and `NOTICE` for third-party data licenses.
 
-Blasphem is an experimental multilingual pre-send toxicity nudge. It applies deterministic moderation rules. It does not run an AI model or translate text.
-
-There are three clients: a Rust library, a TypeScript package, and this CLI.
-
-The runtime uses [HurtLex](https://github.com/valeriobasile/hurtlex), fixed dictionaries, deterministic context rules, and sparse integer tables.
+The runtime uses a clean-room lexicon built from Wiktionary and other license-clean sources, fixed dictionaries, deterministic context rules, and sparse integer tables. See `docs/clean-room-lexicon-report.md` and `NOTICE`.
 
 Each language uses one independent 128 KiB sparse integer table. Offline labeled corpora produced these tables.
 
@@ -80,20 +89,102 @@ The lexica are compiled into the binary. `blasphem::embedded_detector` exposes t
 
 ## TypeScript
 
-```ts
-import { judge } from "blasphem";
+```bash
+pnpm add blasphem @blasphem/packs
+```
 
-const v = judge("you are a stupid loser", {
-  locales: ["en", "es"],
-  detectLanguage: true,
-  grawlix: true,
-});
+```ts
+import { init, judge } from "blasphem";
+
+await init({ locales: ["en", "es"], grawlix: true });
+
+const v = judge("you are a stupid loser");
 
 v.safe;  // false
 v.score; // 0.64
 ```
 
-The package is isomorphic and runs the same in Node and the browser. Every option is optional. See `packages/blasphem/README.md`.
+`init` loads the locales once and installs one judge for the module. `judge` is synchronous, so it runs on every keystroke. Before `init` resolves it returns the fail-open verdict and never throws. `createJudge(options)` returns an independent judge instead.
+
+The package is isomorphic and runs the same in Node and the browser. Node runs the native binary when its platform package is installed and the wasm otherwise. See `packages/blasphem/README.md`.
+
+## React Native
+
+```bash
+pnpm add @blasphem/react-native @blasphem/packs
+```
+
+```ts
+import { init, judge } from "@blasphem/react-native";
+
+await init({ locales: ["en", "es"], grawlix: true });
+
+const v = judge("you are a stupid loser");
+
+v.safe;  // false
+v.score; // 0.64
+```
+
+The engine is the Rust core behind a C ABI on Nitro Modules, so `judge()` is synchronous over JSI. Packs come from the application bundle rather than from `assets`. See `packages/react-native/README.md`.
+
+## Swift
+
+```swift
+// Package.swift: https://github.com/sospedra/blasphem-swift, products Blasphem, BlasphemPackEN, BlasphemPackES, BlasphemDetectEN, BlasphemDetectES
+import Blasphem
+
+let judge = try Judge(locales: ["en", "es"], grawlix: true)
+try judge.judge("you are a stupid loser")
+// Judgement(safe: false, score: 0.64, locale: "en", grawlix: "you are a @#$%&! loser")
+```
+
+Swift Package Manager, iOS 15.1 and macOS 12. The engine is the Rust core in an XCFramework; each `BlasphemPack<CODE>` and `BlasphemDetect<CODE>` product carries one data file, so the app ships only the locales it links. See `packages/swift/README.md`.
+
+## Android
+
+```kotlin
+// Gradle: platform("me.sospedra.blasphem:blasphem-bom:0.1.0"), blasphem, blasphem-pack-en, blasphem-pack-es, blasphem-detect-en, blasphem-detect-es
+import me.sospedra.blasphem.Judge
+import me.sospedra.blasphem.JudgeOptions
+
+val judge = Judge.create(context, JudgeOptions(locales = listOf("en", "es"), grawlix = true))
+judge.judge("you are a stupid loser")
+// Judgement(safe=false, score=0.64, locale=en, grawlix=you are a @#$%&! loser)
+```
+
+Maven Central, `minSdk 24`. The engine is the Rust core behind JNI; each `blasphem-pack-<code>` and `blasphem-detect-<code>` artifact carries one asset, so the app ships only the locales it adds. See `packages/android/README.md`.
+
+## Python
+
+```bash
+pip install blasphem blasphem-packs
+```
+
+```python
+import blasphem
+
+blasphem.init(["en", "es"], grawlix=True)
+blasphem.judge("you are a stupid loser")
+# Judgement(safe=False, score=0.64, locale='en', grawlix='you are a @#$%&! loser')
+```
+
+A PyO3 extension over the same Rust core. The wheel is abi3 and covers Python 3.10 and later. `blasphem-packs` supplies the language data when `init` gets no `assets`. See `packages/python/README.md`.
+
+## Go
+
+```bash
+go get github.com/sospedra/blasphem/packages/go
+```
+
+```go
+import blasphem "github.com/sospedra/blasphem/packages/go"
+
+err := blasphem.Init(blasphem.Options{Locales: []string{"en", "es"}, Assets: "/srv/blasphem-packs", Grawlix: true})
+verdict := blasphem.Judge("you are a stupid loser")
+// {Safe:false Score:0.64 Locale:en Grawlix:you are a @#$%&! loser}
+```
+
+The core compiles to WebAssembly and is embedded in the module; wazero runs it. No cgo, and `CGO_ENABLED=0` builds work. See `packages/go/README.md`.
 
 ## Reproduce every artifact
 
@@ -133,7 +224,7 @@ for the full accounting.
 
 ## Setup
 
-Download the default HurtLex language files:
+`setup` downloads HurtLex from upstream for ad-hoc reference and comparison only. It plays no part in building the shipped detector, which reads `data/clean-room-v1` instead. See `docs/clean-room-lexicon-report.md`.
 
 ```bash
 cargo run --release -p blasphem-train -- setup
@@ -143,17 +234,17 @@ The shipping detector supports `EN,ZH,ES,AR,MS,PT,FR,HI,RU,JA,DE,TR,VI,KO,IT`.
 
 The parser accepts `ID` as an alias for `MS`.
 
-Download every HurtLex 1.2 language:
+Download every HurtLex 1.2 language, for comparison only:
 
 ```bash
 cargo run --release -p blasphem-train -- setup --languages all
 ```
 
-The runtime uses conservative HurtLex entries only.
+The runtime uses conservative clean-room lexicon entries only.
 
 ## Policy checks
 
-The `check` command is the diagnostic behind the evidence reports. It is hidden from `--help` and reads HurtLex from `data/raw-v1/hurtlex`.
+The `check` command is the diagnostic behind the evidence reports. It is hidden from `--help` and reads a HurtLex-formatted lexicon from `--data-dir` (default `data/raw-v1/hurtlex`, now removed). Point it at a nested mirror of `data/clean-room-v1` instead; see "Bridging the flat and nested lexicon layouts" below.
 
 Run these policy checks:
 
@@ -180,9 +271,9 @@ The `sparse_score` line contains the selected language table score.
 
 Sentiment only modifies active lexical or context evidence. Sentiment alone cannot select `review` or `block`.
 
-The policy layer excludes 36 verified HurtLex collisions by language and normalized lemma.
+The policy layer excludes 64 verified HurtLex collisions by language and normalized lemma.
 
-The exclusion table covers AR, DE, EN, ES, FR, IT, PT, and RU.
+The exclusion table covers AR, DE, EN, ES, IT, JA, and RU.
 
 An excluded term remains in the raw lexical matches. The policy output adds `lexical_collision_excluded` evidence with zero points.
 
@@ -272,7 +363,7 @@ Acquisition rejects a URL that does not contain the pinned revision.
 
 The source record stores separate SHA-256 values for the Parquet download and the canonical TSV.
 
-The catalog TextDetox set is EN, ZH, AR, FR, HI, RU, JA, DE, and IT.
+The catalog TextDetox set is EN, ZH, AR, FR, HI, RU, JA, DE, IT, and ES.
 
 Hash buckets 0 through 69 select development. Buckets 70 through 84 select validation. Buckets 85 through 99 select test.
 
@@ -294,10 +385,12 @@ Compile the model set from development, validation, and frozen clean behavior co
 cargo run --release --locked -p blasphem-train -- compile \
   --corpus-root corpus \
   --source-lock resources/datasets/source-lock-v1.json \
-  --hurtlex-root data/raw-v1/hurtlex \
+  --hurtlex-root data/clean-room-v1 \
   --behavior-root tests/fixtures/behavior \
   --output resources/models/multilingual-v2
 ```
+
+`--hurtlex-root` is a legacy name. It now points at the clean-room lexica, and `compile` reads them directly: it resolves `{hurtlex-root}/{CODE}.tsv`, which is exactly the flat layout `data/clean-room-v1` already uses.
 
 The compiler uses word unigrams, word bigrams, and character 3-grams through 5-grams.
 
@@ -307,16 +400,30 @@ The clean controls set a minimum boundary. They do not enter the accuracy metric
 
 The checked-in manifest is `resources/models/multilingual-v2/manifest.json`.
 
+### Bridging the flat and nested lexicon layouts
+
+`compile` reads the clean-room lexica flat, as `{root}/{CODE}.tsv`. `evaluate`, `behavior`, `cli-smoke`, and the `check` diagnostic below instead still expect the historical HurtLex layout, `{root}/{CODE}/1.2/hurtlex_{CODE}.tsv`. The two look interchangeable and are not; passing `data/clean-room-v1` straight to `evaluate` fails. Build a one-time nested mirror first:
+
+```bash
+for f in data/clean-room-v1/??.tsv; do
+  code=$(basename "$f" .tsv)
+  mkdir -p "/tmp/hurtlex-bridge/$code/1.2"
+  cp "$f" "/tmp/hurtlex-bridge/$code/1.2/hurtlex_$code.tsv"
+done
+```
+
+Then pass `--hurtlex-root /tmp/hurtlex-bridge` (or `--data-dir /tmp/hurtlex-bridge` for `check`) to those four commands, in place of any `data/raw-v1/hurtlex` shown below.
+
 ## Pre-test evidence
 
-Write the 14-language validation evidence:
+Write the 15-language validation evidence:
 
 ```bash
 cargo run --release --locked -p blasphem-train -- evaluate \
   --split validation \
   --corpus-root corpus \
   --model-manifest resources/models/multilingual-v2/manifest.json \
-  --hurtlex-root data/raw-v1/hurtlex \
+  --hurtlex-root /tmp/hurtlex-bridge \
   --output reports/multilingual-validation.json
 ```
 
@@ -333,7 +440,7 @@ cargo run --release --locked -p blasphem-train -- behavior \
   --fixture-root tests/fixtures/behavior \
   --corpus-root corpus \
   --model-manifest resources/models/multilingual-v2/manifest.json \
-  --hurtlex-root data/raw-v1/hurtlex \
+  --hurtlex-root /tmp/hurtlex-bridge \
   --output reports/multilingual-behavior.json
 ```
 
@@ -344,7 +451,7 @@ Write the 60-case native smoke evidence:
 ```bash
 cargo run --release --locked -p blasphem-train -- cli-smoke \
   --model-manifest resources/models/multilingual-v2/manifest.json \
-  --hurtlex-root data/raw-v1/hurtlex \
+  --hurtlex-root /tmp/hurtlex-bridge \
   --output reports/multilingual-cli-smoke.json
 ```
 
@@ -404,7 +511,7 @@ The commands refuse an existing output. The acquire command verifies each frozen
 
 ## Limits
 
-HurtLex contains ambiguous and outdated entries. The conservative set can still produce false positives.
+The clean-room lexicon contains ambiguous entries, same as any lexicon of this kind. The conservative set can still produce false positives.
 
 The fixed exclusion table can miss other abusive uses of dual-use words.
 
@@ -442,54 +549,58 @@ The gate checks 30 dense fixtures. It requires one short and one long fixture fo
 
 ## Browser WASM
 
-The default build includes the language detector and all 15 toxicity packs.
+Most applications should use the `blasphem` npm package, which wraps this crate and loads the packs. This section calls `crates/blasphem-wasm` directly.
 
-Build the default browser module and generate the web bindings:
+The module carries code only. Language data arrives at run time as one `.pack` and one `.detect` file per locale from `@blasphem/packs`.
+
+Build the module and generate the web bindings:
 
 ```bash
 cargo build --release --locked --target wasm32-unknown-unknown -p blasphem-wasm
 wasm-bindgen target/wasm32-unknown-unknown/release/blasphem_wasm.wasm \
   --target web \
+  --omit-default-module-path \
   --out-dir target/wasm-web \
   --out-name blasphem
 ```
 
-Initialize an explicit detector or an automatic detector:
+`--omit-default-module-path` drops the `new URL(..., import.meta.url)` fallback, so the caller names the wasm location and no bundler sees an implicit asset.
+
+Add one locale at a time, then build the engine:
 
 ```js
-import init, { BlasphemDetector } from "./blasphem.js";
+import init, { BlasphemEngineBuilder } from "./blasphem.js";
 
-await init();
-const detector = new BlasphemDetector("AUTO");
-const result = detector.check("أتمنى أن تموت وحيدًا هذه الليلة");
+await init({ module_or_path: "./blasphem_bg.wasm" });
 
-console.log(result.ok, result.score, result.shouldNudge, result.resolvedLanguage);
-result.free();
-detector.free();
+const builder = new BlasphemEngineBuilder(true, false); // detectLanguage, grawlix
+builder.add("en", enPackBytes, enPackSha256, enDetectBytes, enDetectSha256);
+
+const engine = builder.build();         // consumes the builder
+engine.locales;                         // ["en"]
+engine.judge("you are a stupid loser"); // { safe, score, locale, grawlix }
+engine.free();
 ```
 
-Build the explicit-only module without the language detector:
+`add` takes `Uint8Array` buffers and optional 64-character hexadecimal digests. Rust verifies each digest before it parses the bytes. Every error is a string that starts with a contract code. See `crates/blasphem-wasm/README.md`.
+
+Build without the language detector:
 
 ```bash
 cargo build --release --locked --target wasm32-unknown-unknown \
   -p blasphem-wasm --no-default-features
 ```
 
-The explicit-only module rejects `AUTO`.
+The detector's tables ship as `.detect` files, not inside the module, so the feature costs 9,093 Brotli bytes of code. `reports/browser-smoke.json` records what a page downloads. Brotli bytes, glue included:
 
-The measured explicit-only transfer is 1,634,390 Brotli bytes, including JavaScript glue.
+| Download | Brotli |
+| --- | --- |
+| module and glue, no packs | 302,348 |
+| plus `en.pack`, detection off | 404,822 |
+| plus `en.pack` and `en.detect` | 681,746 |
+| plus all 15 locales | 5,723,839 |
 
-The measured default transfer is 9,048,040 Brotli bytes, including JavaScript glue.
-
-The current WASM module still embeds all 15 toxicity packs in both build modes.
-
-A future product pack loader should fetch only the selected N language packs.
-
-AUTO should detect first and load only the resolved available pack.
-
-A missing pack must return unknown and fail open.
-
-The shared language detector table does not shrink in proportion to the selected pack count.
+A judge fetches only the locales it was asked for. A locale absent from `manifest.json` throws at construction. Text that no loaded locale routes returns `safe: true` and fails open.
 
 See the automatic-language-detection report under `docs/` for route, latency, size, and browser evidence.
 
@@ -500,8 +611,4 @@ pnpm --filter blasphem run build
 pnpm --filter blasphem run test:browser
 ```
 
-The test loads the `blasphem` package entry and the explicit-only module in separate WASM instances.
-
-The explicit-only check verifies an English route and the `AUTO` feature error.
-
-The test writes experimental browser and compressed-size evidence to `reports/browser-smoke.json`.
+The test drives `dist/browser.js` in both engines, asserts that an English-only judge downloads exactly `manifest.json`, `en.pack`, and `en.detect`, and writes experimental browser and compressed-size evidence to `reports/browser-smoke.json`.

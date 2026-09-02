@@ -12,9 +12,10 @@ for (const target of TARGETS) {
   const manifest = {
     name: packageName(target),
     version,
-    private: true,
     description: `blasphem command-line binary for ${target.name}, with the language data embedded`,
     license: "Apache-2.0 AND CC-BY-NC-SA-4.0",
+    repository: { type: "git", url: "git+https://github.com/sospedra/blasphem.git", directory: `packages/cli/npm/${target.name}` },
+    publishConfig: { access: "public", provenance: true },
     os: [target.os],
     cpu: [target.cpu],
     ...(target.libc ? { libc: [target.libc] } : {}),

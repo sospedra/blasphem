@@ -49,6 +49,11 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
+      - name: Verify the Go engine matches source
+        run: |
+          cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
+          cmp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
+
       - name: Verify the corpus
         run: |
           cargo run --release --locked -p blasphem-train -- corpus-verify \
@@ -109,6 +114,11 @@ jobs:
 
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      - name: Verify the Go engine matches source
+        run: |
+          cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
+          cmp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
 
       - name: Verify the corpus
         run: |

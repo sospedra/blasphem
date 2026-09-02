@@ -1,10 +1,18 @@
 {
   "name": "@blasphem/react-native",
   "version": "0.1.0",
-  "private": true,
   "description": "React Native binding for blasphem on Nitro Modules. Same createJudge as the web package, native engine underneath.",
   "license": "Apache-2.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/react-native"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "engines": {
     "node": "24.18.0",
     "pnpm": "11.13.0"

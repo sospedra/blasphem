@@ -23,7 +23,7 @@ fn size_evidence_contains_every_language_resource() {
     let evidence = collect_size_evidence(
         &binary,
         &project_root.join("resources/models/multilingual-v2/manifest.json"),
-        &project_root.join("data/raw-v1/hurtlex"),
+        &project_root.join("data/clean-room-v1"),
         "aarch64-apple-darwin",
     )
     .expect("size evidence");

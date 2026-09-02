@@ -19,6 +19,7 @@ members = [
     "crates/blasphem-wasm",
     "crates/blasphem-napi",
     "crates/blasphem-ffi",
+    "crates/blasphem-jni",
     "crates/blasphem-bench",
     "crates/blasphem-train",
 ]

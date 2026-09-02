@@ -23,7 +23,7 @@ use crate::{
 
 pub const MODEL_MANIFEST_SCHEMA_VERSION: u16 = 2;
 const SPANISH_HURTLEX_SHA256: &str =
-    "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba";
+    "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc";
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]

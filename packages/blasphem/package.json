@@ -1,10 +1,17 @@
 {
   "name": "blasphem",
   "version": "0.1.0",
-  "private": true,
   "description": "Multilingual pre-send toxicity nudge. One createJudge for browsers and Node; Node runs a native binary when its platform package is installed and wasm otherwise.",
   "license": "Apache-2.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/blasphem"
+  },
+  "publishConfig": {
+    "provenance": true
+  },
   "sideEffects": false,
   "engines": {
     "node": "24.18.0",

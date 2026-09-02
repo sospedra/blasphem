@@ -1,0 +1,2000 @@
+{
+  "storage_code": "ID",
+  "language_name": "Indonesian",
+  "harvest_sha256": "d72184282c12724ecfa3e326035a02c73974a3730f18e47688a7c45fdbe1a092",
+  "entries": 249,
+  "entries_detail": [
+    {
+      "id": "ID00001",
+      "lemma": "anak anjing",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00002",
+      "lemma": "andjing",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00003",
+      "lemma": "anjing",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00004",
+      "lemma": "anjing2",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00005",
+      "lemma": "asu",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00006",
+      "lemma": "babi",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00007",
+      "lemma": "babon",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00008",
+      "lemma": "binatang",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00009",
+      "lemma": "kadal",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00010",
+      "lemma": "katak",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00011",
+      "lemma": "kunyuk",
+      "category": "an",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00012",
+      "lemma": "itil",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00013",
+      "lemma": "meki",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00014",
+      "lemma": "memek",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00015",
+      "lemma": "nenen",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00016",
+      "lemma": "nonok",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00017",
+      "lemma": "pepek",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00018",
+      "lemma": "puki",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00019",
+      "lemma": "pukimak",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00020",
+      "lemma": "pundek",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00021",
+      "lemma": "tempik",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00022",
+      "lemma": "tetek",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00023",
+      "lemma": "toket",
+      "category": "asf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00024",
+      "lemma": "burit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00025",
+      "lemma": "coli",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00026",
+      "lemma": "colmek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00027",
+      "lemma": "colmekin",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00028",
+      "lemma": "crot",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00029",
+      "lemma": "crot dalam",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00030",
+      "lemma": "cuki",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00031",
+      "lemma": "cukimai",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00032",
+      "lemma": "entot",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00033",
+      "lemma": "ewe",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00034",
+      "lemma": "fuck",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00035",
+      "lemma": "hisap batang",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00036",
+      "lemma": "janco",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00037",
+      "lemma": "jembut",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00038",
+      "lemma": "kepala butuh",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00039",
+      "lemma": "kimai",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00040",
+      "lemma": "kimak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00041",
+      "lemma": "kocokin",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00042",
+      "lemma": "konak",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00043",
+      "lemma": "konek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00044",
+      "lemma": "kongkek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00045",
+      "lemma": "kontol",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00046",
+      "lemma": "kote",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00047",
+      "lemma": "kotek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00048",
+      "lemma": "lancau",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00049",
+      "lemma": "lanjiao",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00050",
+      "lemma": "lubang pantat",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00051",
+      "lemma": "mengancuk",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00052",
+      "lemma": "mengentot",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00053",
+      "lemma": "ngaceng",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00054",
+      "lemma": "ngentot",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00055",
+      "lemma": "ngewe",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00056",
+      "lemma": "ngocok",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00057",
+      "lemma": "otong",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00058",
+      "lemma": "palat",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00059",
+      "lemma": "palkon",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00060",
+      "lemma": "pantek",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00061",
+      "lemma": "peler",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00062",
+      "lemma": "perdom",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00063",
+      "lemma": "sepong",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00064",
+      "lemma": "sepongin",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00065",
+      "lemma": "shit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00066",
+      "lemma": "si kontol panjang",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00067",
+      "lemma": "sikontol panjang",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00068",
+      "lemma": "silit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00069",
+      "lemma": "titit",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00070",
+      "lemma": "wikwik",
+      "category": "asm",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00071",
+      "lemma": "anak haram",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00072",
+      "lemma": "anak jadah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00073",
+      "lemma": "anak zadah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00074",
+      "lemma": "anjay",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00075",
+      "lemma": "anjir",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00076",
+      "lemma": "bacot",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00077",
+      "lemma": "bahasa kentut",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00078",
+      "lemma": "bajingan",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00079",
+      "lemma": "bangsad",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00080",
+      "lemma": "bangsat",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00081",
+      "lemma": "bedebah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00082",
+      "lemma": "bejat",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00083",
+      "lemma": "biadab",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00084",
+      "lemma": "bjir",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00085",
+      "lemma": "brekmok",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00086",
+      "lemma": "brengsek",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00087",
+      "lemma": "buset",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00088",
+      "lemma": "cenblu",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00089",
+      "lemma": "cincong",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00090",
+      "lemma": "cocot",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00091",
+      "lemma": "congor",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00092",
+      "lemma": "haram jadah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00093",
+      "lemma": "haram zadah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00094",
+      "lemma": "jadah",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00095",
+      "lemma": "jancok",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00096",
+      "lemma": "jancuk",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00097",
+      "lemma": "jijay",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00098",
+      "lemma": "kacrut",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00099",
+      "lemma": "kampang",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00100",
+      "lemma": "njir",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00101",
+      "lemma": "sontoloyo",
+      "category": "cds",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00102",
+      "lemma": "buncit",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00103",
+      "lemma": "gendut",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00104",
+      "lemma": "monyong",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00105",
+      "lemma": "picek",
+      "category": "ddf",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00106",
+      "lemma": "70l0l",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00107",
+      "lemma": "ahmak",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00108",
+      "lemma": "bahlul",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00109",
+      "lemma": "bangang",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00110",
+      "lemma": "bego",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00111",
+      "lemma": "beloon",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00112",
+      "lemma": "bodoh",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00113",
+      "lemma": "bongok",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00114",
+      "lemma": "dongok",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00115",
+      "lemma": "dungu",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00116",
+      "lemma": "geblek",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00117",
+      "lemma": "goblok",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00118",
+      "lemma": "goblok2",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00119",
+      "lemma": "ongok",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00120",
+      "lemma": "plonga-plongo",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00121",
+      "lemma": "tanjung rambutan",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00122",
+      "lemma": "tolol",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00123",
+      "lemma": "wowo",
+      "category": "ddp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00124",
+      "lemma": "boneka",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00125",
+      "lemma": "borjuis",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00126",
+      "lemma": "cebong",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00127",
+      "lemma": "cebong2",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00128",
+      "lemma": "cocoklogi",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00129",
+      "lemma": "kampret",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00130",
+      "lemma": "kampret2",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00131",
+      "lemma": "komunis",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00132",
+      "lemma": "konoha",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00133",
+      "lemma": "libhanat",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00134",
+      "lemma": "libtolol",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00135",
+      "lemma": "macai",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00136",
+      "lemma": "mahafiraun",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00137",
+      "lemma": "pencitraan",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00138",
+      "lemma": "politahi",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00139",
+      "lemma": "politaik",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00140",
+      "lemma": "prabodoh",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00141",
+      "lemma": "prindapan",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00142",
+      "lemma": "sepilis",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00143",
+      "lemma": "setanyahu",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00144",
+      "lemma": "tahi konspirasi",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00145",
+      "lemma": "wakanda",
+      "category": "dmc",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00146",
+      "lemma": "anak kolong",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00147",
+      "lemma": "babu",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00148",
+      "lemma": "gundik",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00149",
+      "lemma": "jongos",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00150",
+      "lemma": "kacung",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00151",
+      "lemma": "rendahan",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00152",
+      "lemma": "sdm rendah",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00153",
+      "lemma": "udik",
+      "category": "is",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00154",
+      "lemma": "banci",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00155",
+      "lemma": "banci2",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00156",
+      "lemma": "bencong",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00157",
+      "lemma": "bencong-bencong",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00158",
+      "lemma": "boti",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00159",
+      "lemma": "budaya songsang",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00160",
+      "lemma": "geng pelangi",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00161",
+      "lemma": "homo",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00162",
+      "lemma": "kaum belok",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00163",
+      "lemma": "kunyit",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00164",
+      "lemma": "pondan",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00165",
+      "lemma": "semburit",
+      "category": "om",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00166",
+      "lemma": "anak sundal",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00167",
+      "lemma": "ayam kampus",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00168",
+      "lemma": "barua",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00169",
+      "lemma": "cabo",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00170",
+      "lemma": "jalang",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00171",
+      "lemma": "lanji",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00172",
+      "lemma": "lonte",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00173",
+      "lemma": "pecun",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00174",
+      "lemma": "pelacur",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00175",
+      "lemma": "perek",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00176",
+      "lemma": "sundal",
+      "category": "pr",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00177",
+      "lemma": "amoi",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00178",
+      "lemma": "aseng",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00179",
+      "lemma": "bani",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00180",
+      "lemma": "bidaah",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00181",
+      "lemma": "cainis",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00182",
+      "lemma": "cina",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00183",
+      "lemma": "cina apek",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00184",
+      "lemma": "cina-cina",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00185",
+      "lemma": "cina2",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00186",
+      "lemma": "fankui",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00187",
+      "lemma": "harga yahudi",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00188",
+      "lemma": "inlander",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00189",
+      "lemma": "islam ktp",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00190",
+      "lemma": "isriwil",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00191",
+      "lemma": "jakun",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00192",
+      "lemma": "jawir",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00193",
+      "lemma": "kadal gurun",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00194",
+      "lemma": "kadrun",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00195",
+      "lemma": "kafir",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00196",
+      "lemma": "kakerlak",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00197",
+      "lemma": "kapir",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00198",
+      "lemma": "kekafiran",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00199",
+      "lemma": "keling",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00200",
+      "lemma": "kristod",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00201",
+      "lemma": "malaun",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00202",
+      "lemma": "meleis",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00203",
+      "lemma": "negro",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00204",
+      "lemma": "onta",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00205",
+      "lemma": "penunggang agama",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00206",
+      "lemma": "sakai",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00207",
+      "lemma": "singkek",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00208",
+      "lemma": "sirewel",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00209",
+      "lemma": "takfiri",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00210",
+      "lemma": "tiko",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00211",
+      "lemma": "unta",
+      "category": "ps",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00212",
+      "lemma": "budaya kuning",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00213",
+      "lemma": "cabe-cabean",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00214",
+      "lemma": "cabul",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00215",
+      "lemma": "keminggris",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00216",
+      "lemma": "lebai",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00217",
+      "lemma": "matre",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00218",
+      "lemma": "mesum",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00219",
+      "lemma": "nolep",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00220",
+      "lemma": "sange",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00221",
+      "lemma": "sengkek",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00222",
+      "lemma": "sok suci",
+      "category": "qas",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00223",
+      "lemma": "banglasia",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00224",
+      "lemma": "indogsial",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00225",
+      "lemma": "jawakarta",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00226",
+      "lemma": "malaydesh",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00227",
+      "lemma": "malingsia",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00228",
+      "lemma": "malingsial",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00229",
+      "lemma": "malon",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00230",
+      "lemma": "mamarika",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00231",
+      "lemma": "rejim zionis",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00232",
+      "lemma": "republik pisang",
+      "category": "rci",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00233",
+      "lemma": "duit kopi",
+      "category": "re",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00234",
+      "lemma": "bangka",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00235",
+      "lemma": "celaka",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00236",
+      "lemma": "jahanam",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00237",
+      "lemma": "keparat",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00238",
+      "lemma": "koit",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00239",
+      "lemma": "lahabau",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00240",
+      "lemma": "lahanat",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00241",
+      "lemma": "laknatullah",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00242",
+      "lemma": "mampus",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00243",
+      "lemma": "modar",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00244",
+      "lemma": "pergi mampus",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00245",
+      "lemma": "persetan",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00246",
+      "lemma": "setan",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00247",
+      "lemma": "sial",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00248",
+      "lemma": "sialan",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "conservative",
+      "level_source": "sense-table"
+    },
+    {
+      "id": "ID00249",
+      "lemma": "waknat",
+      "category": "svp",
+      "category_source": "sense-table",
+      "level": "inclusive",
+      "level_source": "sense-table"
+    }
+  ]
+}

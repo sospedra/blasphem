@@ -428,9 +428,7 @@ fn measure(
 }
 
 fn hurtlex_path(root: &Path, language: Language) -> PathBuf {
-    root.join(language.storage_code())
-        .join("1.2")
-        .join(format!("hurtlex_{}.tsv", language.storage_code()))
+    root.join(format!("{}.tsv", language.storage_code()))
 }
 
 /// Reads the process-wide peak resident memory in bytes.

@@ -10,6 +10,30 @@
           "source_file_id": "textdetox-en",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "9d17c991b87c4b43ea5f69c9950f3ad852c26a0a7b1aa4a5849323a1ae738988"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-en",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "af851ecef1d5f212caba17339b12ac39cc2fef7d78c74876f67237644fcee8bd"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-en",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "72c6656f0bed02ba98201aeebd784a350e746aff2dec6e8f35228f4adcf28b6d"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-en",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "95d195ea687fcbde1369ffad5bab20ba121737cb5106c338127bb4e8a46a8473"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-en",
+          "revision": "6c507a86bd768a1bfcab9959446ba36cd58324076e0c8974cdc52b2201dd2513",
+          "file_sha256": "6c507a86bd768a1bfcab9959446ba36cd58324076e0c8974cdc52b2201dd2513"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -17,7 +41,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "83f12c208705486045927869c1adc40d5987064de60cc5665bb24e5ee20f1bd3",
-      "hurtlex_sha256": "a734820a63c87994781d182692e6dc7ec262c402016971a7fa31946ced0d470c",
+      "hurtlex_sha256": "47e158ffb912b3f6fc6ada64bf6c1deeb05fe45d9d9e552c942a6cf87479b871",
       "clean_control_rows": 16,
       "clean_control_sha256": "b2029ca2ab1d588acd670e6bf61e1bb8775e4cd0d18e149c5babe7a27e29b13b",
       "development_rows": 3424,
@@ -59,6 +83,24 @@
           "source_file_id": "textdetox-zh",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "3d83b661e3c1cad1de3c8e80273296312708781cece582efc2e4747c41b5e1e9"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-zh",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "a1d9aa037c8b039ef3b40148b3364ce2ca62ce4a955b7082a16ad99f6cbd1bc0"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-zh",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "b2b366b2bb93e67a46a26060efd591a0b158e8d08edea5336907caf9ad7e5698"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-zh",
+          "revision": "46840b1cecc3bf73a422a754c749ef4b10f6b57c40007200062a2b7e15d3653e",
+          "file_sha256": "46840b1cecc3bf73a422a754c749ef4b10f6b57c40007200062a2b7e15d3653e"
         }
       ],
       "feature_profile": "Char25V2",
@@ -66,7 +108,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "6faedfcb637f60f23a58ff24e3473023a2484707774fe90277cb217c9b3d7941",
-      "hurtlex_sha256": "e37f5ae1c799fc9f135d27e6965459df13d594385ff6358304b2fe9c51782dd3",
+      "hurtlex_sha256": "8f789c2eb2b8dd62a13ff91aafea6c7b84559bec43599be3150917ff5d920923",
       "clean_control_rows": 16,
       "clean_control_sha256": "85fbea842e3aeeddaea53bc4cfbae35de8bfd32174baae07523c72624b996a9b",
       "development_rows": 3501,
@@ -108,6 +150,24 @@
           "source_file_id": "textdetox-es",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-es",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "073334261cc2e7c08339faefd2f19f9623e8240a0ac18fe2a26c368b897496ce"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-es",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "eb2c82ff1aaac4181ebac6c1f9cba66cdc7ccaa9d8ddccc4023801ed6ac9439d"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-es",
+          "revision": "66853b628819790b537fa7af4bc17e449a74bb5f6d9bb6fdc3916552ccd0f55e",
+          "file_sha256": "66853b628819790b537fa7af4bc17e449a74bb5f6d9bb6fdc3916552ccd0f55e"
         }
       ],
       "feature_profile": "EsLegacyWordChar35V1",
@@ -115,7 +175,7 @@
       "feature_schema": "EsLegacyV1",
       "rule_pack_version": 1,
       "rule_pack_sha256": "8bb5ad315f8abe69611cb192bfdf3712d8005cd331565547ec87573720a48246",
-      "hurtlex_sha256": "5adadf7886ea332e6e07de1f5abb98a71a3dacbf3bea993b21100c9b4bffd4ba",
+      "hurtlex_sha256": "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc",
       "clean_control_rows": 16,
       "clean_control_sha256": "651119ba21a627b1816688f00f9fb581c20af476aad7c18749005542653f808a",
       "development_rows": 3414,
@@ -124,21 +184,21 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": 16408,
-      "score_scale": 33063,
+      "boundary": 11529,
+      "score_scale": 28184,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 100,
-        "true_negative": 389,
-        "false_positive": 11,
-        "false_negative": 262
+        "true_positive": 141,
+        "true_negative": 388,
+        "false_positive": 12,
+        "false_negative": 221
       },
       "validation_metrics": {
-        "accuracy": 0.6417322834645669,
-        "precision": 0.9009009009009009,
-        "recall": 0.27624309392265195,
-        "specificity": 0.9725,
-        "f1": 0.42283298097251587
+        "accuracy": 0.6942257217847769,
+        "precision": 0.9215686274509803,
+        "recall": 0.38950276243093923,
+        "specificity": 0.97,
+        "f1": 0.5475728155339806
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -146,7 +206,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131104,
-      "artifact_sha256": "e06d2039147fa4a5c88451bef6d62d614d3659adcf7ae575cc8ab1cb2cfe59f6"
+      "artifact_sha256": "dda54a36d0b3230edbfe37feff80488fdf3272b92341d342d5711bf4e5881250"
     },
     {
       "language": "AR",
@@ -157,6 +217,24 @@
           "source_file_id": "textdetox-ar",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "07e17f8bb673e5bfb5559e608291e9cd80b9d7a4d0167fa082e9805c8c510405"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-ar",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "23dbd9c55257bf2a4965f46664dc7eac04b61ff4eb3571e41f7e964c7c3ed96b"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-ar",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "0f6c14237bfe9c06d4828ae439e49600917880c7f93dce2c2637cea3d24f5303"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-ar",
+          "revision": "a3f9012730717ad23e8ff3c5f0587d148acb5e8db432a0312945ec3e95cabace",
+          "file_sha256": "a3f9012730717ad23e8ff3c5f0587d148acb5e8db432a0312945ec3e95cabace"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -164,7 +242,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 2,
       "rule_pack_sha256": "a882fa77392de6d327db51fc15a97729d63378df59b9ae564360e9b86aaff7ef",
-      "hurtlex_sha256": "02bef4384f6e365a2f52d1ea993de218252a75caad2a08f030b9401e8e6facf4",
+      "hurtlex_sha256": "9e8967963e86214257a19f2cf8d914e8f442be4d8317097924e8b7df0b6deeaa",
       "clean_control_rows": 16,
       "clean_control_sha256": "02932403be8fd716ffb8c5fe28fdc1c451290ffcb3562ebd78ee91928c52a98f",
       "development_rows": 3478,
@@ -206,6 +284,18 @@
           "source_file_id": "ibrohim-budi-re-dataset",
           "revision": "be98de98e974b65838d2b5145ee2c89e9bf53a6b",
           "file_sha256": "44c04e31ad4b7ee4a95f1884e7af4da2c44b69762143eb2de0ede7f90502735e"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-id",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "c45b66f5e63462918ea79c96b3d7f0f2b8187a12506a5294f18acadbf6006caf"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-id",
+          "revision": "d72184282c12724ecfa3e326035a02c73974a3730f18e47688a7c45fdbe1a092",
+          "file_sha256": "d72184282c12724ecfa3e326035a02c73974a3730f18e47688a7c45fdbe1a092"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -213,7 +303,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "32b05ecb070b353590ed6b2f29e4d6a13023ec4b33cfa7f48679f16475182861",
-      "hurtlex_sha256": "947d3fa9f7ffb1fc65aabf73278c9484fa1769c32349ba6ff23727825b69e9b8",
+      "hurtlex_sha256": "d0c159269fa1fa00cae3c409f45608259a23687ccc384ca9eef0f50ecae5fe82",
       "clean_control_rows": 16,
       "clean_control_sha256": "6afc00046169cb1417f31eab43920488cb5c66e2f32dbcfbccf65fb42917bfcc",
       "development_rows": 8990,
@@ -255,6 +345,24 @@
           "source_file_id": "told-br-alpha",
           "revision": "6b325d26a9d25b321a3e9ba98ef98832b56729f5",
           "file_sha256": "1129593be5e5277e30c018246aab621187d0c936a60efd28a1cf373e6c55e94e"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-pt",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "05ef524b0bb7f83f87257f6ec4dabf70e16b8bb6930f769fb93deaf608ff196d"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-pt",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "b5eba6da2666080ad0518fb0736b53beecc0915b63f31fac300632b410f2e5d8"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-pt",
+          "revision": "8d400474bd78870af4e3f55011e2d549403114adf134ac60ed83b032451f28a5",
+          "file_sha256": "8d400474bd78870af4e3f55011e2d549403114adf134ac60ed83b032451f28a5"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -262,7 +370,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "76b8c7927042582bee11d3c4444e1cf61c199782a223d1f95e60ea536c2a69aa",
-      "hurtlex_sha256": "157ed297e7f0f9dcf5ab69e8ad7e231dad64473e516d168bda1c9582c372c16d",
+      "hurtlex_sha256": "5fbd7342e88d89418ba5a993ce0578f3e5a84a6ce65f4a2deda89302d53db556",
       "clean_control_rows": 16,
       "clean_control_sha256": "e978498ec367a683908742458908820d8182ab0fa8229d7488b3ca0a59288646",
       "development_rows": 11189,
@@ -304,6 +412,30 @@
           "source_file_id": "textdetox-fr",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "6ed1a85c725fd437e5df908fcbcab279ddde0194b27fb47c581ff967f6b7cc76"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-fr",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "79763a705e08256b393952852bb63aa903f4485e0ef02f70735f5e50efff213c"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-fr",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "e4593cbc37faa8dc7c8fb07181cdfd08547ed549f3658be2a20929658fe63296"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-fr",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "45d2e01e57e0f665c287b4e02bad4be0edb0e61c62ec16c7042193e044e7e69f"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-fr",
+          "revision": "86923b2070432a56c9eacb0c05c4cdd95c8fbbf3896d5dd7fcc9fbe000683963",
+          "file_sha256": "86923b2070432a56c9eacb0c05c4cdd95c8fbbf3896d5dd7fcc9fbe000683963"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -311,7 +443,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "d944d890212aefb86324d2d6dd4518a724f0e6de6daefee2706fb7be0e3fabc6",
-      "hurtlex_sha256": "8405124a1374b65d777cba39020f817e047598c6c8cf455fb9c106ee4cad4625",
+      "hurtlex_sha256": "b191619a61722f2fee05531c086a802f336c000cb5767ea252d333ae282b792c",
       "clean_control_rows": 16,
       "clean_control_sha256": "6da3366a47150596d0ea225e27e3aa2362999182c4136bc36747eb7499212664",
       "development_rows": 3390,
@@ -353,6 +485,30 @@
           "source_file_id": "textdetox-hi",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "19103044a07ff34ceb1dfa32859a92a8fe814e4b3a3cccf1ed89a78bd86ea3fa"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-hi",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "83636e9b7a5260451e09e9e471f81dad9f082d107a82da77047e57d7856ed0cc"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-hi",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "85dd2599bba579b375e27a1487cd338d50cd3927e6b40456838446a592d366b5"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-hi",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "be477288735752dd8fcdc88cfd6d884d76de204e0593ad003ef16ca4cb239a23"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-hi",
+          "revision": "f1c2b69bf2d287db7a4a91fcb2ec52b3a9460d886a178db3eeb144ec8fddde30",
+          "file_sha256": "f1c2b69bf2d287db7a4a91fcb2ec52b3a9460d886a178db3eeb144ec8fddde30"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -360,7 +516,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 2,
       "rule_pack_sha256": "eed30552d88d22ecc5cb33da64aaa4786299b78f046c3ff5fd0a1f744f6fb275",
-      "hurtlex_sha256": "12678d085fbac5d15a52e574e82a9937f05cb119804af56657698655c8036f02",
+      "hurtlex_sha256": "3fc8e4c387b96a3634922d10322c51fa8dd2a15666f8caea6df65982395cf647",
       "clean_control_rows": 16,
       "clean_control_sha256": "d2919c363be4c6773105d039a1fc802e962ed31cdd77f16de936c49d5a885086",
       "development_rows": 3499,
@@ -402,6 +558,30 @@
           "source_file_id": "textdetox-ru",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "098477b141e4a7b2856f9760a28728454cb32940b8fec006074debdd3999f2d5"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-ru",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "2598adabd2b761733d72a68d8ee4fcc1d2c38f2f85b6ff489985c6ce1d93bf75"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-ru",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "d16b04face71b0ffa6f934970311a51b531c07957ce2d26eef70e7f597ecf469"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-ru",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "2460c244208f93548657ab80526363db51eb3221ad3c39341899b48f057a5006"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-ru",
+          "revision": "cb9ad1f8a811744c6ac69de54492a604d6d1f7be156497adf8f87467f54121af",
+          "file_sha256": "cb9ad1f8a811744c6ac69de54492a604d6d1f7be156497adf8f87467f54121af"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -409,7 +589,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "2d3f7288619d2e801eeb2a52ea7243207752c08ee49c54098c70fb294c059b01",
-      "hurtlex_sha256": "c0f022f03c10a1097f96ef5d346dedf9899083a4d6bc2e6c96112c6444943384",
+      "hurtlex_sha256": "2c196c7b84b99e43ec8daacd064de7264726e5eee03bf166ce2821927d0e4d8a",
       "clean_control_rows": 16,
       "clean_control_sha256": "7f1841bd7f5c4cf1889b7568e79c147676cfad29f2fe4e5e864d089f857c1641",
       "development_rows": 3487,
@@ -451,6 +631,30 @@
           "source_file_id": "textdetox-ja",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "061aa1dd637abcbc887581fc27e33eb095499528e6474e138703a5253c2d28b8"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-ja",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "f83c4d0843ea6474c17bf171edd72b616b3af403f8613f2cde1bd841faf6f316"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-ja",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "3a7404838dec67a82ab6ded70659d4c58944cd71e7a67e6cff6583b4a6529008"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-ja",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "3582fa54fef3d4400b0c9692afd88fe808b25076b0cdf7fbeddd23cbfe124eee"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-ja",
+          "revision": "c08def3a2e29ca45a25cb2f5c75ea8570400184baa2774ad3c66612327edbbec",
+          "file_sha256": "c08def3a2e29ca45a25cb2f5c75ea8570400184baa2774ad3c66612327edbbec"
         }
       ],
       "feature_profile": "Char25V2",
@@ -458,7 +662,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "8474720d2e8e0e85ba97e3a08f949dfa9b429b1538bff6a7b593bd32d6c9b2a1",
-      "hurtlex_sha256": "98a2dd994ccba6bce296668d6d17914cb397da1848718d530394648dcab7aac1",
+      "hurtlex_sha256": "fd709e7d92472193bc30f8a18db179cf8ad8e5e4d8922604bfd605c287b7dd50",
       "clean_control_rows": 16,
       "clean_control_sha256": "a530589b207456f89d9ff5ed77434d1f6305841b94956f5a53e591398950e1ad",
       "development_rows": 3382,
@@ -512,6 +716,30 @@
           "source_file_id": "germeval-2018-training",
           "revision": "9877472d39523effd54cd079b4c61157ed141508",
           "file_sha256": "0f88c63a344e1ab69c5407aa539d1612cd82a96b51ebd6bd613dc70ff9fef03e"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-de",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "ebe44d7772897390e27f7bec412fdcdf0efc294e4db157f8487c4cd8d4fabd55"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-de",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "cbc15682135e07118422faa1f53a3edc4c114a4c9f9cb865e89b06fd1cf6f21d"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-de",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "1b6dc5825bb8b2075268d1aa1de925067f30ad46aee07a6d6a6a90fdf7a76069"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-de",
+          "revision": "828445d639efea4724b6a281f6c38ee1bfa5146b8a3e5d48db1d9aa59cd6f49d",
+          "file_sha256": "828445d639efea4724b6a281f6c38ee1bfa5146b8a3e5d48db1d9aa59cd6f49d"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -519,7 +747,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "b48d46b1d9a84a9cf4781cd32d16f08acbeef426811919bdb6f870d52b837f96",
-      "hurtlex_sha256": "5eb7f5e38ae33c182f99be27c72af3a5ab8b9620dc33a6efbde0c1e34c539aa1",
+      "hurtlex_sha256": "c03d37a2fea09c5bacdf19307387aca0c720c46ab6bb9280870e93a08da367a8",
       "clean_control_rows": 16,
       "clean_control_sha256": "8a2e3c4c3a32d3634cd1c20c0b212d78dc606214d5564581dad7e2a7f5717426",
       "development_rows": 8878,
@@ -573,6 +801,24 @@
           "source_file_id": "offenseval-tr-training",
           "revision": null,
           "file_sha256": "8509c01c4bf387d9e387c4637829585431cc045adaf7d0413c0022bf2bcd4baa"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-tr",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "6c7ae03baee0f3fdc22eed169030567669005dad9a1923e0b571c4bd4f2f2ab5"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-tr",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "3af8dea5ca24b2f2b152c1fec886f93e01eb98b0ce161c49a4dfb46dabcddfe4"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-tr",
+          "revision": "96853496474b2a18a5ca045103fa0001cef4d9c1b3829dfc7267ba0b3f49d9ba",
+          "file_sha256": "96853496474b2a18a5ca045103fa0001cef4d9c1b3829dfc7267ba0b3f49d9ba"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -580,7 +826,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "1ead20c976e68da4fdb683cdebbe680e40d7561bed08b807f595925fe663a932",
-      "hurtlex_sha256": "518abd34e82fe58aa25bb7c24e35b8e17eac814b2a23766490cf32e3c1c32346",
+      "hurtlex_sha256": "5398b7ae04964b79d9b69376d9aba85120a76b086942b3b2fafc6f17af8ff886",
       "clean_control_rows": 16,
       "clean_control_sha256": "3474df8d0b53d6c06b7c2a34f40072d83747f62d81e921c9726b42c25018fee4",
       "development_rows": 27103,
@@ -634,6 +880,18 @@
           "source_file_id": "vihos-train",
           "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
           "file_sha256": "b225cf257b5ce7c77e275ba900ffc6fee490ae0a1936afc98e250040e418adac"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-vi",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "efc6c310ac5a75e75aef66de8f878863fc40ea9c9e4053e86f13937ef1d85823"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-vi",
+          "revision": "569d8d963304834b9beab135ce88acefd38bcf66d477e62daf63b5f68d3797ee",
+          "file_sha256": "569d8d963304834b9beab135ce88acefd38bcf66d477e62daf63b5f68d3797ee"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -641,7 +899,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "13fcb5ae0b82f081bd942acd347469290b369e39a159287a646ebcb4a835ff64",
-      "hurtlex_sha256": "633a1f116b8ec2462eacec56f9a498d4387b4df10ef7e1c8ef47a076f6bf6914",
+      "hurtlex_sha256": "b03dc19155e27ad8327b79a25337ed6843d0f8c366d9eaff794b818a5c46dd6e",
       "clean_control_rows": 16,
       "clean_control_sha256": "1aa372dac98b48e6ce75c34bd1204c0ee1c09fbf43dc169da64eedf31a910e0c",
       "development_rows": 8736,
@@ -695,6 +953,24 @@
           "source_file_id": "kmhas-validation",
           "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
           "file_sha256": "cb0df9e3cd665125b554d4c5e6f48b0801d5535ead51269134de5b85ae469c18"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-ko",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "0dd4b74ffea6e3bb35d658e6d8262b53ee99281eaa48ecb515a2065bfcc7f69d"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-ko",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "e4cce19dacfc6d56062e7fcaf83fbf618ba0f964268e61607e27affeeca69b44"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-ko",
+          "revision": "8f7b0cb69bfa592dfeca663be62f9e2828201e0165480e0963cea992a21a4e37",
+          "file_sha256": "8f7b0cb69bfa592dfeca663be62f9e2828201e0165480e0963cea992a21a4e37"
         }
       ],
       "feature_profile": "Char25V2",
@@ -702,7 +978,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
       "rule_pack_sha256": "51f02655fed2ffe57b000f4f557cf88ff03ee15fd5cb1e9b356b0fffae879a35",
-      "hurtlex_sha256": "64fec4779ec7808ba08912a7a4fb022e6821ed4f701c0da64a1e360db528c47e",
+      "hurtlex_sha256": "1fe1886792cc809f4685aa5de19872fa5b40b183e74e2791caca217f7984b824",
       "clean_control_rows": 16,
       "clean_control_sha256": "0302508bd35c72b9f8f3a0e89adf456a87c51a0656c282553f282ad0fef3ce9e",
       "development_rows": 78049,
@@ -744,6 +1020,30 @@
           "source_file_id": "textdetox-it",
           "revision": "01907546324b0330d2d8b7669648cc18823323e5",
           "file_sha256": "71a1ba1636b22dfa5cdd6d1a42318c3c3a4d0d4581e6c197f096839af33ded89"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "ldnoobw-it",
+          "revision": "5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+          "file_sha256": "d413f41018d58aa79d2c4809d0161f29ffd5652c4dc34c5b7b9ade680ee5599a"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "textdetox-lexicon-it",
+          "revision": "8bebdcc16e09708041dc874cab0bd6ad8cb5b29a",
+          "file_sha256": "54609fc3f8600adeaa02036eeff3fbf8cafd6e50d297c8da85b5299a53a23a6b"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "washyourmouth-it",
+          "revision": "01f9c4888694aa66a6c2a09576adbdb614d6dec7",
+          "file_sha256": "f0c39ab9c7b2ab363fea7b54772fb287525449603866f7c4bb3e0e6ca43af917"
+        },
+        {
+          "dataset": "community",
+          "source_file_id": "wiktionary-it",
+          "revision": "0091dccec38f0c28f286895869844d595b6dbcb0004b277f1a9be46a5e31e7cd",
+          "file_sha256": "0091dccec38f0c28f286895869844d595b6dbcb0004b277f1a9be46a5e31e7cd"
         }
       ],
       "feature_profile": "WordChar35V2",
@@ -751,7 +1051,7 @@
       "feature_schema": "SparseV2",
       "rule_pack_version": 2,
       "rule_pack_sha256": "c1e8cf9f3612964383114fe3108d5ae08c2d98c3662dceb24f56219c9dc8129e",
-      "hurtlex_sha256": "043fb72213c2158b9c2b75651e7193bad249b8dc577c1f1e6c71a2b69d415eef",
+      "hurtlex_sha256": "1904d7807553a0263c0472f17f983edba5bc2ebe7af69aa0e2ed95fa980879b8",
       "clean_control_rows": 16,
       "clean_control_sha256": "682f799e0f9c8abdff759fac5de0c78d666a16eb15b2c0220a525b482908360a",
       "development_rows": 3479,

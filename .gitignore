@@ -34,3 +34,13 @@ node_modules/
 /packages/python/python/blasphem/_native*.so
 /packages/python/python/blasphem/_native*.pyd
 __pycache__/
+/packages/swift/BlasphemFFI.xcframework/
+/packages/swift/BlasphemFFI.xcframework.zip
+/packages/swift/.build/
+/packages/swift/.swiftpm/
+/packages/android/packs/
+/packages/android/engine/src/main/jniLibs/
+/packages/android/.gradle/
+/packages/android/**/build/
+/packages/android/local.properties
+/packages/android/.kotlin/

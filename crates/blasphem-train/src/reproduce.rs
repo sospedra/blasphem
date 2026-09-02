@@ -37,9 +37,8 @@ pub const REENTRY_GUARD_VARIABLE: &str = "BLASPHEM_REPRODUCE_ACTIVE";
 pub const CORPUS_ROOT: &str = "corpus";
 
 const SOURCE_LOCK: &str = "resources/datasets/source-lock-v1.json";
-const RAW_ROOT: &str = "data/raw-v1";
 const EVALUATION_LOCK: &str = "resources/datasets/evaluation-lock-v1.json";
-const HURTLEX_ROOT: &str = "data/raw-v1/hurtlex";
+const HURTLEX_ROOT: &str = "data/clean-room-v1";
 const BEHAVIOR_ROOT: &str = "tests/fixtures/behavior";
 const LANGUAGE_ARTIFACT_LOCK: &str = "resources/models/language-artifact-v1.json";
 const LANGUAGE_ARTIFACT_SCHEMA_VERSION: &str = "language-artifact-v1";
@@ -176,25 +175,29 @@ fn verify_corpus_step(options: &ReproduceOptions) -> StepResult {
     ))
 }
 
-/// The lexicon still ships as raw upstream files, so the digests stay pinned.
+/// The clean-room lexicon files back the corpus directly, so their digests stay pinned.
 fn verify_hurtlex_inputs(
     step: &'static str,
     options: &ReproduceOptions,
     lock: &crate::source_manifest::FrozenSourceLock,
 ) -> Result<(), ReproduceError> {
-    let raw_root = options.project_root.join(RAW_ROOT);
+    let hurtlex_root = options.project_root.join(HURTLEX_ROOT);
     for source in lock
         .sources
         .iter()
         .filter(|source| source.dataset == DatasetId::HurtLex)
     {
-        let actual = file_digest(step, &raw_root.join(&source.file_path))?;
+        let relative = source
+            .file_path
+            .strip_prefix("hurtlex/")
+            .unwrap_or(source.file_path.as_str());
+        let actual = file_digest(step, &hurtlex_root.join(relative))?;
         if actual != source.file_sha256 {
             return Err(failure(
                 step,
                 format!(
-                    "{RAW_ROOT}/{} changed: expected {}, got {actual}",
-                    source.file_path, source.file_sha256
+                    "{HURTLEX_ROOT}/{relative} changed: expected {}, got {actual}",
+                    source.file_sha256
                 ),
             ));
         }

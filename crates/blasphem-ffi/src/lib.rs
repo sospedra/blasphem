@@ -2,13 +2,15 @@
 //!
 //! Ownership: the caller owns a builder until `blasphem_builder_build`
 //! consumes it, owns an engine until `blasphem_engine_free`, and owns every
-//! `blasphem_judgement` until `blasphem_judgement_free`. Error text lives in a
+//! `blasphem_judgement` until `blasphem_judgement_free`. Memory from
+//! `blasphem_alloc` stays the caller's until `blasphem_free`. Error text lives in a
 //! thread-local buffer that `blasphem_last_error` exposes until the next
 //! failing call on the same thread.
 
 // C callers see these names, so they follow C conventions.
 #![allow(non_camel_case_types)]
 
+use std::alloc::{self, Layout};
 use std::cell::RefCell;
 use std::ffi::{CStr, CString, c_char};
 use std::ptr;
@@ -319,6 +321,40 @@ pub unsafe extern "C" fn blasphem_engine_free(engine: *mut blasphem_engine) {
         // SAFETY: the caller hands over ownership.
         drop(unsafe { Box::from_raw(engine) });
     }
+}
+
+/// Allocates `len` bytes, aligned to 8, for a host that cannot share memory
+/// with this library, such as a WebAssembly runtime. The host fills them and
+/// passes the pointer to a call. Returns null when `len` is zero or memory is
+/// exhausted. Free with `blasphem_free` and the same `len`.
+#[unsafe(no_mangle)]
+pub extern "C" fn blasphem_alloc(len: usize) -> *mut u8 {
+    let Ok(layout) = Layout::from_size_align(len, 8) else {
+        return ptr::null_mut();
+    };
+    if layout.size() == 0 {
+        return ptr::null_mut();
+    }
+    // SAFETY: the layout has a non-zero size.
+    unsafe { alloc::alloc(layout) }
+}
+
+/// Frees memory from `blasphem_alloc`.
+///
+/// # Safety
+///
+/// `pointer` must be null or come from `blasphem_alloc` with the same `len`,
+/// and is invalid afterwards.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn blasphem_free(pointer: *mut u8, len: usize) {
+    let Ok(layout) = Layout::from_size_align(len, 8) else {
+        return;
+    };
+    if pointer.is_null() || layout.size() == 0 {
+        return;
+    }
+    // SAFETY: the caller promises the pointer and layout match one allocation.
+    unsafe { alloc::dealloc(pointer, layout) }
 }
 
 /// The last error on this thread, or null. Valid until the next failing call.

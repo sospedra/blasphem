@@ -1,10 +1,18 @@
 {
   "name": "@blasphem/packs",
   "version": "0.1.0",
-  "private": true,
   "description": "Per-locale data for blasphem: one .pack and one .detect file per language, plus manifest.json with a sha256 per file.",
   "license": "CC-BY-NC-SA-4.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/packs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "engines": {
     "node": "24.18.0",
     "pnpm": "11.13.0"

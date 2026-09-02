@@ -169,10 +169,7 @@ pub fn collect_size_evidence(
             .hurtlex_sha256
             .ok_or(SizeError::MissingHurtlexDigest(entry.language))?;
         let storage_code = entry.language.storage_code();
-        let hurtlex_path = hurtlex_root
-            .join(storage_code)
-            .join("1.2")
-            .join(format!("hurtlex_{storage_code}.tsv"));
+        let hurtlex_path = hurtlex_root.join(format!("{storage_code}.tsv"));
         let hurtlex_label = hurtlex_path.to_string_lossy().into_owned();
         let hurtlex_record =
             record_file(&hurtlex_path, &hurtlex_label, Some(&expected_hurtlex), None)?;

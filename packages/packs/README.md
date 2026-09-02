@@ -3,6 +3,12 @@
 Per-locale data for `blasphem` and `@blasphem/react-native`. The code packages
 carry no language data; every judge loads its locales from these files.
 
+```bash
+pnpm add @blasphem/packs
+```
+
+Python reads the same data from the `blasphem-packs` wheel.
+
 ## Contents
 
 | File | Holds |
@@ -18,7 +24,8 @@ Sizes in this build: 30 files, 9.19 MB. `en.pack` 0.42 MB, `en.detect` 0.33 MB.
 
 ## Use
 
-Node reads the files from `node_modules` when `createJudge` gets no `assets`.
+Node reads the files from `node_modules` when `init` or `createJudge` gets
+no `assets`.
 
 A web application copies `dist/*` next to `blasphem_bg.wasm` into its public
 directory and passes that path as `assets`. The loader fetches

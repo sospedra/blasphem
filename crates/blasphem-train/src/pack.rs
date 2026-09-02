@@ -182,11 +182,7 @@ fn pack_bytes(
     let artifact_path = options.model_root.join(&entry.artifact_relative_path);
     let artifact = read_verified(&artifact_path, &entry.artifact_sha256.to_string())?;
     let storage = language.storage_code();
-    let lexicon_path = options
-        .hurtlex_root
-        .join(storage)
-        .join("1.2")
-        .join(format!("hurtlex_{storage}.tsv"));
+    let lexicon_path = options.hurtlex_root.join(format!("{storage}.tsv"));
     let lexicon = match &entry.hurtlex_sha256 {
         Some(expected) => read_verified(&lexicon_path, &expected.to_string())?,
         None => read(&lexicon_path)?,

@@ -17,7 +17,7 @@ execFileSync(
     "--model-manifest", resolve(projectRoot, "resources/models/multilingual-v2/manifest.json"),
     "--model-root", resolve(projectRoot, "resources/models/multilingual-v2"),
     "--language-model", resolve(projectRoot, "crates/blasphem-language/data/blasphem-language-15-v2.bin"),
-    "--hurtlex-root", resolve(projectRoot, "data/raw-v1/hurtlex"),
+    "--hurtlex-root", resolve(projectRoot, "data/clean-room-v1"),
     "--output", output,
   ],
   { stdio: "inherit", env: { ...process.env, CARGO_TARGET_DIR: resolve(projectRoot, "target") } },
