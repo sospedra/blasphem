@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+VI-T01	VI	true	threat	VI-P01	none	authored	authored-v1#user-vi-toxic	Tao sẽ tìm mày và đập gãy hết răng
+VI-T02	VI	true	threat	VI-P02	none	dataset	vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/8081	mai tao xin đi làm dân quân xong t đi tìm ra mày giết mày ad ạ đồ phản động :v dlv dạo này hoạt động ghê lm
+VI-T03	VI	true	harm_wish	VI-P03	none	authored	authored-v1#plan-vi-harm-wish	mong mày chết
+VI-T04	VI	true	harm_wish	VI-P04	none	dataset	vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/4413	Đcmm đi chết đi:))
+VI-T05	VI	true	self_harm_command	VI-P05	none	authored	authored-v1#plan-vi-self-harm	tự tử đi
+VI-T06	VI	true	self_harm_command	VI-P06	none	authored	authored-v1#vi-self-harm-2	mày tự sát đi
+VI-T07	VI	true	directed_insult	VI-P07	none	authored	authored-v1#plan-vi-insult	mày là đồ chó
+VI-T08	VI	true	directed_insult	VI-P08	none	dataset	vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/4971	Mày ngu vừa thôi ad :))
+VI-C01	VI	false	none	VI-P01	negation	authored	authored-v1#VI-C01	Tao sẽ không đập gãy răng mày
+VI-C02	VI	false	none	VI-P02	quotation	authored	authored-v1#VI-C02	"mai tao xin đi làm dân quân xong t đi tìm ra mày giết mày ad ạ đồ phản động"
+VI-C03	VI	false	none	VI-P03	negation	authored	authored-v1#VI-C03	Tôi không mong mày chết
+VI-C04	VI	false	none	VI-P04	quotation	authored	authored-v1#VI-C04	"Đcmm đi chết đi"
+VI-C05	VI	false	none	VI-P05	counterspeech	authored	authored-v1#VI-C05	Đừng nói tự tử đi
+VI-C06	VI	false	none	VI-P06	reporting	authored	authored-v1#VI-C06	Anh ấy viết mày tự sát đi
+VI-C07	VI	false	none	VI-P07	reporting	authored	authored-v1#user-vi-report	Quản trị viên đã xóa tin nhắn đe dọa người chơi khác
+VI-C08	VI	false	none	VI-P08	counterspeech	authored	authored-v1#VI-C08	Đừng gọi mày là đồ chó
+VI-C09	VI	false	none	none	violence_question	authored	authored-v1#VI-C09	Mày sẽ giết tôi à?
+VI-C10	VI	false	none	none	violence_question	authored	authored-v1#VI-C10	Ai nói đập gãy răng mày?
+VI-C11	VI	false	none	none	context	authored	authored-v1#VI-C11	Mày chơi cờ tệ
+VI-C12	VI	false	none	none	context	authored	authored-v1#VI-C12	Bác sĩ điều trị chiếc răng gãy
+VI-C13	VI	false	none	none	collision	authored	authored-v1#VI-C13	Cuốn tiểu thuyết tên là Giết thời gian
+VI-C14	VI	false	none	none	context	authored	authored-v1#VI-C14	Bản tin nói về một lời đe dọa
+VI-C15	VI	false	none	none	collision	authored	authored-v1#VI-C15	Mày ngủ
+VI-C16	VI	false	none	none	collision	authored	authored-v1#VI-C16	Từ từ đi

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>toxcheck WASM smoke</title>
+  </head>
+  <body data-status="running">
+    <pre id="result">running</pre>
+    <script type="module">
+      import init, { WasmDetector } from "/target/task7-wasm-full-web/toxcheck_wasm.js";
+      import initExplicit, {
+        WasmDetector as ExplicitWasmDetector,
+      } from "/target/task7-wasm-explicit-web/toxcheck_wasm.js";
+
+      const cases = [
+        ["supplied-en-toxic", "EN", "When I find you, I will break every bone in your hand", true],
+        ["supplied-en-clean", "EN", "The teacher explained why the threatening message should be reported", false],
+        ["supplied-zh-toxic", "ZH", "等我找到你，我会打断你的双腿", true],
+        ["supplied-zh-clean", "ZH", "管理员删除了那条威胁别人的消息", false],
+        ["supplied-es-toxic", "ES", "Cuando salgas del edificio, voy a romperte todos los dientes", true],
+        ["supplied-es-clean", "ES", "No quiero que nadie vuelva a hacerte daño", false],
+        ["supplied-ar-toxic", "AR", "أتمنى أن تموت وحيدًا هذه الليلة", true],
+        ["supplied-ar-clean", "AR", "أبلغت المشرف عن رسالة تهدد أحد الأعضاء", false],
+        ["supplied-id-toxic", "ID", "Kalau bertemu lagi, akan kupatahkan rahangmu", true],
+        ["supplied-id-clean", "ID", "Saya melaporkan pesan yang mengancam pemain lain", false],
+        ["supplied-pt-toxic", "PT", "Espero que você nunca mais acorde", true],
+        ["supplied-pt-clean", "PT", "Denunciei a mensagem que ameaçava outro jogador", false],
+        ["supplied-fr-toxic", "FR", "Quand je te trouverai, je te briserai les deux jambes", true],
+        ["supplied-fr-clean", "FR", "J'ai signalé le message qui menaçait un autre joueur", false],
+        ["supplied-hi-toxic", "HI", "मैं तुम्हें ढूँढकर तुम्हारी हड्डियाँ तोड़ दूँगा", true],
+        ["supplied-hi-clean", "HI", "मैंने दूसरे खिलाड़ी को धमकाने वाला संदेश रिपोर्ट किया", false],
+        ["supplied-ru-toxic", "RU", "Надеюсь, этой ночью ты больше не проснёшься", true],
+        ["supplied-ru-clean", "RU", "Модератор удалил сообщение с угрозой другому игроку", false],
+        ["supplied-ja-toxic", "JA", "今度会ったら顔が分からなくなるまで殴る", true],
+        ["supplied-ja-clean", "JA", "管理者は他の利用者を脅す投稿を削除した", false],
+        ["supplied-de-toxic", "DE", "Ich hoffe, du wachst morgen nicht mehr auf", true],
+        ["supplied-de-clean", "DE", "Die Moderatorin löschte die Nachricht mit der Drohung", false],
+        ["supplied-tr-toxic", "TR", "Seni bulunca bütün dişlerini kıracağım", true],
+        ["supplied-tr-clean", "TR", "Moderatör başka bir oyuncuyu tehdit eden mesajı sildi", false],
+        ["supplied-vi-toxic", "VI", "Tao sẽ tìm mày và đập gãy hết răng", true],
+        ["supplied-vi-clean", "VI", "Quản trị viên đã xóa tin nhắn đe dọa người chơi khác", false],
+        ["supplied-ko-toxic", "KO", "오늘 밤 네가 다시는 깨어나지 않기를 바란다", true],
+        ["supplied-ko-clean", "KO", "관리자가 다른 사용자를 협박한 메시지를 삭제했다", false],
+        ["supplied-it-toxic", "IT", "Quando ti vedo, ti rompo tutti i denti", true],
+        ["supplied-it-clean", "IT", "La moderatrice ha cancellato il messaggio che minacciava un altro giocatore", false],
+      ];
+
+      const autoCases = [
+        ["auto-en", "EN", "I never should've bought that.", 42],
+        ["auto-zh", "ZH", "我想要确定什么都没有发生在汤姆身上。", 28],
+        ["auto-es", "ES", "Was ist das? A ship. Todo bien en la costa.", 20],
+        ["auto-ar", "AR", "هل تحب الكتب؟", 11],
+        ["auto-ms", "MS", "Dia memberitahu saya yang dia benar-benar letih.", 38],
+        ["auto-pt", "PT", "Não vou chegar em casa até segunda.", 15],
+        ["auto-fr", "FR", "Bonjour le monde", 22],
+        ["auto-hi", "HI", "वह मेरे पिताजी की माँ है। वह मेरी दादी है।", 38],
+        ["auto-ru", "RU", "Они были здесь.", 46],
+        ["auto-ja", "JA", "私は２日間忙しくありません。", 0],
+        ["auto-de", "DE", "Was ist das?", 0],
+        ["auto-tr", "TR", "Çok büyük bir musibet.", 0],
+        ["auto-vi", "VI", "Đây là 1 lời nói đùa cợt", 13],
+        ["auto-ko", "KO", "물이 별로 없다.", 18],
+        ["auto-it", "IT", "La incontrerai domani sera.", 1],
+      ];
+
+      const unknownCases = ["", "!@#$%^&*()", "😀🚀🧪❤️", "Hello"];
+
+      const report = {
+        status: "running",
+        supplied_case_count: cases.length,
+        passed_case_count: 0,
+        cases: [],
+        auto_case_count: autoCases.length,
+        passed_auto_case_count: 0,
+        auto_cases: [],
+        unknown_case_count: unknownCases.length,
+        passed_unknown_case_count: 0,
+        unknown_cases: [],
+        ms_id_alias_passed: false,
+        automatic_selection_passed: false,
+        runtime_network_requests: [],
+        invalid_languages: [],
+        score_invariants_passed: true,
+        explicit_only_runtime: {
+          module_instances_isolated: false,
+          explicit_check: null,
+          auto_rejection: null,
+          passed: false,
+        },
+      };
+      window.__toxcheckReport = report;
+
+      try {
+        const fullModule = await init();
+        const explicitModule = await initExplicit();
+        report.explicit_only_runtime.module_instances_isolated = fullModule !== explicitModule
+          && fullModule.memory !== explicitModule.memory;
+        const resourceCountAfterInit = performance.getEntriesByType("resource").length;
+        const detectors = new Map();
+        for (const [caseId, language, text, expectedNudge] of cases) {
+          let detector = detectors.get(language);
+          if (!detector) {
+            detector = new WasmDetector(language);
+            detectors.set(language, detector);
+          }
+          const result = detector.check(text);
+          const canonicalLanguage = language === "ID" ? "MS" : language;
+          const invariantPassed = Number.isInteger(result.score)
+            && result.score >= 0
+            && result.score <= 100
+            && result.threshold === 50
+            && result.ok === !result.shouldNudge
+            && result.shouldNudge === (result.score >= result.threshold)
+            && result.evaluated === true
+            && result.resolvedLanguage === canonicalLanguage
+            && result.languageReliable === true
+            && result.languageScore === undefined;
+          const passed = invariantPassed && result.shouldNudge === expectedNudge;
+          report.cases.push({
+            case_id: caseId,
+            language,
+            expected_nudge: expectedNudge,
+            actual_nudge: result.shouldNudge,
+            ok: result.ok,
+            score: result.score,
+            threshold: result.threshold,
+            evaluated: result.evaluated,
+            resolved_language: result.resolvedLanguage,
+            language_reliable: result.languageReliable,
+            language_score: result.languageScore ?? null,
+            invariant_passed: invariantPassed,
+            passed,
+          });
+          report.passed_case_count += Number(passed);
+          report.score_invariants_passed &&= invariantPassed;
+          result.free();
+        }
+
+        const msDetector = new WasmDetector("MS");
+        const idDetector = detectors.get("ID");
+        const aliasText = "Dia memberitahu saya yang dia benar-benar letih.";
+        const msResult = msDetector.check(aliasText);
+        const idResult = idDetector.check(aliasText);
+        report.ms_id_alias_passed = msDetector.language === "MS"
+          && idDetector.language === "MS"
+          && msResult.ok === idResult.ok
+          && msResult.score === idResult.score
+          && msResult.threshold === idResult.threshold
+          && msResult.shouldNudge === idResult.shouldNudge
+          && msResult.evaluated === idResult.evaluated
+          && msResult.resolvedLanguage === idResult.resolvedLanguage
+          && msResult.languageReliable === idResult.languageReliable
+          && msResult.languageScore === idResult.languageScore;
+        msResult.free();
+        idResult.free();
+        msDetector.free();
+
+        const automatic = new WasmDetector("AUTO");
+        report.automatic_selection_passed = automatic.language === "AUTO";
+        for (const [caseId, language, text, expectedScore] of autoCases) {
+          const result = automatic.check(text);
+          let explicit = detectors.get(language);
+          if (!explicit) {
+            explicit = new WasmDetector(language);
+            detectors.set(language, explicit);
+          }
+          const explicitResult = explicit.check(text);
+          const invariantPassed = Number.isInteger(result.score)
+            && result.score === expectedScore
+            && result.threshold === 50
+            && result.ok === !result.shouldNudge
+            && result.shouldNudge === (result.score >= result.threshold)
+            && result.evaluated === true
+            && result.resolvedLanguage === language
+            && result.languageReliable === true
+            && Number.isFinite(result.languageScore)
+            && result.languageScore > 0
+            && result.ok === explicitResult.ok
+            && result.score === explicitResult.score
+            && result.threshold === explicitResult.threshold
+            && result.shouldNudge === explicitResult.shouldNudge;
+          report.auto_cases.push({
+            case_id: caseId,
+            expected_language: language,
+            resolved_language: result.resolvedLanguage,
+            language_reliable: result.languageReliable,
+            language_score: result.languageScore ?? null,
+            evaluated: result.evaluated,
+            ok: result.ok,
+            score: result.score,
+            threshold: result.threshold,
+            should_nudge: result.shouldNudge,
+            invariant_passed: invariantPassed,
+            passed: invariantPassed,
+          });
+          report.passed_auto_case_count += Number(invariantPassed);
+          report.score_invariants_passed &&= invariantPassed;
+          result.free();
+          explicitResult.free();
+        }
+
+        for (const text of unknownCases) {
+          const result = automatic.check(text);
+          const passed = result.ok === true
+            && result.score === 0
+            && result.threshold === 50
+            && result.shouldNudge === false
+            && result.evaluated === false
+            && result.resolvedLanguage === "unknown"
+            && result.languageReliable === false
+            && result.languageScore === undefined;
+          report.unknown_cases.push({
+            text,
+            ok: result.ok,
+            score: result.score,
+            threshold: result.threshold,
+            should_nudge: result.shouldNudge,
+            evaluated: result.evaluated,
+            resolved_language: result.resolvedLanguage,
+            language_reliable: result.languageReliable,
+            language_score: result.languageScore ?? null,
+            passed,
+          });
+          report.passed_unknown_case_count += Number(passed);
+          result.free();
+        }
+        automatic.free();
+
+        const explicitOnlyDetector = new ExplicitWasmDetector("EN");
+        const explicitOnlyResult = explicitOnlyDetector.check(
+          "When I find you, I will break every bone in your hand",
+        );
+        const explicitRoutePassed = explicitOnlyDetector.language === "EN"
+          && Number.isInteger(explicitOnlyResult.score)
+          && explicitOnlyResult.score >= 0
+          && explicitOnlyResult.score <= 100
+          && explicitOnlyResult.threshold === 50
+          && explicitOnlyResult.ok === !explicitOnlyResult.shouldNudge
+          && explicitOnlyResult.shouldNudge === true
+          && explicitOnlyResult.evaluated === true
+          && explicitOnlyResult.resolvedLanguage === "EN"
+          && explicitOnlyResult.languageReliable === true
+          && explicitOnlyResult.languageScore === undefined;
+        report.explicit_only_runtime.explicit_check = {
+          selection_language: explicitOnlyDetector.language,
+          ok: explicitOnlyResult.ok,
+          score: explicitOnlyResult.score,
+          threshold: explicitOnlyResult.threshold,
+          should_nudge: explicitOnlyResult.shouldNudge,
+          evaluated: explicitOnlyResult.evaluated,
+          resolved_language: explicitOnlyResult.resolvedLanguage,
+          language_reliable: explicitOnlyResult.languageReliable,
+          language_score: explicitOnlyResult.languageScore ?? null,
+          route_fields_passed: explicitRoutePassed,
+        };
+        explicitOnlyResult.free();
+        explicitOnlyDetector.free();
+
+        const expectedFeatureError = "AUTO requires the language-detection feature";
+        let autoError = null;
+        let unexpectedAutoDetector = null;
+        try {
+          unexpectedAutoDetector = new ExplicitWasmDetector("AUTO");
+        } catch (error) {
+          autoError = String(error);
+        } finally {
+          unexpectedAutoDetector?.free();
+        }
+        const autoRejected = autoError === expectedFeatureError;
+        report.explicit_only_runtime.auto_rejection = {
+          expected_error: expectedFeatureError,
+          actual_error: autoError,
+          passed: autoRejected,
+        };
+        report.explicit_only_runtime.passed = report.explicit_only_runtime.module_instances_isolated
+          && explicitRoutePassed
+          && autoRejected;
+
+        for (const language of ["", "EN-US", "XX"]) {
+          let rejected = false;
+          try {
+            const detector = new WasmDetector(language);
+            detector.free();
+          } catch {
+            rejected = true;
+          }
+          report.invalid_languages.push({ language, rejected });
+        }
+        for (const detector of detectors.values()) {
+          detector.free();
+        }
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        report.runtime_network_requests = performance
+          .getEntriesByType("resource")
+          .slice(resourceCountAfterInit)
+          .map((entry) => entry.name);
+        const invalidLanguagesPassed = report.invalid_languages.every((item) => item.rejected);
+        report.status = report.passed_case_count === cases.length
+          && report.passed_auto_case_count === autoCases.length
+          && report.passed_unknown_case_count === unknownCases.length
+          && report.ms_id_alias_passed
+          && report.automatic_selection_passed
+          && report.explicit_only_runtime.passed
+          && report.score_invariants_passed
+          && invalidLanguagesPassed
+          && report.runtime_network_requests.length === 0
+          ? "passed"
+          : "failed";
+      } catch (error) {
+        report.status = "failed";
+        report.error = String(error?.stack ?? error);
+      }
+
+      document.body.dataset.status = report.status;
+      document.getElementById("result").textContent = JSON.stringify(report, null, 2);
+    </script>
+  </body>
+</html>

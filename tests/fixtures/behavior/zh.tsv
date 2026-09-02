@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+zh-t01	ZH	true	threat	zh-p01	none	authored	authored-v1#ZH-T01	等我找到你，我会打断你的双腿
+zh-t02	ZH	true	threat	zh-p02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/002465	杀光女权，一个不留！
+zh-t03	ZH	true	harm_wish	zh-p03	none	authored	authored-v1#ZH-T03	希望你去死
+zh-t04	ZH	true	harm_wish	zh-p04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/000265	希望用火全部烧死
+zh-t05	ZH	true	self_harm_command	zh-p05	none	authored	authored-v1#ZH-T05	自 杀 吧
+zh-t06	ZH	true	self_harm_command	zh-p06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/001225	无法改变那就去死，反同入刑，最高死刑
+zh-t07	ZH	true	directed_insult	zh-p07	none	authored	authored-v1#ZH-T07	你是畜生
+zh-t08	ZH	true	directed_insult	zh-p08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/001272	NBA的脑残粉男的和EG一样，low到骨子里
+zh-c01	ZH	false	none	zh-p01	negation	authored	authored-v1#ZH-C01	我不会打断你的双腿
+zh-c02	ZH	false	none	zh-p03	negation	authored	authored-v1#ZH-C02	希望你不要去死
+zh-c03	ZH	false	none	none	quotation	authored	authored-v1#ZH-C03	“等我找到你，我会打断你的双腿”
+zh-c04	ZH	false	none	zh-p07	quotation	authored	authored-v1#ZH-C04	「你是畜生」
+zh-c05	ZH	false	none	none	reporting	authored	authored-v1#ZH-C05	管理员删除了那条威胁别人的消息
+zh-c06	ZH	false	none	none	reporting	authored	authored-v1#ZH-C06	管理员说你是畜生
+zh-c07	ZH	false	none	zh-p05	counterspeech	authored	authored-v1#ZH-C07	停止说自杀吧
+zh-c08	ZH	false	none	zh-p08	counterspeech	authored	authored-v1#ZH-C08	反对说你是畜生
+zh-c09	ZH	false	none	none	violence_question	authored	authored-v1#ZH-C09	杀光你家人吗？
+zh-c10	ZH	false	none	zh-p02	violence_question	authored	authored-v1#ZH-C10	杀光女权合理吗？
+zh-c11	ZH	false	none	none	collision	authored	authored-v1#ZH-C11	警察，正在处理交通事故
+zh-c12	ZH	false	none	zh-p04	replacement	authored	authored-v1#ZH-C12	希望用火全部取暖
+zh-c13	ZH	false	none	none	replacement	authored	authored-v1#ZH-C13	Please 点击 kill switch 来停止测试程序
+zh-c14	ZH	false	none	zh-p06	replacement	authored	authored-v1#ZH-C14	无法改变那就继续努力
+zh-c15	ZH	false	none	none	context	authored	authored-v1#ZH-C15	你可以走了。但是我会打断这根木棍
+zh-c16	ZH	false	none	none	context	authored	authored-v1#ZH-C16	新闻报道警方调查了一条威胁消息

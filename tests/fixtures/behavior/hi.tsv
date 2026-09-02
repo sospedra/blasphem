@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+hi-t01	HI	true	threat	hi-threat-seed	none	authored	authored-v1#HI-T01	मैं तुम्हें मार दूंगा
+hi-t02	HI	true	threat	hi-threat-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/001962	इनके हाथ पैर तोड़ दो और फिर खर्चा पानी दे दीजिए हिसाब तो तब भी नहीं होगा इनकी कड़ी से कड़ी सजा देनी चाहिए जेहादी कौम इतना मारो इनको कि मर जाए हरामी
+hi-t03	HI	true	harm_wish	hi-wish-seed	none	authored	authored-v1#HI-T03	काश तुम मर जाओ
+hi-t04	HI	true	harm_wish	hi-wish-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/001689	ये कमीनी जिस दिन मरेगी उस दिन full पार्टी
+hi-t05	HI	true	self_harm_command	hi-self-seed	none	authored	authored-v1#HI-T05	आत्महत्या कर ले
+hi-t06	HI	true	self_harm_command	hi-self-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/000520	कल और परसों तो तू बहुत ट्वीट कर रहा था अब क्या हुआ गांड फट गई गांडू कहीं के अबे साले जहर खा कर मर क्यों नहीं जाता तुम्हारी जो फोटो वायरल हुई है अत्यंत ही गंदा दिखता है तू तो हिजड़े से भी खराब निकला पर तेरी बॉलीवुड में 90 फ़ीसदी साले जब गांडू हैं तो तू कहां से शरीफ रहेगा
+hi-t07	HI	true	directed_insult	hi-insult-seed	none	authored	authored-v1#HI-T07	तू हरामी है
+hi-t08	HI	true	directed_insult	hi-insult-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/000625	तू निहायत कमीना इंसान है
+hi-c01	HI	false	none	hi-threat-seed	negation	authored	authored-v1#HI-C01	मैं नहीं मारूंगा तुम्हें
+hi-c02	HI	false	none	hi-wish-seed	negation	authored	authored-v1#HI-C02	काश तुम न मर जाओ
+hi-c03	HI	false	none	hi-threat-data	quotation	authored	authored-v1#HI-C03	"इनके हाथ पैर तोड़ दो और फिर खर्चा पानी दे दीजिए हिसाब तो तब भी नहीं होगा इनकी कड़ी से कड़ी सजा देनी चाहिए जेहादी कौम इतना मारो इनको कि मर जाए हरामी"
+hi-c04	HI	false	none	hi-wish-data	quotation	authored	authored-v1#HI-C04	“ये कमीनी जिस दिन मरेगी उस दिन full पार्टी”
+hi-c05	HI	false	none	hi-self-seed	reporting	authored	authored-v1#HI-C05	उसने कहा आत्महत्या कर ले
+hi-c06	HI	false	none	hi-insult-seed	reporting	authored	authored-v1#HI-C06	उसने लिखा तू हरामी है
+hi-c07	HI	false	none	hi-self-data	counterspeech	authored	authored-v1#HI-C07	ऐसा कहना गलत है जहर खा कर मर
+hi-c08	HI	false	none	hi-insult-data	counterspeech	authored	authored-v1#HI-C08	यह कहना गलत है तू निहायत कमीना इंसान है
+hi-c09	HI	false	none	none	violence_question	authored	authored-v1#HI-C09	क्या तुम मुझे मार दोगे?
+hi-c10	HI	false	none	none	violence_question	authored	authored-v1#HI-C10	क्या उसने कहानी में राजा को मारा?
+hi-c11	HI	false	none	none	collision	authored	authored-v1#HI-C11	उसने क्रिकेट की गेंद जोर से मारी
+hi-c12	HI	false	none	none	context	authored	authored-v1#HI-C12	क्‍ष और क्‌ष के रूप अलग हैं
+hi-c13	HI	false	none	none	context	authored	authored-v1#HI-C13	kill switch को दबाओ
+hi-c14	HI	false	none	none	context	authored	authored-v1#HI-C14	कहानी में खलनायक ने राजा को मारने की धमकी दी
+hi-c15	HI	false	none	none	context	authored	authored-v1#HI-C15	समाचार में धमकी की रिपोर्ट हुई
+hi-c16	HI	false	none	none	context	authored	authored-v1#HI-C16	डॉक्टर ने मृत कोशिकाओं का अध्ययन किया

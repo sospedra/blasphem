@@ -1,0 +1,37 @@
+{
+  "format": "TOXSPRS1",
+  "language": "ES",
+  "artifact": "es-chargram-v1.bin",
+  "artifact_bytes": 131104,
+  "artifact_sha256": "3e09ea4ef4db50f8e9024f5a2cfe14d428d0114e97e5d7defe9764184e4dae36",
+  "dataset": "textdetox/multilingual_toxicity_dataset",
+  "dataset_revision": "01907546324b0330d2d8b7669648cc18823323e5",
+  "source_rows": 5000,
+  "evaluation_rows": 4999,
+  "duplicate_rows": 1,
+  "conflict_rows": 0,
+  "split_method": "FNV-1a over detector language and normalized text",
+  "development_rows": 3418,
+  "validation_rows": 762,
+  "test_rows": 819,
+  "algorithm": "Bernoulli log-odds with fixed feature hashing",
+  "feature_bins": 65536,
+  "features": [
+    "normalized word unigrams",
+    "normalized word bigrams",
+    "normalized character 3-grams",
+    "normalized character 4-grams",
+    "normalized character 5-grams"
+  ],
+  "minimum_document_frequency": 2,
+  "weight_scale": 256,
+  "decision_boundary": 10962,
+  "score_scale": 27695,
+  "maximum_validation_false_positive_basis_points": 300,
+  "sparse_validation": {
+    "true_positive": 152,
+    "true_negative": 388,
+    "false_positive": 12,
+    "false_negative": 210
+  }
+}

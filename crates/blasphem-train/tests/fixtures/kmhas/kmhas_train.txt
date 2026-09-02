@@ -1,0 +1,2 @@
+document	label
+  나쁜 말  	7,0,7

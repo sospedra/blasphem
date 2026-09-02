@@ -1,0 +1,2 @@
+document	label
+나쁜 댓글	2

@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+RU-T01	RU	true	threat	RU-P01	none	authored	authored-v1#plan-ru-threat	я тебя убью
+RU-T02	RU	true	threat	RU-P02	none	authored	authored-v1#ru-threat-2	я сломаю тебе челюсть
+RU-T03	RU	true	harm_wish	RU-P03	none	authored	authored-v1#user-ru-toxic	Надеюсь, этой ночью ты больше не проснёшься
+RU-T04	RU	true	harm_wish	RU-P04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/004597	чтоб ты сдох жирная свинья и не было бы у тебя детей от говна говно родится
+RU-T05	RU	true	self_harm_command	RU-P05	none	authored	authored-v1#plan-ru-self-harm	убей себя
+RU-T06	RU	true	self_harm_command	RU-P06	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/003599	олигофренка,застрелись за плешивого,может быть кто оценит...
+RU-T07	RU	true	directed_insult	RU-P07	none	authored	authored-v1#plan-ru-insult	ты мразь
+RU-T08	RU	true	directed_insult	RU-P08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/002721	отсосинка голубкова, ты уже показала какая ты идиотка, может хватит
+RU-C01	RU	false	none	RU-P01	negation	authored	authored-v1#RU-C01	Я тебя не убью
+RU-C02	RU	false	none	RU-P02	quotation	authored	authored-v1#RU-C02	"я сломаю тебе челюсть"
+RU-C03	RU	false	none	RU-P03	negation	authored	authored-v1#RU-C03	Чтоб ты не сдох
+RU-C04	RU	false	none	RU-P04	quotation	authored	authored-v1#RU-C04	"чтоб ты сдох жирная свинья и не было бы у тебя детей от говна говно родится"
+RU-C05	RU	false	none	RU-P05	counterspeech	authored	authored-v1#RU-C05	Не говори убей себя
+RU-C06	RU	false	none	RU-P06	reporting	authored	authored-v1#RU-C06	Он написал застрелись
+RU-C07	RU	false	none	RU-P07	reporting	authored	authored-v1#user-ru-report	Модератор удалил сообщение с угрозой другому игроку
+RU-C08	RU	false	none	RU-P08	counterspeech	authored	authored-v1#RU-C08	Перестань говорить ты мразь
+RU-C09	RU	false	none	none	violence_question	authored	authored-v1#RU-C09	Почему ты сказал убью?
+RU-C10	RU	false	none	none	violence_question	authored	authored-v1#RU-C10	Кто написал убью тебя?
+RU-C11	RU	false	none	none	context	authored	authored-v1#RU-C11	Ты ужасный шахматист
+RU-C12	RU	false	none	none	context	authored	authored-v1#RU-C12	Врач лечит сломанную челюсть
+RU-C13	RU	false	none	none	collision	authored	authored-v1#RU-C13	Роман называется Убить время
+RU-C14	RU	false	none	none	context	authored	authored-v1#RU-C14	В новостях обсуждали угрозу
+RU-C15	RU	false	none	none	collision	authored	authored-v1#RU-C15	Твоё резюме готово
+RU-C16	RU	false	none	none	collision	authored	authored-v1#RU-C16	Ты написал thank you

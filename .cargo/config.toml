@@ -1,0 +1,2 @@
+[alias]
+perf-gate = "test --release --locked -p toxbench --test dense_runtime_regression"

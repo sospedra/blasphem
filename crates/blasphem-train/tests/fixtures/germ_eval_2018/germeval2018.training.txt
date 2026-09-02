@@ -1,0 +1,2 @@
+"Das Anführungszeichen bleibt wörtlich	OTHER	OTHER
+Du bist ein Idiot	OFFENSE	INSULT

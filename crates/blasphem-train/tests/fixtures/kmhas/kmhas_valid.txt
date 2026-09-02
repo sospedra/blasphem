@@ -1,0 +1,2 @@
+document	label
+좋은 말	8

@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+FR-T01	FR	true	threat	FR-P01	none	authored	authored-v1#user-fr-toxic	Quand je te trouverai, je te briserai les deux jambes
+FR-T02	FR	true	threat	FR-P02	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/004904	, JE TE TUERAIS, ENCULÉ !
+FR-T03	FR	true	harm_wish	FR-P03	none	authored	authored-v1#plan-fr-harm-wish	j’espère que tu crèves
+FR-T04	FR	true	harm_wish	FR-P04	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/003833	Je pense que tu ferais mieux d aller crever.
+FR-T05	FR	true	self_harm_command	FR-P05	none	authored	authored-v1#plan-fr-self-harm	tue-toi
+FR-T06	FR	true	self_harm_command	FR-P06	none	authored	authored-v1#fr-self-harm-2	va te suicider
+FR-T07	FR	true	directed_insult	FR-P07	none	authored	authored-v1#plan-fr-insult	tu es une ordure
+FR-T08	FR	true	directed_insult	FR-P08	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/004761	Tu es un imbecile.
+FR-C01	FR	false	none	FR-P01	negation	authored	authored-v1#FR-C01	Quand je te trouverai, je ne te briserai pas les deux jambes
+FR-C02	FR	false	none	FR-P02	quotation	authored	authored-v1#FR-C02	", JE TE TUERAIS, ENCULÉ !"
+FR-C03	FR	false	none	FR-P03	negation	authored	authored-v1#FR-C03	J’espère que tu ne crèves pas
+FR-C04	FR	false	none	FR-P04	quotation	authored	authored-v1#FR-C04	"Je pense que tu ferais mieux d aller crever."
+FR-C05	FR	false	none	FR-P05	counterspeech	authored	authored-v1#FR-C05	Ne dis pas tue-toi
+FR-C06	FR	false	none	FR-P06	reporting	authored	authored-v1#FR-C06	Elle a écrit va te suicider
+FR-C07	FR	false	none	FR-P07	reporting	authored	authored-v1#user-fr-report	J'ai signalé le message qui menaçait un autre joueur
+FR-C08	FR	false	none	FR-P08	counterspeech	authored	authored-v1#FR-C08	Arrête de dire tu es un imbecile
+FR-C09	FR	false	none	none	violence_question	authored	authored-v1#FR-C09	Vas-tu tuer quelqu'un ?
+FR-C10	FR	false	none	none	violence_question	authored	authored-v1#FR-C10	Pourquoi as-tu dit briserai ?
+FR-C11	FR	false	none	none	context	authored	authored-v1#FR-C11	Tu es mauvais aux échecs
+FR-C12	FR	false	none	none	context	authored	authored-v1#FR-C12	Le médecin traite une jambe cassée
+FR-C13	FR	false	none	none	collision	authored	authored-v1#FR-C13	Le roman porte le titre Tuer le temps
+FR-C14	FR	false	none	none	context	authored	authored-v1#FR-C14	Le journal décrit une menace
+FR-C15	FR	false	none	none	collision	authored	authored-v1#FR-C15	Ton résumé est prêt
+FR-C16	FR	false	none	none	collision	authored	authored-v1#FR-C16	Tu as écrit thank you

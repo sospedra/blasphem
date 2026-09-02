@@ -1,0 +1,25 @@
+case_id	language	expected_nudge	event_type	pair_id	control_kind	evidence_kind	evidence_ref	text
+ar-t01	AR	true	threat	ar-threat-seed	none	authored	authored-v1#AR-T01	سأقتلك
+ar-t02	AR	true	threat	ar-threat-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/001941	#14<>يا خرا يا زق يا ***** *** و الله نهايتكم عايدي اقسم بالله لو ما ترجعولنا حقنا اموتكم 
+ar-t03	AR	true	harm_wish	ar-wish-seed	none	authored	authored-v1#AR-T03	أتمنى أن تموت
+ar-t04	AR	true	harm_wish	ar-wish-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/003718	الله ياخذك يا أليغري يا جبان يا حمار
+ar-t05	AR	true	self_harm_command	ar-self-seed	none	authored	authored-v1#AR-T05	اقتل نفسك
+ar-t06	AR	true	self_harm_command	ar-self-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/004436	موتي برا تفرج تلافزكم سيب زبوبنا
+ar-t07	AR	true	directed_insult	ar-insult-seed	none	authored	authored-v1#AR-T07	أنت حقير
+ar-t08	AR	true	directed_insult	ar-insult-data	none	dataset	textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/001021	يا باريس انت حمار ولا بتستحمر
+ar-c01	AR	false	none	ar-threat-seed	negation	authored	authored-v1#AR-C01	لن أقتلك أنت
+ar-c02	AR	false	none	ar-wish-seed	negation	authored	authored-v1#AR-C02	لا أتمنى أن تموت أنت
+ar-c03	AR	false	none	ar-threat-data	quotation	authored	authored-v1#AR-C03	"#14<>يا خرا يا زق يا ***** *** و الله نهايتكم عايدي اقسم بالله لو ما ترجعولنا حقنا اموتكم"
+ar-c04	AR	false	none	ar-wish-data	quotation	authored	authored-v1#AR-C04	«الله ياخذك يا أليغري يا جبان يا حمار»
+ar-c05	AR	false	none	ar-self-seed	reporting	authored	authored-v1#AR-C05	قال اقتل نفسك
+ar-c06	AR	false	none	ar-insult-seed	reporting	authored	authored-v1#AR-C06	كتب أنت حقير
+ar-c07	AR	false	none	ar-self-data	counterspeech	authored	authored-v1#AR-C07	توقف عن قول موتي برا
+ar-c08	AR	false	none	ar-insult-data	counterspeech	authored	authored-v1#AR-C08	من الخطأ أن تقول أنت حمار
+ar-c09	AR	false	none	none	violence_question	authored	authored-v1#AR-C09	هل ستقتلني؟
+ar-c10	AR	false	none	none	violence_question	authored	authored-v1#AR-C10	هل قال إنه سيقتل البطل؟
+ar-c11	AR	false	none	none	collision	authored	authored-v1#AR-C11	7mar اسم مستخدم في مثال برمجي
+ar-c12	AR	false	none	none	context	authored	authored-v1#AR-C12	شرح المعلم كلمة قَتْلٍ في درس اللغة
+ar-c13	AR	false	none	none	context	authored	authored-v1#AR-C13	ميزة kill switch توقف الخادم بأمان
+ar-c14	AR	false	none	none	context	authored	authored-v1#AR-C14	في الرواية يهدد الشرير البطل
+ar-c15	AR	false	none	none	context	authored	authored-v1#AR-C15	أفاد الخبر أن الشرطة حققت في رسالة تهديد
+ar-c16	AR	false	none	none	context	authored	authored-v1#AR-C16	شرح الطبيب موت الخلايا الطبيعي

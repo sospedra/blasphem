@@ -1,0 +1,24 @@
+[package]
+name = "toxcheck-wasm"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["language-detection"]
+language-detection = ["toxcheck/language-detection"]
+
+[dependencies]
+toxcheck = { path = "../..", default-features = false }
+wasm-bindgen = "=0.2.127"
+
+[lints.clippy]
+correctness = "deny"
+suspicious = "warn"
+style = "warn"
+complexity = "warn"
+perf = "warn"

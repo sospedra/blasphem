@@ -1,0 +1,4 @@
+text,homophobia_1,homophobia_2,homophobia_3,obscene_1,obscene_2,obscene_3,insult_1,insult_2,insult_3,racism_1,racism_2,racism_3,misogyny_1,misogyny_2,misogyny_3,xenophobia_1,xenophobia_2,xenophobia_3,obs_1,obs_2,obs_3
+clean,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0
+toxic,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+one vote,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0
