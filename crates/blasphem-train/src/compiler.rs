@@ -9,6 +9,7 @@ use blasphem::{
     ConfusionMatrix, EvalLabel, FeatureError, FeatureProfile, Language, NormalizationProfile,
     ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV1Input, SparseV2Input,
     canonical_rule_identity, encode_sparse_v1, encode_sparse_v2, extract_feature_bins,
+    lexicon_marked_text, uses_lexicon_features,
 };
 use sha2::{Digest, Sha256};
 use thiserror::Error;
@@ -516,7 +517,14 @@ pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, Co
     validate_compile_split("validation", request.language, &request.validation)?;
 
     let (feature_profile, normalization_profile, feature_schema) = request.language.profiles();
-    let trained = train_weights(feature_profile, normalization_profile, &request.development)?;
+    let development = model_rows(request, &request.development);
+    let validation_model = model_rows(request, &request.validation);
+    let clean_controls_model = request
+        .clean_controls
+        .iter()
+        .map(|text| model_text(request, text))
+        .collect::<Vec<_>>();
+    let trained = train_weights(feature_profile, normalization_profile, &development)?;
     let minimum_boundary = clean_control_boundary(
         request.language,
         &trained,
@@ -524,16 +532,17 @@ pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, Co
         normalization_profile,
         &request.rule_channel,
         &request.clean_controls,
+        &clean_controls_model,
     )?;
     let mut calibration_rows = Vec::with_capacity(request.validation.len());
     let mut raw_scores = Vec::with_capacity(request.validation.len());
     let mut rule_results = Vec::with_capacity(request.validation.len());
-    for row in &request.validation {
+    for (row, model_row) in request.validation.iter().zip(&validation_model) {
         let raw_score = trained_raw_score(
             &trained,
             feature_profile,
             normalization_profile,
-            row,
+            model_row,
             "validation",
         )?;
         let rule_outcome = request
@@ -583,8 +592,7 @@ pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, Co
                 || (!row.suppress_sparse && row.sparse_raw_score >= calibration.boundary)
         })
         .collect::<Vec<_>>();
-    let validation_predictions = request
-        .validation
+    let validation_predictions = validation_model
         .iter()
         .zip(&rule_results)
         .map(|(row, (rule_should_nudge, suppress_sparse))| {
@@ -633,9 +641,10 @@ fn clean_control_boundary(
     normalization_profile: NormalizationProfile,
     rule_channel: &RuleChannel,
     clean_controls: &[String],
+    clean_controls_model: &[String],
 ) -> Result<i32, CompileError> {
     let mut minimum_boundary = i32::MIN;
-    for (index, text) in clean_controls.iter().enumerate() {
+    for (index, (text, model_text)) in clean_controls.iter().zip(clean_controls_model).enumerate() {
         let source_id = format!("clean-control/{index}");
         let outcome = rule_channel.analyze(text, ReplyTarget::Unknown);
         if outcome.should_nudge {
@@ -651,7 +660,7 @@ fn clean_control_boundary(
             detector_language: language,
             label: EvalLabel::Clean,
             source_id,
-            text: text.clone(),
+            text: model_text.clone(),
         };
         let score = trained_raw_score(
             trained,
@@ -663,6 +672,28 @@ fn clean_control_boundary(
         minimum_boundary = minimum_boundary.max(score.saturating_add(1));
     }
     Ok(minimum_boundary)
+}
+
+/// The text the sparse model scores: the row text, plus lexicon markers for languages that use them.
+fn model_text(request: &CompileRequest, text: &str) -> String {
+    if !uses_lexicon_features(request.language) {
+        return text.to_owned();
+    }
+    match request.rule_channel.lexicon() {
+        Some(lexicon) => lexicon_marked_text(text, &lexicon.check(text).matches),
+        None => text.to_owned(),
+    }
+}
+
+fn model_rows(request: &CompileRequest, rows: &[PreparedRow]) -> Vec<PreparedRow> {
+    rows.iter()
+        .map(|row| PreparedRow {
+            detector_language: row.detector_language,
+            label: row.label,
+            source_id: row.source_id.clone(),
+            text: model_text(request, &row.text),
+        })
+        .collect()
 }
 
 fn validate_compile_split(

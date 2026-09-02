@@ -337,7 +337,12 @@ fn analyze_internal_with_pack(
     let sparse_score = include_sparse
         .then(|| context.language.and_then(embedded_model))
         .flatten()
-        .map(|model| model.score(text));
+        .map(|model| {
+            model.score(&crate::detector::lexicon_marked_text(
+                text,
+                &lexical.matches,
+            ))
+        });
     let clause_support = pack.map_or_else(BTreeMap::new, |pack| {
         score_sentiment(text, &document, pack, &mut scores, &mut evidence)
     });

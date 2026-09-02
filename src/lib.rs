@@ -22,7 +22,10 @@ mod sparse;
 mod text;
 mod workflow;
 
-pub use detector::{Detection, Detector, DetectorError, LexiconMatch, normalize_text};
+pub use detector::{
+    Detection, Detector, DetectorError, LexiconMatch, lexicon_marked_text, normalize_text,
+    uses_lexicon_features,
+};
 #[cfg(feature = "embedded")]
 pub use embedded::{embedded_detector, embedded_hurtlex_bytes};
 pub use engine::{Engine, EngineError, EngineJudgement, EngineSource};

@@ -3,7 +3,7 @@
   "language": "ES",
   "artifact": "es-chargram-v1.bin",
   "artifact_bytes": 131104,
-  "artifact_sha256": "dda54a36d0b3230edbfe37feff80488fdf3272b92341d342d5711bf4e5881250",
+  "artifact_sha256": "a5db8e61225f7a240fcfba92412939e4672e254102261749ed9e1af812605e3f",
   "dataset": "textdetox/multilingual_toxicity_dataset",
   "dataset_revision": "01907546324b0330d2d8b7669648cc18823323e5",
   "source_rows": 4995,
@@ -25,13 +25,13 @@
   ],
   "minimum_document_frequency": 2,
   "weight_scale": 256,
-  "decision_boundary": 11529,
-  "score_scale": 28184,
+  "decision_boundary": 18899,
+  "score_scale": 40427,
   "maximum_validation_false_positive_basis_points": 300,
   "sparse_validation": {
-    "true_positive": 141,
-    "true_negative": 388,
-    "false_positive": 12,
-    "false_negative": 221
+    "true_positive": 139,
+    "true_negative": 389,
+    "false_positive": 11,
+    "false_negative": 223
   }
 }

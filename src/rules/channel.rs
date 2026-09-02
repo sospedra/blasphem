@@ -158,6 +158,12 @@ impl RuleChannel {
         outcome
     }
 
+    /// The conservative lexicon this channel loaded, when it has one.
+    #[must_use]
+    pub fn lexicon(&self) -> Option<&Detector> {
+        self.lexical.as_ref()
+    }
+
     pub(crate) fn analyze_full(
         &self,
         text: &str,

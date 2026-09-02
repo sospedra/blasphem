@@ -42,6 +42,34 @@ impl Detection {
     }
 }
 
+/// Languages whose sparse model also reads lexicon hits, as marker words appended to the text.
+#[must_use]
+pub const fn uses_lexicon_features(_language: crate::Language) -> bool {
+    true
+}
+
+/// Appends one marker word per matched lexicon category, so the sparse model can weight lexicon hits.
+#[must_use]
+pub fn lexicon_marked_text(text: &str, matches: &[LexiconMatch]) -> String {
+    let mut categories: Vec<&str> = matches
+        .iter()
+        .map(|found| found.entry.category.as_str())
+        .collect();
+    categories.sort_unstable();
+    categories.dedup();
+    if categories.is_empty() {
+        return text.to_owned();
+    }
+    let mut marked = String::with_capacity(text.len() + 12 * (categories.len() + 1));
+    marked.push_str(text);
+    marked.push_str(" lexhit");
+    for category in categories {
+        marked.push_str(" lexcat");
+        marked.push_str(category);
+    }
+    marked
+}
+
 #[derive(Debug)]
 struct PatternIndex {
     matcher: AhoCorasick,

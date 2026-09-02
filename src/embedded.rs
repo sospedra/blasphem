@@ -37,105 +37,105 @@ impl EmbeddedArtifact {
 static ARTIFACTS: [EmbeddedArtifact; 15] = [
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/en-sparse-v2.bin"),
-        digest("cb37986703724b067c82207c07e9208b8ebd6d13deb1537504baed0d1f2c0a98"),
+        digest("a6ce03cd6ac303d40b400ce7f193bbc99d0692b67ae79eadf2b2bb1eca336ca7"),
         Some(digest(
             "47e158ffb912b3f6fc6ada64bf6c1deeb05fe45d9d9e552c942a6cf87479b871",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/zh-sparse-v2.bin"),
-        digest("ca0098bc453def36abc9069995819a0cdda575d13b4456fafa4dc8bbc9ea9c05"),
+        digest("f3416663a35051599ac06f714073ff06dfe6a64f01542cbf51d98e99f8e656b5"),
         Some(digest(
             "8f789c2eb2b8dd62a13ff91aafea6c7b84559bec43599be3150917ff5d920923",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/es-chargram-v1.bin"),
-        digest("dda54a36d0b3230edbfe37feff80488fdf3272b92341d342d5711bf4e5881250"),
+        digest("a5db8e61225f7a240fcfba92412939e4672e254102261749ed9e1af812605e3f"),
         Some(digest(
             "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ar-sparse-v2.bin"),
-        digest("04a2de1e4c85b27f4c86dd5284ca19407421f5b9062dd4fefa7aeec3290d69fc"),
+        digest("e49b28679917bc04a25a88bce4d7f14d75a4b825ee34564021e36567b62013c4"),
         Some(digest(
             "9e8967963e86214257a19f2cf8d914e8f442be4d8317097924e8b7df0b6deeaa",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/id-sparse-v2.bin"),
-        digest("9b207f1b85a9a8da31554258dd5ccb49509119dc8db715149c467b2df6116cf8"),
+        digest("050f03a790319df94421f0cced0ca2387f30ad7c6e530ddf22e704cc305730c9"),
         Some(digest(
             "d0c159269fa1fa00cae3c409f45608259a23687ccc384ca9eef0f50ecae5fe82",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/pt-sparse-v2.bin"),
-        digest("7543698f1daa28fb72c7a84c90d161f756d778d7f1165fb437ec5d296df6c33c"),
+        digest("19e8186f6e9d3c9246a9b7002986d073f19b69f688d03317114506211bfa5adb"),
         Some(digest(
             "5fbd7342e88d89418ba5a993ce0578f3e5a84a6ce65f4a2deda89302d53db556",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/fr-sparse-v2.bin"),
-        digest("1aa9bde78833bb330d7f4852373ab9566144563aa8f2d1b56389e3b701d62694"),
+        digest("522d4c661000d6424807b53107ca384bb92f714db40c0243f0d5c0336dbac67a"),
         Some(digest(
             "b191619a61722f2fee05531c086a802f336c000cb5767ea252d333ae282b792c",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/hi-sparse-v2.bin"),
-        digest("84a9b478e45236509882c8b524cf1e08070c7f255804dceb7118ea55d0789547"),
+        digest("55da5e7035bc7c307d1c3d45f3aa7c4f434040ce7f8f6119b2ac54549d6c2bee"),
         Some(digest(
             "3fc8e4c387b96a3634922d10322c51fa8dd2a15666f8caea6df65982395cf647",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ru-sparse-v2.bin"),
-        digest("3706ce98e530e9d6830c80195baad420c0fa0877990bcf8d21bedd618eab18a4"),
+        digest("cc75ab8473d510745ec910dac81adee61372a9833ae3fb94b0d7a08523dff649"),
         Some(digest(
             "2c196c7b84b99e43ec8daacd064de7264726e5eee03bf166ce2821927d0e4d8a",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ja-sparse-v2.bin"),
-        digest("ea688b3ec5848a14cfca0ac634abe631f8bd759312d1439773e2fc178c32738f"),
+        digest("130681d7b107d52911f62f7c9d69068ab8f60f5cea0159a1b9776d06e44fbadc"),
         Some(digest(
             "fd709e7d92472193bc30f8a18db179cf8ad8e5e4d8922604bfd605c287b7dd50",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/de-sparse-v2.bin"),
-        digest("9f8e110db887b1e452a75d067d64796a1bba4575ba5076c58d17af2c63bd1649"),
+        digest("d6fe44ed8708c8f31789ac3b8e5de4804883495b067e10bf807150743884eda0"),
         Some(digest(
             "c03d37a2fea09c5bacdf19307387aca0c720c46ab6bb9280870e93a08da367a8",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/tr-sparse-v2.bin"),
-        digest("258fb502126105c02e1ce97998e7c95d3fdc8f6dfc44cb2ab384a8a3448c54a3"),
+        digest("ca1e089ba2e8c9063a210f00e458936ff4b36a4eeabebdad9b9d4c784e5e2fac"),
         Some(digest(
             "5398b7ae04964b79d9b69376d9aba85120a76b086942b3b2fafc6f17af8ff886",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/vi-sparse-v2.bin"),
-        digest("f289b02c024075825706be7e3e0ecdfb60e73ecc2dc9604c74638a832f13b2ab"),
+        digest("136379cf21528eccfcb2eabfda106da9fae629e6f7158685d3f421a35aa7b584"),
         Some(digest(
             "b03dc19155e27ad8327b79a25337ed6843d0f8c366d9eaff794b818a5c46dd6e",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ko-sparse-v2.bin"),
-        digest("41627c430b64247febed8ca16c5c4297df23fbb1d4e30913f301be5775ab7fd3"),
+        digest("75bb8b46d8773637144c4b4497d28352bb2e678e002a7e9d6a405a81cd730aea"),
         Some(digest(
             "1fe1886792cc809f4685aa5de19872fa5b40b183e74e2791caca217f7984b824",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/it-sparse-v2.bin"),
-        digest("49b2e3fc9a4aea801d70bc84f96b90db13bc66ec8149dd4907f6437ce7bcfb85"),
+        digest("899c57509ea75117db8c19a500cb5b6b883d07b0eab9e9f8e8fd9a3565f6140f"),
         Some(digest(
             "1904d7807553a0263c0472f17f983edba5bc2ebe7af69aa0e2ed95fa980879b8",
         )),

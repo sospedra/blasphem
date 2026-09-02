@@ -11,6 +11,7 @@ use crate::registry::registry_entry;
 use crate::{
     Language, NudgeResult, PolicyResult, RULE_NUDGE_THRESHOLD, ReplyTarget, RuleChannel,
     RuleChannelError, SparseModel,
+    detector::{lexicon_marked_text, uses_lexicon_features},
 };
 
 /// A fixed-language detector for the product pre-send nudge.
@@ -134,7 +135,12 @@ impl NudgeDetector {
     #[must_use]
     pub fn analyze(&self, text: &str, reply_target: ReplyTarget) -> PolicyResult {
         let analysis = self.rule_channel.analyze_full(text, reply_target);
-        let mut sparse_score = self.model.score(text);
+        let model_text = if uses_lexicon_features(self.language) {
+            Cow::Owned(lexicon_marked_text(text, &analysis.lexical.matches))
+        } else {
+            Cow::Borrowed(text)
+        };
+        let mut sparse_score = self.model.score(&model_text);
         if analysis.outcome.suppresses_sparse_channel() {
             sparse_score = sparse_score.min(RULE_NUDGE_THRESHOLD - 1);
         }

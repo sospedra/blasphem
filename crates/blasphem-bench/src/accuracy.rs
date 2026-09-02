@@ -263,21 +263,30 @@ fn print_section(baseline: &Section, run: &Section) {
     }
 }
 
+const REGENERATE: [&str; 7] = [
+    "run",
+    "--release",
+    "--locked",
+    "-p",
+    "blasphem-train",
+    "--",
+    "regenerate",
+];
+
+/// Retrains, then rebuilds the binary against the published artifacts.
+///
+/// The evidence step inside `regenerate` judges with the embedded models. When a retrain changes an
+/// artifact, that step fails until the digests are synced and the tool is rebuilt, so the retrain
+/// runs again after the sync. The second run reproduces the same artifacts and writes the evidence.
 fn retrain_and_build(root: &Path) -> Result<PathBuf, AccuracyError> {
-    run_cargo(
-        root,
-        &[
-            "run",
-            "--release",
-            "--locked",
-            "-p",
-            "blasphem-train",
-            "--",
-            "regenerate",
-        ],
-    )?;
+    let first = run_cargo(root, &REGENERATE);
     let synced = sync_embedded_digests(root)?;
     println!("status=synced-digests changed={synced}");
+    match (first, synced) {
+        (Ok(()), _) => {}
+        (Err(_), changed) if changed > 0 => run_cargo(root, &REGENERATE)?,
+        (Err(error), _) => return Err(error),
+    }
     run_cargo(
         root,
         &["build", "--release", "--locked", "--bin", "blasphem"],
