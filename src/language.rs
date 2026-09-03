@@ -47,6 +47,12 @@ pub enum FeatureProfile {
     WordChar35V2 = 2,
     #[serde(rename = "Char25V2")]
     Char25V2 = 3,
+    #[serde(rename = "TurkishChar35V3")]
+    TurkishChar35V3 = 4,
+    #[serde(rename = "ChineseScriptChar15V3")]
+    ChineseScriptChar15V3 = 5,
+    #[serde(rename = "KoreanWordChar25V3")]
+    KoreanWordChar25V3 = 6,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -161,7 +167,7 @@ impl Language {
                 FeatureSchema::SparseV2,
             ),
             Self::Zh => (
-                FeatureProfile::Char25V2,
+                FeatureProfile::ChineseScriptChar15V3,
                 NormalizationProfile::ChineseV2,
                 FeatureSchema::SparseV2,
             ),
@@ -186,7 +192,7 @@ impl Language {
                 FeatureSchema::SparseV2,
             ),
             Self::Tr => (
-                FeatureProfile::WordChar35V2,
+                FeatureProfile::TurkishChar35V3,
                 NormalizationProfile::TurkishV2,
                 FeatureSchema::SparseV2,
             ),
@@ -196,7 +202,7 @@ impl Language {
                 FeatureSchema::SparseV2,
             ),
             Self::Ko => (
-                FeatureProfile::Char25V2,
+                FeatureProfile::KoreanWordChar25V3,
                 NormalizationProfile::KoreanV2,
                 FeatureSchema::SparseV2,
             ),

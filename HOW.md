@@ -50,13 +50,21 @@ The runtime does no stemming. Each inflected form is its own row.
 
 ## Model
 
-A hashed linear classifier, `src/sparse.rs`. Features: word unigrams, word bigrams, character 3-, 4-, and 5-grams of the normalized text. Each feature hashes into one of 65,536 bins. Each bin holds one 16-bit log-odds weight. One artifact is 131 KB.
+A hashed linear classifier, `src/sparse.rs`. Most profiles use word unigrams, word bigrams, and character 3-, 4-, and 5-grams of the normalized text. Each feature hashes into one of 65,536 bins. Each bin holds one 16-bit weight. One artifact is 131 KB.
+
+ZH uses Han unigrams and character 2- through 5-grams. Han, Latin, and mixed-script grams use separate hash namespaces.
+
+TR uses only character 3-, 4-, and 5-grams within each token. It does not join characters across token boundaries.
+
+KO keeps character 2- through 5-grams. It adds word unigrams for boundary evidence.
 
 Training (`crates/blasphem-train/src/compiler.rs`):
 
 1. Count clean and toxic document frequencies per bin on the development split.
 2. Drop bins seen in fewer than 2 documents.
 3. Store the log-odds ratio per bin, quantized to 16 bits, plus a bias.
+
+TR and KO train L2 logistic models with inverse-frequency class weights. TR uses cost 1.0. KO uses cost 0.15. The compiler quantizes their coefficients into the same artifact format.
 
 The raw score is the bias plus the weights of the message bins.
 

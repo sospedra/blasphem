@@ -392,7 +392,11 @@ cargo run --release --locked -p blasphem-train -- compile \
 
 `--hurtlex-root` is a legacy name. It now points at the clean-room lexica, and `compile` reads them directly: it resolves `{hurtlex-root}/{CODE}.tsv`, which is exactly the flat layout `data/clean-room-v1` already uses.
 
-The compiler uses word unigrams, word bigrams, and character 3-grams through 5-grams.
+Most profiles use word unigrams, word bigrams, and character 3-grams through 5-grams.
+
+Chinese uses Han unigrams and character 2-grams through 5-grams. Han, Latin, and mixed-script grams use separate hash namespaces.
+
+Turkish uses character 3-grams through 5-grams within each token. Its compiler uses class-weighted L2 logistic training.
 
 The compiler hashes features into 65,536 bins. It writes fixed integer weights and a validation boundary.
 

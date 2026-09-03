@@ -103,7 +103,7 @@
           "file_sha256": "46840b1cecc3bf73a422a754c749ef4b10f6b57c40007200062a2b7e15d3653e"
         }
       ],
-      "feature_profile": "Char25V2",
+      "feature_profile": "ChineseScriptChar15V3",
       "normalization_profile": "ChineseV2",
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
@@ -117,21 +117,21 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": 3946,
-      "score_scale": 6622,
+      "boundary": 3895,
+      "score_scale": 7056,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 13,
-        "true_negative": 381,
-        "false_positive": 1,
-        "false_negative": 359
+        "true_positive": 27,
+        "true_negative": 379,
+        "false_positive": 3,
+        "false_negative": 345
       },
       "validation_metrics": {
-        "accuracy": 0.5225464190981433,
-        "precision": 0.9285714285714286,
-        "recall": 0.03494623655913978,
-        "specificity": 0.9973821989528796,
-        "f1": 0.06735751295336788
+        "accuracy": 0.5384615384615384,
+        "precision": 0.9,
+        "recall": 0.07258064516129033,
+        "specificity": 0.9921465968586387,
+        "f1": 0.13432835820895522
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -139,7 +139,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "ca0098bc453def36abc9069995819a0cdda575d13b4456fafa4dc8bbc9ea9c05"
+      "artifact_sha256": "605d1a49534b84e498e8978a1e61eda1ba489c0de4ac9904cce4c571a1e9060f"
     },
     {
       "language": "ES",
@@ -821,7 +821,7 @@
           "file_sha256": "96853496474b2a18a5ca045103fa0001cef4d9c1b3829dfc7267ba0b3f49d9ba"
         }
       ],
-      "feature_profile": "WordChar35V2",
+      "feature_profile": "TurkishChar35V3",
       "normalization_profile": "TurkishV2",
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
@@ -835,21 +835,21 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": 29223,
-      "score_scale": 45197,
+      "boundary": 1505,
+      "score_scale": 3637,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 116,
-        "true_negative": 3691,
-        "false_positive": 12,
-        "false_negative": 788
+        "true_positive": 227,
+        "true_negative": 3678,
+        "false_positive": 25,
+        "false_negative": 677
       },
       "validation_metrics": {
-        "accuracy": 0.8263512046885175,
-        "precision": 0.90625,
-        "recall": 0.12831858407079647,
-        "specificity": 0.9967593842830138,
-        "f1": 0.2248062015503876
+        "accuracy": 0.8476231821141741,
+        "precision": 0.9007936507936508,
+        "recall": 0.25110619469026546,
+        "specificity": 0.9932487172562787,
+        "f1": 0.39273356401384085
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -857,7 +857,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "ca1e089ba2e8c9063a210f00e458936ff4b36a4eeabebdad9b9d4c784e5e2fac"
+      "artifact_sha256": "d99e4a38451a36e8d6d4a3e8589dfa1aea676bbfc6b0ee11dc291804a3be8dfe"
     },
     {
       "language": "VI",
@@ -973,7 +973,7 @@
           "file_sha256": "8f7b0cb69bfa592dfeca663be62f9e2828201e0165480e0963cea992a21a4e37"
         }
       ],
-      "feature_profile": "Char25V2",
+      "feature_profile": "KoreanWordChar25V3",
       "normalization_profile": "KoreanV2",
       "feature_schema": "SparseV2",
       "rule_pack_version": 1,
@@ -987,21 +987,21 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": -388,
-      "score_scale": 4693,
+      "boundary": 548,
+      "score_scale": 1536,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 1691,
+        "true_positive": 1938,
         "true_negative": 4729,
         "false_positive": 146,
-        "false_negative": 2160
+        "false_negative": 1913
       },
       "validation_metrics": {
-        "accuracy": 0.7357322942929178,
-        "precision": 0.9205225911812738,
-        "recall": 0.43910672552583746,
+        "accuracy": 0.7640385056154022,
+        "precision": 0.9299424184261037,
+        "recall": 0.503245910153207,
         "specificity": 0.9700512820512821,
-        "f1": 0.5945850914205345
+        "f1": 0.6530749789385004
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -1009,7 +1009,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "2b4c986269db232f85341323449ac6270e772a76171b56b75f6a7a451dd4394a"
+      "artifact_sha256": "afd29976c6f9dfd57da638fb9dc037e6267ad19717a3417d6dd9614bee4e4b57"
     },
     {
       "language": "IT",

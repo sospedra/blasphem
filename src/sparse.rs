@@ -384,6 +384,9 @@ fn parse_feature_profile(value: u8) -> Result<FeatureProfile, SparseModelError> 
         1 => Ok(FeatureProfile::EsLegacyWordChar35V1),
         2 => Ok(FeatureProfile::WordChar35V2),
         3 => Ok(FeatureProfile::Char25V2),
+        4 => Ok(FeatureProfile::TurkishChar35V3),
+        5 => Ok(FeatureProfile::ChineseScriptChar15V3),
+        6 => Ok(FeatureProfile::KoreanWordChar25V3),
         _ => Err(SparseModelError::InvalidFeatureProfile(value)),
     }
 }

@@ -44,7 +44,7 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/zh-sparse-v2.bin"),
-        digest("ca0098bc453def36abc9069995819a0cdda575d13b4456fafa4dc8bbc9ea9c05"),
+        digest("605d1a49534b84e498e8978a1e61eda1ba489c0de4ac9904cce4c571a1e9060f"),
         Some(digest(
             "8f789c2eb2b8dd62a13ff91aafea6c7b84559bec43599be3150917ff5d920923",
         )),
@@ -114,7 +114,7 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/tr-sparse-v2.bin"),
-        digest("ca1e089ba2e8c9063a210f00e458936ff4b36a4eeabebdad9b9d4c784e5e2fac"),
+        digest("d99e4a38451a36e8d6d4a3e8589dfa1aea676bbfc6b0ee11dc291804a3be8dfe"),
         Some(digest(
             "5398b7ae04964b79d9b69376d9aba85120a76b086942b3b2fafc6f17af8ff886",
         )),
@@ -128,7 +128,7 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ko-sparse-v2.bin"),
-        digest("2b4c986269db232f85341323449ac6270e772a76171b56b75f6a7a451dd4394a"),
+        digest("afd29976c6f9dfd57da638fb9dc037e6267ad19717a3417d6dd9614bee4e4b57"),
         Some(digest(
             "1fe1886792cc809f4685aa5de19872fa5b40b183e74e2791caca217f7984b824",
         )),

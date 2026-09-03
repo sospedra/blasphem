@@ -43,7 +43,7 @@ fn v2_round_trip_preserves_every_header_field() {
     assert_eq!(artifact.len(), 131_112);
     let model = SparseModel::from_bytes(&artifact).expect("parse");
     assert_eq!(model.language(), Language::Tr);
-    assert_eq!(model.feature_profile(), FeatureProfile::WordChar35V2);
+    assert_eq!(model.feature_profile(), FeatureProfile::TurkishChar35V3);
     assert_eq!(
         model.normalization_profile(),
         NormalizationProfile::TurkishV2

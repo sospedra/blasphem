@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, ops::RangeInclusive};
 
 use thiserror::Error;
 use unicode_general_category::{GeneralCategory, get_general_category};
@@ -60,8 +60,12 @@ fn feature_hash<'a>(namespace: u8, arity: u8, parts: impl IntoIterator<Item = &'
 }
 
 fn character_feature_hash(length: u8, characters: &[char]) -> usize {
+    character_feature_hash_in(b'C', length, characters)
+}
+
+fn character_feature_hash_in(namespace: u8, length: u8, characters: &[char]) -> usize {
     let mut hash = FNV_OFFSET;
-    update_hash(&mut hash, &[b'C', length]);
+    update_hash(&mut hash, &[namespace, length]);
     for character in characters {
         let mut buffer = [0_u8; 4];
         update_hash(&mut hash, character.encode_utf8(&mut buffer).as_bytes());
@@ -99,6 +103,15 @@ pub fn extract_feature_bins(
             | NormalizationProfile::JapaneseV2
             | NormalizationProfile::KoreanV2,
         ) => compact_char_25(normalization, text),
+        (FeatureProfile::TurkishChar35V3, NormalizationProfile::TurkishV2) => {
+            token_char(normalization, text, 3..=5)
+        }
+        (FeatureProfile::ChineseScriptChar15V3, NormalizationProfile::ChineseV2) => {
+            chinese_script_char_15(normalization, text)
+        }
+        (FeatureProfile::KoreanWordChar25V3, NormalizationProfile::KoreanV2) => {
+            korean_word_char_25(normalization, text)
+        }
         _ => Err(FeatureError::ProfileMismatch {
             feature,
             normalization,
@@ -221,6 +234,26 @@ fn word_char_35(
     Ok(bins.into_iter().collect())
 }
 
+fn token_char(
+    normalization: NormalizationProfile,
+    text: &str,
+    lengths: RangeInclusive<usize>,
+) -> Result<Vec<usize>, FeatureError> {
+    let tokens = word_tokens(normalization, text)?;
+    let mut bins = BTreeSet::new();
+    for token in &tokens {
+        emit_character_grams(
+            &token.text.chars().collect::<Vec<_>>(),
+            *lengths.start(),
+            *lengths.end(),
+            |_, bin| {
+                bins.insert(bin);
+            },
+        );
+    }
+    Ok(bins.into_iter().collect())
+}
+
 fn compact_char_25(
     normalization: NormalizationProfile,
     text: &str,
@@ -230,6 +263,85 @@ fn compact_char_25(
         bins.insert(bin);
     })?;
     Ok(bins.into_iter().collect())
+}
+
+fn korean_word_char_25(
+    normalization: NormalizationProfile,
+    text: &str,
+) -> Result<Vec<usize>, FeatureError> {
+    let mut bins = compact_char_25(normalization, text)?
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    for token in word_tokens(normalization, text)? {
+        bins.insert(feature_hash(b'W', 1, [token.text.as_bytes()]) & (BIN_COUNT - 1));
+    }
+    Ok(bins.into_iter().collect())
+}
+
+fn chinese_script_char_15(
+    normalization: NormalizationProfile,
+    text: &str,
+) -> Result<Vec<usize>, FeatureError> {
+    let normalized = normalize_v2(normalization, text)?;
+    let mut bins = BTreeSet::new();
+    let mut segment = Vec::new();
+    for character in normalized.chars() {
+        if is_compact_boundary(character) {
+            emit_chinese_character_grams(&segment, |_, bin| {
+                bins.insert(bin);
+            });
+            segment.clear();
+            continue;
+        }
+        if !character.is_whitespace() {
+            segment.push(character);
+        }
+    }
+    emit_chinese_character_grams(&segment, |_, bin| {
+        bins.insert(bin);
+    });
+    Ok(bins.into_iter().collect())
+}
+
+fn emit_chinese_character_grams(content: &[char], mut emit: impl FnMut(u8, usize)) {
+    if content.is_empty() {
+        return;
+    }
+    let mut characters = Vec::with_capacity(content.len() + 2);
+    characters.push('\u{2}');
+    characters.extend_from_slice(content);
+    characters.push('\u{3}');
+    for length in 1..=5 {
+        for gram in characters.windows(length) {
+            let namespace = chinese_script_namespace(gram);
+            if length == 1 && namespace != b'H' {
+                continue;
+            }
+            emit(
+                namespace,
+                character_feature_hash_in(namespace, length as u8, gram) & (BIN_COUNT - 1),
+            );
+        }
+    }
+}
+
+fn chinese_script_namespace(characters: &[char]) -> u8 {
+    let mut script = None;
+    for character in characters
+        .iter()
+        .filter(|character| !matches!(character, '\u{2}' | '\u{3}'))
+    {
+        let candidate = match character.script() {
+            Script::Han => b'H',
+            Script::Latin => b'L',
+            _ => return b'C',
+        };
+        if script.is_some_and(|value| value != candidate) {
+            return b'C';
+        }
+        script = Some(candidate);
+    }
+    script.unwrap_or(b'C')
 }
 
 fn compact_char_25_with(
@@ -297,9 +409,14 @@ fn is_compact_boundary(character: char) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::{FeatureProfile, NormalizationProfile};
+    use std::collections::BTreeSet;
 
-    use super::{compact_char_25_with, es_legacy_feature_bins, extract_feature_bins, word_tokens};
+    use crate::{FeatureProfile, Language, NormalizationProfile};
+
+    use super::{
+        compact_char_25_with, emit_chinese_character_grams, es_legacy_feature_bins,
+        extract_feature_bins, word_tokens,
+    };
 
     #[test]
     fn spanish_feature_bins_match_frozen_tables_after_move() {
@@ -357,6 +474,21 @@ mod tests {
                     1283, 1579, 15489, 22698, 26691, 32640, 47167, 50706, 51814, 59498,
                 ],
             ),
+            (
+                FeatureProfile::ChineseScriptChar15V3,
+                NormalizationProfile::ChineseV2,
+                "你a",
+                &[6375, 27751, 30612, 31883, 44600, 48369, 55720],
+            ),
+            (
+                FeatureProfile::TurkishChar35V3,
+                NormalizationProfile::TurkishV2,
+                "aptal",
+                &[
+                    14770, 22416, 23221, 23671, 24107, 32100, 32515, 39396, 39410, 42525, 63138,
+                    63143,
+                ],
+            ),
         ];
 
         for &(feature, normalization, text, expected) in cases {
@@ -377,6 +509,44 @@ mod tests {
 
         assert!(!namespaces.is_empty());
         assert!(namespaces.iter().all(|namespace| *namespace == b'C'));
+    }
+
+    #[test]
+    fn korean_profile_keeps_character_grams_and_adds_word_boundaries() {
+        let (feature, normalization, _) = Language::Ko.profiles();
+        let spaced = extract_feature_bins(feature, normalization, "가 나").expect("features");
+        let joined = extract_feature_bins(feature, normalization, "가나").expect("features");
+        let legacy = extract_feature_bins(
+            FeatureProfile::Char25V2,
+            NormalizationProfile::KoreanV2,
+            "가 나",
+        )
+        .expect("legacy features");
+
+        assert!(legacy.iter().all(|bin| spaced.contains(bin)));
+        assert_ne!(spaced, joined);
+    }
+
+    #[test]
+    fn chinese_script_profile_scores_one_han_character() {
+        let bins = extract_feature_bins(
+            FeatureProfile::ChineseScriptChar15V3,
+            NormalizationProfile::ChineseV2,
+            "你",
+        )
+        .expect("features");
+
+        assert!(!bins.is_empty());
+    }
+
+    #[test]
+    fn chinese_script_profile_separates_han_and_latin_grams() {
+        let mut namespaces = BTreeSet::new();
+        emit_chinese_character_grams(&['你', 'a'], |namespace, _| {
+            namespaces.insert(namespace);
+        });
+
+        assert_eq!(namespaces, BTreeSet::from(*b"CHL"));
     }
 
     #[test]

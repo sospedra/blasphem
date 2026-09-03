@@ -14,6 +14,7 @@ anyhow.workspace = true
 bytes = "1.10"
 clap.workspace = true
 csv.workspace = true
+liblinear = "=1.0.0"
 parquet = { version = "55.2", default-features = false, features = ["snap"] }
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
 rustix = { version = "1.1", features = ["fs"] }

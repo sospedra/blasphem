@@ -2,7 +2,10 @@ use std::{
     fs::{self, File},
     io::Write,
     path::{Component, Path, PathBuf},
-    sync::atomic::{AtomicU64, Ordering},
+    sync::{
+        Once,
+        atomic::{AtomicU64, Ordering},
+    },
 };
 
 use blasphem::{
@@ -11,6 +14,7 @@ use blasphem::{
     canonical_rule_identity, encode_sparse_v1, encode_sparse_v2, extract_feature_bins,
     lexicon_marked_text, uses_lexicon_features,
 };
+use liblinear::{LibLinearModel, SolverType, util::TrainingInput};
 use sha2::{Digest, Sha256};
 use thiserror::Error;
 
@@ -35,6 +39,7 @@ const WEIGHT_SCALE: u16 = 256;
 const MIN_DOCUMENT_FREQUENCY: u32 = 2;
 const FALSE_WARNING_LIMIT_BASIS_POINTS: u16 = 300;
 static STAGING_SEQUENCE: AtomicU64 = AtomicU64::new(0);
+static SILENCE_LIBLINEAR: Once = Once::new();
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BatchCompileOptions {
@@ -413,6 +418,8 @@ pub enum CompileError {
         #[source]
         source: FeatureError,
     },
+    #[error("cannot train the class-weighted linear model: {0}")]
+    LinearTraining(String),
     #[error("the validation score set is empty")]
     EmptyScoreScaleInput,
     #[error(
@@ -453,20 +460,16 @@ pub fn train_weights(
             normalization,
         });
     }
+    validate_compile_split("development", language, development)?;
+    if matches!(language, Language::Tr | Language::Ko) {
+        return train_class_weighted_linear(profile, normalization, development);
+    }
 
     let mut clean = vec![0_u32; BIN_COUNT];
     let mut toxic = vec![0_u32; BIN_COUNT];
     let mut clean_documents = 0_u32;
     let mut toxic_documents = 0_u32;
     for row in development {
-        if row.detector_language != language {
-            return Err(CompileError::LanguageMismatch {
-                expected: language,
-                actual: row.detector_language,
-                split: "development",
-                source_id: row.source_id.clone(),
-            });
-        }
         let (counts, documents) = match row.label {
             EvalLabel::Clean => (&mut clean, &mut clean_documents),
             EvalLabel::Toxic => (&mut toxic, &mut toxic_documents),
@@ -483,20 +486,6 @@ pub fn train_weights(
             counts[bin] = counts[bin].saturating_add(1);
         }
     }
-    if clean_documents == 0 {
-        return Err(CompileError::MissingClass {
-            language,
-            split: "development",
-            label: "clean",
-        });
-    }
-    if toxic_documents == 0 {
-        return Err(CompileError::MissingClass {
-            language,
-            split: "development",
-            label: "toxic",
-        });
-    }
 
     Ok(quantize_log_odds(
         &clean,
@@ -504,6 +493,114 @@ pub fn train_weights(
         clean_documents,
         toxic_documents,
     ))
+}
+
+fn train_class_weighted_linear(
+    profile: FeatureProfile,
+    normalization: NormalizationProfile,
+    development: &[PreparedRow],
+) -> Result<TrainedWeights, CompileError> {
+    let mut labels = Vec::with_capacity(development.len());
+    let mut features = Vec::with_capacity(development.len());
+    let mut clean_documents = 0_u32;
+    let mut toxic_documents = 0_u32;
+    for row in development {
+        let label = match row.label {
+            EvalLabel::Clean => {
+                clean_documents = clean_documents.saturating_add(1);
+                -1.0
+            }
+            EvalLabel::Toxic => {
+                toxic_documents = toxic_documents.saturating_add(1);
+                1.0
+            }
+        };
+        let bins = extract_feature_bins(profile, normalization, &row.text).map_err(|source| {
+            CompileError::FeatureExtraction {
+                split: "development",
+                source_id: row.source_id.clone(),
+                source,
+            }
+        })?;
+        labels.push(label);
+        features.push(
+            bins.into_iter()
+                .map(|bin| {
+                    (
+                        u32::try_from(bin + 1).expect("the feature index fits in u32"),
+                        1.0,
+                    )
+                })
+                .collect::<Vec<_>>(),
+        );
+    }
+    ensure_linear_dimension(&mut features);
+    let input = TrainingInput::from_sparse_features(labels, features)
+        .map_err(|error| CompileError::LinearTraining(error.to_string()))?;
+    let total_documents = f64::from(clean_documents) + f64::from(toxic_documents);
+    let class_weights = vec![
+        total_documents / (2.0 * f64::from(clean_documents)),
+        total_documents / (2.0 * f64::from(toxic_documents)),
+    ];
+    let mut builder = liblinear::Builder::new();
+    builder.problem().input_data(input).bias(1.0);
+    builder
+        .parameters()
+        .solver_type(SolverType::L2R_LR)
+        .stopping_criterion(0.0001)
+        .constraints_violation_cost(linear_training_cost(profile))
+        .cost_penalty_labels(vec![-1, 1])
+        .cost_penalty_weights(class_weights);
+    SILENCE_LIBLINEAR.call_once(|| liblinear::toggle_liblinear_stdout_output(false));
+    let model = builder
+        .build_model()
+        .map_err(|error| CompileError::LinearTraining(error.to_string()))?;
+    quantize_linear_model(&model)
+}
+
+fn linear_training_cost(profile: FeatureProfile) -> f64 {
+    match profile {
+        FeatureProfile::KoreanWordChar25V3 => 0.15,
+        _ => 1.0,
+    }
+}
+
+fn ensure_linear_dimension(features: &mut [Vec<(u32, f64)>]) {
+    let maximum_index = u32::try_from(BIN_COUNT).expect("the bin count fits in u32");
+    if let Some(first) = features.first_mut() {
+        if first.last().map(|entry| entry.0) != Some(maximum_index) {
+            first.push((maximum_index, 0.0));
+        }
+    }
+}
+
+fn quantize_linear_model(model: &impl LibLinearModel) -> Result<TrainedWeights, CompileError> {
+    if model.num_features() != BIN_COUNT {
+        return Err(CompileError::LinearTraining(format!(
+            "expected {BIN_COUNT} features, got {}",
+            model.num_features()
+        )));
+    }
+    let direction = match model.labels().as_slice() {
+        [1, -1] => 1.0,
+        [-1, 1] => -1.0,
+        labels => {
+            return Err(CompileError::LinearTraining(format!(
+                "unexpected labels {labels:?}"
+            )));
+        }
+    };
+    let weights = (1..=BIN_COUNT)
+        .map(|index| {
+            let feature_index = i32::try_from(index).expect("the feature index fits in i32");
+            quantize_i16(direction * model.feature_coefficient(feature_index, 0))
+        })
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    Ok(TrainedWeights {
+        bias: quantize_i32(direction * model.label_bias(0)),
+        weights,
+    })
 }
 
 pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, CompileError> {

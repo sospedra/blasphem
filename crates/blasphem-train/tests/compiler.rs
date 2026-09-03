@@ -114,6 +114,63 @@ fn training_fixture_has_a_stable_version_two_artifact() {
 }
 
 #[test]
+fn turkish_training_fixture_has_a_stable_balanced_artifact() {
+    let development = vec![
+        prepared_row(
+            Language::Tr,
+            EvalLabel::Clean,
+            "clean/1",
+            "bugün hava güzel",
+        ),
+        prepared_row(Language::Tr, EvalLabel::Clean, "clean/2", "yarın görüşürüz"),
+        prepared_row(Language::Tr, EvalLabel::Clean, "clean/3", "kitabı okudum"),
+        prepared_row(
+            Language::Tr,
+            EvalLabel::Clean,
+            "clean/4",
+            "yardımın için sağ ol",
+        ),
+        prepared_row(
+            Language::Tr,
+            EvalLabel::Clean,
+            "clean/5",
+            "maç akşam başlıyor",
+        ),
+        prepared_row(
+            Language::Tr,
+            EvalLabel::Clean,
+            "clean/6",
+            "toplantı sona erdi",
+        ),
+        prepared_row(Language::Tr, EvalLabel::Toxic, "toxic/1", "aptal herif"),
+        prepared_row(Language::Tr, EvalLabel::Toxic, "toxic/2", "aptallar"),
+    ];
+    let trained = train_weights(
+        FeatureProfile::TurkishChar35V3,
+        NormalizationProfile::TurkishV2,
+        &development,
+    )
+    .expect("train Turkish fixture");
+    let artifact = encode_sparse_v2(&SparseV2Input {
+        language: Language::Tr,
+        feature_profile: FeatureProfile::TurkishChar35V3,
+        normalization_profile: NormalizationProfile::TurkishV2,
+        feature_schema: FeatureSchema::SparseV2,
+        bias: trained.bias,
+        decision_boundary: 17,
+        score_scale: 90,
+        max_false_warning_basis_points: 300,
+        weights: &trained.weights,
+    })
+    .expect("encode Turkish fixture");
+
+    assert_eq!(
+        format!("{:x}", Sha256::digest(&artifact)),
+        "87d8787e250a802fcace76c720c60824acf11cdfc3e2b1843ee604c33a1f37f9"
+    );
+}
+
+#[test]
 fn training_excludes_document_frequency_one_from_weights_and_bias() {
     let baseline = vec![
         prepared_row(Language::En, EvalLabel::Toxic, "toxic/1", "tox"),

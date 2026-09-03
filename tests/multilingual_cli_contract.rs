@@ -322,7 +322,7 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "ZH",
         "我想要确定什么都没有发生在汤姆身上。",
-        "ok=true score=28 threshold=50 should_nudge=false",
+        "ok=true score=0 threshold=50 should_nudge=false",
     ),
     (
         "ES",
@@ -372,7 +372,7 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "TR",
         "Çok büyük bir musibet.",
-        "ok=true score=0 threshold=50 should_nudge=false",
+        "ok=true score=7 threshold=50 should_nudge=false",
     ),
     (
         "VI",
@@ -382,7 +382,7 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "KO",
         "물이 별로 없다.",
-        "ok=true score=15 threshold=50 should_nudge=false",
+        "ok=true score=18 threshold=50 should_nudge=false",
     ),
     (
         "IT",

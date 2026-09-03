@@ -79,7 +79,7 @@ fn language_profiles_and_indexes_match_the_exact_table() {
         (
             Language::Zh,
             1,
-            FeatureProfile::Char25V2,
+            FeatureProfile::ChineseScriptChar15V3,
             NormalizationProfile::ChineseV2,
             FeatureSchema::SparseV2,
         ),
@@ -149,7 +149,7 @@ fn language_profiles_and_indexes_match_the_exact_table() {
         (
             Language::Tr,
             11,
-            FeatureProfile::WordChar35V2,
+            FeatureProfile::TurkishChar35V3,
             NormalizationProfile::TurkishV2,
             FeatureSchema::SparseV2,
         ),
@@ -163,7 +163,7 @@ fn language_profiles_and_indexes_match_the_exact_table() {
         (
             Language::Ko,
             13,
-            FeatureProfile::Char25V2,
+            FeatureProfile::KoreanWordChar25V3,
             NormalizationProfile::KoreanV2,
             FeatureSchema::SparseV2,
         ),
@@ -218,6 +218,12 @@ fn profile_json_names_match_the_exact_tables() {
         (FeatureProfile::EsLegacyWordChar35V1, "EsLegacyWordChar35V1"),
         (FeatureProfile::WordChar35V2, "WordChar35V2"),
         (FeatureProfile::Char25V2, "Char25V2"),
+        (FeatureProfile::TurkishChar35V3, "TurkishChar35V3"),
+        (
+            FeatureProfile::ChineseScriptChar15V3,
+            "ChineseScriptChar15V3",
+        ),
+        (FeatureProfile::KoreanWordChar25V3, "KoreanWordChar25V3"),
     ];
     for (profile, name) in feature_cases {
         let json = format!("\"{name}\"");
