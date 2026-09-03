@@ -25,7 +25,7 @@ await init({ locales: ["en", "es"], grawlix: true });
 
 const v = judge("you are a stupid loser");
 v.safe;    // false
-v.score;   // 0.64
+v.score;   // 0.95
 v.locale;  // "en"
 v.grawlix; // "you are a @#$%&! loser"
 ```
@@ -113,7 +113,7 @@ Self-hosting instead of jsDelivr adds `"prebuild": "blasphem-assets public/blasp
 
 ## Svelte and Solid
 
-Plain Vite apps need nothing but the import. Verified with `create-vite` `svelte-ts` and `solid-ts` templates, built and driven in Chromium and WebKit; each judged `you are a stupid loser` to `score 0.64`, and downloaded only the requested locales.
+Plain Vite apps need nothing but the import. Verified with `create-vite` `svelte-ts` and `solid-ts` templates, built and driven in Chromium and WebKit; each judged `you are a stupid loser` to `score 0.95`, and downloaded only the requested locales.
 
 Svelte 5:
 

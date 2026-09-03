@@ -101,7 +101,7 @@ fn check_prints_the_prediction_and_match() {
 fn check_prints_the_sparse_channel_status() {
     let stdout = stdout(run("ES", "La gente del pueblo habló con la policía."));
 
-    assert!(stdout.contains("sparse_score=14"));
+    assert!(stdout.contains("sparse_score=7"));
 }
 
 #[test]
@@ -124,11 +124,11 @@ fn spanish_check_nudges_harm_and_preserves_safe_context() {
         ),
         (
             "No te voy a matar",
-            "ok=true score=23 threshold=50 should_nudge=false",
+            "ok=true score=14 threshold=50 should_nudge=false",
         ),
         (
             "Te voy a matar de risa",
-            "ok=true score=23 threshold=50 should_nudge=false",
+            "ok=true score=14 threshold=50 should_nudge=false",
         ),
     ] {
         let stdout = stdout(run("ES", text));
@@ -173,7 +173,7 @@ fn check_accepts_uppercase_and_lowercase_auto() {
         let stdout = stdout(run(language, "I never should've bought that."));
         assert_known_auto_output(
             &stdout,
-            "ok=true score=42 threshold=50 should_nudge=false",
+            "ok=true score=48 threshold=50 should_nudge=false",
             "EN",
         );
     }
@@ -344,7 +344,7 @@ fn judge_prints_a_safe_verdict_and_exits_zero() {
     );
 
     assert_eq!(output.status.code(), Some(0), "{}", lossy(&output.stderr));
-    assert_eq!(lossy(&output.stdout), "safe=true score=0.29 locale=en\n");
+    assert_eq!(lossy(&output.stdout), "safe=true score=0.42 locale=en\n");
 }
 
 #[test]

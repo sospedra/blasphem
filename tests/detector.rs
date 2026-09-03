@@ -120,6 +120,31 @@ fn rejects_a_match_inside_a_longer_word() {
 }
 
 #[test]
+fn matches_entries_inside_unspaced_chinese_and_japanese_text() {
+    for (language, lemma, text) in [
+        ("ZH", "烂裤裆", "什么烂裤裆？"),
+        ("JA", "クズ", "お前はクズだ"),
+    ] {
+        let detector = Detector::new(vec![entry(language, lemma, MatchLevel::Conservative)])
+            .expect("valid detector");
+
+        let result = detector.check(text);
+
+        assert!(result.is_match(), "{language}");
+        assert_eq!(result.matches[0].entry.lemma, lemma);
+    }
+}
+
+#[test]
+fn keeps_hangul_entries_word_delimited() {
+    let detector = Detector::new(vec![entry("KO", "돼지새끼", MatchLevel::Conservative)])
+        .expect("valid detector");
+
+    assert!(!detector.check("북괴돼지새끼 살아있으면 좋겠네").is_match());
+    assert!(detector.check("돼지새끼 같아").is_match());
+}
+
+#[test]
 fn matches_a_unicode_confusable_view() {
     let detector = Detector::new(vec![entry("EN", "idiot", MatchLevel::Conservative)])
         .expect("valid detector");

@@ -21,7 +21,7 @@ import Blasphem
 
 let judge = try Judge(locales: ["en", "es"], detectLanguage: true, grawlix: true)
 try judge.judge("you are a stupid loser")
-// Judgement(safe: false, score: 0.64, locale: "en", grawlix: "you are a @#$%&! loser")
+// Judgement(safe: false, score: 0.95, locale: "en", grawlix: "you are a @#$%&! loser")
 judge.locales   // ["en", "es"]
 judge.close()
 ```

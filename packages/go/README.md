@@ -11,7 +11,7 @@ import blasphem "github.com/sospedra/blasphem/packages/go"
 
 err := blasphem.Init(blasphem.Options{Locales: []string{"en", "es"}, Assets: "/srv/blasphem-packs", Grawlix: true})
 verdict := blasphem.Judge("you are a stupid loser")
-// {Safe:false Score:0.64 Locale:en Grawlix:you are a @#$%&! loser}
+// {Safe:false Score:0.95 Locale:en Grawlix:you are a @#$%&! loser}
 ```
 
 `Init` loads the locales once and installs the package judge. `Judge` is

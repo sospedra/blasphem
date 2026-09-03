@@ -142,6 +142,25 @@ fn runtime_applies_only_declared_context_suppression_to_sparse_scores() {
 }
 
 #[test]
+fn clean_controls_do_not_pin_the_english_or_russian_boundaries() {
+    for (language, text) in [
+        (Language::Ru, "Ты написал thank you"),
+        (Language::En, "I will kill your process"),
+    ] {
+        let model = sparse_model(language);
+        let score = model.score(text);
+
+        assert!(
+            score < 45,
+            "{} control remains pinned at {score}; raw score {}, boundary {}",
+            language.code(),
+            model.raw_score(text),
+            model.raw_boundary(),
+        );
+    }
+}
+
+#[test]
 fn grawlix_masks_matched_spans() {
     let detector = detector(Language::En);
     let result = detector.analyze("you are a stupid loser", ReplyTarget::Person);
@@ -183,7 +202,7 @@ fn judge_reports_unsafe_with_a_normalized_score() {
 
     // These exact values appear in README.md and in the package README.
     assert!(!verdict.safe);
-    assert_eq!(verdict.score, 0.64);
+    assert_eq!(verdict.score, 0.95);
     assert_eq!(verdict.locale, Some(Language::En));
     assert_eq!(verdict.grawlix, None);
 }
@@ -337,7 +356,7 @@ fn judge_from_packs_matches_the_embedded_judge() {
     ] {
         assert_eq!(from_packs.judge(text), embedded.judge(text), "{text:?}");
     }
-    assert_eq!(from_packs.judge("you are a stupid loser").score, 0.64);
+    assert_eq!(from_packs.judge("you are a stupid loser").score, 0.95);
 }
 
 #[test]

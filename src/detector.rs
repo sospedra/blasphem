@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::sync::Arc;
+use unicode_script::{Script, UnicodeScript};
 
 use crate::{
     AnalysisContext, CandidateViewKind, LexiconEntry, MatchLevel, PolicyResult, TextDocument,
@@ -43,9 +44,12 @@ impl Detection {
 }
 
 /// Languages whose sparse model also reads lexicon hits, as marker words appended to the text.
+///
+/// ZH and JA stay out: their lexica cover 5% and 22% of toxic validation rows, and a marker that
+/// strong moves the boundary above the toxic rows that carry no lexicon word.
 #[must_use]
-pub const fn uses_lexicon_features(_language: crate::Language) -> bool {
-    true
+pub const fn uses_lexicon_features(language: crate::Language) -> bool {
+    !matches!(language, crate::Language::Zh | crate::Language::Ja)
 }
 
 /// Appends one marker word per matched lexicon category, so the sparse model can weight lexicon hits.
@@ -272,17 +276,29 @@ pub fn normalize_text(text: &str) -> String {
 }
 
 fn has_word_boundaries(text: &str, start: usize, end: usize) -> bool {
-    let starts_on_boundary = start == 0
-        || text[..start]
-            .chars()
-            .next_back()
-            .is_none_or(|character| !character.is_alphanumeric());
-    let ends_on_boundary = end == text.len()
-        || text[end..]
-            .chars()
-            .next()
-            .is_none_or(|character| !character.is_alphanumeric());
-    starts_on_boundary && ends_on_boundary
+    let matched = &text[start..end];
+    let before = text[..start].chars().next_back();
+    let after = text[end..].chars().next();
+    is_boundary(before, matched.chars().next()) && is_boundary(after, matched.chars().next_back())
+}
+
+/// Two adjacent characters form a word boundary when the outside one is not alphanumeric, or when
+/// either belongs to a script written without spaces between words. Hangul stays out: Korean
+/// spaces its words, and its clean control ko-c12 pins the boundary once inner matches fire.
+fn is_boundary(outside: Option<char>, inside: Option<char>) -> bool {
+    match (outside, inside) {
+        (None, _) | (_, None) => true,
+        (Some(outside), Some(inside)) => {
+            !outside.is_alphanumeric() || unspaced_script(outside) || unspaced_script(inside)
+        }
+    }
+}
+
+fn unspaced_script(character: char) -> bool {
+    matches!(
+        character.script(),
+        Script::Han | Script::Hiragana | Script::Katakana
+    )
 }
 
 fn match_score(found: &LexiconMatch) -> f64 {

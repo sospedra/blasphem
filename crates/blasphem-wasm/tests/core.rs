@@ -85,7 +85,7 @@ fn engine_scores_english_and_masks_on_request() {
 
     assert_eq!(engine.locales(), vec!["en".to_owned(), "es".to_owned()]);
     assert!(!verdict.safe);
-    assert_eq!(verdict.score, 0.64);
+    assert_eq!(verdict.score, 0.95);
     assert_eq!(verdict.locale.as_deref(), Some("en"));
     assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! @#$%&"));
 }

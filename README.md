@@ -36,8 +36,8 @@ printf 'hello there\nTe voy a matar\n' | blasphem judge
 ```
 
 ```
-safe=false score=0.64 locale=en
-{"safe":false,"score":0.64,"locale":"en","grawlix":"you are a @#$%&! loser"}
+safe=false score=0.95 locale=en
+{"safe":false,"score":0.95,"locale":"en","grawlix":"you are a @#$%&! loser"}
 safe=true score=0 locale=none
 safe=false score=0.95 locale=es
 ```
@@ -72,7 +72,7 @@ let judge = Judge::new(JudgeOptions {
 let verdict = judge.judge("you are a stupid loser");
 
 assert!(!verdict.safe);
-assert_eq!(verdict.score, 0.64);
+assert_eq!(verdict.score, 0.95);
 assert_eq!(verdict.locale, Some(Language::En));
 assert_eq!(verdict.grawlix.as_deref(), Some("you are a @#$%&! loser"));
 ```
@@ -101,7 +101,7 @@ await init({ locales: ["en", "es"], grawlix: true });
 const v = judge("you are a stupid loser");
 
 v.safe;  // false
-v.score; // 0.64
+v.score; // 0.95
 ```
 
 `init` loads the locales once and installs one judge for the module. `judge` is synchronous, so it runs on every keystroke. Before `init` resolves it returns the fail-open verdict and never throws. `createJudge(options)` returns an independent judge instead.
@@ -122,7 +122,7 @@ await init({ locales: ["en", "es"], grawlix: true });
 const v = judge("you are a stupid loser");
 
 v.safe;  // false
-v.score; // 0.64
+v.score; // 0.95
 ```
 
 The engine is the Rust core behind a C ABI on Nitro Modules, so `judge()` is synchronous over JSI. Packs come from the application bundle rather than from `assets`. See `packages/react-native/README.md`.
@@ -135,7 +135,7 @@ import Blasphem
 
 let judge = try Judge(locales: ["en", "es"], grawlix: true)
 try judge.judge("you are a stupid loser")
-// Judgement(safe: false, score: 0.64, locale: "en", grawlix: "you are a @#$%&! loser")
+// Judgement(safe: false, score: 0.95, locale: "en", grawlix: "you are a @#$%&! loser")
 ```
 
 Swift Package Manager, iOS 15.1 and macOS 12. The engine is the Rust core in an XCFramework; each `BlasphemPack<CODE>` and `BlasphemDetect<CODE>` product carries one data file, so the app ships only the locales it links. See `packages/swift/README.md`.
@@ -149,7 +149,7 @@ import me.sospedra.blasphem.JudgeOptions
 
 val judge = Judge.create(context, JudgeOptions(locales = listOf("en", "es"), grawlix = true))
 judge.judge("you are a stupid loser")
-// Judgement(safe=false, score=0.64, locale=en, grawlix=you are a @#$%&! loser)
+// Judgement(safe=false, score=0.95, locale=en, grawlix=you are a @#$%&! loser)
 ```
 
 Maven Central, `minSdk 24`. The engine is the Rust core behind JNI; each `blasphem-pack-<code>` and `blasphem-detect-<code>` artifact carries one asset, so the app ships only the locales it adds. See `packages/android/README.md`.
@@ -165,7 +165,7 @@ import blasphem
 
 blasphem.init(["en", "es"], grawlix=True)
 blasphem.judge("you are a stupid loser")
-# Judgement(safe=False, score=0.64, locale='en', grawlix='you are a @#$%&! loser')
+# Judgement(safe=False, score=0.95, locale='en', grawlix='you are a @#$%&! loser')
 ```
 
 A PyO3 extension over the same Rust core. The wheel is abi3 and covers Python 3.10 and later. `blasphem-packs` supplies the language data when `init` gets no `assets`. See `packages/python/README.md`.
@@ -181,7 +181,7 @@ import blasphem "github.com/sospedra/blasphem/packages/go"
 
 err := blasphem.Init(blasphem.Options{Locales: []string{"en", "es"}, Assets: "/srv/blasphem-packs", Grawlix: true})
 verdict := blasphem.Judge("you are a stupid loser")
-// {Safe:false Score:0.64 Locale:en Grawlix:you are a @#$%&! loser}
+// {Safe:false Score:0.95 Locale:en Grawlix:you are a @#$%&! loser}
 ```
 
 The core compiles to WebAssembly and is embedded in the module; wazero runs it. No cgo, and `CGO_ENABLED=0` builds work. See `packages/go/README.md`.

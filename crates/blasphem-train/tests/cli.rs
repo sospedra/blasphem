@@ -1209,5 +1209,5 @@ fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
         false,
     )
     .expect("the written pack loads with its manifest digests");
-    assert_eq!(judge.judge("you are a stupid loser").score, 0.64);
+    assert_eq!(judge.judge("you are a stupid loser").score, 0.95);
 }

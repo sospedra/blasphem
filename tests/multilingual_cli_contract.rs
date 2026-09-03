@@ -317,7 +317,7 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "EN",
         "I never should've bought that.",
-        "ok=true score=42 threshold=50 should_nudge=false",
+        "ok=true score=48 threshold=50 should_nudge=false",
     ),
     (
         "ZH",
@@ -327,37 +327,37 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "ES",
         "Was ist das? A ship. Todo bien en la costa.",
-        "ok=true score=20 threshold=50 should_nudge=false",
+        "ok=true score=12 threshold=50 should_nudge=false",
     ),
     (
         "AR",
         "هل تحب الكتب؟",
-        "ok=true score=11 threshold=50 should_nudge=false",
+        "ok=true score=5 threshold=50 should_nudge=false",
     ),
     (
         "MS",
         "Dia memberitahu saya yang dia benar-benar letih.",
-        "ok=true score=38 threshold=50 should_nudge=false",
+        "ok=true score=37 threshold=50 should_nudge=false",
     ),
     (
         "PT",
         "Não vou chegar em casa até segunda.",
-        "ok=true score=15 threshold=50 should_nudge=false",
+        "ok=true score=5 threshold=50 should_nudge=false",
     ),
     (
         "FR",
         "Bonjour le monde",
-        "ok=true score=22 threshold=50 should_nudge=false",
+        "ok=true score=42 threshold=50 should_nudge=false",
     ),
     (
         "HI",
         "वह मेरे पिताजी की माँ है। वह मेरी दादी है।",
-        "ok=true score=38 threshold=50 should_nudge=false",
+        "ok=true score=37 threshold=50 should_nudge=false",
     ),
     (
         "RU",
         "Они были здесь.",
-        "ok=true score=46 threshold=50 should_nudge=false",
+        "ok=true score=49 threshold=50 should_nudge=false",
     ),
     (
         "JA",
@@ -377,17 +377,17 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "VI",
         "Đây là 1 lời nói đùa cợt",
-        "ok=true score=13 threshold=50 should_nudge=false",
+        "ok=true score=9 threshold=50 should_nudge=false",
     ),
     (
         "KO",
         "물이 별로 없다.",
-        "ok=true score=18 threshold=50 should_nudge=false",
+        "ok=true score=15 threshold=50 should_nudge=false",
     ),
     (
         "IT",
         "La incontrerai domani sera.",
-        "ok=true score=1 threshold=50 should_nudge=false",
+        "ok=true score=0 threshold=50 should_nudge=false",
     ),
 ];
 

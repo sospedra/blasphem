@@ -60,6 +60,8 @@ Training (`crates/blasphem-train/src/compiler.rs`):
 
 The raw score is the bias plus the weights of the message bins.
 
+For 13 languages the model also reads the lexicon. One marker word per matched lexicon category is appended to the text before scoring. Training and run time do the same (`lexicon_marked_text`, `src/detector.rs`). The model learns the marker weights like any word. ZH and JA run without markers: their lexica cover too few toxic rows.
+
 ## Calibration
 
 The boundary turns a raw score into a verdict. The compiler picks it on the validation split.

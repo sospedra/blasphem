@@ -20,7 +20,7 @@ await init({ locales: ["en", "es"], grawlix: true });
 
 const v = judge("you are a stupid loser");
 v.safe;    // false
-v.score;   // 0.64
+v.score;   // 0.95
 v.locale;  // "en"
 v.grawlix; // "you are a @#$%&! loser"
 ```

@@ -617,8 +617,8 @@ fn explicit_spanish_analysis_loads_the_compiled_sparse_channel() {
         AnalysisContext::for_language("ES"),
     );
 
-    assert_eq!(result.sparse_score, Some(14));
-    assert_eq!(result.nudge().score, 14);
+    assert_eq!(result.sparse_score, Some(7));
+    assert_eq!(result.nudge().score, 7);
     assert!(!result.nudge().should_nudge);
 }
 

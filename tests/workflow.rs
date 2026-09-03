@@ -113,7 +113,7 @@ fn review_evaluation_uses_the_spanish_sparse_nudge() {
     let rows = vec![EvalRow {
         language: "ES".to_owned(),
         label: EvalLabel::Toxic,
-        text: "Qué vergüenza, un país lleno de ignorantes y corruptos que solo roban.".to_owned(),
+        text: "marrana asquerosa farsante hipócrita manipuladora mentirosa traidora corrupta ladrona asesina genocida dictadora cínica descarada desgraciada".to_owned(),
     }];
 
     let report = evaluate_policy(

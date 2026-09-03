@@ -37,14 +37,14 @@ impl EmbeddedArtifact {
 static ARTIFACTS: [EmbeddedArtifact; 15] = [
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/en-sparse-v2.bin"),
-        digest("a6ce03cd6ac303d40b400ce7f193bbc99d0692b67ae79eadf2b2bb1eca336ca7"),
+        digest("7a124d7016eaf218967a39c18fe2a4ecaad1454e2965c4a30f165f6e47f9271e"),
         Some(digest(
             "47e158ffb912b3f6fc6ada64bf6c1deeb05fe45d9d9e552c942a6cf87479b871",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/zh-sparse-v2.bin"),
-        digest("f3416663a35051599ac06f714073ff06dfe6a64f01542cbf51d98e99f8e656b5"),
+        digest("ca0098bc453def36abc9069995819a0cdda575d13b4456fafa4dc8bbc9ea9c05"),
         Some(digest(
             "8f789c2eb2b8dd62a13ff91aafea6c7b84559bec43599be3150917ff5d920923",
         )),
@@ -93,14 +93,14 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ru-sparse-v2.bin"),
-        digest("cc75ab8473d510745ec910dac81adee61372a9833ae3fb94b0d7a08523dff649"),
+        digest("62441730f8bed25ee1dae97a0a511b57a2192983556361ce75d211d3d9e9e6c7"),
         Some(digest(
             "2c196c7b84b99e43ec8daacd064de7264726e5eee03bf166ce2821927d0e4d8a",
         )),
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ja-sparse-v2.bin"),
-        digest("130681d7b107d52911f62f7c9d69068ab8f60f5cea0159a1b9776d06e44fbadc"),
+        digest("ea688b3ec5848a14cfca0ac634abe631f8bd759312d1439773e2fc178c32738f"),
         Some(digest(
             "fd709e7d92472193bc30f8a18db179cf8ad8e5e4d8922604bfd605c287b7dd50",
         )),
@@ -128,7 +128,7 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/ko-sparse-v2.bin"),
-        digest("75bb8b46d8773637144c4b4497d28352bb2e678e002a7e9d6a405a81cd730aea"),
+        digest("2b4c986269db232f85341323449ac6270e772a76171b56b75f6a7a451dd4394a"),
         Some(digest(
             "1fe1886792cc809f4685aa5de19872fa5b40b183e74e2791caca217f7984b824",
         )),

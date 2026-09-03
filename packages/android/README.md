@@ -21,7 +21,7 @@ import me.sospedra.blasphem.JudgeOptions
 
 val judge = Judge.create(context, JudgeOptions(locales = listOf("en", "es"), detectLanguage = true, grawlix = true))
 judge.judge("you are a stupid loser")
-// Judgement(safe=false, score=0.64, locale=en, grawlix=you are a @#$%&! loser)
+// Judgement(safe=false, score=0.95, locale=en, grawlix=you are a @#$%&! loser)
 judge.locales   // [en, es]
 judge.close()
 ```

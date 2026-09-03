@@ -15,7 +15,7 @@ import blasphem
 
 blasphem.init(["en", "es"], grawlix=True)
 blasphem.judge("you are a stupid loser")
-# Judgement(safe=False, score=0.64, locale='en', grawlix='you are a @#$%&! loser')
+# Judgement(safe=False, score=0.95, locale='en', grawlix='you are a @#$%&! loser')
 ```
 
 `init` loads the locales once and installs the module judge. `judge` is
