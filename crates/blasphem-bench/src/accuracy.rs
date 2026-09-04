@@ -5,7 +5,7 @@ use std::{
     fs,
     io::Write,
     path::{Path, PathBuf},
-    process::{Command, Stdio},
+    process::{Command, Output, Stdio},
     time::{SystemTime, UNIX_EPOCH},
 };
 
@@ -375,7 +375,12 @@ fn measure_language(
     language: Language,
 ) -> Result<(String, LanguageAccuracy), AccuracyError> {
     let rows = test_rows(root, language)?;
-    let nudged = judge(root, binary, language, &rows)?;
+    let nudged = AccuracyJudge {
+        root,
+        binary,
+        language,
+    }
+    .predict(&rows)?;
     let matrix = rows
         .iter()
         .zip(&nudged)
@@ -408,7 +413,8 @@ fn test_rows(root: &Path, language: Language) -> Result<Vec<CorpusRow>, Accuracy
     let path = root
         .join(CORPUS_ROOT)
         .join(format!("{}.tsv", language.storage_code()));
-    let text = String::from_utf8_lossy(&read(&path)?).into_owned();
+    let text = String::from_utf8(read(&path)?)
+        .map_err(|_| corpus_error(&path, 1, "corpus is not valid UTF-8"))?;
     let mut lines = text.split('\n').enumerate();
     let header = lines.next().map(|(_, line)| line);
     if header != Some(CORPUS_HEADER) {
@@ -440,10 +446,40 @@ fn parse_row(
     let label = label
         .parse::<EvalLabel>()
         .map_err(|_| corpus_error(path, line_number, "label must be clean or toxic"))?;
+    if text.contains(['\t', '\n', '\r']) {
+        return Err(corpus_error(
+            path,
+            line_number,
+            "text contains an unescaped control character",
+        ));
+    }
     Ok(Some(CorpusRow {
         label,
-        text: (*text).to_owned(),
+        text: unescape_text(text),
     }))
+}
+
+// Keep these escapes identical to blasphem-train's corpus::unescape_text.
+fn unescape_text(value: &str) -> String {
+    let mut output = String::with_capacity(value.len());
+    let mut characters = value.chars();
+    while let Some(character) = characters.next() {
+        if character != '\\' {
+            output.push(character);
+            continue;
+        }
+        match characters.next() {
+            Some('t') => output.push('\t'),
+            Some('n') => output.push('\n'),
+            Some('r') => output.push('\r'),
+            Some('\\') => output.push('\\'),
+            other => {
+                output.push('\\');
+                output.extend(other);
+            }
+        }
+    }
+    output
 }
 
 fn corpus_error(path: &Path, line: usize, reason: &str) -> AccuracyError {
@@ -454,57 +490,116 @@ fn corpus_error(path: &Path, line: usize, reason: &str) -> AccuracyError {
     }
 }
 
-fn judge(
-    root: &Path,
-    binary: &Path,
+struct AccuracyJudge<'a> {
+    root: &'a Path,
+    binary: &'a Path,
     language: Language,
-    rows: &[CorpusRow],
-) -> Result<Vec<bool>, AccuracyError> {
-    let command = format!(
-        "{} judge --locales {} --no-detect --json",
-        binary.display(),
-        language.code()
-    );
-    let mut child = Command::new(binary)
-        .args([
-            "judge",
-            "--locales",
-            language.code(),
-            "--no-detect",
-            "--json",
-        ])
-        .current_dir(root)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .map_err(|source| AccuracyError::Spawn {
-            command: command.clone(),
-            source,
-        })?;
-    let mut stdin = child.stdin.take().expect("stdin was piped");
-    let input: String = rows.iter().map(|row| format!("{}\n", row.text)).collect();
-    let output = std::thread::scope(|scope| {
-        let writer = scope.spawn(move || stdin.write_all(input.as_bytes()));
-        let output = child.wait_with_output();
-        writer.join().expect("stdin writer panicked").and(output)
-    })
-    .map_err(|source| AccuracyError::Spawn {
-        command: command.clone(),
-        source,
-    })?;
-    if output.status.code() == Some(2) || output.status.code().is_none() {
-        return Err(AccuracyError::CommandFailed {
-            command,
-            status: output.status.to_string(),
-            stderr: String::from_utf8_lossy(&output.stderr).trim().to_owned(),
-        });
+}
+
+impl AccuracyJudge<'_> {
+    fn predict(&self, rows: &[CorpusRow]) -> Result<Vec<bool>, AccuracyError> {
+        let single_line = rows
+            .iter()
+            .enumerate()
+            .filter(|(_, row)| !row.text.contains(['\r', '\n']))
+            .collect::<Vec<_>>();
+        let mut nudged = vec![false; rows.len()];
+        let batch = self.batch(&single_line)?;
+        for ((index, _), predicted) in single_line.into_iter().zip(batch) {
+            nudged[index] = predicted;
+        }
+        for (index, row) in rows
+            .iter()
+            .enumerate()
+            .filter(|(_, row)| row.text.contains(['\r', '\n']))
+        {
+            nudged[index] = self.single(&row.text)?;
+        }
+        Ok(nudged)
     }
-    parse_verdicts(
-        language,
-        rows.len(),
-        &String::from_utf8_lossy(&output.stdout),
-    )
+
+    fn command(&self) -> Command {
+        let mut command = Command::new(self.binary);
+        command
+            .args([
+                "judge",
+                "--locales",
+                self.language.code(),
+                "--no-detect",
+                "--json",
+            ])
+            .current_dir(self.root)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        command
+    }
+
+    fn description(&self) -> String {
+        format!(
+            "{} judge --locales {} --no-detect --json",
+            self.binary.display(),
+            self.language.code()
+        )
+    }
+
+    fn spawn_error(&self, source: std::io::Error) -> AccuracyError {
+        AccuracyError::Spawn {
+            command: self.description(),
+            source,
+        }
+    }
+
+    fn batch(&self, rows: &[(usize, &CorpusRow)]) -> Result<Vec<bool>, AccuracyError> {
+        if rows.is_empty() {
+            return Ok(Vec::new());
+        }
+        let mut child = self
+            .command()
+            .stdin(Stdio::piped())
+            .spawn()
+            .map_err(|source| self.spawn_error(source))?;
+        let mut stdin = child.stdin.take().expect("stdin was piped");
+        let input: String = rows
+            .iter()
+            .map(|(_, row)| format!("{}\n", row.text))
+            .collect();
+        let (written, output) = std::thread::scope(|scope| {
+            let writer = scope.spawn(move || stdin.write_all(input.as_bytes()));
+            let output = child.wait_with_output();
+            (writer.join().expect("stdin writer panicked"), output)
+        });
+        let output = output.map_err(|source| self.spawn_error(source))?;
+        let verdicts = self.decode_output(output, rows.len())?;
+        written.map_err(|source| self.spawn_error(source))?;
+        Ok(verdicts)
+    }
+
+    fn single(&self, text: &str) -> Result<bool, AccuracyError> {
+        let output = self
+            .command()
+            .arg("--")
+            .arg(text)
+            .stdin(Stdio::null())
+            .output()
+            .map_err(|source| self.spawn_error(source))?;
+        let verdicts = self.decode_output(output, 1)?;
+        Ok(verdicts[0])
+    }
+
+    fn decode_output(&self, output: Output, expected: usize) -> Result<Vec<bool>, AccuracyError> {
+        if !matches!(output.status.code(), Some(0 | 1)) {
+            return Err(AccuracyError::CommandFailed {
+                command: self.description(),
+                status: output.status.to_string(),
+                stderr: String::from_utf8_lossy(&output.stderr).trim().to_owned(),
+            });
+        }
+        parse_verdicts(
+            self.language,
+            expected,
+            &String::from_utf8_lossy(&output.stdout),
+        )
+    }
 }
 
 fn parse_verdicts(

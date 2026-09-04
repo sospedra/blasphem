@@ -51,7 +51,7 @@ static ARTIFACTS: [EmbeddedArtifact; 15] = [
     ),
     EmbeddedArtifact::new(
         include_bytes!("../resources/models/multilingual-v2/es-chargram-v1.bin"),
-        digest("a5db8e61225f7a240fcfba92412939e4672e254102261749ed9e1af812605e3f"),
+        digest("a09e8d921e3d5f34583a6250d5fc6691b12157b1489e2bf8bfd54460eb4f3abc"),
         Some(digest(
             "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc",
         )),

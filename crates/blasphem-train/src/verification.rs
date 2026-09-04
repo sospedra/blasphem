@@ -15,7 +15,7 @@ use crate::{
         BehaviorPanelError, BehaviorRow, ControlKind, EventType, EvidenceKind, load_panel,
         validate_event_distribution,
     },
-    calibration::{GateResult, gates},
+    calibration::{GateResult, gates_for_language},
     corpus::{corpus_digest, load_corpus_validation},
     datasets::{DatasetSplit, PreparedRow},
     evidence::{Sha256Digest, sha256_digest},
@@ -105,7 +105,7 @@ impl LanguageEvaluation {
             split,
             matrix,
             metrics: VerificationMetrics::from_matrix(matrix),
-            gates: Some(gates(matrix)),
+            gates: Some(gates_for_language(language, matrix)),
         }
     }
 }
@@ -153,7 +153,7 @@ impl EvaluationEvidence {
             return Err(VerificationError::EvaluationLanguageSet);
         }
         for evaluation in languages.values() {
-            let expected_gates = gates(evaluation.matrix);
+            let expected_gates = gates_for_language(evaluation.language, evaluation.matrix);
             if evaluation.metrics != VerificationMetrics::from_matrix(evaluation.matrix)
                 || evaluation.gates != Some(expected_gates)
             {

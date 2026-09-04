@@ -37,7 +37,7 @@ const BEHAVIOR_ROOT: &str = "tests/fixtures/behavior";
 const REPORT_ROOT: &str = "reports";
 const SPANISH_DATASET: &str = "textdetox/multilingual_toxicity_dataset";
 const SPANISH_SPLIT_METHOD: &str = "FNV-1a over detector language and normalized text";
-const SPANISH_ALGORITHM: &str = "Bernoulli log-odds with fixed feature hashing";
+const SPANISH_ALGORITHM: &str = "Naive Bayes weighted L2 logistic regression, C=1, beta=1, unweighted classes, fixed feature hashing";
 const SPANISH_FEATURES: [&str; 5] = [
     "normalized word unigrams",
     "normalized word bigrams",

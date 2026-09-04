@@ -58,13 +58,15 @@ TR uses only character 3-, 4-, and 5-grams within each token. It does not join c
 
 KO keeps character 2- through 5-grams. It adds word unigrams for boundary evidence.
 
-Training (`crates/blasphem-train/src/compiler.rs`):
+Log-odds training (`crates/blasphem-train/src/compiler.rs`):
 
 1. Count clean and toxic document frequencies per bin on the development split.
 2. Drop bins seen in fewer than 2 documents.
 3. Store the log-odds ratio per bin, quantized to 16 bits, plus a bias.
 
 TR and KO train L2 logistic models with inverse-frequency class weights. TR uses cost 1.0. KO uses cost 0.15. The compiler quantizes their coefficients into the same artifact format.
+
+ES trains an unweighted L2 logistic model on Naive Bayes weighted features. Development document counts set feature weights, with a minimum frequency of two. ES uses cost 1.0 and no coefficient interpolation. The compiler folds feature weights into coefficients before quantization.
 
 The raw score is the bias plus the weights of the message bins.
 
@@ -77,7 +79,7 @@ The boundary turns a raw score into a verdict. The compiler picks it on the vali
 For each candidate boundary it predicts `rule nudge OR (not suppressed AND raw >= boundary)`. It keeps the boundary with the most true positives that passes three gates:
 
 1. False warnings at most 3% of clean rows.
-2. Precision at least 90%.
+2. Precision at least 90%. ES requires at least 139/150.
 3. Boundary above every clean control. The 16 clean fixtures per language in `tests/fixtures/behavior/` must not flag.
 
 The scaled score is 50 at the boundary. The scale comes from the 10th and 90th percentile raw scores on validation.

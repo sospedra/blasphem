@@ -3,7 +3,7 @@
   "language": "ES",
   "artifact": "es-chargram-v1.bin",
   "artifact_bytes": 131104,
-  "artifact_sha256": "a5db8e61225f7a240fcfba92412939e4672e254102261749ed9e1af812605e3f",
+  "artifact_sha256": "a09e8d921e3d5f34583a6250d5fc6691b12157b1489e2bf8bfd54460eb4f3abc",
   "dataset": "textdetox/multilingual_toxicity_dataset",
   "dataset_revision": "01907546324b0330d2d8b7669648cc18823323e5",
   "source_rows": 4995,
@@ -14,7 +14,7 @@
   "development_rows": 3414,
   "validation_rows": 762,
   "test_rows": 819,
-  "algorithm": "Bernoulli log-odds with fixed feature hashing",
+  "algorithm": "Naive Bayes weighted L2 logistic regression, C=1, beta=1, unweighted classes, fixed feature hashing",
   "feature_bins": 65536,
   "features": [
     "normalized word unigrams",
@@ -25,13 +25,13 @@
   ],
   "minimum_document_frequency": 2,
   "weight_scale": 256,
-  "decision_boundary": 18899,
-  "score_scale": 40427,
+  "decision_boundary": 774,
+  "score_scale": 2168,
   "maximum_validation_false_positive_basis_points": 300,
   "sparse_validation": {
-    "true_positive": 139,
-    "true_negative": 389,
-    "false_positive": 11,
-    "false_negative": 223
+    "true_positive": 193,
+    "true_negative": 388,
+    "false_positive": 12,
+    "false_negative": 169
   }
 }

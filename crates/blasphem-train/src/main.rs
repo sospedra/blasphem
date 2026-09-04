@@ -65,6 +65,8 @@ enum Command {
     CorpusVerify(CorpusVerifyArgs),
     Setup(SetupArgs),
     Compile(CompileArgs),
+    /// Audits Spanish validation and optionally compares the fixed learner grid.
+    EsRecall(EsRecallArgs),
     Evaluate(EvaluateArgs),
     Behavior(BehaviorArgs),
     CliSmoke(CliSmokeArgs),
@@ -144,6 +146,24 @@ struct CompileArgs {
     behavior_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
+}
+
+#[derive(Debug, Args)]
+struct EsRecallArgs {
+    /// A new directory for artifacts and validation evidence. Never reads test predictions.
+    #[arg(long)]
+    output: PathBuf,
+    #[arg(long)]
+    sweep: bool,
+    /// Audits this artifact instead of the committed Spanish artifact.
+    #[arg(long)]
+    artifact: Option<PathBuf>,
+    /// The logistic learner's development document-frequency floor.
+    #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(1..))]
+    minimum_document_frequency: u32,
+    /// Compares two fixed NB-logistic settings from Wang and Manning (2012).
+    #[arg(long, conflicts_with = "sweep")]
+    nb_logistic: bool,
 }
 
 #[derive(Debug, Args)]
@@ -309,6 +329,7 @@ fn main() -> Result<()> {
         Command::CorpusVerify(arguments) => corpus_verify_command(&arguments),
         Command::Setup(arguments) => setup(&arguments),
         Command::Compile(arguments) => compile_models(&arguments),
+        Command::EsRecall(arguments) => spanish_recall::run(&arguments),
         Command::Evaluate(arguments) => evaluate_evidence(&arguments),
         Command::Behavior(arguments) => behavior_evidence(&arguments),
         Command::CliSmoke(arguments) => cli_smoke_evidence(&arguments),
@@ -320,6 +341,387 @@ fn main() -> Result<()> {
         Command::Pack(arguments) => pack_command(&arguments),
         Command::LocalesTable(arguments) => locales_table_command(&arguments),
         Command::SyncVersions(arguments) => sync_versions_command(&arguments),
+    }
+}
+
+mod spanish_recall {
+    use std::{fs, fs::File, path::Path, time::Instant};
+
+    use anyhow::{Context, Result, ensure};
+    use blasphem::{
+        ConfusionMatrix, EvalLabel, Judge, Language, LexiconMatch, NudgeDetector, NudgeResult,
+        PackInput, PackSource, ReplyTarget, RuleChannel, RuleOutcome, SparseModel, encode_pack,
+        lexicon_marked_text,
+    };
+    use blasphem_train::{
+        BehaviorRow,
+        calibration::gates_for_language,
+        compiler::{CompileRequest, Learner, LogisticOptions, compile_language_with_learner},
+        corpus::load_corpus_language,
+        datasets::PreparedRow,
+        load_panel,
+        model_manifest::rule_pack_version,
+        source_manifest::parse_frozen_source_lock,
+    };
+    use serde_json::{Value, json};
+    use sha2::{Digest, Sha256};
+
+    use super::EsRecallArgs;
+
+    const BASELINE_ARTIFACT: &str = "resources/models/multilingual-v2/es-chargram-v1.bin";
+    const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
+    const SOURCE_LOCK: &str = "resources/datasets/source-lock-v1.json";
+
+    pub(super) fn run(arguments: &EsRecallArgs) -> Result<()> {
+        fs::create_dir(&arguments.output).context("the evidence directory must be new")?;
+        println!(
+            "ES rule_sha256={:x}",
+            Sha256::digest(blasphem::canonical_rule_identity(Language::Es))
+        );
+        let experiment = Experiment::load(&arguments.output)?;
+        experiment.write_input_hashes()?;
+        fs::write(
+            arguments.output.join("settings.json"),
+            serde_json::to_vec_pretty(&json!({
+                "sweep": arguments.sweep,
+                "minimum_document_frequency": arguments.minimum_document_frequency,
+                "nb_logistic": arguments.nb_logistic,
+                "nb_cost": 1.0,
+                "nb_interpolations": [1.0, 0.25],
+                "nb_minimum_document_frequency": 2,
+            }))?,
+        )?;
+        let artifact_path = arguments
+            .artifact
+            .as_deref()
+            .unwrap_or(Path::new(BASELINE_ARTIFACT));
+        let baseline = fs::read(artifact_path)?;
+        let mut summaries = vec![experiment.evaluate("baseline", &baseline)?];
+        if arguments.sweep {
+            for (name, learner) in learners(arguments.minimum_document_frequency) {
+                summaries.push(experiment.train_candidate(&name, learner)?);
+            }
+        }
+        if arguments.nb_logistic {
+            for interpolation in [1.0, 0.25] {
+                let learner = Learner::NaiveBayesLogistic {
+                    cost: 1.0,
+                    interpolation,
+                };
+                summaries.push(
+                    experiment
+                        .train_candidate(&format!("nb-logistic-beta-{interpolation}"), learner)?,
+                );
+            }
+        }
+        fs::write(
+            arguments.output.join("summary.json"),
+            serde_json::to_vec_pretty(&summaries)?,
+        )?;
+        Ok(())
+    }
+
+    struct Experiment<'a> {
+        output: &'a Path,
+        request: CompileRequest,
+        lexicon: Vec<u8>,
+        panel: Vec<BehaviorRow>,
+        rule_pack_version: u16,
+    }
+
+    impl<'a> Experiment<'a> {
+        fn load(output: &'a Path) -> Result<Self> {
+            let lock = parse_frozen_source_lock(File::open(SOURCE_LOCK)?)?;
+            let input = load_corpus_language(Path::new("corpus"), Language::Es, &lock)?;
+            let lexicon = fs::read("lexicon/ES.tsv")?;
+            let panel = load_panel(Path::new("tests/fixtures/behavior"), Language::Es)?;
+            let rule_pack_version = rule_pack_version(Language::Es);
+            let request = CompileRequest {
+                language: Language::Es,
+                development: input.development,
+                validation: input.validation,
+                rule_channel: RuleChannel::from_hurtlex_bytes(Language::Es, Some(&lexicon))?,
+                clean_controls: panel
+                    .iter()
+                    .filter(|row| !row.expected_nudge)
+                    .map(|row| row.text.clone())
+                    .collect(),
+            };
+            Ok(Self {
+                output,
+                request,
+                lexicon,
+                panel,
+                rule_pack_version,
+            })
+        }
+
+        fn write_input_hashes(&self) -> Result<()> {
+            let mut hashes = serde_json::Map::new();
+            for path in [
+                "corpus/ES.tsv",
+                "lexicon/ES.tsv",
+                "resources/datasets/evaluation-lock-v1.json",
+                SOURCE_LOCK,
+                MODEL_MANIFEST,
+                BASELINE_ARTIFACT,
+                "tests/fixtures/behavior/es.tsv",
+                "samples/spanish-audit.tsv",
+                "crates/blasphem-train/src/compiler.rs",
+                "crates/blasphem-train/src/calibration.rs",
+                "crates/blasphem-train/src/main.rs",
+                "crates/blasphem-train/src/corpus.rs",
+                "crates/blasphem-train/src/model_manifest.rs",
+                "src/features.rs",
+                "src/detector.rs",
+                "src/rules/channel.rs",
+                "src/policy.rs",
+                "src/rule_pack.rs",
+                "src/runtime.rs",
+                "src/judge.rs",
+                "src/sparse.rs",
+                "src/registry.rs",
+                "src/embedded.rs",
+                "Cargo.lock",
+                "rust-toolchain.toml",
+                "resources/models/es-chargram-v1.bin",
+            ] {
+                hashes.insert(
+                    path.to_owned(),
+                    json!(format!("{:x}", Sha256::digest(fs::read(path)?))),
+                );
+            }
+            fs::write(
+                self.output.join("input-hashes.json"),
+                serde_json::to_vec_pretty(&hashes)?,
+            )?;
+            Ok(())
+        }
+
+        fn evaluate(&self, name: &str, artifact: &[u8]) -> Result<Value> {
+            Candidate::new(self, artifact)?.write_evidence(name, artifact)
+        }
+
+        fn train_candidate(&self, name: &str, learner: Learner) -> Result<Value> {
+            let started = Instant::now();
+            let compiled = match compile_language_with_learner(&self.request, learner) {
+                Ok(compiled) => compiled,
+                Err(error) => {
+                    eprintln!("{name}: {error}");
+                    return Ok(json!({"name": name, "error": error.to_string()}));
+                }
+            };
+            let training_ms = started.elapsed().as_secs_f64() * 1000.0;
+            let mut summary = self.evaluate(name, &compiled.artifact)?;
+            ensure!(
+                summary["matrix"] == serde_json::to_value(compiled.calibration.matrix)?,
+                "public verdict matrix differs from calibration for {name}"
+            );
+            summary["training_ms"] = json!(training_ms);
+            Ok(summary)
+        }
+    }
+
+    fn learners(minimum_document_frequency: u32) -> impl Iterator<Item = (String, Learner)> {
+        let logistic = [false, true].into_iter().flat_map(move |class_weighted| {
+            [0.05, 0.15, 0.5, 1.0, 2.0].into_iter().map(move |cost| {
+                let weighting = if class_weighted {
+                    "balanced"
+                } else {
+                    "unweighted"
+                };
+                (
+                    format!("logistic-{weighting}-{cost}"),
+                    Learner::Logistic(LogisticOptions {
+                        cost,
+                        class_weighted,
+                        minimum_document_frequency,
+                    }),
+                )
+            })
+        });
+        std::iter::once(("log-odds".to_owned(), Learner::LogOdds)).chain(logistic)
+    }
+
+    struct Candidate<'a> {
+        experiment: &'a Experiment<'a>,
+        model: SparseModel,
+        judge: Judge,
+        detector: NudgeDetector,
+    }
+
+    impl<'a> Candidate<'a> {
+        fn new(experiment: &'a Experiment<'a>, artifact: &[u8]) -> Result<Self> {
+            let model = SparseModel::from_bytes(artifact)?;
+            let pack = encode_pack(&PackInput {
+                language: Language::Es,
+                rule_pack_version: experiment.rule_pack_version,
+                artifact,
+                lexicon: &experiment.lexicon,
+            });
+            let source = PackSource {
+                language: Language::Es,
+                pack: &pack,
+                pack_sha256: None,
+                detect: None,
+                detect_sha256: None,
+            };
+            let judge = Judge::from_packs(&[source], false, false)?;
+            let detector = NudgeDetector::from_pack(Language::Es, &pack)?;
+            Ok(Self {
+                experiment,
+                model,
+                judge,
+                detector,
+            })
+        }
+
+        fn inspect(&self, text: &str) -> Result<Observation> {
+            let nudge = self.detector.check(text, ReplyTarget::Unknown);
+            let rules = self
+                .experiment
+                .request
+                .rule_channel
+                .analyze(text, ReplyTarget::Unknown);
+            let lexicon = self
+                .experiment
+                .request
+                .rule_channel
+                .lexicon()
+                .context("Spanish lexicon missing")?;
+            let hits = lexicon.check(text).matches;
+            let marked = lexicon_marked_text(text, &hits);
+            Ok(Observation {
+                nudge,
+                rules,
+                hits,
+                raw: self.model.raw_score(&marked),
+                model_score: self.model.score(&marked),
+            })
+        }
+
+        fn validation(&self) -> Result<(ConfusionMatrix, Vec<Value>)> {
+            let mut matrix = ConfusionMatrix::default();
+            let mut rows = Vec::with_capacity(self.experiment.request.validation.len());
+            for row in &self.experiment.request.validation {
+                let observation = self.inspect(&row.text)?;
+                let predicted = !self.judge.judge(&row.text).safe;
+                ensure!(
+                    predicted == observation.nudge.should_nudge,
+                    "judge and detector disagree"
+                );
+                ensure!(
+                    predicted == observation.calibrated_flag(self.model.raw_boundary()),
+                    "public verdict and calibration disagree"
+                );
+                observation.count(&mut matrix, row.label);
+                rows.push(observation.validation_row(row));
+            }
+            Ok((matrix, rows))
+        }
+
+        fn controls(&self) -> Result<(i32, usize, Vec<Value>)> {
+            let mut floor = i32::MIN;
+            let mut failures = 0;
+            let mut rows = Vec::with_capacity(self.experiment.panel.len());
+            for row in &self.experiment.panel {
+                let observation = self.inspect(&row.text)?;
+                if !row.expected_nudge && !observation.rules.suppresses_sparse_channel() {
+                    floor = floor.max(observation.raw.saturating_add(1));
+                }
+                failures += usize::from(row.expected_nudge != observation.nudge.should_nudge);
+                rows.push(observation.control_row(row));
+            }
+            Ok((floor, failures, rows))
+        }
+
+        fn timings(&self) -> Vec<f64> {
+            let mut durations = Vec::with_capacity(7);
+            for _ in 0..7 {
+                let started = Instant::now();
+                for row in &self.experiment.request.validation {
+                    std::hint::black_box(self.judge.judge(std::hint::black_box(&row.text)));
+                }
+                durations.push(
+                    started.elapsed().as_secs_f64() * 1_000_000.0
+                        / self.experiment.request.validation.len() as f64,
+                );
+            }
+            durations.sort_by(f64::total_cmp);
+            durations
+        }
+
+        fn write_evidence(&self, name: &str, artifact: &[u8]) -> Result<Value> {
+            let (matrix, rows) = self.validation()?;
+            let (floor, behavior_failures, controls) = self.controls()?;
+            let frozen_score = self
+                .detector
+                .check("No te voy a matar", ReplyTarget::Unknown)
+                .score;
+            let durations = self.timings();
+            let summary = json!({
+                "name": name, "matrix": matrix, "boundary": self.model.raw_boundary(),
+                "scale": self.model.score_scale(), "clean_control_floor": floor,
+                "behavior_failures": behavior_failures, "frozen_negation_score": frozen_score,
+                "artifact_bytes": artifact.len(), "artifact_sha256": format!("{:x}", Sha256::digest(artifact)),
+                "gates": gates_for_language(Language::Es, matrix),
+                "judge_median_us": durations[3], "judge_us_runs": durations,
+            });
+            let output = self.experiment.output;
+            fs::write(output.join(format!("{name}.bin")), artifact)?;
+            fs::write(
+                output.join(format!("{name}-validation.json")),
+                serde_json::to_vec_pretty(&rows)?,
+            )?;
+            fs::write(
+                output.join(format!("{name}-controls.json")),
+                serde_json::to_vec_pretty(&controls)?,
+            )?;
+            println!("{}", serde_json::to_string(&summary)?);
+            Ok(summary)
+        }
+    }
+
+    struct Observation {
+        nudge: NudgeResult,
+        rules: RuleOutcome,
+        hits: Vec<LexiconMatch>,
+        raw: i32,
+        model_score: u8,
+    }
+
+    impl Observation {
+        fn calibrated_flag(&self, boundary: i32) -> bool {
+            self.rules.should_nudge
+                || (!self.rules.suppresses_sparse_channel() && self.raw >= boundary)
+        }
+
+        fn count(&self, matrix: &mut ConfusionMatrix, label: EvalLabel) {
+            match (label, self.nudge.should_nudge) {
+                (EvalLabel::Toxic, true) => matrix.true_positive += 1,
+                (EvalLabel::Toxic, false) => matrix.false_negative += 1,
+                (EvalLabel::Clean, true) => matrix.false_positive += 1,
+                (EvalLabel::Clean, false) => matrix.true_negative += 1,
+            }
+        }
+
+        fn validation_row(&self, row: &PreparedRow) -> Value {
+            json!({
+                "id": row.source_id, "label": if row.label == EvalLabel::Toxic { "toxic" } else { "clean" },
+                "text": row.text, "characters": row.text.chars().count(), "flag": self.nudge.should_nudge,
+                "score": self.nudge.score, "model_score": self.model_score, "raw": self.raw,
+                "rule_score": self.rules.score, "rule_flag": self.rules.should_nudge,
+                "suppressed": self.rules.suppresses_sparse_channel(),
+                "rule_evidence": format!("{:?}", self.rules.evidence),
+                "lexicon_hits": self.hits.iter().map(|hit| hit.entry.lemma.as_str()).collect::<Vec<_>>(),
+            })
+        }
+
+        fn control_row(&self, row: &BehaviorRow) -> Value {
+            json!({"text": row.text, "expected": row.expected_nudge,
+                "flag": self.nudge.should_nudge, "score": self.nudge.score,
+                "raw": self.raw, "suppressed": self.rules.suppresses_sparse_channel()})
+        }
     }
 }
 

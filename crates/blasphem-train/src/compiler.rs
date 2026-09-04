@@ -360,6 +360,61 @@ pub struct TrainedWeights {
     pub weights: Box<[i16]>,
 }
 
+#[derive(Clone, Copy)]
+struct TrainingRows<'a> {
+    profile: FeatureProfile,
+    normalization: NormalizationProfile,
+    development: &'a [PreparedRow],
+}
+
+/// Selects the learner while preserving the language's feature and artifact profiles.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Learner {
+    LogOdds,
+    Logistic(LogisticOptions),
+    NaiveBayesLogistic { cost: f64, interpolation: f64 },
+}
+
+/// Development-only settings for the fixed-bin logistic learner.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LogisticOptions {
+    pub cost: f64,
+    pub class_weighted: bool,
+    pub minimum_document_frequency: u32,
+}
+
+struct PreparedFeatures {
+    labels: Vec<f64>,
+    features: Vec<Vec<(u32, f64)>>,
+    clean_documents: u32,
+    toxic_documents: u32,
+}
+
+struct NaiveBayesRatios {
+    values: Vec<f64>,
+    active_bins: Vec<usize>,
+}
+
+fn default_learner(language: Language) -> Learner {
+    match language {
+        Language::Es => Learner::NaiveBayesLogistic {
+            cost: 1.0,
+            interpolation: 1.0,
+        },
+        Language::Tr => Learner::Logistic(LogisticOptions {
+            cost: 1.0,
+            class_weighted: true,
+            minimum_document_frequency: 1,
+        }),
+        Language::Ko => Learner::Logistic(LogisticOptions {
+            cost: 0.15,
+            class_weighted: true,
+            minimum_document_frequency: 1,
+        }),
+        _ => Learner::LogOdds,
+    }
+}
+
 pub struct CompileRequest {
     pub language: Language,
     pub development: Vec<PreparedRow>,
@@ -418,7 +473,11 @@ pub enum CompileError {
         #[source]
         source: FeatureError,
     },
-    #[error("cannot train the class-weighted linear model: {0}")]
+    #[error("the logistic cost must be finite and greater than zero")]
+    InvalidLogisticCost,
+    #[error("the Naive Bayes interpolation must be finite and between zero and one")]
+    InvalidInterpolation,
+    #[error("cannot train the logistic model: {0}")]
     LinearTraining(String),
     #[error("the validation score set is empty")]
     EmptyScoreScaleInput,
@@ -446,6 +505,28 @@ pub fn train_weights(
     normalization: NormalizationProfile,
     development: &[PreparedRow],
 ) -> Result<TrainedWeights, CompileError> {
+    let learner = development.first().map_or(Learner::LogOdds, |row| {
+        default_learner(row.detector_language)
+    });
+    train_weights_with_learner(
+        TrainingRows {
+            profile,
+            normalization,
+            development,
+        },
+        learner,
+    )
+}
+
+fn train_weights_with_learner(
+    rows: TrainingRows<'_>,
+    learner: Learner,
+) -> Result<TrainedWeights, CompileError> {
+    let TrainingRows {
+        profile,
+        normalization,
+        development,
+    } = rows;
     let Some(first) = development.first() else {
         return Err(CompileError::EmptySplit {
             split: "development",
@@ -461,10 +542,22 @@ pub fn train_weights(
         });
     }
     validate_compile_split("development", language, development)?;
-    if matches!(language, Language::Tr | Language::Ko) {
-        return train_class_weighted_linear(profile, normalization, development);
+    match learner {
+        Learner::LogOdds => train_log_odds(rows),
+        Learner::Logistic(options) => train_logistic(rows, options),
+        Learner::NaiveBayesLogistic {
+            cost,
+            interpolation,
+        } => train_naive_bayes_logistic(rows, cost, interpolation),
     }
+}
 
+fn train_log_odds(rows: TrainingRows<'_>) -> Result<TrainedWeights, CompileError> {
+    let TrainingRows {
+        profile,
+        normalization,
+        development,
+    } = rows;
     let mut clean = vec![0_u32; BIN_COUNT];
     let mut toxic = vec![0_u32; BIN_COUNT];
     let mut clean_documents = 0_u32;
@@ -495,11 +588,32 @@ pub fn train_weights(
     ))
 }
 
-fn train_class_weighted_linear(
-    profile: FeatureProfile,
-    normalization: NormalizationProfile,
-    development: &[PreparedRow],
+fn train_logistic(
+    rows: TrainingRows<'_>,
+    options: LogisticOptions,
 ) -> Result<TrainedWeights, CompileError> {
+    validate_logistic_cost(options.cost)?;
+    let prepared = prepare_linear_features(rows, options.minimum_document_frequency)?;
+    let model = fit_logistic(prepared, options)?;
+    quantize_linear_model(&model)
+}
+
+fn validate_logistic_cost(cost: f64) -> Result<(), CompileError> {
+    if !cost.is_finite() || cost <= 0.0 {
+        return Err(CompileError::InvalidLogisticCost);
+    }
+    Ok(())
+}
+
+fn prepare_linear_features(
+    rows: TrainingRows<'_>,
+    minimum_document_frequency: u32,
+) -> Result<PreparedFeatures, CompileError> {
+    let TrainingRows {
+        profile,
+        normalization,
+        development,
+    } = rows;
     let mut labels = Vec::with_capacity(development.len());
     let mut features = Vec::with_capacity(development.len());
     let mut clean_documents = 0_u32;
@@ -534,34 +648,135 @@ fn train_class_weighted_linear(
                 .collect::<Vec<_>>(),
         );
     }
+    filter_rare_features(&mut features, minimum_document_frequency);
+    Ok(PreparedFeatures {
+        labels,
+        features,
+        clean_documents,
+        toxic_documents,
+    })
+}
+
+fn fit_logistic(
+    prepared: PreparedFeatures,
+    options: LogisticOptions,
+) -> Result<impl LibLinearModel, CompileError> {
+    let PreparedFeatures {
+        labels,
+        mut features,
+        clean_documents,
+        toxic_documents,
+    } = prepared;
     ensure_linear_dimension(&mut features);
     let input = TrainingInput::from_sparse_features(labels, features)
         .map_err(|error| CompileError::LinearTraining(error.to_string()))?;
-    let total_documents = f64::from(clean_documents) + f64::from(toxic_documents);
-    let class_weights = vec![
-        total_documents / (2.0 * f64::from(clean_documents)),
-        total_documents / (2.0 * f64::from(toxic_documents)),
-    ];
     let mut builder = liblinear::Builder::new();
     builder.problem().input_data(input).bias(1.0);
     builder
         .parameters()
         .solver_type(SolverType::L2R_LR)
         .stopping_criterion(0.0001)
-        .constraints_violation_cost(linear_training_cost(profile))
-        .cost_penalty_labels(vec![-1, 1])
-        .cost_penalty_weights(class_weights);
+        .constraints_violation_cost(options.cost);
+    if options.class_weighted {
+        let total_documents = f64::from(clean_documents) + f64::from(toxic_documents);
+        builder
+            .parameters()
+            .cost_penalty_labels(vec![-1, 1])
+            .cost_penalty_weights(vec![
+                total_documents / (2.0 * f64::from(clean_documents)),
+                total_documents / (2.0 * f64::from(toxic_documents)),
+            ]);
+    }
     SILENCE_LIBLINEAR.call_once(|| liblinear::toggle_liblinear_stdout_output(false));
-    let model = builder
+    builder
         .build_model()
-        .map_err(|error| CompileError::LinearTraining(error.to_string()))?;
-    quantize_linear_model(&model)
+        .map_err(|error| CompileError::LinearTraining(error.to_string()))
 }
 
-fn linear_training_cost(profile: FeatureProfile) -> f64 {
-    match profile {
-        FeatureProfile::KoreanWordChar25V3 => 0.15,
-        _ => 1.0,
+fn train_naive_bayes_logistic(
+    rows: TrainingRows<'_>,
+    cost: f64,
+    interpolation: f64,
+) -> Result<TrainedWeights, CompileError> {
+    validate_logistic_cost(cost)?;
+    if !interpolation.is_finite() || !(0.0..=1.0).contains(&interpolation) {
+        return Err(CompileError::InvalidInterpolation);
+    }
+    let mut prepared = prepare_linear_features(rows, MIN_DOCUMENT_FREQUENCY)?;
+    let ratios = naive_bayes_ratios(&prepared)?;
+    for document in &mut prepared.features {
+        for (index, value) in document {
+            *value = ratios.values[*index as usize - 1];
+        }
+    }
+    let model = fit_logistic(
+        prepared,
+        LogisticOptions {
+            cost,
+            class_weighted: false,
+            minimum_document_frequency: MIN_DOCUMENT_FREQUENCY,
+        },
+    )?;
+    quantize_reweighted_model(&model, &ratios, interpolation)
+}
+
+/// Binarized log-count ratios with alpha=1, over the retained development vocabulary.
+/// Wang and Manning (2012), equation 2: https://aclanthology.org/P12-2018/
+fn naive_bayes_ratios(prepared: &PreparedFeatures) -> Result<NaiveBayesRatios, CompileError> {
+    let (clean, toxic) = feature_class_counts(prepared);
+    let active_bins = (0..BIN_COUNT)
+        .filter(|&bin| clean[bin].saturating_add(toxic[bin]) >= MIN_DOCUMENT_FREQUENCY)
+        .collect::<Vec<_>>();
+    if active_bins.is_empty() {
+        return Err(CompileError::LinearTraining(
+            "no feature survives the minimum document frequency".to_owned(),
+        ));
+    }
+    let clean_sum = active_bins
+        .iter()
+        .map(|&bin| 1.0 + f64::from(clean[bin]))
+        .sum::<f64>();
+    let toxic_sum = active_bins
+        .iter()
+        .map(|&bin| 1.0 + f64::from(toxic[bin]))
+        .sum::<f64>();
+    let mut values = vec![0.0; BIN_COUNT];
+    for &bin in &active_bins {
+        let positive = (1.0 + f64::from(toxic[bin])) / toxic_sum;
+        let negative = (1.0 + f64::from(clean[bin])) / clean_sum;
+        values[bin] = (positive / negative).ln();
+    }
+    Ok(NaiveBayesRatios {
+        values,
+        active_bins,
+    })
+}
+
+fn feature_class_counts(prepared: &PreparedFeatures) -> (Vec<u32>, Vec<u32>) {
+    let mut clean = vec![0_u32; BIN_COUNT];
+    let mut toxic = vec![0_u32; BIN_COUNT];
+    for (label, document) in prepared.labels.iter().zip(&prepared.features) {
+        let counts = if *label > 0.0 { &mut toxic } else { &mut clean };
+        for &(index, _) in document {
+            let bin = index as usize - 1;
+            counts[bin] = counts[bin].saturating_add(1);
+        }
+    }
+    (clean, toxic)
+}
+
+fn filter_rare_features(features: &mut [Vec<(u32, f64)>], minimum_document_frequency: u32) {
+    if minimum_document_frequency <= 1 {
+        return;
+    }
+    let mut frequencies = vec![0_u32; BIN_COUNT + 1];
+    for document in features.iter() {
+        for &(index, _) in document {
+            frequencies[index as usize] += 1;
+        }
+    }
+    for document in features {
+        document.retain(|&(index, _)| frequencies[index as usize] >= minimum_document_frequency);
     }
 }
 
@@ -575,21 +790,7 @@ fn ensure_linear_dimension(features: &mut [Vec<(u32, f64)>]) {
 }
 
 fn quantize_linear_model(model: &impl LibLinearModel) -> Result<TrainedWeights, CompileError> {
-    if model.num_features() != BIN_COUNT {
-        return Err(CompileError::LinearTraining(format!(
-            "expected {BIN_COUNT} features, got {}",
-            model.num_features()
-        )));
-    }
-    let direction = match model.labels().as_slice() {
-        [1, -1] => 1.0,
-        [-1, 1] => -1.0,
-        labels => {
-            return Err(CompileError::LinearTraining(format!(
-                "unexpected labels {labels:?}"
-            )));
-        }
-    };
+    let direction = model_orientation(model)?;
     let weights = (1..=BIN_COUNT)
         .map(|index| {
             let feature_index = i32::try_from(index).expect("the feature index fits in i32");
@@ -603,7 +804,63 @@ fn quantize_linear_model(model: &impl LibLinearModel) -> Result<TrainedWeights, 
     })
 }
 
+fn model_orientation(model: &impl LibLinearModel) -> Result<f64, CompileError> {
+    if model.num_features() != BIN_COUNT {
+        return Err(CompileError::LinearTraining(format!(
+            "expected {BIN_COUNT} features, got {}",
+            model.num_features()
+        )));
+    }
+    match model.labels().as_slice() {
+        [1, -1] => Ok(1.0),
+        [-1, 1] => Ok(-1.0),
+        labels => Err(CompileError::LinearTraining(format!(
+            "unexpected labels {labels:?}"
+        ))),
+    }
+}
+
+/// Folds equation 4's interpolated coefficients into binary-feature runtime weights.
+fn quantize_reweighted_model(
+    model: &impl LibLinearModel,
+    ratios: &NaiveBayesRatios,
+    interpolation: f64,
+) -> Result<TrainedWeights, CompileError> {
+    let direction = model_orientation(model)?;
+    let coefficient = |bin: usize| {
+        let index = i32::try_from(bin + 1).expect("the feature index fits in i32");
+        direction * model.feature_coefficient(index, 0)
+    };
+    let mean_magnitude = ratios
+        .active_bins
+        .iter()
+        .map(|&bin| coefficient(bin).abs())
+        .sum::<f64>()
+        / ratios.active_bins.len() as f64;
+    let mut weights = vec![0_i16; BIN_COUNT];
+    for &bin in &ratios.active_bins {
+        let blended = (1.0 - interpolation) * mean_magnitude + interpolation * coefficient(bin);
+        weights[bin] = quantize_i16(blended * ratios.values[bin]);
+    }
+    Ok(TrainedWeights {
+        bias: quantize_i32(direction * model.label_bias(0)),
+        weights: weights.into_boxed_slice(),
+    })
+}
+
 pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, CompileError> {
+    compile_language_with_learner(request, default_learner(request.language))
+}
+
+/// Compiles a learner experiment with the language's existing runtime profiles and gates.
+///
+/// # Errors
+///
+/// Returns an error for invalid inputs, invalid logistic cost, or failed calibration gates.
+pub fn compile_language_with_learner(
+    request: &CompileRequest,
+    learner: Learner,
+) -> Result<CompiledLanguage, CompileError> {
     if request.rule_channel.language() != request.language {
         return Err(CompileError::RuleChannelLanguageMismatch {
             expected: request.language,
@@ -621,7 +878,14 @@ pub fn compile_language(request: &CompileRequest) -> Result<CompiledLanguage, Co
         .iter()
         .map(|text| model_text(request, text))
         .collect::<Vec<_>>();
-    let trained = train_weights(feature_profile, normalization_profile, &development)?;
+    let trained = train_weights_with_learner(
+        TrainingRows {
+            profile: feature_profile,
+            normalization: normalization_profile,
+            development: &development,
+        },
+        learner,
+    )?;
     let minimum_boundary = clean_control_boundary(
         request.language,
         &trained,

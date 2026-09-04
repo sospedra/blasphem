@@ -62,7 +62,7 @@ fn spanish_product_results_are_frozen() {
         check("Te voy a matar").starts_with("ok=false score=95 threshold=50 should_nudge=true")
     );
     assert!(
-        check("No te voy a matar").starts_with("ok=true score=14 threshold=50 should_nudge=false")
+        check("No te voy a matar").starts_with("ok=true score=30 threshold=50 should_nudge=false")
     );
 }
 

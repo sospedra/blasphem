@@ -327,7 +327,7 @@ const AUTO_LANGUAGE_CASES: &[(&str, &str, &str)] = &[
     (
         "ES",
         "Was ist das? A ship. Todo bien en la costa.",
-        "ok=true score=12 threshold=50 should_nudge=false",
+        "ok=true score=17 threshold=50 should_nudge=false",
     ),
     (
         "AR",

@@ -15,7 +15,7 @@ use sha2::{Digest, Sha256};
 use thiserror::Error;
 
 use crate::{
-    calibration::{GateResult, gates},
+    calibration::{GateResult, gates_for_language},
     compiler::{CompileError, CompiledLanguage},
     datasets::{DatasetId, PreparedCounts},
     evidence::Sha256Digest,
@@ -333,7 +333,7 @@ pub fn build_manifest_entry(
             actual: compiled.validation_predictions.len(),
         });
     }
-    let validation_gates = gates(compiled.calibration.matrix);
+    let validation_gates = gates_for_language(language, compiled.calibration.matrix);
     if !validation_gates.passed() {
         return Err(ModelSetError::ValidationGateFailure(language));
     }
@@ -492,7 +492,7 @@ fn validate_entry_metadata(entry: &ModelManifestEntry) -> Result<(), ModelSetErr
     if entry.validation_metrics != expected_metrics {
         return Err(ModelSetError::ValidationMetricsMismatch(entry.language));
     }
-    let expected_gates = gates(entry.validation);
+    let expected_gates = gates_for_language(entry.language, entry.validation);
     if entry.validation_gates != Some(expected_gates) || !expected_gates.passed() {
         return Err(ModelSetError::ValidationGatesMismatch(entry.language));
     }
@@ -513,7 +513,8 @@ fn dataset_input_precedes(left: &DatasetInput, right: &DatasetInput) -> bool {
     )
 }
 
-pub(crate) fn rule_pack_version(language: Language) -> u16 {
+/// Returns the version of the rules compiled for this language.
+pub fn rule_pack_version(language: Language) -> u16 {
     if language == Language::Es {
         return 1;
     }

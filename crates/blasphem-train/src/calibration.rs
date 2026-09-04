@@ -60,7 +60,7 @@ pub fn calibrate_at_or_above(
     minimum_boundary: i32,
 ) -> Result<CalibrationResult, CalibrationError> {
     let rule_matrix = confusion_matrix(rows, |row| row.rule_should_nudge);
-    if !gates(rule_matrix).false_warning_passed {
+    if !gates_for_language(language, rule_matrix).false_warning_passed {
         return Err(CalibrationError::RuleChannelGateFailure(language));
     }
 
@@ -94,7 +94,7 @@ pub fn select_best(
     candidates
         .iter()
         .copied()
-        .filter(|candidate| gates(candidate.matrix).passed())
+        .filter(|candidate| gates_for_language(language, candidate.matrix).passed())
         .max_by_key(|candidate| {
             (
                 candidate.matrix.true_positive,
@@ -128,6 +128,19 @@ pub fn gates(matrix: ConfusionMatrix) -> GateResult {
         precision_passed: predicted_toxic > 0 && 100 * true_positive >= 90 * predicted_toxic,
         has_true_positive: true_positive > 0,
     }
+}
+
+/// Applies the Spanish validation precision floor of 139/150 and the shared remaining gates.
+#[must_use]
+pub fn gates_for_language(language: Language, matrix: ConfusionMatrix) -> GateResult {
+    let mut result = gates(matrix);
+    if language == Language::Es {
+        let true_positive = u128::from(matrix.true_positive);
+        let predicted_toxic = true_positive + u128::from(matrix.false_positive);
+        result.precision_passed =
+            predicted_toxic > 0 && 150 * true_positive >= 139 * predicted_toxic;
+    }
+    result
 }
 
 fn confusion_matrix(
