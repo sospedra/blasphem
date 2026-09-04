@@ -3,6 +3,11 @@
 // in this package; wazero runs it. A build needs no C compiler, CGO_ENABLED=0
 // works, and so does cross-compiling.
 //
+// Blasphem hashes word and character n-grams into sparse feature vectors.
+// A linear classifier trained offline scores them with 16-bit weights.
+// Lexicons and context rules contribute to the verdict.
+// Detection runs locally without neural networks or cloud inference.
+//
 // The contract matches the JavaScript package: Init once with Options, then
 // Judge on every message; Judge never fails and fails open before Init or
 // after Close. New builds an independent Instance when one judge per module

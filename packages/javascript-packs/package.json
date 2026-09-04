@@ -1,0 +1,38 @@
+{
+  "name": "@blasphem/packs",
+  "version": "0.1.0",
+  "description": "Language data for blasphem: toxicity detection in 16 languages, optional language identification, and a SHA-256 integrity manifest. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
+  "license": "CC-BY-NC-SA-4.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/javascript-packs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "11.13.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./manifest.json": "./dist/manifest.json",
+    "./files": {
+      "types": "./dist/files.d.ts",
+      "default": "./dist/files.js"
+    },
+    "./*": "./dist/*"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "node scripts/build.mjs && node ../../scripts/copy-notice.mjs"
+  }
+}

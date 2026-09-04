@@ -4,6 +4,11 @@ Local toxicity checks for React Native through Nitro Modules.
 The Rust engine runs behind C++ HybridObjects.
 Calls to `judge` are synchronous over JSI.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Installation
 
 The public npm release is pending.
@@ -92,7 +97,7 @@ Native loaders ignore `assets` and read the app bundle.
 
 Use `id` for Indonesian and `ms` for Malay.
 Both need the `ms` data files.
-See [the locale list](../packs/README.md#locales).
+See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 Results contain `safe`, `score`, `locale`, and `grawlix`.
 The score is ordinal, between 0 and 1.
@@ -100,20 +105,20 @@ It is not a probability.
 
 Before initialization and after closure, the module judge returns a safe verdict.
 Independent judges throw `BLASPHEM_CLOSED` after closure.
-See [the public exports](src/index.ts) and [shared contract](../core/src/contract.ts).
+See [the public exports](src/index.ts) and [shared contract](../javascript-common/src/contract.ts).
 
 ## Asset errors
 
 Initialization rejects missing files, unsupported locales, and invalid data.
 The error carries a `BLASPHEM_*` code.
 Pack digests must match `manifest.json`.
-See [the shared error codes](../core/src/errors.ts).
+See [the shared error codes](../javascript-common/src/errors.ts).
 
 ## Web support
 
 The browser export forwards to the optional `blasphem` peer.
 Install that package when the application targets the web.
-Configure its [browser assets and CSP](../blasphem/README.md#browser-assets).
+Configure its [browser assets and CSP](../javascript/README.md#browser-assets).
 The native bundle setup does not provide web assets.
 
 ## Build from source
@@ -135,7 +140,7 @@ pnpm --filter @blasphem/react-native run build:rust
 pnpm --filter @blasphem/react-native run build
 ```
 
-Link `packages/react-native` and `packages/packs` into the consuming application.
+Link `packages/react-native` and `packages/javascript-packs` into the consuming application.
 Install its Nitro peer and copy the language data.
 Run CocoaPods and rebuild the app.
 

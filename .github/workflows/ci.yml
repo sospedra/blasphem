@@ -7,13 +7,14 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  GOFLAGS: "-mod=readonly"
 
 jobs:
   canonical:
     name: canonical (x86_64-unknown-linux-gnu)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Show the pinned toolchain
         run: |
@@ -21,18 +22,16 @@ jobs:
           cargo --version
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 11.13.0
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
           cache: pnpm
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -54,21 +53,27 @@ jobs:
           cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
           cmp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
 
+      - name: Verify canonical packs
+        run: node scripts/generate-packs.mjs --check
+
       - name: Verify the corpus
         run: |
           cargo run --release --locked -p blasphem-train -- corpus-verify \
             --corpus-root corpus \
-            --evaluation-lock resources/datasets/evaluation-lock-v1.json
+            --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json
 
       - name: Install JavaScript dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Check dependency pins
+        run: pnpm deps:check
 
       - name: Read the Playwright version
         id: playwright
         run: echo "version=$(pnpm --filter blasphem exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
@@ -79,18 +84,147 @@ jobs:
       - name: Reproduce
         run: cargo run --release --locked -p blasphem-train -- reproduce
 
+      - name: Generate full evidence and the website snapshot
+        run: pnpm evidence
+
+      - name: Check and build the website from its committed snapshot
+        run: |
+          pnpm --filter web check
+          pnpm --filter web build
+
       - name: Upload the evidence reports
-        uses: actions/upload-artifact@v4
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reports
           path: reports/
+          if-no-files-found: error
+          retention-days: 90
+
+  go:
+    name: Go (${{ matrix.toolchain }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [minimum, pinned, current]
+    env:
+      CGO_ENABLED: "0"
+      GOTOOLCHAIN: local
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Read the Go version
+        id: go
+        env:
+          TOOLCHAIN: ${{ matrix.toolchain }}
+        run: |
+          version=$(case "$TOOLCHAIN" in
+            (minimum) awk '$1 == "go" { print $2 }' packages/go/go.mod ;;
+            (pinned) awk '$1 == "golang" { print $2 }' .tool-versions ;;
+            (current) echo stable ;;
+            (*) exit 1 ;;
+          esac)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+          check-latest: ${{ matrix.toolchain == 'current' }}
+          cache-dependency-path: packages/go/go.sum
+
+      - name: Build and vet the module
+        working-directory: packages/go
+        run: |
+          go build ./...
+          go vet ./...
+
+      - name: Judge through the Go package
+        working-directory: packages/go
+        run: |
+          output=$(go run ./example ../../resources/packs)
+          printf '%s\n' "$output"
+          [[ "$output" == '{Safe:false '* ]]
+
+  python:
+    name: Python (${{ matrix.toolchain }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [minimum, pinned, current]
+    env:
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target/python
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Read the Python version
+        id: python
+        env:
+          TOOLCHAIN: ${{ matrix.toolchain }}
+        run: |
+          version=$(case "$TOOLCHAIN" in
+            (minimum) awk -F '"' '/^requires-python = / { sub(/^>=/, "", $2); print $2 }' packages/python/pyproject.toml ;;
+            (pinned) awk '$1 == "python" { print $2 }' .tool-versions ;;
+            (current) echo 3.x ;;
+            (*) exit 1 ;;
+          esac)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python for the build
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version-file: .tool-versions
+
+      - name: Cache cargo
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/python
+          key: cargo-python-${{ matrix.toolchain }}-${{ hashFiles('crates/blasphem-python/Cargo.lock', 'rust-toolchain.toml', '.tool-versions') }}
+
+      - name: Build the Python wheels
+        run: |
+          python -m pip install --require-hashes -r packages/python/requirements-build.txt
+          cp NOTICE packages/python/NOTICE
+          python packages/python-packs/sync_packs.py
+          python -m pip wheel --no-deps --no-build-isolation --config-settings=build-args=--locked \
+            --wheel-dir "$RUNNER_TEMP/python-wheels" ./packages/python ./packages/python-packs
+
+      - name: Set up Python for the compatibility check
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ steps.python.outputs.version }}
+          check-latest: ${{ matrix.toolchain == 'current' }}
+
+      - name: Install the built wheels
+        run: python -m pip install --no-index "$RUNNER_TEMP"/python-wheels/*.whl
+
+      - name: Judge through the installed Python package
+        run: |
+          python - <<'PY'
+          import blasphem
+
+          blasphem.init(["en"])
+          assert blasphem.ready()
+          verdict = blasphem.judge("you are a stupid loser")
+          print(verdict)
+          assert verdict.safe is False and verdict.locale == "en", verdict
+          blasphem.close()
+          assert not blasphem.ready()
+          assert blasphem.judge("you are a stupid loser").safe is True
+          PY
 
   macos:
     name: optional native bytes (aarch64-apple-darwin)
     runs-on: macos-15
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Show the pinned toolchain
         run: |
@@ -98,7 +232,7 @@ jobs:
           cargo --version
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -124,7 +258,7 @@ jobs:
         run: |
           cargo run --release --locked -p blasphem-train -- corpus-verify \
             --corpus-root corpus \
-            --evaluation-lock resources/datasets/evaluation-lock-v1.json
+            --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json
 
       - name: Reproduce without the browser
         run: cargo run --release --locked -p blasphem-train -- reproduce --skip-browser

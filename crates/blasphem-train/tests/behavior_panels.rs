@@ -756,7 +756,7 @@ fn assert_control_distribution(language: Language, panel: &[blasphem_train::Beha
 }
 
 fn behavior_fixture_root() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/fixtures/behavior")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../crates/blasphem/tests/fixtures/behavior")
 }
 
 struct PanelFixture {
@@ -837,7 +837,9 @@ impl PanelFixture {
 
     fn with_panel(panel: &str, references: &[&str]) -> Self {
         let temporary = tempfile::tempdir().expect("temporary directory");
-        let root = temporary.path().join("tests/fixtures/behavior");
+        let root = temporary
+            .path()
+            .join("crates/blasphem/tests/fixtures/behavior");
         fs::create_dir_all(&root).expect("create fixture root");
         fs::write(root.join("en.tsv"), panel).expect("write panel");
         fs::write(
@@ -892,7 +894,7 @@ impl PanelFixture {
     }
 
     fn write_evidence(&self, rows: &[(&str, &str, &str, &str)]) {
-        let path = self.temporary.path().join("resources/datasets");
+        let path = self.temporary.path().join("crates/blasphem-train/metadata");
         fs::create_dir_all(&path).expect("create the evidence directory");
         let mut contents = String::from(
             "source_id\tdetector_language_code\tlabel\tinclusion_status\texclusion_reason\ttext\n",
@@ -902,7 +904,7 @@ impl PanelFixture {
                 "{source_id}\t{code}\t{label}\texcluded\taudit_only\t{text}\n"
             ));
         }
-        fs::write(path.join("behavior-provenance-v1.tsv"), contents)
+        fs::write(path.join("behavior-audit-v1.tsv"), contents)
             .expect("write the behavior provenance");
     }
 }

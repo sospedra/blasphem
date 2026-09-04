@@ -222,7 +222,7 @@ mod tests {
                 TableFormat::Python,
             ),
             (
-                "packages/swift/Sources/Blasphem/Locales.generated.swift",
+                "packages/apple/Sources/Blasphem/Locales.generated.swift",
                 TableFormat::Swift,
             ),
             (
@@ -240,14 +240,14 @@ mod tests {
     #[test]
     fn the_committed_table_is_current() {
         let committed = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../packages/core/src/locales.generated.ts");
+            .join("../../packages/javascript-common/src/locales.generated.ts");
         let contents = std::fs::read_to_string(&committed)
             .unwrap_or_else(|error| panic!("{}: {error}", committed.display()));
 
         assert_eq!(
             contents,
             locales_table(),
-            "run: cargo run -p blasphem-train -- locales-table --output packages/core/src/locales.generated.ts"
+            "run: cargo run -p blasphem-train -- locales-table --output packages/javascript-common/src/locales.generated.ts"
         );
     }
 }

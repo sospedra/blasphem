@@ -17,7 +17,7 @@ rootProject.name = "blasphem-android"
 
 include(":engine", ":bom")
 
-// One module per data file present. scripts/sync-packs.mjs copies them from packages/packs/dist.
+// One module per data file present. scripts/sync-packs.mjs exports resources/packs.
 val codeDirectories = rootDir.resolve("packs").listFiles { file -> file.isDirectory }?.sorted() ?: emptyList()
 for (codeDirectory in codeDirectories) {
     val code = codeDirectory.name

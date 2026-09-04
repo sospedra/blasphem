@@ -1,6 +1,7 @@
 [package]
 name = "blasphem-python"
 version = "0.1.0"
+description = "Python native bindings for local toxicity checks. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference."
 edition = "2024"
 rust-version = "1.85"
 publish = false
@@ -21,8 +22,8 @@ name = "_native"
 crate-type = ["cdylib"]
 
 [dependencies]
-blasphem = { path = "../..", default-features = false, features = ["language-detection"] }
-pyo3 = { version = "0.29", features = ["extension-module", "abi3-py310"] }
+blasphem = { path = "../blasphem", default-features = false, features = ["language-detection"] }
+pyo3 = { version = "=0.29.2", features = ["extension-module", "abi3-py310"] }
 
 [lints.clippy]
 correctness = "deny"

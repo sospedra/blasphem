@@ -19,7 +19,27 @@ Start with [the architecture](HOW.md) and the relevant [distribution guide](READ
 ### Set up
 
 Use the Rust version in [rust-toolchain.toml](rust-toolchain.toml).
-Use the Node and pnpm versions in [package.json](package.json).
+Use the runtime versions in [.tool-versions](.tool-versions).
+Use the pnpm version in [package.json](package.json).
+CI reads these same files.
+Any installer can supply these versions. asdf is optional.
+
+Install only the tools needed for your contribution:
+
+| Contribution | Tools |
+| --- | --- |
+| Rust engine and command-line interface | Rust |
+| Website and JavaScript packages | Rust, Node, pnpm, wasm-bindgen-cli |
+| Go packages | Go. Rust also rebuilds the embedded engine. |
+| Python packages | Rust, Python |
+| Android package | Rust, Node, JDK, Android SDK/NDK, Gradle wrapper |
+| Swift and React Native packages | See their package READMEs for platform tools. |
+
+The pins define the contributor and release build environment.
+Go and Python CI also check their minimum and current stable versions.
+Minimum requirements stay in `go.mod` and `pyproject.toml`.
+JavaScript packages retain their declared Node requirement in `package.json`.
+
 Run these commands from the repository root:
 
 ```sh
@@ -40,6 +60,35 @@ Native packages have additional requirements in their READMEs.
 Edit third-party attributions in the root [NOTICE](NOTICE) only.
 Package scripts copy it into distribution artifacts.
 Generated NOTICE copies are not tracked.
+
+### Dependency versions
+
+Pin registry dependencies to exact versions, including development, build, and peer dependencies.
+pnpm saves exact versions through `saveExact: true` in `pnpm-workspace.yaml`.
+Cargo dependencies require `=major.minor.patch`.
+A plain Cargo version permits compatible updates.
+Use `cargo add 'crate@=major.minor.patch'` for new Rust dependencies.
+Python dependencies require `package==version`.
+Local Cargo paths and `workspace:*` npm references identify packages in this repository.
+Keep runtime compatibility requirements, such as `requires-python`, separate from dependency pins.
+
+Keep the lockfiles in version control. Use `pnpm install --frozen-lockfile` and Cargo `--locked`.
+Go builds use `-mod=readonly`. Gradle rejects dynamic and changing dependencies, including transitive dependencies.
+Pin GitHub Actions to full commit hashes.
+Keep generated release action pins in `[dist.github-action-commits]`, then run `dist generate-ci`.
+
+Python build tools and their transitive dependencies live in `packages/python/requirements-build.txt`.
+Install that file with `pip install --require-hashes -r packages/python/requirements-build.txt`.
+Use `--no-build-isolation` for local package installation and `--no-isolation` with `python -m build`.
+To update the Python build tools, edit `requirements-build.in` and the matching `pyproject.toml` pins.
+Regenerate the lockfile with:
+
+```sh
+uv pip compile --universal --python-version 3.10 --generate-hashes --no-header \
+  --output-file packages/python/requirements-build.txt packages/python/requirements-build.in
+```
+
+Run `pnpm deps:check` after dependency changes. CI runs the same check.
 
 ### Check a change
 
@@ -94,7 +143,7 @@ Use the values from [the model manifest](resources/models/multilingual-v2/manife
 Rebuild affected packages after the runtime changes.
 
 Use development data, validation reports, and behavior panels during iteration.
-Reserve [test-split benchmarks](benchmark/README.md) for the agreed final evaluation.
+Reserve [test-split benchmarks](crates/blasphem-bench/README.md) for the agreed final evaluation.
 Never tune rules or thresholds from test results.
 
 ## Corpus contributions
@@ -118,11 +167,13 @@ Use the import pipeline for a new external dataset.
 4. Merge accepted development rows into the corpus.
 5. Run the corpus verification command.
 
-The lock is [source-lock-v1.json](resources/datasets/source-lock-v1.json).
-The observation belongs at `data/raw-v1/source-observation-v1.json`.
+The lock is [source-lock-v1.json](crates/blasphem-train/metadata/source-lock-v1.json).
+The observation belongs at `crates/blasphem-train/metadata/source-observation-v1.json`.
+That observation is historical and does not cover every current locked source.
 The repository does not supply the raw upstream corpus files.
 
-Community inputs use `data/raw-v1/community/{language}/{source_file_id}.tsv`.
+Community inputs use `target/raw/community/{language}/{source_file_id}.tsv`.
+Each import needs `target/raw/source-observation-v1.json` with the same source records as its reviewed lock.
 Their header is `native_id<TAB>label<TAB>text`.
 Labels are `clean` or `toxic`.
 Set `dataset` to `community` and `source_role` to `training_only`.
@@ -131,10 +182,11 @@ See [the community adapter](crates/blasphem-train/src/community_corpus.rs) and
 
 ```sh
 cargo run --release --locked -p blasphem-train -- prepare \
-  --source-lock resources/datasets/source-lock-v1.json \
-  --raw-root data/raw-v1 \
-  --evaluation-lock resources/datasets/evaluation-lock-v1.json \
-  --output data/prepared-draft-v1
+  --source-lock crates/blasphem-train/metadata/source-lock-v1.json \
+  --raw-root target/raw \
+  --audit-exclusions crates/blasphem-train/metadata/behavior-audit-v1.tsv \
+  --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json \
+  --output target/prepared-draft
 ```
 
 Use a new output directory.
@@ -143,7 +195,7 @@ Sealed baseline rows take precedence over duplicates.
 Conflicting labels fail preparation.
 
 For a new format, follow the existing [typed adapters](crates/blasphem-train/src/datasets/).
-Record rule-derived audit examples in [rule-audit-v1.tsv](resources/datasets/rule-audit-v1.tsv).
+Record rule-derived audit examples in [behavior-audit-v1.tsv](crates/blasphem-train/metadata/behavior-audit-v1.tsv).
 Exclude those examples from later quality measurements.
 
 ## License

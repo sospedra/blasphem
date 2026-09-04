@@ -1,5 +1,10 @@
 """Multilingual pre-send toxicity nudge.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
     import blasphem
 
     blasphem.init(["en", "es"], grawlix=True)

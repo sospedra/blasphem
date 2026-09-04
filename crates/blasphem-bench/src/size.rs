@@ -26,7 +26,7 @@ pub struct SizeEvidence {
     pub target_triple: String,
     pub binary: FileSizeRecord,
     pub artifacts: BTreeMap<String, FileSizeRecord>,
-    pub hurtlex: BTreeMap<String, FileSizeRecord>,
+    pub lexicon: BTreeMap<String, FileSizeRecord>,
     pub all_gates_passed: bool,
 }
 
@@ -42,7 +42,7 @@ struct ManifestEntry {
     artifact_relative_path: String,
     artifact_bytes: u64,
     artifact_sha256: String,
-    hurtlex_sha256: Option<String>,
+    lexicon_sha256: Option<String>,
 }
 
 #[derive(Debug, Error)]
@@ -71,8 +71,8 @@ pub enum SizeError {
     },
     #[error("file digest mismatch for {0}")]
     DigestMismatch(String),
-    #[error("model manifest misses the HurtLex digest for {}", .0.code())]
-    MissingHurtlexDigest(Language),
+    #[error("model manifest misses the Lexicon digest for {}", .0.code())]
+    MissingLexiconDigest(Language),
     #[error(transparent)]
     Gate(#[from] crate::SizeGateError),
 }
@@ -119,7 +119,7 @@ pub fn record_file(
     })
 }
 
-/// Collects size evidence for the binary, 15 artifacts, and 15 HurtLex files.
+/// Collects size evidence for the binary, 15 artifacts, and 15 Lexicon files.
 ///
 /// # Errors
 ///
@@ -127,7 +127,7 @@ pub fn record_file(
 pub fn collect_size_evidence(
     binary_path: &Path,
     model_manifest_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
     target_triple: &str,
 ) -> Result<SizeEvidence, SizeError> {
     let manifest_bytes = fs::read(model_manifest_path).map_err(|source| SizeError::FileIo {
@@ -145,7 +145,7 @@ pub fn collect_size_evidence(
     check_binary_size(binary.bytes)?;
 
     let mut artifacts = BTreeMap::new();
-    let mut hurtlex = BTreeMap::new();
+    let mut lexicon = BTreeMap::new();
     for entry in manifest.entries {
         let code = entry.language.code().to_owned();
         if artifacts.contains_key(&code) {
@@ -165,15 +165,15 @@ pub fn collect_size_evidence(
         check_artifact_size(artifact.bytes)?;
         artifacts.insert(code.clone(), artifact);
 
-        let expected_hurtlex = entry
-            .hurtlex_sha256
-            .ok_or(SizeError::MissingHurtlexDigest(entry.language))?;
+        let expected_lexicon = entry
+            .lexicon_sha256
+            .ok_or(SizeError::MissingLexiconDigest(entry.language))?;
         let storage_code = entry.language.storage_code();
-        let hurtlex_path = hurtlex_root.join(format!("{storage_code}.tsv"));
-        let hurtlex_label = hurtlex_path.to_string_lossy().into_owned();
-        let hurtlex_record =
-            record_file(&hurtlex_path, &hurtlex_label, Some(&expected_hurtlex), None)?;
-        hurtlex.insert(code, hurtlex_record);
+        let lexicon_path = lexicon_root.join(format!("{storage_code}.tsv"));
+        let lexicon_label = lexicon_path.to_string_lossy().into_owned();
+        let lexicon_record =
+            record_file(&lexicon_path, &lexicon_label, Some(&expected_lexicon), None)?;
+        lexicon.insert(code, lexicon_record);
     }
     for language in Language::ALL {
         if !artifacts.contains_key(language.code()) {
@@ -187,7 +187,7 @@ pub fn collect_size_evidence(
         target_triple: target_triple.to_owned(),
         binary,
         artifacts,
-        hurtlex,
+        lexicon,
         all_gates_passed: true,
     })
 }

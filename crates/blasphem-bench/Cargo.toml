@@ -15,10 +15,10 @@ serde_jcs.workspace = true
 serde_json = { workspace = true, features = ["float_roundtrip"] }
 sha2.workspace = true
 thiserror.workspace = true
-blasphem = { path = "../.." }
+blasphem = { path = "../blasphem" }
 
 [target.'cfg(target_os = "macos")'.dependencies]
-libc = "0.2"
+libc = "=0.2.189"
 
 [dev-dependencies]
 tempfile.workspace = true

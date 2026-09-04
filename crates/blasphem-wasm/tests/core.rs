@@ -31,12 +31,12 @@ fn rule_pack_version(language: Language) -> u16 {
 fn pack(language: Language) -> Vec<u8> {
     let storage = language.storage_code();
     let artifact_name = if language == Language::Es {
-        "es-chargram-v1.bin".to_owned()
+        "es-sparse-v2.bin".to_owned()
     } else {
         format!("{}-sparse-v2.bin", storage.to_ascii_lowercase())
     };
     let artifact = read(&format!("resources/models/multilingual-v2/{artifact_name}"));
-    let lexicon = read(&format!("data/clean-room-v1/{storage}.tsv"));
+    let lexicon = read(&format!("lexicon/{storage}.tsv"));
     blasphem::encode_pack(&PackInput {
         language,
         rule_pack_version: rule_pack_version(language),

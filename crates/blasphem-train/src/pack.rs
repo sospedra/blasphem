@@ -1,5 +1,4 @@
-//! Writes the per-language packs, detect slices, and the manifest that
-//! `@blasphem/packs` ships.
+//! Writes the canonical per-language binary packs, detect slices, and manifest.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -14,7 +13,7 @@ use thiserror::Error;
 
 use crate::model_manifest::{ModelManifest, ModelSetError, parse_model_manifest};
 
-/// The `formatVersion` the JavaScript core accepts.
+/// The shared pack manifest format version.
 pub const PACKS_MANIFEST_FORMAT_VERSION: u32 = 1;
 
 #[derive(Debug, Clone)]
@@ -22,7 +21,7 @@ pub struct PackOptions {
     pub model_manifest: PathBuf,
     pub model_root: PathBuf,
     pub language_model: PathBuf,
-    pub hurtlex_root: PathBuf,
+    pub lexicon_root: PathBuf,
     pub output: PathBuf,
 }
 
@@ -84,74 +83,77 @@ pub enum PackWriteError {
 pub fn write_packs(options: &PackOptions) -> Result<PackReport, PackWriteError> {
     let manifest = read_model_manifest(&options.model_manifest)?;
     let slices = slices_by_language(&read(&options.language_model)?)?;
-    fs::create_dir_all(&options.output).map_err(|source| io_error(&options.output, source))?;
-    clear_previous_output(&options.output)?;
-
-    let mut files = BTreeMap::new();
-    let mut bytes = 0_usize;
-    for language in Language::ALL {
-        let pack = pack_bytes(options, &manifest, language)?;
-        let slice = slices
-            .get(&language)
-            .ok_or(PackWriteError::MissingSlice(language))?;
-        bytes += write_file(
-            &options.output,
-            &pack_file_name(language),
-            &pack,
-            &mut files,
-        )?;
-        bytes += write_file(
-            &options.output,
-            &detect_file_name(language),
-            slice,
-            &mut files,
-        )?;
-    }
-
+    let artifacts = collect_artifacts(options, &manifest, &slices)?;
+    let files = artifacts
+        .iter()
+        .map(|(name, bytes)| {
+            (
+                name.clone(),
+                PackedFile {
+                    bytes: bytes.len(),
+                    sha256: hex_digest(bytes),
+                },
+            )
+        })
+        .collect();
     let packs_manifest = PacksManifest {
         format_version: PACKS_MANIFEST_FORMAT_VERSION,
         files,
     };
     let mut json = serde_json::to_vec_pretty(&packs_manifest)?;
     json.push(b'\n');
-    let manifest_path = options.output.join("manifest.json");
-    fs::write(&manifest_path, &json).map_err(|source| io_error(&manifest_path, source))?;
-    let (module, declaration) = files_module(&packs_manifest);
-    let module_path = options.output.join("files.js");
-    fs::write(&module_path, &module).map_err(|source| io_error(&module_path, source))?;
-    let declaration_path = options.output.join("files.d.ts");
-    fs::write(&declaration_path, &declaration)
-        .map_err(|source| io_error(&declaration_path, source))?;
-
+    publish_artifacts(&options.output, &artifacts, &json)?;
     Ok(PackReport {
         locales: Language::ALL.len(),
-        files: packs_manifest.files.len() + 3,
-        bytes: bytes + json.len() + module.len() + declaration.len(),
+        files: artifacts.len() + 1,
+        bytes: artifacts.values().map(Vec::len).sum::<usize>() + json.len(),
     })
 }
 
-/// A module that names every shipped file with `new URL(literal, import.meta.url)`.
-///
-/// Node loads packs through it, so file tracers such as `@vercel/nft` see the
-/// exact files a deployment needs without any configuration. The module is
-/// Node-only; the browser never imports it.
-fn files_module(manifest: &PacksManifest) -> (String, String) {
-    let mut module = String::new();
-    module.push_str("// Written by `blasphem-train pack`. Do not edit.\n");
-    module.push_str(
-        "// Every entry is a literal `new URL` so deployment tracers include the file.\n",
-    );
-    module.push_str("export const MANIFEST = new URL(\"./manifest.json\", import.meta.url);\n");
-    module.push_str("export const FILES = {\n");
-    module.push_str("  \"manifest.json\": MANIFEST,\n");
-    for name in manifest.files.keys() {
-        module.push_str(&format!(
-            "  \"{name}\": new URL(\"./{name}\", import.meta.url),\n"
-        ));
+fn collect_artifacts(
+    options: &PackOptions,
+    manifest: &ModelManifest,
+    slices: &BTreeMap<Language, Vec<u8>>,
+) -> Result<BTreeMap<String, Vec<u8>>, PackWriteError> {
+    let pairs = Language::ALL
+        .into_iter()
+        .map(|language| {
+            let pack = pack_bytes(options, manifest, language)?;
+            let slice = slices
+                .get(&language)
+                .ok_or(PackWriteError::MissingSlice(language))?;
+            Ok([
+                (pack_file_name(language), pack),
+                (detect_file_name(language), slice.clone()),
+            ])
+        })
+        .collect::<Result<Vec<_>, PackWriteError>>()?;
+    Ok(pairs.into_iter().flatten().collect())
+}
+
+fn publish_artifacts(
+    output: &Path,
+    artifacts: &BTreeMap<String, Vec<u8>>,
+    manifest: &[u8],
+) -> Result<(), PackWriteError> {
+    fs::create_dir_all(output).map_err(|source| io_error(output, source))?;
+    let staged = tempfile::Builder::new()
+        .prefix(".packs-")
+        .tempdir_in(output)
+        .map_err(|source| io_error(output, source))?;
+    for (name, bytes) in artifacts {
+        write_file(&staged.path().join(name), bytes)?;
     }
-    module.push_str("};\n");
-    let declaration = "export declare const MANIFEST: URL;\nexport declare const FILES: Readonly<Record<string, URL>>;\n".to_owned();
-    (module, declaration)
+    write_file(&staged.path().join("manifest.json"), manifest)?;
+    for name in artifacts
+        .keys()
+        .map(String::as_str)
+        .chain(["manifest.json"])
+    {
+        fs::rename(staged.path().join(name), output.join(name))
+            .map_err(|source| io_error(&output.join(name), source))?;
+    }
+    clear_previous_output(output, artifacts)
 }
 
 fn read_model_manifest(path: &Path) -> Result<ModelManifest, PackWriteError> {
@@ -182,8 +184,8 @@ fn pack_bytes(
     let artifact_path = options.model_root.join(&entry.artifact_relative_path);
     let artifact = read_verified(&artifact_path, &entry.artifact_sha256.to_string())?;
     let storage = language.storage_code();
-    let lexicon_path = options.hurtlex_root.join(format!("{storage}.tsv"));
-    let lexicon = match &entry.hurtlex_sha256 {
+    let lexicon_path = options.lexicon_root.join(format!("{storage}.tsv"));
+    let lexicon = match &entry.lexicon_sha256 {
         Some(expected) => read_verified(&lexicon_path, &expected.to_string())?,
         None => read(&lexicon_path)?,
     };
@@ -208,40 +210,30 @@ fn read_verified(path: &Path, expected: &str) -> Result<Vec<u8>, PackWriteError>
     Ok(bytes)
 }
 
-fn write_file(
-    output: &Path,
-    name: &str,
-    bytes: &[u8],
-    files: &mut BTreeMap<String, PackedFile>,
-) -> Result<usize, PackWriteError> {
-    let path = output.join(name);
-    fs::write(&path, bytes).map_err(|source| io_error(&path, source))?;
-    files.insert(
-        name.to_owned(),
-        PackedFile {
-            bytes: bytes.len(),
-            sha256: hex_digest(bytes),
-        },
-    );
-    Ok(bytes.len())
+fn write_file(path: &Path, bytes: &[u8]) -> Result<(), PackWriteError> {
+    fs::write(path, bytes).map_err(|source| io_error(path, source))
 }
 
-/// Removes the files a previous run wrote, so the manifest describes the directory exactly.
-fn clear_previous_output(output: &Path) -> Result<(), PackWriteError> {
-    let entries = fs::read_dir(output).map_err(|source| io_error(output, source))?;
-    for entry in entries {
+fn clear_previous_output(
+    output: &Path,
+    artifacts: &BTreeMap<String, Vec<u8>>,
+) -> Result<(), PackWriteError> {
+    for entry in fs::read_dir(output).map_err(|source| io_error(output, source))? {
         let path = entry.map_err(|source| io_error(output, source))?.path();
-        let stale = path
-            .file_name()
-            .and_then(|name| name.to_str())
-            .is_some_and(|name| {
-                name == "manifest.json" || name.ends_with(".pack") || name.ends_with(".detect")
-            });
-        if stale {
+        let Some(name) = path.file_name().and_then(|name| name.to_str()) else {
+            continue;
+        };
+        if is_generated_file(name) && !artifacts.contains_key(name) {
             fs::remove_file(&path).map_err(|source| io_error(&path, source))?;
         }
     }
     Ok(())
+}
+
+fn is_generated_file(name: &str) -> bool {
+    name.ends_with(".pack")
+        || name.ends_with(".detect")
+        || matches!(name, "files.js" | "files.d.ts")
 }
 
 fn read(path: &Path) -> Result<Vec<u8>, PackWriteError> {

@@ -2,7 +2,12 @@
 
 Low-level WebAssembly bindings for the Rust toxicity engine.
 The module contains code, without embedded language data.
-Most applications should use [the JavaScript package](../../packages/blasphem/README.md).
+Most applications should use [the JavaScript package](../../packages/javascript/README.md).
+
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
 
 ## Build
 
@@ -24,7 +29,7 @@ The generated loader requires an explicit module location.
 ## Usage
 
 Serve the generated `blasphem.js` and `blasphem_bg.wasm` files.
-Serve matching [language packs](../../packages/packs/README.md) under `/blasphem`.
+Serve matching [language packs](../../packages/javascript-packs/README.md) under `/blasphem`.
 
 ```js
 import init, { BlasphemEngineBuilder } from "./blasphem.js";
@@ -64,7 +69,7 @@ try {
 ```
 
 Serve WASM with the `application/wasm` content type.
-Apply the [browser CSP requirements](../../packages/blasphem/README.md#content-security-policy).
+Apply the [browser CSP requirements](../../packages/javascript/README.md#content-security-policy).
 
 ## API
 
@@ -109,7 +114,7 @@ cargo test --locked -p blasphem-wasm
 ```
 
 These Rust tests exercise the shared engine.
-The [JavaScript browser checks](../../packages/blasphem/README.md#build-from-source) exercise browser execution.
+The [JavaScript browser checks](../../packages/javascript/README.md#build-from-source) exercise browser execution.
 
 [Contribute](../../CONTRIBUTING.md)
 

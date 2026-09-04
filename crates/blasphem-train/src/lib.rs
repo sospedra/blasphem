@@ -6,7 +6,6 @@ pub mod community_corpus;
 pub mod compiler;
 pub mod corpus;
 pub mod datasets;
-pub mod evaluation;
 pub mod evaluation_lock;
 pub mod evidence;
 pub mod lexicon;
@@ -14,7 +13,6 @@ pub mod locales_table;
 pub mod model_manifest;
 pub mod pack;
 pub mod preparation;
-pub mod prepared_input;
 pub mod publication;
 pub mod regenerate;
 pub mod reproduce;
@@ -34,10 +32,8 @@ pub use behavior_panel::{
     validate_event_distribution,
 };
 pub use datasets::textdetox::*;
-pub use evaluation::{ParseEvaluationError, parse_eval_rows};
 pub use publication::{
-    PreparedPublication, PreparedPublicationError, PreparedPublicationResult,
-    TextDetoxPublicationError, publish_prepared, publish_prepared_textdetox,
+    PreparedPublication, PreparedPublicationError, PreparedPublicationResult, publish_prepared,
 };
 pub use textdetox_http::{
     DEFAULT_TEXTDETOX_MAX_ATTEMPTS, MAX_TEXTDETOX_SLEEP, ReqwestTextDetoxClient,

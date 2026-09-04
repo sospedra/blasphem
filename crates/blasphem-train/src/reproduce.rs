@@ -36,10 +36,10 @@ pub const REENTRY_GUARD_VARIABLE: &str = "BLASPHEM_REPRODUCE_ACTIVE";
 /// The committed corpus: one hand-editable TSV file per language.
 pub const CORPUS_ROOT: &str = "corpus";
 
-const SOURCE_LOCK: &str = "resources/datasets/source-lock-v1.json";
-const EVALUATION_LOCK: &str = "resources/datasets/evaluation-lock-v1.json";
-const HURTLEX_ROOT: &str = "data/clean-room-v1";
-const BEHAVIOR_ROOT: &str = "tests/fixtures/behavior";
+const SOURCE_LOCK: &str = "crates/blasphem-train/metadata/source-lock-v1.json";
+const EVALUATION_LOCK: &str = "crates/blasphem-train/metadata/evaluation-lock-v1.json";
+const LEXICON_ROOT: &str = "lexicon";
+const BEHAVIOR_ROOT: &str = "crates/blasphem/tests/fixtures/behavior";
 const LANGUAGE_ARTIFACT_LOCK: &str = "resources/models/language-artifact-v1.json";
 const LANGUAGE_ARTIFACT_SCHEMA_VERSION: &str = "language-artifact-v1";
 const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
@@ -60,9 +60,10 @@ const RUST_CHECKS: [&[&str]; 3] = [
     &["fmt", "--all", "--check"],
 ];
 
-const JAVASCRIPT_CHECKS: [&[&str]; 4] = [
+const JAVASCRIPT_CHECKS: [&[&str]; 5] = [
     &["install", "--frozen-lockfile"],
     &["--filter", "blasphem", "run", "build"],
+    &["--filter", "@blasphem/packs", "run", "build"],
     &["--filter", "blasphem", "run", "pack:check"],
     &["--filter", "blasphem", "run", "test:node"],
 ];
@@ -168,7 +169,7 @@ fn verify_corpus_step(options: &ReproduceOptions) -> StepResult {
     .map_err(|error| failure(STEP, error.to_string()))?;
     let report = verify_corpus(&options.project_root.join(CORPUS_ROOT), &evaluation)
         .map_err(|error| failure(STEP, error.to_string()))?;
-    verify_hurtlex_inputs(STEP, options, &lock)?;
+    verify_lexicon_inputs(STEP, options, &lock)?;
     Ok(format!(
         "verified {} corpus rows across {} languages",
         report.rows, report.languages
@@ -176,27 +177,27 @@ fn verify_corpus_step(options: &ReproduceOptions) -> StepResult {
 }
 
 /// The clean-room lexicon files back the corpus directly, so their digests stay pinned.
-fn verify_hurtlex_inputs(
+fn verify_lexicon_inputs(
     step: &'static str,
     options: &ReproduceOptions,
     lock: &crate::source_manifest::FrozenSourceLock,
 ) -> Result<(), ReproduceError> {
-    let hurtlex_root = options.project_root.join(HURTLEX_ROOT);
+    let lexicon_root = options.project_root.join(LEXICON_ROOT);
     for source in lock
         .sources
         .iter()
-        .filter(|source| source.dataset == DatasetId::HurtLex)
+        .filter(|source| source.dataset == DatasetId::Lexicon)
     {
         let relative = source
             .file_path
-            .strip_prefix("hurtlex/")
+            .strip_prefix("lexicon/")
             .unwrap_or(source.file_path.as_str());
-        let actual = file_digest(step, &hurtlex_root.join(relative))?;
+        let actual = file_digest(step, &lexicon_root.join(relative))?;
         if actual != source.file_sha256 {
             return Err(failure(
                 step,
                 format!(
-                    "{HURTLEX_ROOT}/{relative} changed: expected {}, got {actual}",
+                    "{LEXICON_ROOT}/{relative} changed: expected {}, got {actual}",
                     source.file_sha256
                 ),
             ));
@@ -230,7 +231,7 @@ fn compile_model_artifacts(options: &ReproduceOptions) -> StepResult {
     let manifest = compile_model_set(&BatchCompileOptions {
         corpus_root: options.project_root.join(CORPUS_ROOT),
         source_lock: options.project_root.join(SOURCE_LOCK),
-        hurtlex_root: options.project_root.join(HURTLEX_ROOT),
+        lexicon_root: options.project_root.join(LEXICON_ROOT),
         behavior_root: Some(options.project_root.join(BEHAVIOR_ROOT)),
         output: model_root(options),
     })

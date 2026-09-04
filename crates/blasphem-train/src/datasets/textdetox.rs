@@ -781,54 +781,6 @@ pub fn write_textdetox_source_tsv(
     Ok(())
 }
 
-pub fn write_textdetox_eval_tsv(
-    writer: impl Write,
-    rows: &[EvalRow],
-) -> Result<(), TextDetoxError> {
-    let mut csv = tsv_writer(writer);
-    csv.write_record(["language", "label", "text"])?;
-    for row in rows {
-        csv.write_record([
-            row.language.as_str(),
-            evaluation_label(row.label),
-            row.text.as_str(),
-        ])?;
-    }
-    csv.flush().map_err(csv::Error::from)?;
-    Ok(())
-}
-
-pub fn write_textdetox_provenance_tsv(
-    writer: impl Write,
-    rows: &[ProvenanceRow],
-) -> Result<(), TextDetoxError> {
-    let mut rows = rows.iter().collect::<Vec<_>>();
-    rows.sort_by(|left, right| left.source_id.cmp(&right.source_id));
-    let mut csv = tsv_writer(writer);
-    csv.write_record([
-        "source_id",
-        "source_language",
-        "detector_language",
-        "group_id",
-        "split",
-        "canonical_source_id",
-        "status",
-    ])?;
-    for row in rows {
-        csv.write_record([
-            row.source_id.as_str(),
-            row.source_language.as_str(),
-            row.detector_language.as_str(),
-            row.group_id.as_deref().unwrap_or(""),
-            row.split.map(split_name).unwrap_or(""),
-            row.canonical_source_id.as_deref().unwrap_or(""),
-            provenance_status_name(row.status),
-        ])?;
-    }
-    csv.flush().map_err(csv::Error::from)?;
-    Ok(())
-}
-
 fn tsv_writer(writer: impl Write) -> csv::Writer<impl Write> {
     csv::WriterBuilder::new()
         .delimiter(b'\t')
@@ -840,31 +792,6 @@ const fn source_label(label: EvalLabel) -> &'static str {
     match label {
         EvalLabel::Clean => "0",
         EvalLabel::Toxic => "1",
-    }
-}
-
-const fn evaluation_label(label: EvalLabel) -> &'static str {
-    match label {
-        EvalLabel::Clean => "clean",
-        EvalLabel::Toxic => "toxic",
-    }
-}
-
-const fn split_name(split: DatasetSplit) -> &'static str {
-    match split {
-        DatasetSplit::Development => "development",
-        DatasetSplit::Validation => "validation",
-        DatasetSplit::Test => "test",
-    }
-}
-
-const fn provenance_status_name(status: ProvenanceStatus) -> &'static str {
-    match status {
-        ProvenanceStatus::Representative => "representative",
-        ProvenanceStatus::Duplicate => "duplicate",
-        ProvenanceStatus::LabelConflict => "label_conflict",
-        ProvenanceStatus::UnsupportedLanguage => "unsupported_language",
-        ProvenanceStatus::EmptyText => "empty_text",
     }
 }
 

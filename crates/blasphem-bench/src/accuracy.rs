@@ -17,7 +17,7 @@ use crate::sha256_hex;
 
 pub const CORPUS_ROOT: &str = "corpus";
 pub const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
-pub const EMBEDDED_SOURCE: &str = "src/embedded.rs";
+pub const EMBEDDED_SOURCE: &str = "crates/blasphem/src/embedded.rs";
 pub const NATIVE_BINARY: &str = "target/release/blasphem";
 pub const VALIDATION_REPORT: &str = "reports/multilingual-validation.json";
 const CORPUS_HEADER: &str = "split\tlabel\ttext";
@@ -122,7 +122,7 @@ pub struct AccuracyRun {
     pub retrained: bool,
     pub generated_unix_seconds: u64,
     pub binary_sha256: String,
-    /// The headline. Same rows and path as the committed report the web page shows.
+    /// Calibration evidence paired with this run's held-out test measurements.
     pub validation: Section,
     /// The shipped binary judged over held-out rows.
     pub test: Section,
@@ -152,7 +152,7 @@ struct Verdict {
 struct ManifestEntry {
     artifact_relative_path: String,
     artifact_sha256: String,
-    hurtlex_sha256: Option<String>,
+    lexicon_sha256: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -327,7 +327,7 @@ fn sync_entry(lines: &mut [String], entry: &ManifestEntry) -> Result<usize, Accu
         })?;
     let wanted = [
         Some(entry.artifact_sha256.as_str()),
-        entry.hurtlex_sha256.as_deref(),
+        entry.lexicon_sha256.as_deref(),
     ];
     let mut changed = 0;
     let mut cursor = start + 1;

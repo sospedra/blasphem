@@ -1,10 +1,11 @@
 ---
 import { formatKibibytes } from "../lib/format";
+import { LANGUAGES } from "../lib/languages";
 import { browser, sizes, smoke } from "../lib/reports";
 import Numeral from "./Numeral.astro";
 import Spread from "./Spread.astro";
 
-const thresholds = [...new Set(Object.values(smoke.languages).flatMap((language) => language.cases.map((entry) => entry.threshold / 100)))];
+const thresholds = smoke.thresholds.map((threshold) => threshold / 100);
 const tableBytes = Math.max(...Object.values(sizes.artifacts).map((artifact) => artifact.bytes));
 const browserChecks = browser.supplied_case_count + browser.auto_case_count + browser.unknown_case_count;
 const ENGINE_NAMES: Record<string, string> = { chromium: "Chromium", webkit: "WebKit" };
@@ -31,8 +32,8 @@ const vows = [
   },
   {
     numeral: "IV",
-    title: "Fifteen tongues, one table each",
-    body: `Every language carries its own sparse integer table of ${formatKibibytes(tableBytes)}, trained offline. No table reads another.`,
+    title: `${LANGUAGES.length} languages`,
+    body: `Indonesian (id), Malay (ms), and ${LANGUAGES.length - 2} more. Compact integer tables of up to ${formatKibibytes(tableBytes)}, trained offline.`,
     glyph: "key",
   },
 ] as const;

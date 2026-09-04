@@ -4,6 +4,11 @@ Local toxicity checks through the Rust engine and an embedded WebAssembly module
 [wazero](https://wazero.io/) runs the module.
 Applications need Go 1.25 or later and no C compiler.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Installation
 
 ```sh
@@ -16,9 +21,10 @@ For changes from a local checkout, add a replacement in your application's `go.m
 replace github.com/sospedra/blasphem/packages/go => /path/to/blasphem/packages/go
 ```
 
-Prepare a directory with `manifest.json` and the required language files.
-See [the pack guide](../packs/README.md#build-from-source).
-Pass that directory through `Options.Assets`.
+Supply the committed [canonical packs](../../resources/packs/README.md) through `Options.Assets`.
+For embedded or custom storage, supply an `fs.FS` through `Options.Packs`.
+Use matching runtime and data release versions.
+Include only the language files your application needs.
 
 ## Example
 
@@ -35,7 +41,7 @@ import (
 func main() {
 	err := blasphem.Init(blasphem.Options{
 		Locales: []string{"en", "es"},
-		Assets:  "/path/to/blasphem/packages/packs/dist",
+		Assets:  "/path/to/blasphem/resources/packs",
 		Grawlix: true,
 	})
 	if err != nil {
@@ -80,8 +86,7 @@ Its root must contain `manifest.json`.
 An `embed.FS` can include only the language files your application needs.
 
 Use `id` for Indonesian and `ms` for Malay.
-Both resolve to the `ms` model profile.
-See [all locale codes](../packs/README.md#locales).
+See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 ## Results and errors
 
@@ -99,7 +104,7 @@ See [the error constants](errors.go) and [API source](blasphem.go).
 Run the existing example from this package directory:
 
 ```sh
-go run ./example ../packs/dist
+go run ./example ../../resources/packs
 ```
 
 Rebuild the embedded engine from the repository root after Rust changes:

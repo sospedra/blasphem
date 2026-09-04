@@ -1,7 +1,11 @@
 # blasphem
 
 A Rust library for toxicity warnings before a message is sent.
-The engine combines lexica, context rules, and integer weight tables.
+
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
@@ -53,8 +57,8 @@ Rust releases its resources when the judge is dropped.
 | `grawlix` | `false` | Return text with matched spans masked |
 
 With detection disabled, the judge returns the highest score across loaded locales.
-Indonesian and Malay share `Language::Ms`.
-See [the language enum](src/language.rs) for supported codes.
+Use `"id".parse::<Language>()` for Indonesian and `"ms".parse::<Language>()` for Malay.
+See [all 16 supported languages](../../packages/javascript-packs/README.md#locales).
 
 ## Result
 

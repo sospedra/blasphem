@@ -24,8 +24,8 @@ function plan() {
   ]);
   return [
     ...platforms,
-    { name: "@blasphem/packs", directory: "packages/packs" },
-    { name: "blasphem", directory: "packages/blasphem" },
+    { name: "@blasphem/packs", directory: "packages/javascript-packs" },
+    { name: "blasphem", directory: "packages/javascript" },
     { name: "@blasphem/react-native", directory: "packages/react-native" },
   ];
 }
@@ -70,7 +70,7 @@ function publish(entry, tag) {
   execFileSync("npm", args, { stdio: "inherit", cwd: resolve(projectRoot, entry.directory) });
 }
 
-const version = JSON.parse(readFileSync(resolve(projectRoot, "packages/blasphem/package.json"), "utf8")).version;
+const version = JSON.parse(readFileSync(resolve(projectRoot, "packages/javascript/package.json"), "utf8")).version;
 const tag = version.includes("-") ? "next" : "latest";
 const entries = plan();
 let pinnedTotal = 0;

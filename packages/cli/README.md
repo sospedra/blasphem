@@ -3,6 +3,11 @@
 Check one message or a stream of messages.
 The Rust binary embeds all supported language data.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Installation
 
 Build from this checkout:
@@ -47,9 +52,9 @@ blasphem judge [OPTIONS] [TEXT]
 | `--json` | Write JSON output |
 | `--help` | Show command help |
 
-The default loads all 16 supported language codes.
-Indonesian and Malay share one model profile.
-See [the locale list](../packs/README.md#locales).
+The default supports all 16 languages.
+Use `id` for Indonesian and `ms` for Malay.
+See [the language list](../javascript-packs/README.md#locales).
 
 ## Output and exit status
 

@@ -1,14 +1,14 @@
 use std::{fs, path::Path};
 
 use blasphem_bench::{
-    ARTIFACT_SIZE_LIMIT_BYTES, BINARY_SIZE_LIMIT_BYTES, check_artifact_size, check_binary_size,
-    collect_size_evidence, record_file,
+    ARTIFACT_SIZE_LIMIT_BYTES, check_artifact_size, check_binary_size, collect_size_evidence,
+    record_file,
 };
 
 #[test]
 fn shipping_size_gates_use_the_exact_limits() {
-    assert!(check_binary_size(BINARY_SIZE_LIMIT_BYTES).is_ok());
-    assert!(check_binary_size(BINARY_SIZE_LIMIT_BYTES + 1).is_err());
+    assert!(check_binary_size(10_485_760).is_ok());
+    assert!(check_binary_size(10_485_761).is_err());
     assert!(check_artifact_size(ARTIFACT_SIZE_LIMIT_BYTES - 1).is_ok());
     assert!(check_artifact_size(ARTIFACT_SIZE_LIMIT_BYTES).is_err());
 }
@@ -23,13 +23,13 @@ fn size_evidence_contains_every_language_resource() {
     let evidence = collect_size_evidence(
         &binary,
         &project_root.join("resources/models/multilingual-v2/manifest.json"),
-        &project_root.join("data/clean-room-v1"),
+        &project_root.join("lexicon"),
         "aarch64-apple-darwin",
     )
     .expect("size evidence");
 
     assert_eq!(evidence.artifacts.len(), 15);
-    assert_eq!(evidence.hurtlex.len(), 15);
+    assert_eq!(evidence.lexicon.len(), 15);
     assert!(evidence.all_gates_passed);
 }
 

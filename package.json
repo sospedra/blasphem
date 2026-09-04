@@ -10,13 +10,20 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "check": "turbo run check",
+    "deps:check": "node scripts/check-dependencies.mjs",
     "reproduce": "cargo run --release --locked -p blasphem-train -- reproduce",
-    "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate",
+    "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate && node scripts/generate-packs.mjs",
+    "packs:generate": "node scripts/generate-packs.mjs",
+    "packs:check": "node scripts/generate-packs.mjs --check",
     "versions": "cargo run --release --locked -p blasphem-train -- sync-versions",
     "versions:check": "cargo run --release --locked -p blasphem-train -- sync-versions --check",
+    "evidence": "node scripts/collect-evidence.mjs",
+    "evidence:snapshot": "node scripts/snapshot-evidence.mjs",
     "publish:npm": "node scripts/publish-npm.mjs"
   },
   "devDependencies": {
-    "turbo": "2.10.12"
+    "smol-toml": "1.8.0",
+    "turbo": "2.10.12",
+    "yaml": "2.9.0"
   }
 }

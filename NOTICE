@@ -29,16 +29,9 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## clean-room-v1 lexica
 
-- Status: this repository no longer ships HurtLex. HurtLex's actual license
-  is CC BY-NC-SA 4.0 (NonCommercial), never CC-BY-SA-4.0 as an earlier
-  version of this file claimed. The NonCommercial term is the reason this
-  project built its own lexica from scratch. `data/raw-v1/hurtlex/` and
-  `data/hurtlex/` are deleted, and no HurtLex bytes remain in this
-  repository or in any built artifact.
-- The fifteen lexica under `data/clean-room-v1/` replace HurtLex. Each is an
-  independent work assembled from the sources below, reviewed lemma by
-  lemma against the project's own category scheme. Share-alike survives
-  this change: it now runs against Wiktionary, not HurtLex.
+- The fifteen lexica under `lexicon/` are independent works assembled
+  from the sources below. The project assigns each lemma a category
+  and severity. Each source keeps its recorded license and attribution.
 
 ## wiktionary
 
@@ -51,7 +44,7 @@ The corpora and lexica below keep their own recorded licenses.
   Indonesian, Vietnamese, Chinese, Arabic, German, and Hindi.
 - Sources: 15
 - Status: share-alike. This repository harvests category listings from
-  Wiktionary into `data/clean-room-v1/`. Any redistribution of this data,
+  Wiktionary into `lexicon/`. Any redistribution of this data,
   or of a derivative lexicon built from it, must carry the CC BY-SA 4.0
   license and attribution.
 
@@ -156,7 +149,7 @@ These sources supplied candidates only. Their data is not redistributed.
 
 ## Model artifacts
 
-The training sources are recorded in `resources/datasets/source-lock-v1.json`.
+The training sources are recorded in `crates/blasphem-train/metadata/source-lock-v1.json`.
 The model artifacts under `resources/models/` are weight tables trained on
 the corpora above. They contain no corpus text, but each is a derivative
 work of its training data and inherits that data's license.

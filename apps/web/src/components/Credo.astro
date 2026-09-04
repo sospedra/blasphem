@@ -1,11 +1,9 @@
 ---
-import { formatInt, formatMegabytes, formatMs, formatPercent } from "../lib/format";
-import { nanosecondsToMs } from "../lib/metrics";
-import { browser, routing, validation } from "../lib/reports";
+import { formatInt, formatMegabytes, formatPercent } from "../lib/format";
+import { benchmark, browser } from "../lib/reports";
 import Spread from "./Spread.astro";
 
-const wakeUp = formatMs(nanosecondsToMs(routing.cold_initialization_nanoseconds), 0);
-const matrix = validation.pooled_matrix;
+const matrix = benchmark.test.pooled.matrix;
 const pooledPrecision = matrix.true_positive / (matrix.true_positive + matrix.false_positive);
 const pooledRecall = matrix.true_positive / (matrix.true_positive + matrix.false_negative);
 const cleanRows = matrix.false_positive + matrix.true_negative;
@@ -16,20 +14,19 @@ const startingSize = formatMegabytes(browser.browser_builds.explicit_only.brotli
   <div class="page l">
     <svg class="emblem" viewBox="0 0 80 96" aria-hidden="true"><use href="#sacredHeart"></use></svg>
     <p class="rubric">the credo</p>
-    <h2 id="credo-title" class="title">A free internet can still be a safe one</h2>
-    <p class="creed">We believe the web should stay free, private, and safe at the same time, and that no one should have to trade one for another.</p>
-    <p class="copy">The serious profanity and toxicity checks today are neural models. Models want gigabytes of memory and a machine you do not own, so the text goes to a server, and the safety of a conversation becomes someone else's log line.</p>
-    <p class="copy">A message can be caught before any of that happens. On the keyboard. In the tab it was written in. For {startingSize}.</p>
+    <h2 id="credo-title" class="title">A moment to reconsider.</h2>
+    <p class="creed">The best time to change a message is before it leaves.</p>
+    <p class="copy">Give the writer a quiet warning while the draft is still theirs. The text stays on their device. Your app chooses the words, the timing, and the next step.</p>
+    <p class="copy">Start with a {startingSize} browser download for English without language detection. Add the languages your community uses.</p>
   </div>
   <div class="page r">
     <div class="antiphon">
-      <p class="not">Not a moderation pipeline.</p>
-      <p class="but">A nudge before send.</p>
+      <p class="but">A warning. A chance to rewrite.</p>
     </div>
-    <p class="copy">blasphem exists to stop a hostile message from leaving, in the second the writer can still change it. It does not rank a feed, it does not ban an account, and it does not decide what is true. Those are jobs for a system that can see a whole community. This one sees one draft, and only while it is being written.</p>
-    <p class="copy">That narrow scope buys the whole design. No model means fixed integer tables. Fixed tables mean a small download, a {wakeUp} wake-up, and a verdict in under a millisecond for a short message. Nothing is sent, so nothing can leak.</p>
-    <p class="copy">It also sets the price, and we pay it openly: <b>we trade recall for precision</b>. When blasphem warns, it is right {formatPercent(pooledPrecision, 1)} of the time, and it warns on {formatPercent(cleanWarned, 1)} of the {formatInt(cleanRows)} clean validation messages. It also misses. Pooled recall is {formatPercent(pooledRecall, 0)}, and per language it runs from single digits to the high eighties.</p>
-    <p class="copy">A pre-send nudge that cries wolf gets dismissed, and then it catches nothing at all. One that stays quiet until it is sure keeps its one chance to be heard. Read <a href="#reckoning">the reckoning</a> for every number behind that trade.</p>
+    <p class="copy">Blasphem checks one message at a time. It cannot see the full conversation or decide your community policy. Use its verdict as one input to your product.</p>
+    <p class="copy">The engine combines a trained model with deterministic rules. Both run locally, in your client or server.</p>
+    <p class="copy">The test benchmark records <b>{formatPercent(pooledPrecision)} precision</b> and <b>{formatPercent(pooledRecall)} recall</b> across all languages. It warns on {formatPercent(cleanWarned)} of {formatInt(cleanRows)} clean test messages. Many toxic messages still go undetected.</p>
+    <p class="copy">Performance varies by language. Read <a href="#reckoning">the full benchmark</a> before choosing where to use a warning.</p>
   </div>
 </Spread>
 
@@ -61,17 +58,11 @@ const startingSize = formatMegabytes(browser.browser_builds.explicit_only.brotli
     padding-left: 18px;
     border-left: 1px solid var(--blood-hair);
   }
-  .not,
   .but {
     margin: 0;
     font-family: var(--font-goth);
     font-size: clamp(22px, 1.9vw, 30px);
     line-height: 1.25;
-  }
-  .not {
-    color: var(--taupe-ink);
-    text-decoration: line-through;
-    text-decoration-color: var(--blood-hair);
   }
   .but {
     color: var(--bone);

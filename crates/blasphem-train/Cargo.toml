@@ -7,17 +7,17 @@ publish = false
 license = "Apache-2.0"
 
 [dependencies]
-blasphem = { path = "../.." }
+blasphem = { path = "../blasphem" }
 blasphem-language = { path = "../blasphem-language" }
-regex = "1"
+regex = "=1.13.1"
 anyhow.workspace = true
-bytes = "1.10"
+bytes = "=1.12.1"
 clap.workspace = true
 csv.workspace = true
 liblinear = "=1.0.0"
-parquet = { version = "55.2", default-features = false, features = ["snap"] }
-reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
-rustix = { version = "1.1", features = ["fs"] }
+parquet = { version = "=55.2.0", default-features = false, features = ["snap"] }
+reqwest = { version = "=0.12.28", default-features = false, features = ["blocking", "rustls-tls"] }
+rustix = { version = "=1.1.4", features = ["fs"] }
 serde.workspace = true
 serde_jcs.workspace = true
 serde_json = { workspace = true, features = ["float_roundtrip"] }

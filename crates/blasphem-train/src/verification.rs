@@ -903,10 +903,10 @@ pub enum VerificationError {
     ModelSet(#[from] ModelSetError),
     #[error("model manifest misses language {0}")]
     MissingModelLanguage(Language),
-    #[error("model manifest misses a HurtLex digest for {0}")]
-    MissingHurtlexDigest(Language),
-    #[error("HurtLex digest mismatch for {0}")]
-    HurtlexDigestMismatch(Language),
+    #[error("model manifest misses a Lexicon digest for {0}")]
+    MissingLexiconDigest(Language),
+    #[error("Lexicon digest mismatch for {0}")]
+    LexiconDigestMismatch(Language),
     #[error("cannot initialize the detector for {language}: {source}")]
     RuntimeInit {
         language: Language,
@@ -990,13 +990,13 @@ pub fn evaluate_language_validation(
 pub fn evaluate_validation(
     corpus_root: &Path,
     model_manifest_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
 ) -> Result<EvaluationEvidence, VerificationError> {
     let inputs = load_evidence_inputs(corpus_root, model_manifest_path)?;
     let mut evaluations = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
         let entry = manifest_entry(&inputs.model_manifest, language)?;
-        let detector = load_detector(language, entry, hurtlex_root)?;
+        let detector = load_detector(language, entry, lexicon_root)?;
         let validation = load_corpus_validation(corpus_root, language)?;
         let evaluation = evaluate_language_validation(&detector, &validation)?;
         if evaluation.matrix != entry.validation {
@@ -1020,7 +1020,7 @@ pub fn evaluate_behavior(
     fixture_root: &Path,
     corpus_root: &Path,
     model_manifest_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
 ) -> Result<BehaviorEvidence, VerificationError> {
     let inputs = load_evidence_inputs(corpus_root, model_manifest_path)?;
     let mut panels = BTreeMap::new();
@@ -1038,7 +1038,7 @@ pub fn evaluate_behavior(
     let mut results = Vec::with_capacity(panels.len());
     for (language, rows) in panels {
         let entry = manifest_entry(&inputs.model_manifest, language)?;
-        let detector = load_detector(language, entry, hurtlex_root)?;
+        let detector = load_detector(language, entry, lexicon_root)?;
         let cases = rows
             .into_iter()
             .map(|row| {
@@ -1073,14 +1073,14 @@ pub fn evaluate_behavior(
 /// Returns an error for changed model inputs or runtime initialization failures.
 pub fn evaluate_cli_smoke(
     model_manifest_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
 ) -> Result<CliSmokeEvidence, VerificationError> {
     let (manifest, model_manifest_sha256) = load_model_evidence_input(model_manifest_path)?;
     let mut results = Vec::with_capacity(Language::ALL.len());
 
     for language in Language::ALL {
         let entry = manifest_entry(&manifest, language)?;
-        let detector = load_detector(language, entry, hurtlex_root)?;
+        let detector = load_detector(language, entry, lexicon_root)?;
         let cases = cli_smoke_cases()
             .iter()
             .filter(|case| case.language == language)
@@ -1275,17 +1275,17 @@ fn manifest_entry(
 fn load_detector(
     language: Language,
     entry: &ModelManifestEntry,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
 ) -> Result<NudgeDetector, VerificationError> {
-    let path = hurtlex_root.join(format!("{}.tsv", language.storage_code()));
+    let path = lexicon_root.join(format!("{}.tsv", language.storage_code()));
     let bytes = read_evidence_input(&path)?;
     let expected = entry
-        .hurtlex_sha256
+        .lexicon_sha256
         .as_ref()
-        .ok_or(VerificationError::MissingHurtlexDigest(language))?;
+        .ok_or(VerificationError::MissingLexiconDigest(language))?;
     if &sha256_digest(&bytes) != expected {
-        return Err(VerificationError::HurtlexDigestMismatch(language));
+        return Err(VerificationError::LexiconDigestMismatch(language));
     }
-    NudgeDetector::from_hurtlex_bytes(language, Some(&bytes))
+    NudgeDetector::from_lexicon_bytes(language, Some(&bytes))
         .map_err(|source| VerificationError::RuntimeInit { language, source })
 }

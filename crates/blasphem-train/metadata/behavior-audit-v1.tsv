@@ -1,0 +1,56 @@
+source_id	detector_language_code	label	inclusion_status	exclusion_reason	text	reason
+germeval-2018@9877472d39523effd54cd079b4c61157ed141508/unsplit/test-001359	DE	toxic	excluded	audit_only	#Tagesschau Ihr seit solche verlogenen Arschlöcher !!!	behavior_panel_rule_evidence
+germeval-2018@9877472d39523effd54cd079b4c61157ed141508/unsplit/test-001983	DE	toxic	excluded	audit_only	#Soros Du Reisen Arschloch !!!! Verrecke elendig!!!!	behavior_panel_rule_evidence
+ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/000382	ID	toxic	excluded	audit_only	perempuan kaya lo mending mati aja deh, jelek aja, gausa sok jadi make up artist!	behavior_panel_rule_evidence
+ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/005554	ID	toxic	excluded	audit_only	USER gaya bgt lo kampang mau gue tendang gak'	behavior_panel_rule_evidence
+ibrohim-budi@be98de98e974b65838d2b5145ee2c89e9bf53a6b/unsplit/010172	ID	toxic	excluded	audit_only	USER USER Iri ae lu tolol'	behavior_panel_rule_evidence
+k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/11842	KO	toxic	excluded	audit_only	달창남들아 진짜 작작좀해라. 30대남들 죽여버린다	accepted_task6_direct_threat
+k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/27924	KO	toxic	excluded	audit_only	북괴돼지새끼 뒤졌으면 좋겠네	accepted_task6_harm_wish
+k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/29609	KO	toxic	excluded	audit_only	넌늙은 🐕🐕🐕🐕새끼	accepted_task6_directed_insult
+k-mhas@ec7a7e775d650b825872f6f538fc717822cdfc1a/train/33268	KO	toxic	excluded	audit_only	동성애는 사회악입니다 자살해주세요	accepted_task6_self_harm_command
+offenseval-tr@official-v1/train/16626	TR	toxic	excluded	audit_only	hayır kedim de ben de ondan ne kadar haz etmediğimizi anlattık ısrarla sevmeye çalışıyor. kafanı kırarım senin yer biti.	behavior_panel_rule_evidence
+offenseval-tr@official-v1/train/35659	TR	toxic	excluded	audit_only	@USER Geri zekalı. 18 yaş salaklığı bunlar tabii normal.	behavior_panel_rule_evidence
+offenseval-tr@official-v1/train/36405	TR	toxic	excluded	audit_only	@USER @USER Çok salaksın aq yapıyor olanilirsin gayet normal  herkes yapabilir de hem bir instagramer ve yayıncı olarak bunu sosyal medyada paylaşıyorsun sonra intihar ederim nolcak et hadi madem	behavior_panel_rule_evidence
+offenseval-tr@official-v1/train/44700	TR	toxic	excluded	audit_only	@USER En yakın zamanda geber orospu	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/001021	AR	toxic	excluded	audit_only	يا باريس انت حمار ولا بتستحمر	accepted_task5_directed_insult
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/001941	AR	toxic	excluded	audit_only	#14<>يا خرا يا زق يا ***** *** و الله نهايتكم عايدي اقسم بالله لو ما ترجعولنا حقنا اموتكم 	accepted_task5_direct_threat
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/003718	AR	toxic	excluded	audit_only	الله ياخذك يا أليغري يا جبان يا حمار	accepted_task5_harm_wish
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ar/004436	AR	toxic	excluded	audit_only	موتي برا تفرج تلافزكم سيب زبوبنا	accepted_task5_self_harm_command
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/de/000787	DE	toxic	excluded	audit_only	  Dikka du hurensohn Hater deine Mutter ficke ich im Schlaf wenn ich nachts von einem Nachtisch träume wie ich den mit deiner fetten Mutter auf ihrem Balkon fresse. Du hurensohn Bastard hater. Komm mal ran junge. Dann breche ich dir die Nase.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/003215	EN	toxic	excluded	audit_only	Lmao your fucking retarded kill yourself.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/003672	EN	toxic	excluded	audit_only	Son of all your fucking mother, I hope you die stupid, chinga Your mother	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/004404	EN	toxic	excluded	audit_only	Dear Anupam Kher, you are a Moron and a gutter person.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/en/004466	EN	toxic	excluded	audit_only	I'll beat the shit out of you and send you back to the fields, boy.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000254	ES	toxic	excluded	audit_only	No te metas con mi familia, cabrón, o te parto la cara, puto.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000534	ES	toxic	excluded	audit_only	Callate la boca, pelotudo, no sabés nada de nada, sos un nabo, un gil, un salame, hacete un favor y cortate la lengua, la concha de tu abuela	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/000590	ES	toxic	excluded	audit_only	Sos un hijo de puta chino, te odio con toda mi alma, ojala te mueras pronto y sufras mucho	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/es/001918	ES	toxic	excluded	audit_only	Tu eres un gilipollas. Un gilipollas de manual.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/003833	FR	toxic	excluded	audit_only	Je pense que tu ferais mieux d aller crever.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/004761	FR	toxic	excluded	audit_only	Tu es un imbecile.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/fr/004904	FR	toxic	excluded	audit_only	, JE TE TUERAIS, ENCULÉ !	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/000520	HI	toxic	excluded	audit_only	कल और परसों तो तू बहुत ट्वीट कर रहा था अब क्या हुआ गांड फट गई गांडू कहीं के अबे साले जहर खा कर मर क्यों नहीं जाता तुम्हारी जो फोटो वायरल हुई है अत्यंत ही गंदा दिखता है तू तो हिजड़े से भी खराब निकला पर तेरी बॉलीवुड में 90 फ़ीसदी साले जब गांडू हैं तो तू कहां से शरीफ रहेगा	accepted_task5_self_harm_command
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/000625	HI	toxic	excluded	audit_only	तू निहायत कमीना इंसान है	accepted_task5_directed_insult
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/001689	HI	toxic	excluded	audit_only	ये कमीनी जिस दिन मरेगी उस दिन full पार्टी	accepted_task5_harm_wish
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/hi/001962	HI	toxic	excluded	audit_only	इनके हाथ पैर तोड़ दो और फिर खर्चा पानी दे दीजिए हिसाब तो तब भी नहीं होगा इनकी कड़ी से कड़ी सजा देनी चाहिए जेहादी कौम इतना मारो इनको कि मर जाए हरामी	accepted_task5_direct_threat
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000030	IT	toxic	excluded	audit_only	Hellis sei un cretino. Chi ti da il diritto di decidere per gli altri? Per me questa lista è molto utile.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000396	IT	toxic	excluded	audit_only	82.56.106.201: se ti becco a san siro ti ammazzo a coltellate, lurido figlio di puttana bastardo comunista. ESTREMA DESTRA MILAN	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000462	IT	toxic	excluded	audit_only	MATTEO SALVINI SEI UN PEZZO DI MERDA SEI LA VERGOGNA D ITALIA! IO MI VERGOGNO AD AVERE PEZZI DI MERDA AL POTERE COME TE! MUORI PEZZENTE!	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/it/000613	IT	toxic	excluded	audit_only	Per valerio79: Senti piccolo nerd figlio di puttana senza, che cazzo vuoi tu per cancellare una voce fatta da me? Nessuno l aveva fatta prima, io la creo e tu ti permetti di dire che è scarna? Ma ammazzati brutto rotto in culo.	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000351	JA	toxic	excluded	audit_only	７０年も前のことをグダグダと五月蝿い馬鹿だね。   とっとと死ね。	accepted_task6_self_harm_command
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000533	JA	toxic	excluded	audit_only	もう、めんどくさいから   老人とガキを見たら殺そうぜ   殺し続けてればそのうち必ず黙る日が来るのは確実だろ？	accepted_task6_direct_threat
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000848	JA	toxic	excluded	audit_only	やさしいなぁ   おれは黙って死んで欲しいと思うわ	accepted_task6_harm_wish
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ja/000861	JA	toxic	excluded	audit_only	安心したお前のようなバカがいる限り朝鮮人は、戦後保障蒸し返す。	accepted_task6_directed_insult
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/002721	RU	toxic	excluded	audit_only	отсосинка голубкова, ты уже показала какая ты идиотка, может хватит	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/003599	RU	toxic	excluded	audit_only	олигофренка,застрелись за плешивого,может быть кто оценит...	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/ru/004597	RU	toxic	excluded	audit_only	чтоб ты сдох жирная свинья и не было бы у тебя детей от говна говно родится	behavior_panel_rule_evidence
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/000265	ZH	toxic	excluded	audit_only	希望用火全部烧死	accepted_task6_harm_wish
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/001225	ZH	toxic	excluded	audit_only	无法改变那就去死，反同入刑，最高死刑	accepted_task6_self_harm_command
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/001272	ZH	toxic	excluded	audit_only	NBA的脑残粉男的和EG一样，low到骨子里	accepted_task6_directed_insult
+textdetox@01907546324b0330d2d8b7669648cc18823323e5/zh/002465	ZH	toxic	excluded	audit_only	杀光女权，一个不留！	accepted_task6_direct_threat
+told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/010555	PT	toxic	excluded	audit_only	@user porra porto, te bato se fizer qualquer tatuagem	behavior_panel_rule_evidence
+told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/011588	PT	toxic	excluded	audit_only	fale uma musica ruim do 21 pilots, e morra fdp	behavior_panel_rule_evidence
+told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/015135	PT	toxic	excluded	audit_only	não acredito q eu li isso, sério kkkkkkkkkkkkkkkkkkk se mata pqp	behavior_panel_rule_evidence
+told-br@6b325d26a9d25b321a3e9ba98ef98832b56729f5/unsplit/017596	PT	toxic	excluded	audit_only	@user sla voce e burro	behavior_panel_rule_evidence
+vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/4413	VI	toxic	excluded	audit_only	Đcmm đi chết đi:))	behavior_panel_rule_evidence
+vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/4971	VI	toxic	excluded	audit_only	Mày ngu vừa thôi ad :))	behavior_panel_rule_evidence
+vihos@fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/train/8081	VI	toxic	excluded	audit_only	mai tao xin đi làm dân quân xong t đi tìm ra mày giết mày ad ạ đồ phản động :v dlv dạo này hoạt động ghê lm	behavior_panel_rule_evidence

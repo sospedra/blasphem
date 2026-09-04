@@ -8,15 +8,18 @@ import Rite from "../components/Rite.astro";
 import Vows from "../components/Vows.astro";
 import Reckoning from "../components/Reckoning.astro";
 import Colophon from "../components/Colophon.astro";
+import Mechanism from "../components/Mechanism.astro";
+import { LANGUAGES } from "../lib/languages";
 
-const title = "blasphem · catch the hostile message before it sends";
-const description = "Deterministic multilingual toxicity detection compiled to WebAssembly. Fifteen languages, sub-millisecond checks on short messages, no AI runtime, no request after the module loads.";
+const title = "blasphem · catch harm before send";
+const description = `Local toxicity detection for web, Swift, Android, React Native, and servers. ${LANGUAGES.length} languages. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.`;
 ---
 <Codex title={title} description={description}>
   <Frontispiece />
   <Claims />
   <Detector />
   <Rite />
+  <Mechanism />
   <Credo />
   <Vows />
   <Reckoning />

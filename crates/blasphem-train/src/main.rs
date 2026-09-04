@@ -1,14 +1,6 @@
-use std::{
-    collections::BTreeSet,
-    fs::{self, File},
-    io::Read,
-    path::PathBuf,
-};
+use std::{fs::File, io::Read, path::PathBuf};
 
 use anyhow::{Context, Result, bail};
-use blasphem::{
-    ConfusionMatrix, LevelSelection, Metrics, PolicyAction, evaluate_policy, load_lexica,
-};
 use blasphem_train::acquisition::{
     MAX_SOURCE_DOWNLOAD_BYTES, current_unix_seconds, extract_archive_member, freeze_observation,
     source_record_from_request_with_download, validate_catalog,
@@ -34,17 +26,9 @@ use blasphem_train::source_manifest::{
 };
 use blasphem_train::verification::{evaluate_behavior, evaluate_cli_smoke, evaluate_validation};
 use blasphem_train::versions::{check_versions, sync_versions, workspace_version};
-use blasphem_train::{ReqwestTextDetoxClient, TextDetoxHttpClient, parse_eval_rows};
+use blasphem_train::{ReqwestTextDetoxClient, TextDetoxHttpClient};
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use reqwest::blocking::Client;
-
-const DEFAULT_LANGUAGES: &str = "EN,ES,FR,DE,IT,PT,RU,AR";
-const ALL_LANGUAGES: &[&str] = &[
-    "AF", "AR", "BG", "BN", "CA", "CS", "CY", "DA", "DE", "EL", "EN", "EO", "ES", "ET", "EU", "FA",
-    "FI", "FR", "GA", "GL", "HE", "HI", "HR", "HU", "ID", "IS", "IT", "JA", "KO", "LT", "LV", "MK",
-    "MS", "MT", "NL", "NO", "PL", "PT", "RO", "RU", "SIMPLE", "SK", "SL", "SQ", "SR", "SV", "SW",
-    "TH", "TL", "TR", "UK", "VI", "ZH",
-];
 
 #[derive(Debug, Parser)]
 #[command(
@@ -63,14 +47,12 @@ enum Command {
     Acquire(AcquireArgs),
     Prepare(PrepareArgs),
     CorpusVerify(CorpusVerifyArgs),
-    Setup(SetupArgs),
     Compile(CompileArgs),
     /// Audits Spanish validation and optionally compares the fixed learner grid.
     EsRecall(EsRecallArgs),
     Evaluate(EvaluateArgs),
     Behavior(BehaviorArgs),
     CliSmoke(CliSmokeArgs),
-    Eval(EvalArgs),
     Reproduce(ReproduceArgs),
     Regenerate(RegenerateArgs),
     LexiconHarvest(LexiconHarvestArgs),
@@ -134,15 +116,10 @@ struct CompileArgs {
     corpus_root: PathBuf,
     #[arg(long)]
     source_lock: PathBuf,
+    /// Directory containing `{STORAGE_CODE}.tsv` lexicon files.
     #[arg(long)]
-    hurtlex_root: PathBuf,
-    /// Reads `{hurtlex_root}/{STORAGE_CODE}.tsv` instead of the nested
-    /// HurtLex layout `{hurtlex_root}/{STORAGE_CODE}/1.2/hurtlex_{STORAGE_CODE}.tsv`.
-    /// The clean-room lexica are flat; the `1.2` segment is a HurtLex
-    /// version number that means nothing for them.
-    #[arg(long)]
-    flat_lexicon_root: bool,
-    #[arg(long, default_value = "tests/fixtures/behavior")]
+    lexicon_root: PathBuf,
+    #[arg(long, default_value = "crates/blasphem/tests/fixtures/behavior")]
     behavior_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
@@ -175,7 +152,7 @@ struct EvaluateArgs {
     #[arg(long)]
     model_manifest: PathBuf,
     #[arg(long)]
-    hurtlex_root: PathBuf,
+    lexicon_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
 }
@@ -194,7 +171,7 @@ struct BehaviorArgs {
     #[arg(long)]
     model_manifest: PathBuf,
     #[arg(long)]
-    hurtlex_root: PathBuf,
+    lexicon_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
 }
@@ -204,27 +181,9 @@ struct CliSmokeArgs {
     #[arg(long)]
     model_manifest: PathBuf,
     #[arg(long)]
-    hurtlex_root: PathBuf,
+    lexicon_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
-}
-
-#[derive(Debug, Args)]
-struct SetupArgs {
-    #[arg(long, default_value = DEFAULT_LANGUAGES)]
-    languages: String,
-    #[arg(long)]
-    data_dir: PathBuf,
-}
-
-#[derive(Debug, Args)]
-struct EvalArgs {
-    #[arg(long)]
-    input: PathBuf,
-    #[arg(long)]
-    data_dir: PathBuf,
-    #[arg(long, value_enum, default_value_t = MinimumActionArg::Review)]
-    minimum_action: MinimumActionArg,
 }
 
 #[derive(Debug, Args)]
@@ -284,7 +243,7 @@ struct PackArgs {
     #[arg(long)]
     language_model: PathBuf,
     #[arg(long)]
-    hurtlex_root: PathBuf,
+    lexicon_root: PathBuf,
     #[arg(long)]
     output: PathBuf,
 }
@@ -305,21 +264,6 @@ struct LocalesTableArgs {
     format: String,
 }
 
-#[derive(Debug, Clone, Copy, ValueEnum)]
-enum MinimumActionArg {
-    Review,
-    Block,
-}
-
-impl From<MinimumActionArg> for PolicyAction {
-    fn from(value: MinimumActionArg) -> Self {
-        match value {
-            MinimumActionArg::Review => Self::Review,
-            MinimumActionArg::Block => Self::Block,
-        }
-    }
-}
-
 fn main() -> Result<()> {
     match Cli::parse().command {
         Command::Observe(arguments) => observe_sources(&arguments),
@@ -327,13 +271,11 @@ fn main() -> Result<()> {
         Command::Acquire(arguments) => acquire_sources_command(&arguments),
         Command::Prepare(arguments) => prepare_sources_command(&arguments),
         Command::CorpusVerify(arguments) => corpus_verify_command(&arguments),
-        Command::Setup(arguments) => setup(&arguments),
         Command::Compile(arguments) => compile_models(&arguments),
         Command::EsRecall(arguments) => spanish_recall::run(&arguments),
         Command::Evaluate(arguments) => evaluate_evidence(&arguments),
         Command::Behavior(arguments) => behavior_evidence(&arguments),
         Command::CliSmoke(arguments) => cli_smoke_evidence(&arguments),
-        Command::Eval(arguments) => eval(&arguments),
         Command::Reproduce(arguments) => reproduce_repository(&arguments),
         Command::Regenerate(arguments) => regenerate_repository(&arguments),
         Command::LexiconHarvest(arguments) => lexicon_harvest_command(&arguments),
@@ -368,9 +310,9 @@ mod spanish_recall {
 
     use super::EsRecallArgs;
 
-    const BASELINE_ARTIFACT: &str = "resources/models/multilingual-v2/es-chargram-v1.bin";
+    const BASELINE_ARTIFACT: &str = "resources/models/multilingual-v2/es-sparse-v2.bin";
     const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
-    const SOURCE_LOCK: &str = "resources/datasets/source-lock-v1.json";
+    const SOURCE_LOCK: &str = "crates/blasphem-train/metadata/source-lock-v1.json";
 
     pub(super) fn run(arguments: &EsRecallArgs) -> Result<()> {
         fs::create_dir(&arguments.output).context("the evidence directory must be new")?;
@@ -434,13 +376,16 @@ mod spanish_recall {
             let lock = parse_frozen_source_lock(File::open(SOURCE_LOCK)?)?;
             let input = load_corpus_language(Path::new("corpus"), Language::Es, &lock)?;
             let lexicon = fs::read("lexicon/ES.tsv")?;
-            let panel = load_panel(Path::new("tests/fixtures/behavior"), Language::Es)?;
+            let panel = load_panel(
+                Path::new("crates/blasphem/tests/fixtures/behavior"),
+                Language::Es,
+            )?;
             let rule_pack_version = rule_pack_version(Language::Es);
             let request = CompileRequest {
                 language: Language::Es,
                 development: input.development,
                 validation: input.validation,
-                rule_channel: RuleChannel::from_hurtlex_bytes(Language::Es, Some(&lexicon))?,
+                rule_channel: RuleChannel::from_lexicon_bytes(Language::Es, Some(&lexicon))?,
                 clean_controls: panel
                     .iter()
                     .filter(|row| !row.expected_nudge)
@@ -461,30 +406,30 @@ mod spanish_recall {
             for path in [
                 "corpus/ES.tsv",
                 "lexicon/ES.tsv",
-                "resources/datasets/evaluation-lock-v1.json",
+                "crates/blasphem-train/metadata/evaluation-lock-v1.json",
                 SOURCE_LOCK,
                 MODEL_MANIFEST,
                 BASELINE_ARTIFACT,
-                "tests/fixtures/behavior/es.tsv",
-                "samples/spanish-audit.tsv",
+                "crates/blasphem/tests/fixtures/behavior/es.tsv",
+                "crates/blasphem/tests/fixtures/spanish-audit.tsv",
                 "crates/blasphem-train/src/compiler.rs",
                 "crates/blasphem-train/src/calibration.rs",
                 "crates/blasphem-train/src/main.rs",
                 "crates/blasphem-train/src/corpus.rs",
                 "crates/blasphem-train/src/model_manifest.rs",
-                "src/features.rs",
-                "src/detector.rs",
-                "src/rules/channel.rs",
-                "src/policy.rs",
-                "src/rule_pack.rs",
-                "src/runtime.rs",
-                "src/judge.rs",
-                "src/sparse.rs",
-                "src/registry.rs",
-                "src/embedded.rs",
+                "crates/blasphem/src/features.rs",
+                "crates/blasphem/src/detector.rs",
+                "crates/blasphem/src/rules/channel.rs",
+                "crates/blasphem/src/policy.rs",
+                "crates/blasphem/src/rule_pack.rs",
+                "crates/blasphem/src/runtime.rs",
+                "crates/blasphem/src/judge.rs",
+                "crates/blasphem/src/sparse.rs",
+                "crates/blasphem/src/registry.rs",
+                "crates/blasphem/src/embedded.rs",
                 "Cargo.lock",
                 "rust-toolchain.toml",
-                "resources/models/es-chargram-v1.bin",
+                "resources/models/multilingual-v2/es-sparse-v2.bin",
             ] {
                 hashes.insert(
                     path.to_owned(),
@@ -747,7 +692,7 @@ fn pack_command(arguments: &PackArgs) -> Result<()> {
         model_manifest: arguments.model_manifest.clone(),
         model_root: arguments.model_root.clone(),
         language_model: arguments.language_model.clone(),
-        hurtlex_root: arguments.hurtlex_root.clone(),
+        lexicon_root: arguments.lexicon_root.clone(),
         output: arguments.output.clone(),
     };
     let report = write_packs(&options).context("cannot write the packs")?;
@@ -872,7 +817,7 @@ fn compile_models(arguments: &CompileArgs) -> Result<()> {
     let manifest = compile_model_set(&BatchCompileOptions {
         corpus_root: arguments.corpus_root.clone(),
         source_lock: arguments.source_lock.clone(),
-        hurtlex_root: arguments.hurtlex_root.clone(),
+        lexicon_root: arguments.lexicon_root.clone(),
         behavior_root: Some(arguments.behavior_root.clone()),
         output: arguments.output.clone(),
     })
@@ -891,7 +836,7 @@ fn evaluate_evidence(arguments: &EvaluateArgs) -> Result<()> {
             let evidence = evaluate_validation(
                 &arguments.corpus_root,
                 &arguments.model_manifest,
-                &arguments.hurtlex_root,
+                &arguments.lexicon_root,
             )
             .context("cannot create validation calibration evidence")?;
             write_canonical_json(&arguments.output, &evidence)
@@ -911,7 +856,7 @@ fn behavior_evidence(arguments: &BehaviorArgs) -> Result<()> {
         &arguments.fixture_root,
         &arguments.corpus_root,
         &arguments.model_manifest,
-        &arguments.hurtlex_root,
+        &arguments.lexicon_root,
     )
     .context("cannot create behavior contract evidence")?;
     let failures = evidence
@@ -938,7 +883,7 @@ fn behavior_evidence(arguments: &BehaviorArgs) -> Result<()> {
 }
 
 fn cli_smoke_evidence(arguments: &CliSmokeArgs) -> Result<()> {
-    let evidence = evaluate_cli_smoke(&arguments.model_manifest, &arguments.hurtlex_root)
+    let evidence = evaluate_cli_smoke(&arguments.model_manifest, &arguments.lexicon_root)
         .context("cannot create native CLI smoke evidence")?;
     let failures = evidence
         .languages
@@ -1029,8 +974,8 @@ fn freeze_sources_command(arguments: &FreezeSourcesArgs) -> Result<()> {
         .with_context(|| format!("cannot read {}", arguments.observation.display()))?;
     let observation = parse_source_observation(input)?;
     let catalog = parse_source_catalog(
-        File::open("resources/datasets/source-catalog-v1.json")
-            .context("cannot read resources/datasets/source-catalog-v1.json")?,
+        File::open("crates/blasphem-train/metadata/source-catalog-v1.json")
+            .context("cannot read crates/blasphem-train/metadata/source-catalog-v1.json")?,
     )?;
     validate_observation_matches_catalog(&observation, &catalog)?;
     let source_lock = freeze_observation(observation)?;
@@ -1247,135 +1192,8 @@ fn read_revision_document(bytes: &[u8]) -> Result<String> {
     Ok(revision)
 }
 
-fn setup(arguments: &SetupArgs) -> Result<()> {
-    let languages = parse_languages(&arguments.languages)?;
-    fs::create_dir_all(&arguments.data_dir).with_context(|| {
-        format!(
-            "cannot create data directory {}",
-            arguments.data_dir.display()
-        )
-    })?;
-    let client = Client::builder()
-        .user_agent("blasphem-experimental/0.1")
-        .build()
-        .context("cannot build the HTTP client")?;
-
-    for language in languages {
-        let path = arguments.data_dir.join(format!("hurtlex_{language}.tsv"));
-        if path.exists() {
-            println!(
-                "status=existing language={language} path={}",
-                one_line(&path.to_string_lossy())
-            );
-            continue;
-        }
-        let url = hurtlex_url(&language);
-        let bytes = client
-            .get(&url)
-            .send()
-            .with_context(|| format!("cannot download {url}"))?
-            .error_for_status()
-            .with_context(|| format!("HurtLex returned an error for {url}"))?
-            .bytes()
-            .with_context(|| format!("cannot read the response from {url}"))?;
-        fs::write(&path, &bytes).with_context(|| format!("cannot write {}", path.display()))?;
-        println!(
-            "status=downloaded language={language} path={}",
-            one_line(&path.to_string_lossy())
-        );
-    }
-    Ok(())
-}
-
 fn one_line(value: &str) -> String {
     value.chars().flat_map(char::escape_debug).collect()
-}
-
-fn eval(arguments: &EvalArgs) -> Result<()> {
-    let input = File::open(&arguments.input)
-        .with_context(|| format!("cannot read {}", arguments.input.display()))?;
-    let rows = parse_eval_rows(input)?;
-    let languages: Vec<String> = rows
-        .iter()
-        .map(|row| row.language.clone())
-        .collect::<BTreeSet<_>>()
-        .into_iter()
-        .collect();
-    let entries = load_lexica(
-        &arguments.data_dir,
-        &languages,
-        LevelSelection::Conservative,
-    )?;
-    let report = evaluate_policy(&rows, entries, arguments.minimum_action.into())?;
-
-    print_matrix("overall", report.overall);
-    for (language, matrix) in report.by_language {
-        print_matrix(&language, matrix);
-    }
-    Ok(())
-}
-
-fn parse_languages(value: &str) -> Result<Vec<String>> {
-    if value.trim().eq_ignore_ascii_case("all") {
-        return Ok(ALL_LANGUAGES
-            .iter()
-            .map(|language| (*language).to_owned())
-            .collect());
-    }
-    let languages: BTreeSet<String> = value
-        .split(',')
-        .map(str::trim)
-        .filter(|language| !language.is_empty())
-        .map(str::to_ascii_uppercase)
-        .collect();
-    if languages.is_empty()
-        || languages.iter().any(|language| {
-            !language
-                .chars()
-                .all(|character| character.is_ascii_alphabetic())
-        })
-    {
-        bail!("languages must be comma-separated alphabetic codes");
-    }
-    Ok(languages.into_iter().collect())
-}
-
-fn hurtlex_url(language: &str) -> String {
-    format!(
-        "https://raw.githubusercontent.com/valeriobasile/hurtlex/refs/heads/master/lexica/{language}/1.2/hurtlex_{language}.tsv"
-    )
-}
-
-fn print_matrix(scope: &str, matrix: ConfusionMatrix) {
-    let n = matrix
-        .true_positive
-        .saturating_add(matrix.true_negative)
-        .saturating_add(matrix.false_positive)
-        .saturating_add(matrix.false_negative);
-    let Metrics {
-        accuracy,
-        precision,
-        recall,
-        specificity,
-        f1,
-    } = matrix.metrics();
-    println!(
-        "scope={} n={n} tp={} tn={} fp={} fn={} accuracy={} precision={} recall={} specificity={} f1={}",
-        one_line(scope),
-        matrix.true_positive,
-        matrix.true_negative,
-        matrix.false_positive,
-        matrix.false_negative,
-        display_metric(accuracy),
-        display_metric(precision),
-        display_metric(recall),
-        display_metric(specificity),
-        display_metric(f1),
-    );
-}
-
-fn display_metric(value: Option<f64>) -> String {
-    value.map_or_else(|| "N/A".to_owned(), |value| format!("{value:.3}"))
 }
 
 #[cfg(test)]

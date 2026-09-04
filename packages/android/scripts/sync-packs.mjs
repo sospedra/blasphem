@@ -1,35 +1,32 @@
-import { copyFileSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { canonicalPacks, copyPack, loadPacks, replaceDirectory } from "../../../scripts/packs.mjs";
 
-/**
- * Copies every .pack and .detect file into its own Gradle module under
- * packs/<code>/<kind>/, with the NOTICE and a manifest. The copies are
- * gitignored; settings.gradle.kts includes one module per file present.
- * Usage: node scripts/sync-packs.mjs [packs directory]
- */
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const projectRoot = resolve(packageRoot, "../..");
-const source = resolve(process.argv[2] ?? resolve(projectRoot, "packages/packs/dist"));
+const source = resolve(process.argv[2] ?? canonicalPacks);
 const notice = resolve(projectRoot, "NOTICE");
 const packs = resolve(packageRoot, "packs");
-const MANIFEST = '<manifest xmlns:android="http://schemas.android.com/apk/res/android" />\n';
-const KINDS = new Set([".pack", ".detect"]);
+const manifest = '<manifest xmlns:android="http://schemas.android.com/apk/res/android" />\n';
+const files = loadPacks(source).files;
+const staged = mkdtempSync(resolve(packageRoot, ".packs-export-"));
 
-const files = readdirSync(source).filter((name) => KINDS.has(extname(name))).sort();
-if (files.length === 0) throw new Error(`${source} holds no .pack or .detect file; run packages/packs/scripts/build.mjs first`);
-
-rmSync(packs, { recursive: true, force: true });
-for (const name of files) {
-  const kind = extname(name).slice(1);
-  const code = name.slice(0, -kind.length - 1);
-  const main = resolve(packs, code, kind, "src/main");
-  mkdirSync(resolve(main, "assets/blasphem"), { recursive: true });
+function writeModule(file) {
+  const kind = extname(file.name).slice(1);
+  const code = file.name.slice(0, -kind.length - 1);
+  const main = resolve(staged, code, kind, "src/main");
   mkdirSync(resolve(main, "resources/META-INF"), { recursive: true });
-  copyFileSync(resolve(source, name), resolve(main, "assets/blasphem", name));
+  copyPack(file, resolve(main, "assets/blasphem", file.name));
   copyFileSync(notice, resolve(main, "resources/META-INF/NOTICE"));
-  writeFileSync(resolve(main, "AndroidManifest.xml"), MANIFEST);
+  writeFileSync(resolve(main, "AndroidManifest.xml"), manifest);
 }
 
-const bytes = files.reduce((sum, name) => sum + statSync(resolve(source, name)).size, 0);
+try {
+  for (const file of files) writeModule(file);
+  replaceDirectory(staged, packs);
+} finally {
+  rmSync(staged, { recursive: true, force: true });
+}
+const bytes = files.reduce((sum, file) => sum + file.bytes.length, 0);
 console.log(`status=synced modules=${files.length} total_mb=${(bytes / 1048576).toFixed(2)} source=${source}`);

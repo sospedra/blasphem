@@ -2,7 +2,7 @@
 """Generates Portuguese gender/number sibling candidates for a language's
 built lexicon and corpus-checks each one with a word-boundary grep.
 
-`src/text.rs` does NFC normalisation and confusable folding only, no
+`crates/blasphem/src/text.rs` does NFC normalisation and confusable folding only, no
 stemming, so masculine/feminine and singular/plural forms are independent
 lemmas at the runtime matcher. This script exists because a form absent
 from `{CODE}.senses.tsv` is a form the matcher will never catch, no matter
@@ -96,7 +96,7 @@ def main() -> None:
     parser.add_argument("--storage-code", required=True, help='e.g. "PT"')
     parser.add_argument(
         "--data-root",
-        default=REPO_ROOT / "data" / "clean-room-v1",
+        default=REPO_ROOT / "lexicon",
         type=Path,
         help="directory holding {CODE}.tsv",
     )

@@ -1,6 +1,7 @@
 [package]
 name = "blasphem-wasm"
 version.workspace = true
+description = "WebAssembly bindings for local toxicity checks. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference."
 edition = "2024"
 rust-version = "1.85"
 publish = false
@@ -14,8 +15,8 @@ default = ["language-detection"]
 language-detection = ["blasphem/language-detection"]
 
 [dependencies]
-blasphem = { path = "../..", default-features = false }
-js-sys = "0.3"
+blasphem = { path = "../blasphem", default-features = false }
+js-sys = "=0.3.104"
 wasm-bindgen = "=0.2.127"
 
 [dev-dependencies]

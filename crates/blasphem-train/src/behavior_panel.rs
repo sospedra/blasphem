@@ -395,7 +395,7 @@ fn validate_registered_evidence(
 
 /// The audit-only rows the panels cite. They are excluded from the corpus, so
 /// this file is their only copy.
-pub const BEHAVIOR_PROVENANCE: &str = "resources/datasets/behavior-provenance-v1.tsv";
+pub const BEHAVIOR_PROVENANCE: &str = "crates/blasphem-train/metadata/behavior-audit-v1.tsv";
 
 fn unescape_evidence(value: &str) -> String {
     let mut output = String::with_capacity(value.len());
@@ -425,9 +425,8 @@ fn load_development_evidence(
     root: &Path,
 ) -> Result<BTreeMap<String, DevelopmentEvidence>, BehaviorPanelError> {
     let project_root = root
-        .parent()
-        .and_then(Path::parent)
-        .and_then(Path::parent)
+        .ancestors()
+        .nth(5)
         .ok_or_else(|| BehaviorPanelError::InvalidFixtureRoot(root.to_owned()))?;
     let path = project_root.join(BEHAVIOR_PROVENANCE);
     let mut reader = csv::ReaderBuilder::new()

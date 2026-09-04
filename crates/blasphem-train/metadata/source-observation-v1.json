@@ -1,0 +1,475 @@
+{
+  "schema_version": "source-observation-v1",
+  "sources": [
+    {
+      "dataset": "textdetox",
+      "detector_language": "EN",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-en",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/en-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/en.tsv",
+      "file_sha256": "9d17c991b87c4b43ea5f69c9950f3ad852c26a0a7b1aa4a5849323a1ae738988",
+      "download_sha256": "6891ad463c73b7591a86046ec79c3978bd62dcedeb7b8efc1a38f53bd5712b69",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "ZH",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-zh",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/zh-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/zh.tsv",
+      "file_sha256": "3d83b661e3c1cad1de3c8e80273296312708781cece582efc2e4747c41b5e1e9",
+      "download_sha256": "fa988b610450d3dd0031ad3b93fc7284da8e665a1a6558174a767c8edb37c696",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "unresolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "AR",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-ar",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ar-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/ar.tsv",
+      "file_sha256": "07e17f8bb673e5bfb5559e608291e9cd80b9d7a4d0167fa082e9805c8c510405",
+      "download_sha256": "2e3a3e0bc9956066305d46a4957496cea67a5a0d307a98c574507a787709ded9",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "FR",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-fr",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/fr-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/fr.tsv",
+      "file_sha256": "6ed1a85c725fd437e5df908fcbcab279ddde0194b27fb47c581ff967f6b7cc76",
+      "download_sha256": "4d06cdc571f86c3728ea21241b3311d3de6bb9935c89f5e3774ecfd41a347204",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "unresolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "HI",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-hi",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/hi-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/hi.tsv",
+      "file_sha256": "19103044a07ff34ceb1dfa32859a92a8fe814e4b3a3cccf1ed89a78bd86ea3fa",
+      "download_sha256": "36800d826a852194a2e3813f387826f4d84200a4151582bc4374c15aedc70402",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "RU",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-ru",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ru-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/ru.tsv",
+      "file_sha256": "098477b141e4a7b2856f9760a28728454cb32940b8fec006074debdd3999f2d5",
+      "download_sha256": "6466a13f4acb2e7c8db799aece2414cad0167f3fb6fe6f1e4e81b4ce7fb3d311",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "JA",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-ja",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/ja-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/ja.tsv",
+      "file_sha256": "061aa1dd637abcbc887581fc27e33eb095499528e6474e138703a5253c2d28b8",
+      "download_sha256": "d2ff4e0aea1e35120029f71cd972b0a66fcd69b86bbc537e5f3780c9f44eb797",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "DE",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-de",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/de-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/de.tsv",
+      "file_sha256": "41aa3fda656655cd1343ce5a6b7f8a1f5ff79e992a7df04d7628312ec5e14f2b",
+      "download_sha256": "47acf7a5d1f172d8b897a6963e4578162595509b38aff3f1b1d1527765ab93ff",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "IT",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-it",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/it-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/it.tsv",
+      "file_sha256": "71a1ba1636b22dfa5cdd6d1a42318c3c3a4d0d4581e6c197f096839af33ded89",
+      "download_sha256": "bbcb183c303777f2c6461b02775f11840c2f6286a89d6dfbf08041e705239058",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "textdetox",
+      "detector_language": "ES",
+      "source_role": "baseline",
+      "source_file_id": "textdetox-es",
+      "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/es-00000-of-00001.parquet",
+      "archive_member": null,
+      "revision": "01907546324b0330d2d8b7669648cc18823323e5",
+      "file_path": "textdetox/es.tsv",
+      "file_sha256": "8e3c8078d7406e7b695ffb943e0439240ada11d6abc9d12ac313efdb6d2f1da9",
+      "download_sha256": "1a09e4483fc879c495ac58c891016097ae36ba6c34d16c72b76f13eaf14a0c06",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "TextDetox multilingual toxicity dataset",
+      "upstream_lineage": [
+        "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "germeval-2018",
+      "detector_language": "DE",
+      "source_role": "baseline",
+      "source_file_id": "germeval-2018-training",
+      "immutable_source_url": "https://raw.githubusercontent.com/uds-lsv/GermEval-2018-Data/9877472d39523effd54cd079b4c61157ed141508/germeval2018.training.txt",
+      "archive_member": null,
+      "revision": "9877472d39523effd54cd079b4c61157ed141508",
+      "file_path": "datasets/germeval-2018-training/germeval2018.training.txt",
+      "file_sha256": "0f88c63a344e1ab69c5407aa539d1612cd82a96b51ebd6bd613dc70ff9fef03e",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "NOASSERTION",
+      "license_url": "https://github.com/uds-lsv/GermEval-2018-Data",
+      "license_year": 2018,
+      "citation": "Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.",
+      "upstream_lineage": [
+        "https://github.com/uds-lsv/GermEval-2018-Data"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "germeval-2018",
+      "detector_language": "DE",
+      "source_role": "baseline",
+      "source_file_id": "germeval-2018-test",
+      "immutable_source_url": "https://raw.githubusercontent.com/uds-lsv/GermEval-2018-Data/9877472d39523effd54cd079b4c61157ed141508/germeval2018.test.txt",
+      "archive_member": null,
+      "revision": "9877472d39523effd54cd079b4c61157ed141508",
+      "file_path": "datasets/germeval-2018-test/germeval2018.test.txt",
+      "file_sha256": "45f31510b305d080a933d4087b8d34f7a5e4087141718955b90357ca730074f2",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "NOASSERTION",
+      "license_url": "https://github.com/uds-lsv/GermEval-2018-Data",
+      "license_year": 2018,
+      "citation": "Wiegand, Siegel, and Ruppenhofer, 2018. Overview of the GermEval 2018 Shared Task on the Identification of Offensive Language.",
+      "upstream_lineage": [
+        "https://github.com/uds-lsv/GermEval-2018-Data"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "ibrohim-budi",
+      "detector_language": "ID",
+      "source_role": "baseline",
+      "source_file_id": "ibrohim-budi-re-dataset",
+      "immutable_source_url": "https://raw.githubusercontent.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection/be98de98e974b65838d2b5145ee2c89e9bf53a6b/re_dataset.csv",
+      "archive_member": null,
+      "revision": "be98de98e974b65838d2b5145ee2c89e9bf53a6b",
+      "file_path": "datasets/ibrohim-budi-re-dataset/re_dataset.csv",
+      "file_sha256": "44c04e31ad4b7ee4a95f1884e7af4da2c44b69762143eb2de0ede7f90502735e",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
+      "citation": "Ibrohim and Budi, 2019. Multi-label Hate Speech and Abusive Language Detection in Indonesian Twitter.",
+      "upstream_lineage": [
+        "https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "told-br",
+      "detector_language": "PT",
+      "source_role": "baseline",
+      "source_file_id": "told-br-alpha",
+      "immutable_source_url": "https://raw.githubusercontent.com/joaoaleite/ToLD-Br/6b325d26a9d25b321a3e9ba98ef98832b56729f5/ToLD-BR_alpha.csv",
+      "archive_member": null,
+      "revision": "6b325d26a9d25b321a3e9ba98ef98832b56729f5",
+      "file_path": "datasets/told-br-alpha/ToLD-BR_alpha.csv",
+      "file_sha256": "1129593be5e5277e30c018246aab621187d0c936a60efd28a1cf373e6c55e94e",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2025,
+      "citation": "Leite et al., 2020. Toxic Language Detection in Social Media for Brazilian Portuguese.",
+      "upstream_lineage": [
+        "https://github.com/joaoaleite/ToLD-Br"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "offenseval-tr",
+      "detector_language": "TR",
+      "source_role": "baseline",
+      "source_file_id": "offenseval-tr-training",
+      "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
+      "archive_member": "offenseval2020-turkish/offenseval-tr-training-v1/offenseval-tr-training-v1.tsv",
+      "revision": null,
+      "file_path": "datasets/offenseval-tr-training/offenseval-tr-training-v1.tsv",
+      "file_sha256": "8509c01c4bf387d9e387c4637829585431cc045adaf7d0413c0022bf2bcd4baa",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
+      "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
+      "upstream_lineage": [
+        "https://coltekin.github.io/offensive-turkish/"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "offenseval-tr",
+      "detector_language": "TR",
+      "source_role": "baseline",
+      "source_file_id": "offenseval-tr-test",
+      "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
+      "archive_member": "offenseval2020-turkish/offenseval-tr-testset-v1/offenseval-tr-testset-v1.tsv",
+      "revision": null,
+      "file_path": "datasets/offenseval-tr-test/offenseval-tr-testset-v1.tsv",
+      "file_sha256": "9052784e13248e58658e34a4f86a3463ef8b2594d2feb289e4b29bba2866b437",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
+      "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
+      "upstream_lineage": [
+        "https://coltekin.github.io/offensive-turkish/"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "offenseval-tr",
+      "detector_language": "TR",
+      "source_role": "baseline",
+      "source_file_id": "offenseval-tr-test-labels",
+      "immutable_source_url": "https://coltekin.github.io/offensive-turkish/offenseval2020-turkish.zip",
+      "archive_member": "offenseval2020-turkish/offenseval-tr-testset-v1/offenseval-tr-labela-v1.tsv",
+      "revision": null,
+      "file_path": "datasets/offenseval-tr-test-labels/offenseval-tr-labela-v1.tsv",
+      "file_sha256": "ae9b0837e948c3d9c3a147d2a415989a4940a7756d5821b3289276574941c9e3",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2020,
+      "citation": "Çöltekin, 2020. A Corpus of Turkish Offensive Language on Social Media.",
+      "upstream_lineage": [
+        "https://coltekin.github.io/offensive-turkish/"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "vihos",
+      "detector_language": "VI",
+      "source_role": "baseline",
+      "source_file_id": "vihos-train",
+      "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Span_Extraction_based_version/train.csv",
+      "archive_member": null,
+      "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+      "file_path": "datasets/vihos-train/train.csv",
+      "file_sha256": "b225cf257b5ce7c77e275ba900ffc6fee490ae0a1936afc98e250040e418adac",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
+      "citation": "ViHOS: Vietnamese Hate Speech Detection.",
+      "upstream_lineage": [
+        "https://github.com/phusroyal/ViHOS"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "vihos",
+      "detector_language": "VI",
+      "source_role": "baseline",
+      "source_file_id": "vihos-development",
+      "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Span_Extraction_based_version/dev.csv",
+      "archive_member": null,
+      "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+      "file_path": "datasets/vihos-development/dev.csv",
+      "file_sha256": "cbc682a6fd6750de2fc79e211b07a4be63ac355110a35bd2f1a8922239534712",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
+      "citation": "ViHOS: Vietnamese Hate Speech Detection.",
+      "upstream_lineage": [
+        "https://github.com/phusroyal/ViHOS"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "vihos",
+      "detector_language": "VI",
+      "source_role": "baseline",
+      "source_file_id": "vihos-test",
+      "immutable_source_url": "https://raw.githubusercontent.com/phusroyal/ViHOS/fe31c4b304650d62bb0cb668e2fb2060fc6f98fd/data/Test_data/test.csv",
+      "archive_member": null,
+      "revision": "fe31c4b304650d62bb0cb668e2fb2060fc6f98fd",
+      "file_path": "datasets/vihos-test/test.csv",
+      "file_sha256": "0c8d09f1e9d649ac206619a717610e805001c4e74d13325f16b931ddd43c3cd8",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_year": 2023,
+      "citation": "ViHOS: Vietnamese Hate Speech Detection.",
+      "upstream_lineage": [
+        "https://github.com/phusroyal/ViHOS"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "k-mhas",
+      "detector_language": "KO",
+      "source_role": "baseline",
+      "source_file_id": "kmhas-train",
+      "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_train.txt",
+      "archive_member": null,
+      "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+      "file_path": "datasets/kmhas-train/kmhas_train.txt",
+      "file_sha256": "ca9145afc5fd70a2222094daa427e57a08b309cb42dcce7986528b44eb0e7008",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
+      "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
+      "upstream_lineage": [
+        "https://github.com/adlnlp/K-MHaS"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "k-mhas",
+      "detector_language": "KO",
+      "source_role": "baseline",
+      "source_file_id": "kmhas-validation",
+      "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_valid.txt",
+      "archive_member": null,
+      "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+      "file_path": "datasets/kmhas-validation/kmhas_valid.txt",
+      "file_sha256": "cb0df9e3cd665125b554d4c5e6f48b0801d5535ead51269134de5b85ae469c18",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
+      "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
+      "upstream_lineage": [
+        "https://github.com/adlnlp/K-MHaS"
+      ],
+      "lineage_status": "resolved"
+    },
+    {
+      "dataset": "k-mhas",
+      "detector_language": "KO",
+      "source_role": "baseline",
+      "source_file_id": "kmhas-test",
+      "immutable_source_url": "https://raw.githubusercontent.com/adlnlp/K-MHaS/ec7a7e775d650b825872f6f538fc717822cdfc1a/data/kmhas_test.txt",
+      "archive_member": null,
+      "revision": "ec7a7e775d650b825872f6f538fc717822cdfc1a",
+      "file_path": "datasets/kmhas-test/kmhas_test.txt",
+      "file_sha256": "9eaf470ee12c445817301d58672349500d6759516a730e879d36d6de17a2051a",
+      "acquired_at_unix_seconds": 1788346659,
+      "license_id": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_year": 2024,
+      "citation": "Lee et al., 2022. K-MHaS: A Multi-label Hate Speech Detection Dataset in Korean Online News Comment.",
+      "upstream_lineage": [
+        "https://github.com/adlnlp/K-MHaS"
+      ],
+      "lineage_status": "resolved"
+    }
+  ]
+}

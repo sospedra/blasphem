@@ -8,7 +8,7 @@ use blasphem_bench::{
 fn benchmark_fixture_matrix_is_complete_and_exact() {
     let path = Path::new(concat!(
         env!("CARGO_MANIFEST_DIR"),
-        "/../../tests/fixtures/benchmark/messages.jsonl",
+        "/../../crates/blasphem/tests/fixtures/benchmark/messages.jsonl",
     ));
     let fixtures = load_benchmark_fixtures(path).expect("fixtures");
 

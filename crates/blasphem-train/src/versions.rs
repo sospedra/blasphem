@@ -75,7 +75,14 @@ fn mirrors(root: &Path) -> Result<Vec<Mirror>, VersionsError> {
             pattern: Regex::new(r"(?m)^VERSION_NAME=(.+)$").expect("valid regex"),
         },
     ];
-    for package in ["blasphem", "cli", "core", "node", "packs", "react-native"] {
+    for package in [
+        "javascript",
+        "cli",
+        "javascript-common",
+        "node",
+        "javascript-packs",
+        "react-native",
+    ] {
         found.push(Mirror {
             path: root.join("packages").join(package).join("package.json"),
             pattern: json(),

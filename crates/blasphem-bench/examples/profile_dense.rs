@@ -3,13 +3,15 @@ use std::{fs, hint::black_box, path::Path, time::Instant};
 use anyhow::{Context, Result};
 use blasphem::{
     Detector, Language, MatchLevel, NudgeDetector, ReplyTarget, SparseModel, analyze_with_rules,
-    arabic_hindi_rules, cjk_rules, parse_hurtlex, word_rules,
+    arabic_hindi_rules, cjk_rules, parse_lexicon, word_rules,
 };
 use blasphem_bench::{FixtureKind, FixtureLength, load_benchmark_fixtures};
 
 fn main() -> Result<()> {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let fixtures = load_benchmark_fixtures(&root.join("tests/fixtures/benchmark/messages.jsonl"))?;
+    let fixtures = load_benchmark_fixtures(
+        &root.join("crates/blasphem/tests/fixtures/benchmark/messages.jsonl"),
+    )?;
     for language in [Language::En, Language::Es, Language::Ar, Language::Ja] {
         let fixture = fixtures
             .iter()
@@ -19,17 +21,17 @@ fn main() -> Result<()> {
                     && fixture.length == FixtureLength::Utf8Bytes4096
             })
             .context("missing dense fixture")?;
-        let hurtlex_path = root
-            .join("data/clean-room-v1")
+        let lexicon_path = root
+            .join("lexicon")
             .join(format!("{}.tsv", language.storage_code()));
-        let hurtlex = fs::read(&hurtlex_path)?;
-        let entries = parse_hurtlex(hurtlex.as_slice(), language.storage_code())?
+        let lexicon = fs::read(&lexicon_path)?;
+        let entries = parse_lexicon(lexicon.as_slice(), language.storage_code())?
             .into_iter()
             .filter(|entry| entry.level == MatchLevel::Conservative)
             .collect();
         let lexical = Detector::new(entries)?;
         let model_name = if language == Language::Es {
-            "es-chargram-v1.bin".to_owned()
+            "es-sparse-v2.bin".to_owned()
         } else {
             format!(
                 "{}-sparse-v2.bin",
@@ -43,7 +45,7 @@ fn main() -> Result<()> {
         let rules = word_rules(language)
             .or_else(|| arabic_hindi_rules(language))
             .or_else(|| cjk_rules(language));
-        let detector = NudgeDetector::from_hurtlex_bytes(language, Some(&hurtlex))?;
+        let detector = NudgeDetector::from_lexicon_bytes(language, Some(&lexicon))?;
         let nudge = detector.check(&fixture.text, ReplyTarget::Unknown);
 
         let lexical_result = lexical.check(&fixture.text);

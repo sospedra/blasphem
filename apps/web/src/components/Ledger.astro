@@ -1,41 +1,160 @@
 ---
 interface Props {
+  id: string;
   caption: string;
   columns: readonly string[];
   rows: readonly (readonly (string | number)[])[];
+  summary?: readonly (string | number)[];
+  search?: string;
+  sort?: readonly number[];
+  prose?: readonly number[];
   evidence?: string;
+  source?: string;
 }
-const { caption, columns, rows, evidence } = Astro.props;
+const { id, caption, columns, rows, summary, search, sort = [], prose = [], evidence, source } = Astro.props;
 ---
-<div class="ledger-wrap">
-  <table class="ledger">
-    <caption>{caption}</caption>
-    <thead>
-      <tr>{columns.map((column, index) => <th class:list={{ mine: index > 0 }} scope="col">{column}</th>)}</tr>
-    </thead>
-    <tbody>
-      {rows.map((row) => (
-        <tr>{row.map((cell, index) => (index === 0 ? <th scope="row">{cell}</th> : <td class="us">{cell}</td>))}</tr>
-      ))}
-    </tbody>
-  </table>
-  {evidence && <p class="evidence">{evidence}</p>}
-</div>
+<blasphem-ledger id={id}>
+  <header class="ledger-head">
+    <h3 id={`${id}-title`}>{caption}</h3>
+    {search && <label class="ledger-search"><span class="visually-hidden">{search}</span><input type="search" placeholder={search} /></label>}
+  </header>
+  <p class="scroll-hint">Scroll to compare columns <span aria-hidden="true">↔</span></p>
+  <div class="ledger-scroll" role="region" aria-labelledby={`${id}-title`} tabindex="0">
+    <table class="ledger">
+      <caption class="visually-hidden">{caption}</caption>
+      <thead>
+        <tr>{columns.map((column, index) => (
+          <th scope="col" aria-sort={sort.includes(index) ? "none" : undefined}>
+            {sort.includes(index)
+              ? <button type="button" data-sort={index} data-sort-label={column}>{column}<span aria-hidden="true" class="sort-mark">↕</span></button>
+              : column}
+          </th>
+        ))}</tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            <th scope="row">{row[0]}</th>
+            {row.slice(1).map((cell, index) => <td class:list={{ prose: prose.includes(index + 1) }}>{cell}</td>)}
+          </tr>
+        ))}
+      </tbody>
+      {summary && <tfoot><tr><th scope="row">{summary[0]}</th>{summary.slice(1).map((cell) => <td>{cell}</td>)}</tr></tfoot>}
+    </table>
+  </div>
+  <p class="ledger-empty" hidden>No matching language. Clear the search to show all languages.</p>
+  <footer class="ledger-foot">
+    <span class="ledger-count" role="status" aria-live="polite">{rows.length} rows</span>
+    {source && <a href={source}>Source report <span aria-hidden="true">↗</span></a>}
+  </footer>
+  {evidence && <p class="ledger-evidence">{evidence}</p>}
+</blasphem-ledger>
+
+<script>
+  function compareCells(left: string, right: string): number {
+    const leftNumber = Number.parseFloat(left.replaceAll(",", ""));
+    const rightNumber = Number.parseFloat(right.replaceAll(",", ""));
+    if (Number.isFinite(leftNumber) && Number.isFinite(rightNumber)) return leftNumber - rightNumber;
+    return left.localeCompare(right, "en", { numeric: true });
+  }
+
+  function matchesCode(label: string, query: string): boolean {
+    return label.toLowerCase().split(" / ").some((language) => language.endsWith(" · " + query));
+  }
+
+  function filterRows(root: HTMLElement): void {
+    const query = root.querySelector("input")?.value.trim().toLowerCase() ?? "";
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>("tbody tr")];
+    const codeQuery = rows.some((row) => matchesCode(row.cells[0].textContent, query));
+    for (const row of rows) {
+      const label = row.cells[0].textContent;
+      const matches = codeQuery ? matchesCode(label, query) : label.toLowerCase().includes(query);
+      row.hidden = !matches;
+    }
+    const visible = rows.filter((row) => !row.hidden).length;
+    root.querySelector<HTMLElement>(".ledger-count")!.textContent = `${visible} of ${rows.length} rows`;
+    root.querySelector<HTMLElement>(".ledger-empty")!.hidden = visible > 0;
+  }
+
+  function sortRows(root: HTMLElement, button: HTMLButtonElement): void {
+    const column = Number(button.dataset.sort);
+    const heading = button.closest("th")!;
+    const direction = heading.getAttribute("aria-sort") === "ascending" ? -1 : 1;
+    const body = root.querySelector("tbody")!;
+    const rows = [...body.rows];
+    const unmeasured = rows.filter((row) => row.cells[column].textContent === "n/a");
+    const ranked = rows.filter((row) => row.cells[column].textContent !== "n/a").sort((left, right) =>
+      direction * compareCells(left.cells[column].textContent, right.cells[column].textContent),
+    );
+    for (const header of root.querySelectorAll("[aria-sort]")) {
+      header.setAttribute("aria-sort", "none");
+      header.querySelector(".sort-mark")!.textContent = "↕";
+    }
+    heading.setAttribute("aria-sort", direction === 1 ? "ascending" : "descending");
+    button.querySelector(".sort-mark")!.textContent = direction === 1 ? "↑" : "↓";
+    body.replaceChildren(...ranked, ...unmeasured);
+    root.querySelector<HTMLElement>(".ledger-count")!.textContent = `Sorted by ${button.dataset.sortLabel}, ${heading.getAttribute("aria-sort")}`;
+  }
+
+  class BlasphemLedger extends HTMLElement {
+    private events?: AbortController;
+
+    connectedCallback(): void {
+      this.events?.abort();
+      this.events = new AbortController();
+      const options = { signal: this.events.signal };
+      this.addEventListener("input", () => filterRows(this), options);
+      this.addEventListener("click", (event) => {
+        const button = (event.target as Element).closest<HTMLButtonElement>("button[data-sort]");
+        if (button) sortRows(this, button);
+      }, options);
+    }
+
+    disconnectedCallback(): void {
+      this.events?.abort();
+    }
+  }
+
+  if (!customElements.get("blasphem-ledger")) customElements.define("blasphem-ledger", BlasphemLedger);
+</script>
 
 <style>
-  .ledger-wrap {
-    margin: 0 0 34px;
-    overflow-x: auto;
-  }
-  tbody th {
-    font-family: var(--font-rubric);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--taupe-ink);
-    font-weight: 400;
-    text-align: left;
-    padding: 14px 8px;
-    border-bottom: 1px solid var(--hair);
+  blasphem-ledger { display: block; min-width: 0; margin-bottom: 32px; }
+  .ledger-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+  h3 { margin: 0; font: 400 30px/1.15 var(--font-goth); color: var(--bone); }
+  input { width: 220px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--hair); background: var(--coal); color: var(--bone); font: 12px var(--font-mono); border-radius: 0; }
+  input::placeholder { color: var(--taupe-ink); }
+  .ledger-scroll { overflow: auto; max-height: 640px; border: 1px solid var(--hair); border-top-color: var(--blood-hair); scrollbar-color: var(--burgundy) var(--coal); scrollbar-width: thin; }
+  .ledger { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 1.5; background: var(--pitch); }
+  th, td { padding: 15px 18px; border-bottom: 1px solid var(--hair); text-align: right; vertical-align: top; }
+  th { font-weight: 400; }
+  thead th { position: sticky; top: 0; z-index: 2; background: #191414; color: var(--taupe-ink); font: 11px/1.5 var(--font-mono); white-space: nowrap; }
+  th:first-child { position: sticky; left: 0; z-index: 1; text-align: left; min-width: 150px; background: var(--pitch); border-right: 1px solid var(--hair); }
+  thead th:first-child { z-index: 3; background: #191414; }
+  tbody th, tfoot th { font-family: var(--font-body); color: var(--bone); font-size: 17px; }
+  td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--parchment); }
+  td.prose { text-align: left; font: 17px/1.5 var(--font-body); white-space: normal; min-width: 230px; }
+  tbody tr:nth-child(even) { background: #100e0e; }
+  tbody tr:nth-child(even) th { background: #100e0e; }
+  tbody tr:hover, tbody tr:hover th { background: #231617; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tfoot th, tfoot td { background: #231617; border-top: 1px solid var(--blood-hair); border-bottom: 0; color: var(--bone); }
+  tfoot th:first-child { background: #231617; }
+  thead button { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin: -14px -12px; padding: 12px; border: 0; cursor: pointer; background: none; color: inherit; font: inherit; }
+  thead button:hover, th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--blood-ink); }
+  .sort-mark { opacity: 0.55; }
+  th[aria-sort="ascending"] .sort-mark, th[aria-sort="descending"] .sort-mark { opacity: 1; }
+  .ledger-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 12px 0 0; color: var(--taupe-ink); font: 11px/1.6 var(--font-mono); }
+  .ledger-foot a { margin-left: auto; color: var(--bone); text-underline-offset: 4px; text-decoration-color: var(--blood-hair); }
+  .scroll-hint { display: none; margin: -6px 0 12px; color: var(--taupe-ink); font: 11px/1.5 var(--font-mono); }
+  .ledger-evidence { margin: 10px 0 0; color: var(--taupe-ink); font: 12px/1.7 var(--font-mono); overflow-wrap: anywhere; }
+  .ledger-empty { padding: 20px; margin: 0; border: 1px solid var(--hair); color: var(--parchment); }
+  @media (max-width: 700px) {
+    .ledger-head { align-items: flex-start; }
+    .ledger-search, input { width: 100%; }
+    th, td { padding: 13px 12px; }
+    th:first-child { min-width: 130px; max-width: 160px; }
+    .scroll-hint { display: block; }
+    .ledger-scroll { max-height: 570px; }
   }
 </style>

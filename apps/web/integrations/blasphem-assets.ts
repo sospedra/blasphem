@@ -5,7 +5,7 @@ import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const WASM = "blasphem_bg.wasm";
-const CODE = ["browser.js", "wasm-engine.js", "blasphem.js", WASM];
+const CODE = ["browser.js", "wasm-engine.js", "blasphem.js", "version.generated.js", WASM];
 const MANIFEST = "manifest.json";
 
 function contentType(name: string): string {
@@ -18,9 +18,9 @@ function contentType(name: string): string {
 }
 
 export interface BlasphemAssetsOptions {
-  /** packages/blasphem/dist */
+  /** packages/javascript/dist */
   distDir: string;
-  /** packages/packs/dist */
+  /** resources/packs */
   packsDir: string;
 }
 
@@ -67,7 +67,7 @@ export default function blasphemAssets(options: BlasphemAssetsOptions): AstroInt
     name: "blasphem-assets",
     hooks: {
       "astro:config:setup": ({ updateConfig, logger }) => {
-        if (!located) logger.warn("packages/blasphem/dist or packages/packs/dist is incomplete; the playground will report that the package is not built");
+        if (!located) logger.warn("packages/javascript/dist or resources/packs is incomplete; the playground will report that the package is not built");
         updateConfig({
           vite: {
             define: {

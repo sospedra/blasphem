@@ -1,7 +1,7 @@
 {
   "name": "@blasphem/node-linux-x64-musl",
   "version": "0.1.0",
-  "description": "blasphem native engine for linux-x64-musl",
+  "description": "blasphem native engine for linux-x64-musl. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -23,8 +23,12 @@
   ],
   "main": "blasphem.linux-x64-musl.node",
   "files": [
-    "blasphem.linux-x64-musl.node"
+    "blasphem.linux-x64-musl.node",
+    "NOTICE"
   ],
+  "scripts": {
+    "prepack": "node ../../../../scripts/copy-notice.mjs"
+  },
   "engines": {
     "node": ">= 20.6"
   }

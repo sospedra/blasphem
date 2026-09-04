@@ -8,15 +8,21 @@ importers:
 
   .:
     devDependencies:
+      smol-toml:
+        specifier: 1.8.0
+        version: 1.8.0
       turbo:
         specifier: 2.10.12
         version: 2.10.12
+      yaml:
+        specifier: 2.9.0
+        version: 2.9.0
 
   apps/web:
     dependencies:
       blasphem:
         specifier: workspace:*
-        version: link:../../packages/blasphem
+        version: link:../../packages/javascript
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -55,11 +61,11 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
-  packages/blasphem:
+  packages/javascript:
     devDependencies:
       '@blasphem/packs':
         specifier: workspace:*
-        version: link:../packs
+        version: link:../javascript-packs
       '@types/node':
         specifier: 24.10.1
         version: 24.10.1
@@ -129,7 +135,7 @@ importers:
 
   packages/cli/npm/win32-x64-msvc: {}
 
-  packages/core:
+  packages/javascript-common:
     devDependencies:
       typescript:
         specifier: 5.9.3
@@ -151,13 +157,13 @@ importers:
 
   packages/node/npm/win32-x64-msvc: {}
 
-  packages/packs: {}
+  packages/javascript-packs: {}
 
   packages/react-native:
     dependencies:
       blasphem:
         specifier: workspace:*
-        version: link:../blasphem
+        version: link:../javascript
     devDependencies:
       '@types/node':
         specifier: 24.10.1

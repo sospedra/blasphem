@@ -2,8 +2,8 @@ use std::{fs, path::Path};
 
 use blasphem::{
     ConfusionMatrix, FeatureProfile, FeatureSchema, Language, Metrics, NormalizationProfile,
-    SparseV1Input, SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules,
-    encode_sparse_v1, encode_sparse_v2, word_rules,
+    SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules, encode_sparse_v2,
+    word_rules,
 };
 use blasphem_train::{
     calibration::CalibrationResult,
@@ -83,7 +83,7 @@ fn artifact_paths_cover_every_language_in_runtime_order() {
     let expected = [
         "en-sparse-v2.bin",
         "zh-sparse-v2.bin",
-        "es-chargram-v1.bin",
+        "es-sparse-v2.bin",
         "ar-sparse-v2.bin",
         "id-sparse-v2.bin",
         "pt-sparse-v2.bin",
@@ -159,7 +159,7 @@ fn manifest_entry_derives_artifact_and_validation_metadata() {
         },
         rule_pack_version: 1,
         rule_pack_sha256: digest(),
-        hurtlex_sha256: Some(digest()),
+        lexicon_sha256: Some(digest()),
         clean_control_rows: 16,
         clean_control_sha256: Some(digest()),
     };
@@ -259,30 +259,30 @@ fn model_set_rejects_a_wrong_rule_pack_digest() {
 }
 
 #[test]
-fn model_set_requires_a_hurtlex_digest() {
+fn model_set_requires_a_lexicon_digest() {
     let directory = tempdir().expect("temporary directory");
     let mut manifest = complete_manifest_stub();
-    manifest.entries[0].hurtlex_sha256 = None;
+    manifest.entries[0].lexicon_sha256 = None;
 
-    let error = validate_model_set(directory.path(), &manifest).expect_err("missing HurtLex");
+    let error = validate_model_set(directory.path(), &manifest).expect_err("missing Lexicon");
 
     assert!(matches!(
         error,
-        ModelSetError::MissingHurtlexDigest(Language::En)
+        ModelSetError::MissingLexiconDigest(Language::En)
     ));
 }
 
 #[test]
-fn model_set_rejects_a_changed_spanish_hurtlex_digest() {
+fn model_set_rejects_a_changed_spanish_lexicon_digest() {
     let directory = tempdir().expect("temporary directory");
     let mut manifest = write_complete_model_set(directory.path());
-    manifest.entries[Language::Es.index()].hurtlex_sha256 = Some(digest());
+    manifest.entries[Language::Es.index()].lexicon_sha256 = Some(digest());
 
-    let error = validate_model_set(directory.path(), &manifest).expect_err("Spanish HurtLex");
+    let error = validate_model_set(directory.path(), &manifest).expect_err("Spanish Lexicon");
 
     assert!(matches!(
         error,
-        ModelSetError::HurtlexDigestMismatch(Language::Es)
+        ModelSetError::LexiconDigestMismatch(Language::Es)
     ));
 }
 
@@ -466,7 +466,7 @@ fn manifest_entry_stub(language: Language) -> ModelManifestEntry {
         feature_schema,
         rule_pack_version: rule_version(language),
         rule_pack_sha256: sha256(&canonical_rule_identity(language)),
-        hurtlex_sha256: Some(hurtlex_digest(language)),
+        lexicon_sha256: Some(lexicon_digest(language)),
         clean_control_rows: 1,
         clean_control_sha256: Some(digest()),
         development_rows: 1,
@@ -486,13 +486,13 @@ fn manifest_entry_stub(language: Language) -> ModelManifestEntry {
     }
 }
 
-/// Spanish manifest entries pin the frozen HurtLex ES digest.
-fn hurtlex_digest(language: Language) -> Sha256Digest {
+/// Spanish manifest entries pin the frozen Lexicon ES digest.
+fn lexicon_digest(language: Language) -> Sha256Digest {
     if language == Language::Es {
         return "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc"
             .to_owned()
             .try_into()
-            .expect("frozen Spanish HurtLex digest");
+            .expect("frozen Spanish Lexicon digest");
     }
     digest()
 }
@@ -525,16 +525,6 @@ fn fixture_artifact(
     score_scale: u32,
     false_warning_limit_basis_points: u16,
 ) -> Vec<u8> {
-    if language == Language::Es {
-        return encode_sparse_v1(&SparseV1Input {
-            bias: 0,
-            decision_boundary: boundary,
-            score_scale,
-            max_false_warning_basis_points: false_warning_limit_basis_points,
-            weights: &vec![0; 65_536],
-        })
-        .expect("fixture artifact");
-    }
     let (feature_profile, normalization_profile, feature_schema) = language.profiles();
     encode_sparse_v2(&SparseV2Input {
         language,

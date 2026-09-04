@@ -1,16 +1,15 @@
 ---
 import { Image } from "astro:assets";
 import bust from "../assets/bust.jpg";
-import manifest from "../../../../packages/blasphem/package.json";
+import manifest from "../../../../packages/javascript/package.json";
+import { LANGUAGES } from "../lib/languages";
 import Seal from "./Seal.astro";
 
 const links = [
-  { href: "#detector", label: "detector" },
-  { href: "#rite", label: "rite" },
-  { href: "#credo", label: "credo" },
-  { href: "#vows", label: "vows" },
-  { href: "#reckoning", label: "reckoning" },
-  { href: "#colophon", label: "colophon" },
+  { href: "#detector", label: "playground" },
+  { href: "#rite", label: "install" },
+  { href: "#mechanism", label: "how it works" },
+  { href: "#reckoning", label: "benchmarks" },
   { href: "https://github.com/sospedra/blasphem", label: "github" },
 ];
 const words = ["profanity", "targeted abuse", "identity attack", "threat language", "harm wish", "self-harm command", "counterspeech"];
@@ -33,6 +32,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
   <div class="arch-plate">
     <Image src={bust} alt="" widths={[420, 640, 900]} sizes="(max-width: 1023px) 76vw, 31vh" class="photo" loading="eager" />
     <div class="wash"></div>
+    <svg class="window-light" viewBox="0 0 200 200" aria-hidden="true"><use href="#roseWindow"></use></svg>
     <svg class="edge" preserveAspectRatio="none" viewBox="0 0 160 220" aria-hidden="true">
       <path d="M1 219 L1 75 Q1 1 80 1 Q159 1 159 75 L159 219" fill="none" stroke="#e23127" stroke-width="1" vector-effect="non-scaling-stroke"></path>
       <path d="M11 219 L11 78 Q11 13 80 13 Q149 13 149 78 L149 219" fill="none" stroke="rgba(226,49,39,.35)" stroke-width="1" vector-effect="non-scaling-stroke"></path>
@@ -41,18 +41,19 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
 
   <svg class="rose" viewBox="0 0 200 200" aria-hidden="true"><use href="#roseWindow"></use></svg>
 
-  <h1 id="front-title" class="wordmark" aria-label="blasphem"><span class="wordmark-glow" aria-hidden="true">blas<span class="brk"></span>phem</span><span class="wordmark-ink" aria-hidden="true">blas<span class="brk"></span>phem</span><i class="sp1"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp2"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp3"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i></h1>
+  <h1 id="front-title" class="wordmark" aria-label="blasphem"><span class="wordmark-glow" aria-hidden="true">blas<span class="brk"></span>phem</span><span class="wordmark-ink" aria-hidden="true">blas<span class="brk"></span>phem</span></h1>
 
   <Seal />
 
   <div class="lead">
-    <p class="strap">Catch the hostile message before it sends. In the browser, on the keystroke, in fifteen tongues.</p>
+    <p class="strap">Catch harm before send.</p>
+    <p class="intro-copy">Local toxicity detection for web, mobile, and servers. {LANGUAGES.length} languages. One Rust core.</p>
     <div class="acts">
       <a class="act" href="#detector">
         <svg viewBox="0 0 24 26" aria-hidden="true"><use href="#cross"></use></svg>
         <span>Judge a message</span>
       </a>
-      <a class="act ghost" href="#rite">Read the rite</a>
+      <a class="act ghost" href="#rite">Install blasphem</a>
     </div>
   </div>
 
@@ -75,7 +76,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     grid-row: 1 / 4;
   }
   .stamp {
-    grid-column: 2;
+    grid-column: 2 / 4;
     grid-row: 1;
     align-self: center;
     padding-left: var(--inset);
@@ -94,7 +95,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
   }
   .stamp nav {
     display: flex;
-    gap: 14px;
+    gap: 18px;
     margin-left: 18px;
     font-family: var(--font-rubric);
     font-size: 11px;
@@ -104,7 +105,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
   .stamp nav a {
     color: var(--taupe-ink);
     text-decoration: none;
-    padding: 6px 0;
+    padding: 14px 0;
     border-bottom: 1px solid transparent;
     transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
   }
@@ -129,6 +130,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     color: var(--taupe-ink);
     position: relative;
     z-index: 2;
+    pointer-events: none;
   }
   .rose {
     position: absolute;
@@ -175,6 +177,17 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
   .wordmark-ink {
     position: relative;
     z-index: 1;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='180'%3E%3Cfilter id='ink'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .043 0 0 0 0 .039 0 0 0 0 .039 0 0 0 1.1 -.38'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ink)'/%3E%3C/svg%3E"),
+      linear-gradient(172deg, transparent 37%, rgba(11, 10, 10, 0.7) 37.08%, transparent 37.3%),
+      linear-gradient(84deg, transparent 62%, rgba(11, 10, 10, 0.65) 62.06%, transparent 62.2%),
+      linear-gradient(115deg, #ee4c38, var(--blood) 30%, #b72c20 63%, #e74732 88%);
+    background-size: 200px 180px, 100% 100%, 100% 100%, 100% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 0.35px rgba(74, 20, 24, 0.55);
+    filter: drop-shadow(0 2px 0 rgba(255, 131, 95, 0.22)) drop-shadow(0 -2px 1px var(--pitch));
   }
   @media (prefers-reduced-motion: reduce) {
     .wordmark-glow {
@@ -184,39 +197,6 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
   }
   .wordmark .brk {
     display: none;
-  }
-  .wordmark i {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    z-index: 4;
-  }
-  .wordmark i::before {
-    content: "";
-    position: absolute;
-    inset: -16px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(236, 231, 222, 0.6), rgba(236, 231, 222, 0) 68%);
-    opacity: 0.35;
-    transform: scale(0.8);
-    animation: halo 3.4s var(--ease-in-out) infinite;
-  }
-  .wordmark i svg {
-    position: relative;
-    fill: var(--bone);
-    display: block;
-    width: 18px;
-    height: 18px;
-    filter: drop-shadow(0 0 5px rgba(236, 231, 222, 0.85));
-  }
-  .wordmark .sp1 { left: 0.24em; top: 0.45em; }
-  .wordmark .sp2 { left: 0.82em; top: 0.58em; }
-  .wordmark .sp3 { left: 2.48em; top: 0.3em; }
-  .wordmark .sp2::before { animation-delay: -1.3s; animation-duration: 3.9s; }
-  .wordmark .sp3::before { animation-delay: -2.4s; animation-duration: 4.5s; }
-  @keyframes halo {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.35); }
   }
   .lead {
     grid-column: 2;
@@ -234,7 +214,14 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     margin: 0 0 6px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--hair);
-    max-width: 24ch;
+    max-width: 20ch;
+  }
+  .intro-copy {
+    max-width: 35ch;
+    margin: 14px 0 0;
+    color: var(--parchment);
+    font-size: 20px;
+    line-height: 1.4;
   }
   .arch-plate {
     position: absolute;
@@ -259,7 +246,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     object-fit: cover;
     object-position: 50% 18%;
     clip-path: url(#archClip);
-    filter: sepia(1) saturate(0.6) contrast(0.72) brightness(0.55) blur(1.4px);
+    filter: sepia(0.9) saturate(0.55) contrast(1.08) brightness(0.62);
     opacity: 0.85;
     z-index: 1;
   }
@@ -270,10 +257,24 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     clip-path: url(#archClip);
     background: linear-gradient(180deg, rgba(74, 20, 24, 0.18) 0%, rgba(11, 10, 10, 0) 30%, rgba(11, 10, 10, 0.35) 62%, rgba(11, 10, 10, 0.96) 100%);
   }
+  .window-light {
+    position: absolute;
+    top: 9%;
+    left: 9%;
+    width: 82%;
+    height: 62%;
+    color: var(--ochre);
+    opacity: 0.22;
+    mix-blend-mode: screen;
+    transform: rotate(-18deg);
+    filter: blur(1px);
+    z-index: 2;
+    pointer-events: none;
+  }
   .band {
     display: none;
   }
-  @media (max-width: 1199px) {
+  @media (max-width: 1399px) {
     .meta {
       display: none;
     }
@@ -307,27 +308,26 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
       order: 2;
       margin: 38px 0 0 var(--inset);
       font-size: 42vw;
-      filter: none;
     }
     .wordmark .brk {
       display: block;
     }
-    .wordmark .sp3 { left: 0.85em; top: 1.1em; }
     .arch-plate {
       position: relative;
-      order: 3;
+      order: 5;
       top: auto;
       left: auto;
       height: auto;
-      width: 76%;
-      aspect-ratio: 3 / 4.3;
-      margin: 34px var(--inset) 0 auto;
+      width: 56%;
+      max-width: 360px;
+      aspect-ratio: 3 / 3.5;
+      margin: 0 var(--inset) 0 auto;
     }
     .lead {
       grid-column: 1;
       grid-row: auto;
-      order: 5;
-      padding: 30px var(--inset) 56px;
+      order: 3;
+      padding: 30px var(--inset) 36px;
     }
     .strap {
       font-size: 28px;

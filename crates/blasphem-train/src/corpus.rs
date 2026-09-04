@@ -18,11 +18,19 @@ use thiserror::Error;
 use crate::{
     datasets::{DatasetSplit, PreparedCounts, PreparedRow},
     evidence::Sha256Digest,
-    prepared_input::PreparedLanguageInput,
     source_manifest::{FrozenSource, FrozenSourceLock, SourceRecord},
 };
 
 pub const CORPUS_HEADER: [&str; 3] = ["split", "label", "text"];
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PreparedLanguageInput {
+    pub language: Language,
+    pub development: Vec<PreparedRow>,
+    pub validation: Vec<PreparedRow>,
+    pub counts: PreparedCounts,
+    pub sources: Vec<SourceRecord>,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CorpusRow {
@@ -299,7 +307,7 @@ pub fn read_corpus_file(root: &Path, language: Language) -> Result<Vec<CorpusRow
 
 /// Every locked source that belongs to one language, ordered by identifier.
 ///
-/// The HurtLex lexicon has no corpus rows, so the language, not the row set,
+/// The lexicon has no corpus rows, so the language, not the row set,
 /// selects the sources. `acquired_at_unix_seconds` is zero because a committed
 /// corpus is never acquired at run time.
 fn language_sources(lock: &FrozenSourceLock, language: Language) -> Vec<SourceRecord> {

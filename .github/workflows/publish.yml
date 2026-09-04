@@ -25,7 +25,8 @@ permissions:
 env:
   CARGO_TERM_COLOR: always
   WASM_BINDGEN_VERSION: "0.2.127"
-  PNPM_VERSION: "11.13.0"
+  MATURIN_VERSION: "1.15.0"
+  GOFLAGS: "-mod=readonly"
 
 jobs:
   plan:
@@ -41,7 +42,7 @@ jobs:
       tag: ${{ steps.resolve.outputs.tag }}
       version: ${{ steps.resolve.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ inputs.tag || github.event.workflow_run.head_branch }}
 
@@ -65,12 +66,16 @@ jobs:
     needs: plan
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .tool-versions
+
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -78,35 +83,31 @@ jobs:
             target
           key: cargo-packs-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
 
-      - name: Build the packs
-        run: node packages/packs/scripts/build.mjs
+      - name: Verify canonical packs
+        run: node scripts/generate-packs.mjs --check
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: packs-dist
-          path: packages/packs/dist
-          if-no-files-found: error
+      - name: The canonical artifacts must be committed
+        run: |
+          git ls-files --error-unmatch resources/packs/manifest.json resources/packs/*.pack resources/packs/*.detect
 
   wasm:
     name: wasm
     needs: plan
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
           cache: pnpm
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -120,12 +121,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build the browser package
-        run: node packages/blasphem/scripts/build.mjs
+        run: node packages/javascript/scripts/build.mjs
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: blasphem-dist
-          path: packages/blasphem/dist
+          path: packages/javascript/dist
           if-no-files-found: error
 
   napi:
@@ -144,13 +145,13 @@ jobs:
           - { target: linux-arm64-musl, triple: aarch64-unknown-linux-musl, runner: ubuntu-24.04-arm, musl: true }
           - { target: win32-x64-msvc, triple: x86_64-pc-windows-msvc, runner: windows-2022 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
 
       - name: Install the musl toolchain
         if: matrix.musl
@@ -160,7 +161,7 @@ jobs:
         run: rustup target add ${{ matrix.triple }}
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -178,7 +179,7 @@ jobs:
           RUSTFLAGS: ${{ matrix.musl && '-C target-feature=-crt-static' || '' }}
         run: node packages/node/scripts/build.mjs --target ${{ matrix.target }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: napi-${{ matrix.target }}
           path: packages/node/npm/${{ matrix.target }}
@@ -189,13 +190,13 @@ jobs:
     needs: plan
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
 
       - name: Write the platform manifests
         run: node packages/cli/scripts/npm-dirs.mjs
@@ -205,7 +206,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node packages/cli/scripts/fetch-release.mjs --tag ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: cli-npm
           path: packages/cli/npm
@@ -216,24 +217,22 @@ jobs:
     needs: plan
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
           cache: pnpm
 
       - name: Add the mobile Rust targets
         run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -255,7 +254,7 @@ jobs:
           tar -czf react-native.tar.gz -C packages/react-native \
             dist ios/BlasphemFFI.xcframework android/libs cpp/blasphem.h
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: react-native
           path: react-native.tar.gz
@@ -269,33 +268,30 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
           registry-url: https://registry.npmjs.org
 
       - name: Use an npm that speaks Trusted Publishing
         run: |
-          npm install --global npm@^11.5.1
+          npm install --global npm@11.16.0
           npm --version
 
-      - uses: actions/download-artifact@v4
-        with: { name: packs-dist, path: packages/packs/dist }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with: { name: blasphem-dist, path: packages/javascript/dist }
 
-      - uses: actions/download-artifact@v4
-        with: { name: blasphem-dist, path: packages/blasphem/dist }
-
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with: { pattern: napi-*, path: packages/node/npm, merge-multiple: false }
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with: { name: cli-npm, path: packages/cli/npm }
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with: { name: react-native, path: . }
 
       - name: Place the artifacts
@@ -332,24 +328,29 @@ jobs:
           - { target: linux-arm64-musl, triple: aarch64-unknown-linux-musl, runner: ubuntu-24.04-arm, manylinux: musllinux_1_2 }
           - { target: win32-x64-msvc, triple: x86_64-pc-windows-msvc, runner: windows-2022 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.10"
+          python-version-file: .tool-versions
+
+      - name: Copy the Python notice
+        shell: bash
+        run: cp NOTICE packages/python/NOTICE
 
       - name: Build the wheel
         # pyo3 abi3-py310 means one wheel per platform covers every supported Python.
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1
         with:
           target: ${{ matrix.triple }}
           manylinux: ${{ matrix.manylinux }}
           working-directory: packages/python
+          maturin-version: ${{ env.MATURIN_VERSION }}
           args: --release --locked --out dist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wheel-${{ matrix.target }}
           path: packages/python/dist
@@ -360,38 +361,39 @@ jobs:
     needs: [plan, packs]
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.12"
+          python-version-file: .tool-versions
 
-      - uses: actions/download-artifact@v4
-        with: { name: packs-dist, path: packages/packs/dist }
+      - name: Copy the Python notice
+        run: cp NOTICE packages/python/NOTICE
 
       - name: Build the blasphem source distribution
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1
         with:
           command: sdist
           working-directory: packages/python
+          maturin-version: ${{ env.MATURIN_VERSION }}
           args: --out dist
 
       - name: Build the blasphem-packs wheel and source distribution
         run: |
           set -euo pipefail
-          python -m pip install --upgrade build
+          python -m pip install --require-hashes -r packages/python/requirements-build.txt
           python packages/python-packs/sync_packs.py
-          python -m build --outdir packages/python-packs/dist packages/python-packs
+          python -m build --no-isolation --outdir packages/python-packs/dist packages/python-packs
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: sdist-blasphem
           path: packages/python/dist
           if-no-files-found: error
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: dist-blasphem-packs
           path: packages/python-packs/dist
@@ -404,19 +406,19 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: wheel-*
           path: blasphem
           merge-multiple: true
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: sdist-blasphem
           path: blasphem
           merge-multiple: true
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: dist-blasphem-packs
           path: blasphem-packs
@@ -424,32 +426,42 @@ jobs:
       - run: ls -l blasphem blasphem-packs
 
       - name: Publish blasphem
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
         with:
           packages-dir: blasphem
           skip-existing: true
 
       - name: Publish blasphem-packs
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
         with:
           packages-dir: blasphem-packs
           skip-existing: true
 
   go:
     name: go
-    needs: plan
+    needs: [plan, packs]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+    env:
+      GOTOOLCHAIN: local
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
           fetch-depth: 0
 
-      - uses: actions/setup-go@v5
+      - name: Read the Go version
+        id: go
+        run: |
+          version=$(awk '$1 == "golang" { print $2 }' .tool-versions)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version-file: packages/go/go.mod
+          go-version: ${{ steps.go.outputs.version }}
+          cache-dependency-path: packages/go/go.sum
 
       - name: The embedded core must be committed
         # `go:embed` reads the git tree, so the module proxy serves whatever is
@@ -479,7 +491,13 @@ jobs:
             echo "status=exists tag=$TAG"
             exit 0
           fi
-          git tag "$TAG" "${{ needs.plan.outputs.tag }}"
+          cp NOTICE packages/go/NOTICE
+          git add --force packages/go/NOTICE
+          tree=$(git write-tree)
+          commit=$(git -c user.name="blasphem publish" -c user.email="publish@blasphem.sospedra.me" \
+            commit-tree "$tree" -p "${{ needs.plan.outputs.tag }}" -m "Package Go notice for $TAG")
+          git show "$commit:packages/go/NOTICE" | cmp NOTICE -
+          git tag "$TAG" "$commit"
           git push origin "$TAG"
           echo "status=tagged tag=$TAG"
 
@@ -500,19 +518,19 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
 
       - name: Add the Apple Rust targets
         run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -521,19 +539,16 @@ jobs:
           key: cargo-ffi-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
 
       - name: Build the XCFramework
-        run: node packages/swift/scripts/xcframework.mjs
+        run: node packages/apple/scripts/xcframework.mjs
 
       - name: Upload the XCFramework to the Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.plan.outputs.tag }} packages/swift/BlasphemFFI.xcframework.zip --clobber
+        run: gh release upload ${{ needs.plan.outputs.tag }} packages/apple/BlasphemFFI.xcframework.zip --clobber
 
       - name: Compute the checksum
         id: checksum
-        run: echo "sum=$(swift package compute-checksum packages/swift/BlasphemFFI.xcframework.zip)" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/download-artifact@v4
-        with: { name: packs-dist, path: packages/packs/dist }
+        run: echo "sum=$(swift package compute-checksum packages/apple/BlasphemFFI.xcframework.zip)" >> "$GITHUB_OUTPUT"
 
       - name: Install the deploy key
         env:
@@ -548,7 +563,7 @@ jobs:
 
       - name: Publish sospedra/blasphem-swift
         run: |
-          node packages/swift/scripts/distribution.mjs \
+          node packages/apple/scripts/distribution.mjs \
             --version ${{ needs.plan.outputs.version }} \
             --checksum ${{ steps.checksum.outputs.sum }} \
             --repo git@github.com:sospedra/blasphem-swift.git
@@ -558,26 +573,26 @@ jobs:
     needs: [plan, packs]
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.plan.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version-file: .nvmrc
+          node-version-file: .tool-versions
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version-file: .tool-versions
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
 
       - name: Add the Android Rust targets
         run: rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
 
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.cargo/registry
@@ -603,9 +618,6 @@ jobs:
               | awk -v abi="$abi" '/^ *LOAD/ && $NF != "0x4000" { print abi ": LOAD segment not aligned to 16 KB: " $0; bad = 1 } END { exit bad }'
           done
 
-      - uses: actions/download-artifact@v4
-        with: { name: packs-dist, path: packages/packs/dist }
-
       - name: Sync the packs into the asset modules
         run: node packages/android/scripts/sync-packs.mjs
 
@@ -620,7 +632,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Run the instrumented smoke test
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
           api-level: 35
           arch: x86_64
@@ -646,13 +658,18 @@ jobs:
       matrix:
         runner: [ubuntu-24.04, macos-15, windows-2022]
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          node-version: "24"
+          ref: ${{ needs.plan.outputs.tag }}
+          path: source
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          python-version: "3.12"
+          node-version-file: source/.tool-versions
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version-file: source/.tool-versions
 
       - name: Judge through the published command-line binary
         shell: bash
@@ -718,17 +735,11 @@ jobs:
           EOF
           cd "$scratch" && swift run Scratch
 
-      - uses: actions/checkout@v4
-        if: matrix.runner == 'ubuntu-24.04'
-        with:
-          ref: ${{ needs.plan.outputs.tag }}
-          path: source
-
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         if: matrix.runner == 'ubuntu-24.04'
         with:
           distribution: temurin
-          java-version: "17"
+          java-version-file: source/.tool-versions
 
       - name: Resolve the published Android artifacts
         if: matrix.runner == 'ubuntu-24.04'

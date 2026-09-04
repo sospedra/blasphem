@@ -1,5 +1,10 @@
 # How blasphem works
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 Blasphem flags a message when either of two channels reaches 50 points. The model channel scores the text. The rule channel reads the lexicon and the sentence around each hit. Everything is compiled into one binary per build.
 
 ```
@@ -17,7 +22,7 @@ Blasphem flags a message when either of two channels reaches 50 points. The mode
       model.bin  +  boundary, scale       |
           |                               |
           v                               v
-   blasphem binary  ----------------> benchmark/  (recall, precision per language)
+   blasphem binary  ----------------> CI artifacts  (recall, precision per language)
 
 
    one message at run time
@@ -30,7 +35,7 @@ Blasphem flags a message when either of two channels reaches 50 points. The mode
 
 ## Corpus
 
-One file per language, `corpus/XX.tsv`. Three columns: `split`, `label`, `text`. Labels are `clean` or `toxic`. Sources are textdetox and the community corpora, locked in `resources/datasets/`.
+One file per model profile, `corpus/XX.tsv`. Three columns: `split`, `label`, `text`. Labels are `clean` or `toxic`. Sources are textdetox and the community corpora, locked in `crates/blasphem-train/metadata/`.
 
 | split | rows do |
 |---|---|
@@ -38,19 +43,20 @@ One file per language, `corpus/XX.tsv`. Three columns: `split`, `label`, `text`.
 | validation | choose the decision boundary |
 | test | measure. Never used for tuning |
 
-Malay is stored under `ID`.
+Blasphem supports [16 languages](packages/javascript-packs/README.md#locales).
+Use `id` for Indonesian and `ms` for Malay.
 
 ## Lexicon
 
-One file per language, `lexicon/XX.tsv`, a copy of `data/clean-room-v1/`. Columns: `id`, `pos`, `category`, `stereotype`, `lemma`, `level`. Built from Wiktionary, LDNOOBW, washyourmouth, and textdetox. No HurtLex rows.
+One file per model profile, `lexicon/XX.tsv`. Columns: `id`, `pos`, `category`, `stereotype`, `lemma`, `level`. Built from Wiktionary, LDNOOBW, washyourmouth, and textdetox.
 
-`category` is one of 17 codes. Five mark identity groups: `ps`, `rci`, `om`, `ddf`, `ddp`. `level` is `conservative` or `inclusive`. Only conservative rows load. Inclusive rows are inert (`src/rules/channel.rs`).
+`category` is one of 17 codes. Five mark identity groups: `ps`, `rci`, `om`, `ddf`, `ddp`. `level` is `conservative` or `inclusive`. Only conservative rows load. Inclusive rows are inert (`crates/blasphem/src/rules/channel.rs`).
 
 The runtime does no stemming. Each inflected form is its own row.
 
 ## Model
 
-A hashed linear classifier, `src/sparse.rs`. Most profiles use word unigrams, word bigrams, and character 3-, 4-, and 5-grams of the normalized text. Each feature hashes into one of 65,536 bins. Each bin holds one 16-bit weight. One artifact is 131 KB.
+A hashed linear classifier, `crates/blasphem/src/sparse.rs`. Most profiles use word unigrams, word bigrams, and character 3-, 4-, and 5-grams of the normalized text. Each feature hashes into one of 65,536 bins. Each bin holds one 16-bit weight. One artifact is 131 KB.
 
 ZH uses Han unigrams and character 2- through 5-grams. Han, Latin, and mixed-script grams use separate hash namespaces.
 
@@ -70,7 +76,7 @@ ES trains an unweighted L2 logistic model on Naive Bayes weighted features. Deve
 
 The raw score is the bias plus the weights of the message bins.
 
-For 13 languages the model also reads the lexicon. One marker word per matched lexicon category is appended to the text before scoring. Training and run time do the same (`lexicon_marked_text`, `src/detector.rs`). The model learns the marker weights like any word. ZH and JA run without markers: their lexica cover too few toxic rows.
+For 13 model profiles the model also reads the lexicon. One marker word per matched lexicon category is appended to the text before scoring. Training and run time do the same (`lexicon_marked_text`, `crates/blasphem/src/detector.rs`). The model learns the marker weights like any word. ZH and JA run without markers: their lexica cover too few toxic rows.
 
 ## Calibration
 
@@ -80,7 +86,7 @@ For each candidate boundary it predicts `rule nudge OR (not suppressed AND raw >
 
 1. False warnings at most 3% of clean rows.
 2. Precision at least 90%. ES requires at least 139/150.
-3. Boundary above every clean control. The 16 clean fixtures per language in `tests/fixtures/behavior/` must not flag.
+3. Boundary above every clean control. The 16 clean fixtures per language in `crates/blasphem/tests/fixtures/behavior/` must not flag.
 
 The scaled score is 50 at the boundary. The scale comes from the 10th and 90th percentile raw scores on validation.
 
@@ -98,14 +104,14 @@ The rule channel reads the lexicon and the words around each hit. Points:
 
 A negator, quote, reporting verb, or counterspeech marker near the hit suppresses it. Suppression cuts the hit to 10 points and caps the model at 49.
 
-Two engines exist. `uses_policy_rules` in `src/rules/channel.rs` picks one per language.
+Two engines exist. `uses_policy_rules` in `crates/blasphem/src/rules/channel.rs` picks one per language.
 
-| engine | languages | how the lexicon is used |
+| engine | model profiles | how the lexicon is used |
 |---|---|---|
-| policy pack (`src/rule_pack.rs`, `src/policy.rs`) | ES | inside every frame above |
-| V2 tables (`src/rules/packs/`) | the other 14 | flat 30-point hit only |
+| policy pack (`crates/blasphem/src/rule_pack.rs`, `crates/blasphem/src/policy.rs`) | ES | inside every frame above |
+| V2 tables (`crates/blasphem/src/rules/packs/`) | the other 14 | flat 30-point hit only |
 
-A 30-point hit alone never flags. In the V2 languages the lexicon changes scores, not verdicts.
+A 30-point hit alone never flags. In the V2 profiles the lexicon changes scores, not verdicts.
 
 ## Verdict
 
@@ -116,7 +122,7 @@ flag  = score >= 50
 
 ## Build
 
-`blasphem-train regenerate` retrains all 15 models and recalibrates them. It rewrites `resources/models/multilingual-v2/` and `reports/`. `src/embedded.rs` pins the artifact and lexicon digests. `src/registry.rs` pins the rule identity per language. A digest mismatch fails at start.
+`blasphem-train regenerate` retrains all 15 models and recalibrates them. It rewrites `resources/models/multilingual-v2/` and `reports/`. `crates/blasphem/src/embedded.rs` pins the artifact and lexicon digests. `crates/blasphem/src/registry.rs` pins the rule identity per language. A digest mismatch fails at start.
 
 ## Benchmark
 
@@ -124,4 +130,4 @@ flag  = score >= 50
 cargo run --release --locked -p blasphem-bench -- accuracy
 ```
 
-Retrains, syncs digests, rebuilds, and judges every test row through the binary. Writes `benchmark/runs/<sha>.json` and prints each language against `benchmark/baseline.json`. See `benchmark/README.md`.
+Retrains, syncs digests, rebuilds, and judges every test row through the binary. Writes `reports/benchmarks/<sha>.json` and prints each language against `crates/blasphem-bench/baseline.json`. See `crates/blasphem-bench/README.md`.

@@ -7,7 +7,7 @@ fn project_root() -> PathBuf {
 }
 
 fn committed_lock() -> blasphem_train::evaluation_lock::EvaluationLock {
-    let path = project_root().join("resources/datasets/evaluation-lock-v1.json");
+    let path = project_root().join("crates/blasphem-train/metadata/evaluation-lock-v1.json");
     let file = fs::File::open(path).expect("readable evaluation lock");
     parse_evaluation_lock(file).expect("valid evaluation lock")
 }
@@ -57,7 +57,8 @@ fn the_evaluation_lock_seals_the_committed_corpus_rows() {
     use blasphem_train::corpus::{parse_corpus, split_digest};
     use blasphem_train::datasets::DatasetSplit;
 
-    let bytes = std::fs::read("../../resources/datasets/evaluation-lock-v1.json").unwrap();
+    let bytes =
+        std::fs::read("../../crates/blasphem-train/metadata/evaluation-lock-v1.json").unwrap();
     let lock = blasphem_train::evaluation_lock::parse_evaluation_lock(bytes.as_slice()).unwrap();
 
     assert_eq!(lock.languages.len(), 15);

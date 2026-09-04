@@ -5,7 +5,8 @@ package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 Pod::Spec.new do |s|
   s.name         = "BlasphemReactNative"
   s.version      = package["version"]
-  s.summary      = package["description"]
+  s.summary      = "Local toxicity checks for React Native with sparse feature vectors and context rules."
+  s.description  = package["description"]
   s.homepage     = "https://github.com/sospedra/blasphem"
   s.license      = package["license"]
   s.authors      = "Rubén Sospedra"

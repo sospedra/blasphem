@@ -1,6 +1,7 @@
 import type { Judge, JudgeOptions, Judgement } from "blasphem";
 import { LANGUAGES, normalizeSelection, type Selection } from "../lib/languages";
 import { statusCopy, transition, verdictFor, WAITING, type Phase, type PhaseEvent, type Snapshot } from "./playground-state";
+import { copyText, resetCopy } from "./clipboard";
 
 type Module = { createJudge: (options: JudgeOptions) => Promise<Judge> };
 
@@ -14,13 +15,18 @@ const FIELD_IDS = ["f-safe", "f-score", "f-locale", "f-grawlix"] as const;
 const ALL_LOCALES = LANGUAGES.map((language) => language.tag);
 
 type FieldId = (typeof FIELD_IDS)[number];
-type Sample = { code: string; tag: string; text: string };
+type SampleKind = "toxic" | "clean";
+type Sample = { code: string; tag: string; kind: SampleKind; name: string; text: string };
+type JudgeEntry = { status: "loading"; promise: Promise<Judge> } | { status: "ready"; judge: Judge };
 
 type Elements = {
   root: HTMLElement;
   message: HTMLTextAreaElement;
   language: HTMLSelectElement;
-  sample: HTMLButtonElement;
+  samples: NodeListOf<HTMLButtonElement>;
+  sampleNote: HTMLElement;
+  copy: HTMLButtonElement;
+  copyStatus: HTMLElement;
   status: HTMLElement;
   verdict: HTMLElement;
   ruling: HTMLElement;
@@ -36,11 +42,16 @@ type Elements = {
 
 type Session = {
   phase: Phase;
-  module: Module | null;
-  /** One judge per selection. AUTO loads every locale with detection; a code loads one locale without it. */
-  judges: Map<Selection, Promise<Judge>>;
-  sampleIndex: number;
+  module: Promise<Module> | null;
+  moduleAttempt: number;
+  judges: Map<Selection, JudgeEntry>;
+  sampleIndex: Record<SampleKind, number>;
+  sampleText: string | null;
+  revision: number;
 };
+
+type Playground = { elements: Elements; samples: readonly Sample[]; session: Session; lifetime: AbortController };
+type CheckRequest = { text: string; selection: Selection; revision: number };
 
 function required<T extends Element>(root: ParentNode, selector: string): T {
   const found = root.querySelector<T>(selector);
@@ -54,7 +65,10 @@ function collect(root: HTMLElement): Elements {
     root,
     message: required(root, "#message"),
     language: required(root, "#language"),
-    sample: required(root, "#sample"),
+    samples: root.querySelectorAll<HTMLButtonElement>(".sample"),
+    sampleNote: required(root, "#sample-note"),
+    copy: required(root, "#copy-message"),
+    copyStatus: required(root, "#copy-status"),
     status: required(root, "#status"),
     verdict: required(root, "#verdict"),
     ruling: required(root, "#ruling"),
@@ -79,8 +93,9 @@ function describe(error: unknown): string {
 }
 
 /** The package's browser entry, served beside the wasm and the packs under BASE. */
-async function loadModule(): Promise<Module> {
-  return (await import(/* @vite-ignore */ `${BASE}/browser.js`)) as Module;
+async function loadModule(attempt: number): Promise<Module> {
+  const retry = attempt > 0 ? `?retry=${attempt}` : "";
+  return (await import(/* @vite-ignore */ `${BASE}/browser.js${retry}`)) as Module;
 }
 
 function optionsFor(selection: Selection): JudgeOptions {
@@ -110,8 +125,8 @@ function renderPhase(elements: Elements, phase: Phase): void {
   elements.failure.hidden = phase.status !== "error";
   elements.failureMessage.textContent = phase.status === "error" ? phase.message : "";
   elements.message.disabled = phase.status === "unavailable";
-  elements.sample.disabled = phase.status === "unavailable";
-  if (phase.status === "loading") elements.clock.textContent = "waking";
+  for (const sample of elements.samples) sample.disabled = phase.status === "unavailable";
+  elements.clock.textContent = phase.status === "loading" ? "waking" : "—";
 }
 
 function renderWaiting(elements: Elements): void {
@@ -120,6 +135,8 @@ function renderWaiting(elements: Elements): void {
   elements.note.textContent = WAITING.note;
   elements.clock.textContent = "—";
   elements.bar.style.transform = "scaleX(0)";
+  elements.copy.disabled = true;
+  resetCopy(elements.copy, elements.copyStatus);
   for (const id of FIELD_IDS) elements.fields[id].textContent = "—";
 }
 
@@ -141,6 +158,7 @@ function renderResult(elements: Elements, taken: Snapshot, elapsedMs: number): v
   elements.fields["f-score"].textContent = taken.score.toFixed(2);
   elements.fields["f-locale"].textContent = taken.locale ?? "null";
   elements.fields["f-grawlix"].textContent = taken.grawlix ?? "null";
+  elements.copy.disabled = taken.grawlix === null;
 }
 
 function applyQuerySelection(select: HTMLSelectElement): void {
@@ -150,105 +168,163 @@ function applyQuerySelection(select: HTMLSelectElement): void {
   if (selection) select.value = selection;
 }
 
-export function mountPlayground(root: HTMLElement): void {
-  const elements = collect(root);
-  const samples = readSamples(document);
-  const session: Session = { phase: { status: "idle" }, module: null, judges: new Map(), sampleIndex: -1 };
+function currentSelection(elements: Elements): Selection {
+  return normalizeSelection(elements.language.value) ?? "AUTO";
+}
 
-  const dispatch = (event: PhaseEvent): void => {
-    session.phase = transition(session.phase, event);
-    renderPhase(elements, session.phase);
-  };
+function dispatch(playground: Playground, event: PhaseEvent): void {
+  playground.session.phase = transition(playground.session.phase, event);
+  renderPhase(playground.elements, playground.session.phase);
+}
 
-  const currentSelection = (): Selection => normalizeSelection(elements.language.value) ?? "AUTO";
-
-  /** Builds the judge for one selection once. A failed build is forgotten so a retry can rebuild it. */
-  const judgeFor = (module: Module, selection: Selection): Promise<Judge> => {
-    const existing = session.judges.get(selection);
-    if (existing) return existing;
-    const created = module.createJudge(optionsFor(selection)).catch((error: unknown) => {
-      session.judges.delete(selection);
-      throw error;
-    });
-    session.judges.set(selection, created);
-    return created;
-  };
-
-  const ensureModule = async (): Promise<Module | null> => {
-    if (session.module) return session.module;
-    if (session.phase.status !== "idle") return null;
-    dispatch({ type: "LOAD" });
-    try {
-      session.module = await loadModule();
-      await judgeFor(session.module, currentSelection());
-    } catch (error) {
-      session.module = null;
-      dispatch({ type: "FAILED", message: describe(error) });
-      return null;
-    }
-    dispatch({ type: "LOADED" });
-    return session.module;
-  };
-
-  let pending = 0;
-  const check = async (): Promise<void> => {
-    if (BASE === "") {
-      dispatch({ type: "UNAVAILABLE" });
-      return;
-    }
-    const module = await ensureModule();
-    if (!module) return;
-    const text = elements.message.value;
-    if (text.trim() === "") {
-      renderWaiting(elements);
-      return;
-    }
-    const ticket = ++pending;
-    let judge: Judge;
-    try {
-      judge = await judgeFor(module, currentSelection());
-    } catch (error) {
-      elements.failureMessage.textContent = describe(error);
-      elements.failure.hidden = false;
-      return;
-    }
-    // A newer keystroke or selection change supersedes this evaluation.
-    if (ticket !== pending || elements.message.value !== text) return;
-    const { verdict, perCallMs } = timeJudge(() => judge.judge(text));
-    renderResult(elements, snapshot(verdict), perCallMs);
-  };
-
-  const samplesFor = (selection: Selection): readonly Sample[] => {
-    if (selection === "AUTO") return samples;
-    return samples.filter((sample) => sample.code === selection);
-  };
-
-  const loadSample = (): void => {
-    const pool = samplesFor(currentSelection());
-    if (pool.length === 0) return;
-    session.sampleIndex = (session.sampleIndex + 1) % pool.length;
-    const sample = pool[session.sampleIndex];
-    elements.message.value = sample.text;
-    elements.message.lang = sample.tag;
-    elements.message.focus();
-    void check();
-  };
-
-  elements.message.addEventListener("input", () => {
-    elements.message.lang = "";
-    void check();
+function moduleFor(session: Session): Promise<Module> {
+  if (session.module) return session.module;
+  session.module = loadModule(session.moduleAttempt++).catch((error: unknown) => {
+    session.module = null;
+    throw error;
   });
+  return session.module;
+}
+
+async function loadJudge(session: Session, selection: Selection): Promise<Judge> {
+  const module = await moduleFor(session);
+  const judge = await module.createJudge(optionsFor(selection));
+  session.judges.set(selection, { status: "ready", judge });
+  return judge;
+}
+
+function judgeFor(session: Session, selection: Selection): Promise<Judge> {
+  const existing = session.judges.get(selection);
+  if (existing?.status === "ready") return Promise.resolve(existing.judge);
+  if (existing?.status === "loading") return existing.promise;
+  const promise = loadJudge(session, selection).catch((error: unknown) => {
+    session.judges.delete(selection);
+    throw error;
+  });
+  session.judges.set(selection, { status: "loading", promise });
+  return promise;
+}
+
+function isCurrent(playground: Playground, request: CheckRequest): boolean {
+  return !playground.lifetime.signal.aborted && request.revision === playground.session.revision;
+}
+
+function stampSample(playground: Playground, taken: Snapshot): void {
+  const { elements, session } = playground;
+  const firstSample = taken.locale !== null && session.sampleText === elements.message.value && !elements.verdict.hasAttribute("data-stamped");
+  if (firstSample) elements.verdict.setAttribute("data-stamped", "");
+}
+
+async function evaluate(playground: Playground, request: CheckRequest): Promise<void> {
+  try {
+    const judge = await judgeFor(playground.session, request.selection);
+    if (!isCurrent(playground, request)) return;
+    if (playground.elements.message.value.trim() === "") {
+      dispatch(playground, { type: "LOADED" });
+      renderWaiting(playground.elements);
+      return;
+    }
+    const { verdict, perCallMs } = timeJudge(() => judge.judge(request.text));
+    dispatch(playground, { type: "LOADED" });
+    const taken = snapshot(verdict);
+    renderResult(playground.elements, taken, perCallMs);
+    stampSample(playground, taken);
+  } catch (error) {
+    if (!isCurrent(playground, request)) return;
+    dispatch(playground, { type: "FAILED", message: describe(error) });
+  }
+}
+
+function check(playground: Playground): void {
+  const { elements, session } = playground;
+  resetCopy(elements.copy, elements.copyStatus);
+  if (elements.message.value.trim() === "") {
+    renderWaiting(elements);
+    return;
+  }
+  const request = { text: elements.message.value, selection: currentSelection(elements), revision: ++session.revision };
+  if (BASE === "") {
+    dispatch(playground, { type: "UNAVAILABLE" });
+    return;
+  }
+  if (session.phase.status === "error") return;
+  const needsLoading = session.judges.get(request.selection)?.status !== "ready" || session.phase.status === "idle";
+  if (needsLoading) {
+    renderWaiting(elements);
+    dispatch(playground, { type: "LOAD" });
+  }
+  void evaluate(playground, request);
+}
+
+function loadSample(playground: Playground, kind: SampleKind): void {
+  const { elements, session } = playground;
+  const selection = currentSelection(elements);
+  const pool = playground.samples.filter((sample) => sample.kind === kind && (selection === "AUTO" || sample.code === selection));
+  if (pool.length === 0) return;
+  const index = (session.sampleIndex[kind] + 1) % pool.length;
+  session.sampleIndex[kind] = index;
+  const sample = pool[index];
+  session.sampleText = sample.text;
+  elements.message.value = sample.text;
+  elements.message.lang = sample.tag;
+  elements.sampleNote.textContent = `${sample.name} · ${kind === "toxic" ? "hostile" : "clean"} example`;
+  check(playground);
+}
+
+function editMessage(playground: Playground): void {
+  playground.session.sampleText = null;
+  playground.elements.message.lang = "";
+  if (playground.elements.sampleNote.textContent !== "Your message") playground.elements.sampleNote.textContent = "Your message";
+  check(playground);
+}
+
+function bindInputs(playground: Playground): void {
+  const { elements, session, lifetime } = playground;
+  const options = { signal: lifetime.signal };
+  elements.message.addEventListener("input", () => editMessage(playground), options);
   elements.language.addEventListener("change", () => {
-    session.sampleIndex = -1;
-    void check();
-  });
-  elements.sample.addEventListener("click", loadSample);
+    session.sampleIndex = { toxic: -1, clean: -1 };
+    check(playground);
+  }, options);
+  for (const button of elements.samples) {
+    button.addEventListener("click", () => loadSample(playground, button.dataset.kind === "clean" ? "clean" : "toxic"), options);
+  }
   elements.retry.addEventListener("click", () => {
-    dispatch({ type: "RETRY" });
-    void check();
-  });
+    dispatch(playground, { type: "RETRY" });
+    check(playground);
+  }, options);
+  elements.copy.addEventListener("click", () => {
+    void copyText(elements.copy, elements.copyStatus, () => elements.copy.disabled ? "" : elements.fields["f-grawlix"].textContent ?? "");
+  }, options);
+}
 
+function closePlayground(playground: Playground): void {
+  playground.lifetime.abort();
+  for (const entry of playground.session.judges.values()) {
+    if (entry.status === "ready") entry.judge.close();
+    if (entry.status === "loading") void entry.promise.then((judge) => judge.close(), () => undefined);
+  }
+}
+
+export function mountPlayground(root: HTMLElement): () => void {
+  const elements = collect(root);
+  const playground: Playground = {
+    elements,
+    samples: readSamples(document),
+    session: {
+      phase: { status: "idle" },
+      module: null,
+      moduleAttempt: 0,
+      judges: new Map(),
+      sampleIndex: { toxic: -1, clean: -1 },
+      sampleText: null,
+      revision: 0,
+    },
+    lifetime: new AbortController(),
+  };
+  bindInputs(playground);
   applyQuerySelection(elements.language);
   renderWaiting(elements);
-  renderPhase(elements, session.phase);
+  renderPhase(elements, playground.session.phase);
+  return () => closePlayground(playground);
 }

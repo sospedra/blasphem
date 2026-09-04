@@ -10,9 +10,9 @@ use std::{
 
 use blasphem::{
     ConfusionMatrix, EvalLabel, FeatureError, FeatureProfile, Language, NormalizationProfile,
-    ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV1Input, SparseV2Input,
-    canonical_rule_identity, encode_sparse_v1, encode_sparse_v2, extract_feature_bins,
-    lexicon_marked_text, uses_lexicon_features,
+    ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV2Input,
+    canonical_rule_identity, encode_sparse_v2, extract_feature_bins, lexicon_marked_text,
+    uses_lexicon_features,
 };
 use liblinear::{LibLinearModel, SolverType, util::TrainingInput};
 use sha2::{Digest, Sha256};
@@ -22,7 +22,7 @@ use crate::{
     atomic_publish::{AtomicPublishError, atomic_publish_noreplace},
     behavior_panel::load_panel,
     calibration::{CalibrationError, CalibrationResult, CalibrationRow, calibrate_at_or_above},
-    corpus::load_corpus_language,
+    corpus::{PreparedLanguageInput, load_corpus_language},
     datasets::{DatasetId, PreparedRow},
     evidence::Sha256Digest,
     model_manifest::{
@@ -30,7 +30,6 @@ use crate::{
         ModelManifestEntry, ModelSetError, artifact_relative_path, build_manifest_entry,
         parse_model_manifest, rule_pack_version, validate_model_set,
     },
-    prepared_input::PreparedLanguageInput,
     source_manifest::{FrozenSourceLock, SourceRecord, parse_frozen_source_lock},
 };
 
@@ -45,7 +44,7 @@ static SILENCE_LIBLINEAR: Once = Once::new();
 pub struct BatchCompileOptions {
     pub corpus_root: PathBuf,
     pub source_lock: PathBuf,
-    pub hurtlex_root: PathBuf,
+    pub lexicon_root: PathBuf,
     pub behavior_root: Option<PathBuf>,
     pub output: PathBuf,
 }
@@ -110,19 +109,19 @@ fn compile_corpus_language(
             reason: error.to_string(),
         }
     })?;
-    let hurtlex_sources = sources
+    let lexicon_sources = sources
         .iter()
-        .filter(|source| source.dataset == DatasetId::HurtLex)
+        .filter(|source| source.dataset == DatasetId::Lexicon)
         .collect::<Vec<_>>();
-    if hurtlex_sources.len() != 1 {
-        return Err(ModelSetError::HurtlexSourceCount {
+    if lexicon_sources.len() != 1 {
+        return Err(ModelSetError::LexiconSourceCount {
             language,
-            actual: hurtlex_sources.len(),
+            actual: lexicon_sources.len(),
         });
     }
-    let hurtlex_source = hurtlex_sources[0];
-    let hurtlex_bytes = read_hurtlex(options, language, hurtlex_source)?;
-    let rule_channel = RuleChannel::from_hurtlex_bytes(language, Some(&hurtlex_bytes))
+    let lexicon_source = lexicon_sources[0];
+    let lexicon_bytes = read_lexicon(options, language, lexicon_source)?;
+    let rule_channel = RuleChannel::from_lexicon_bytes(language, Some(&lexicon_bytes))
         .map_err(|source| ModelSetError::RuleChannel { language, source })?;
     let behavior_rows = options
         .behavior_root
@@ -149,7 +148,7 @@ fn compile_corpus_language(
     .map_err(|source| ModelSetError::CompileLanguage { language, source })?;
     let dataset_inputs = sources
         .iter()
-        .filter(|source| source.dataset != DatasetId::HurtLex)
+        .filter(|source| source.dataset != DatasetId::Lexicon)
         .map(|source| DatasetInput {
             dataset: source.dataset,
             source_file_id: source.source_file_id.clone(),
@@ -164,7 +163,7 @@ fn compile_corpus_language(
             prepared_counts: counts,
             rule_pack_version: rule_pack_version(language),
             rule_pack_sha256: sha256_digest(&canonical_rule_identity(language)),
-            hurtlex_sha256: Some(hurtlex_source.file_sha256.clone()),
+            lexicon_sha256: Some(lexicon_source.file_sha256.clone()),
             clean_control_rows,
             clean_control_sha256,
         },
@@ -175,7 +174,7 @@ fn compile_corpus_language(
     })
 }
 
-fn read_hurtlex(
+fn read_lexicon(
     options: &BatchCompileOptions,
     language: Language,
     source_record: &SourceRecord,
@@ -183,8 +182,8 @@ fn read_hurtlex(
     let declared = Path::new(&source_record.file_path);
     let relative =
         declared
-            .strip_prefix("hurtlex")
-            .map_err(|_| ModelSetError::UnsafeHurtlexPath {
+            .strip_prefix("lexicon")
+            .map_err(|_| ModelSetError::UnsafeLexiconPath {
                 language,
                 path: source_record.file_path.clone(),
             })?;
@@ -193,19 +192,19 @@ fn read_hurtlex(
             .components()
             .any(|component| !matches!(component, Component::Normal(_)))
     {
-        return Err(ModelSetError::UnsafeHurtlexPath {
+        return Err(ModelSetError::UnsafeLexiconPath {
             language,
             path: source_record.file_path.clone(),
         });
     }
-    let path = options.hurtlex_root.join(relative);
-    let bytes = fs::read(&path).map_err(|source| ModelSetError::HurtlexIo {
+    let path = options.lexicon_root.join(relative);
+    let bytes = fs::read(&path).map_err(|source| ModelSetError::LexiconIo {
         language,
         path,
         source,
     })?;
     if sha256_digest(&bytes) != source_record.file_sha256 {
-        return Err(ModelSetError::HurtlexDigestMismatch(language));
+        return Err(ModelSetError::LexiconDigestMismatch(language));
     }
     Ok(bytes)
 }
@@ -924,27 +923,17 @@ pub fn compile_language_with_learner(
 
     let calibration = calibrate_at_or_above(request.language, &calibration_rows, minimum_boundary)?;
     let score_scale = validation_score_scale(&raw_scores, calibration.boundary)?;
-    let artifact = if request.language == Language::Es {
-        encode_sparse_v1(&SparseV1Input {
-            bias: trained.bias,
-            decision_boundary: calibration.boundary,
-            score_scale,
-            max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
-            weights: &trained.weights,
-        })?
-    } else {
-        encode_sparse_v2(&SparseV2Input {
-            language: request.language,
-            feature_profile,
-            normalization_profile,
-            feature_schema,
-            bias: trained.bias,
-            decision_boundary: calibration.boundary,
-            score_scale,
-            max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
-            weights: &trained.weights,
-        })?
-    };
+    let artifact = encode_sparse_v2(&SparseV2Input {
+        language: request.language,
+        feature_profile,
+        normalization_profile,
+        feature_schema,
+        bias: trained.bias,
+        decision_boundary: calibration.boundary,
+        score_scale,
+        max_false_warning_basis_points: FALSE_WARNING_LIMIT_BASIS_POINTS,
+        weights: &trained.weights,
+    })?;
     let parsed = SparseModel::from_bytes(&artifact)?;
     let calibrated_predictions = calibration_rows
         .iter()

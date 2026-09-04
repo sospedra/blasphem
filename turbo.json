@@ -17,14 +17,8 @@
     "@blasphem/packs#build": {
       "inputs": [
         "$TURBO_DEFAULT$",
-        "$TURBO_ROOT$/Cargo.toml",
-        "$TURBO_ROOT$/Cargo.lock",
-        "$TURBO_ROOT$/rust-toolchain.toml",
-        "$TURBO_ROOT$/.cargo/**",
-        "$TURBO_ROOT$/src/**",
-        "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/data/clean-room-v1/**",
-        "$TURBO_ROOT$/resources/models/**"
+        "$TURBO_ROOT$/scripts/packs.mjs",
+        "$TURBO_ROOT$/resources/packs/**"
       ],
       "outputs": [
         "dist/**"
@@ -37,7 +31,6 @@
         "$TURBO_ROOT$/Cargo.lock",
         "$TURBO_ROOT$/rust-toolchain.toml",
         "$TURBO_ROOT$/.cargo/**",
-        "$TURBO_ROOT$/src/**",
         "$TURBO_ROOT$/crates/**"
       ],
       "outputs": [
@@ -51,9 +44,8 @@
         "$TURBO_ROOT$/Cargo.lock",
         "$TURBO_ROOT$/rust-toolchain.toml",
         "$TURBO_ROOT$/.cargo/**",
-        "$TURBO_ROOT$/src/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/data/clean-room-v1/**",
+        "$TURBO_ROOT$/lexicon/**",
         "$TURBO_ROOT$/resources/models/**"
       ],
       "outputs": [
@@ -70,9 +62,8 @@
         "$TURBO_ROOT$/Cargo.lock",
         "$TURBO_ROOT$/rust-toolchain.toml",
         "$TURBO_ROOT$/.cargo/**",
-        "$TURBO_ROOT$/src/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/packages/core/src/**"
+        "$TURBO_ROOT$/packages/javascript-common/src/**"
       ],
       "outputs": [
         "dist/**",
@@ -98,7 +89,7 @@
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "$TURBO_ROOT$/packages/core/src/**"
+        "$TURBO_ROOT$/packages/javascript-common/src/**"
       ],
       "outputs": [
         "dist/**"
@@ -106,13 +97,12 @@
     },
     "web#build": {
       "dependsOn": [
-        "blasphem#build",
-        "@blasphem/packs#build"
+        "blasphem#build"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "$TURBO_ROOT$/reports/**",
-        "$TURBO_ROOT$/packages/core/src/**"
+        "$TURBO_ROOT$/resources/packs/**",
+        "$TURBO_ROOT$/packages/javascript-common/src/**"
       ],
       "outputs": [
         "dist/**"

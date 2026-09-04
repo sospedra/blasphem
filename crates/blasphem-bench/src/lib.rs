@@ -36,7 +36,8 @@ pub use benchmark::{
 pub use blasphem::{LanguageDetection, LanguageIdentifier, LanguageResolution, LanguageSource};
 pub use size::{FileSizeRecord, SizeError, SizeEvidence, collect_size_evidence, record_file};
 
-pub const BINARY_SIZE_LIMIT_BYTES: u64 = 7_340_032;
+/// Budget for the all-locale CLI with embedded models, lexicons, and routing data.
+pub const BINARY_SIZE_LIMIT_BYTES: u64 = 10_485_760;
 pub const ARTIFACT_SIZE_LIMIT_BYTES: u64 = 262_144;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

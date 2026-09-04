@@ -6,7 +6,7 @@ They also provide category markers for some model profiles.
 ## Files
 
 Each model profile uses an uppercase storage code.
-Indonesian and Malay share `ID`.
+See [all 16 supported input languages](../packages/javascript-packs/README.md#locales).
 
 | File | Purpose |
 | --- | --- |
@@ -15,10 +15,9 @@ Indonesian and Malay share `ID`.
 | `XX.drops.txt` | Excluded candidate lemmas, one per line |
 | `XX.provenance.json` | Harvest digest and assignment records |
 
-The build currently reads [data/clean-room-v1](../data/clean-room-v1/).
-This directory contains a separate copy of those lexica.
-Changes must keep both copies consistent.
-See [the pack build](../packages/packs/scripts/build.mjs) and
+The build reads these files directly.
+This directory is the single source for runtime lexica.
+See [the pack build](../packages/javascript-packs/scripts/build.mjs) and
 [embedded resources](../crates/blasphem/src/embedded.rs).
 
 ## Row format
@@ -57,7 +56,7 @@ See [the TSV parser](../crates/blasphem/src/lexicon.rs) and
 1. Select the language and collect evidence for the word's meaning.
 2. Record the category and level in `XX.senses.tsv`.
 3. Update the runtime rows and their assignment records.
-4. Mirror the changed files into `data/clean-room-v1/`.
+4. Update the source lock and regenerate artifacts.
 5. Submit a pull request with source links and example contexts.
 
 Use `XX.drops.txt` for rejected candidate lemmas.
@@ -92,7 +91,6 @@ cargo run --release --locked -p blasphem-train -- lexicon-build \
 ```
 
 The original harvest JSON files are not committed.
-The [lexicon report](../docs/clean-room-lexicon-report.md) records this reproduction limit.
 A new harvest uses the network and can contain different upstream data:
 
 ```sh
@@ -107,17 +105,16 @@ Do not replace the recorded harvest digest with an unrelated digest.
 
 ## Verify
 
-For an English change, compare the runtime copies:
+For an English change, record the runtime digest:
 
 ```sh
-cmp lexicon/EN.tsv data/clean-room-v1/EN.tsv
-shasum -a 256 data/clean-room-v1/EN.tsv
+shasum -a 256 lexicon/EN.tsv
 ```
 
 Run `lexicon-build` when the matching harvest is available.
 It checks sense-table categories, levels, duplicates, and supported sibling constraints.
-Update the matching `file_sha256` in [the source lock](../resources/datasets/source-lock-v1.json).
-Its clean-room entries retain the legacy `dataset: "hurtlex"` identifier.
+Update the matching `file_sha256` in [the source lock](../crates/blasphem-train/metadata/source-lock-v1.json).
+Its clean-room entries use the `dataset: "lexicon"` identifier.
 The [reproduction check](../crates/blasphem-train/src/reproduce.rs) verifies these input digests before compilation.
 Follow [artifact regeneration](../CONTRIBUTING.md#update-generated-artifacts) before shipping changed lexica.
 Runtime initialization checks the pinned lexicon and artifact digests.

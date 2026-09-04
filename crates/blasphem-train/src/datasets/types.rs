@@ -11,8 +11,8 @@ use super::PreparedCounts;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub enum DatasetId {
-    #[serde(rename = "hurtlex")]
-    HurtLex,
+    #[serde(rename = "lexicon")]
+    Lexicon,
     #[serde(rename = "textdetox")]
     TextDetox,
     #[serde(rename = "ibrohim-budi")]
@@ -34,7 +34,7 @@ pub enum DatasetId {
 impl fmt::Display for DatasetId {
     fn fmt(&self, output: &mut fmt::Formatter<'_>) -> fmt::Result {
         output.write_str(match self {
-            Self::HurtLex => "hurtlex",
+            Self::Lexicon => "lexicon",
             Self::TextDetox => "textdetox",
             Self::IbrohimBudi => "ibrohim-budi",
             Self::ToldBr => "told-br",

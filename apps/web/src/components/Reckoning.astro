@@ -1,142 +1,184 @@
 ---
-import { formatBytes, formatInt, formatMegabytes, formatMs, formatPercent } from "../lib/format";
-import { LANGUAGES, storageCode } from "../lib/languages";
-import { caseTotals, fixtureCount, medianP95Ms, nanosecondsToMs, routingTotals, worstP95Ms } from "../lib/metrics";
-import { behavior, browser, performance, routing, sizes, smoke, validation } from "../lib/reports";
+import { formatInt, formatMegabytes, formatMs, formatPercent } from "../lib/format";
+import { LANGUAGES, REPORT_LANGUAGES } from "../lib/languages";
+import { fixtureCount, medianP95Ms, nanosecondsToMs, worstP95Ms } from "../lib/metrics";
+import { benchmark, snapshotPath, behavior, browser, performance, routing, smoke, type BenchmarkResult } from "../lib/reports";
+import CodeBlock from "./CodeBlock.astro";
 import Ledger from "./Ledger.astro";
 import Numeral from "./Numeral.astro";
 import Spread from "./Spread.astro";
 
-const label = (status: string) => status.replaceAll("_", " ");
+const source = (path: string) => "https://github.com/sospedra/blasphem/blob/main/" + path;
+const percent = (value: number | null) => value === null ? "n/a" : formatPercent(value);
+const rowCount = (entry: BenchmarkResult) => Object.values(entry.matrix).reduce((sum, count) => sum + count, 0);
+function falseWarnings(entry: BenchmarkResult): number | null {
+  const clean = entry.matrix.true_negative + entry.matrix.false_positive;
+  return clean === 0 ? null : entry.matrix.false_positive / clean;
+}
+function resultRow(name: string, entry: BenchmarkResult) {
+  return [name, percent(entry.metrics.precision), percent(entry.metrics.recall), percent(falseWarnings(entry)), formatInt(rowCount(entry))];
+}
+function benchmarkRows(results: Record<string, BenchmarkResult>) {
+  return REPORT_LANGUAGES.toSorted((left, right) => left.name.localeCompare(right.name)).map((language) => {
+    const entry = results[language.code];
+    if (!entry) throw new Error("Benchmark is missing " + language.code);
+    return resultRow(language.name, entry);
+  });
+}
+const columns = ["Language", "Precision", "Recall", "False warnings", "Messages"];
+const test = benchmark.test;
+const testRows = benchmarkRows(test.languages);
+const validationRows = benchmarkRows(benchmark.validation.languages);
+const measuredAt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(benchmark.generated_unix_seconds * 1000));
+const snapshot = benchmark.commit.slice(0, 7);
+const benchmarkEvidence = "Measured " + measuredAt + " · " + snapshot + (benchmark.dirty ? " + uncommitted changes at measurement" : " · clean worktree at measurement");
 
-const validationRows = LANGUAGES.map((language) => {
-  const entry = validation.languages[language.code];
-  if (!entry) return [language.code, "not in this report", "", "", ""];
-  const rows = Object.values(entry.matrix).reduce((sum, count) => sum + count, 0);
+const routingRows = REPORT_LANGUAGES.toSorted((left, right) => left.name.localeCompare(right.name)).map((language) => {
+  const entry = routing.languages[language.code];
   return [
-    language.code,
-    formatInt(rows),
-    formatPercent(entry.metrics.precision),
-    formatPercent(entry.metrics.recall),
-    formatPercent(entry.metrics.false_warning_rate, 2),
+    language.name,
+    formatPercent(entry.known_route_precision.value, 2),
+    formatPercent(entry.route_accuracy.value, 2),
+    formatPercent(entry.unknown_rate.value, 2),
+    formatPercent(entry.misroute_rate.value, 2),
+    formatInt(entry.rows),
   ];
 });
-
+const supported = routing.supported;
+const routingSummary = ["All supported", formatPercent(supported.known_route_precision.value, 2), formatPercent(supported.route_accuracy.value, 2), formatPercent(supported.unknown_rate.value, 2), formatPercent(supported.misroute_rate.value, 2), formatInt(supported.rows)];
 const shortFixtures = formatInt(fixtureCount(performance.fixtures, "-280"));
 const longFixtures = formatInt(fixtureCount(performance.fixtures, "-4096"));
-const autoShort = routing.timing.groups.unicode_scalars_280;
-const autoLong = routing.timing.groups.utf8_bytes_4096;
 const latencyRows = [
-  [`280 scalars, median p95 over ${shortFixtures} fixtures`, formatMs(medianP95Ms(performance.fixtures, "-280"))],
-  [`280 scalars, worst p95 over ${shortFixtures} fixtures`, formatMs(worstP95Ms(performance.fixtures, "-280"))],
-  [`4096 bytes, median p95 over ${longFixtures} fixtures`, formatMs(medianP95Ms(performance.fixtures, "-4096"))],
-  [`4096 bytes, worst p95 over ${longFixtures} fixtures`, formatMs(worstP95Ms(performance.fixtures, "-4096"))],
-  [`AUTO, 280 scalars, p95 over ${formatInt(autoShort.samples)} runs`, formatMs(nanosecondsToMs(autoShort.p95_nanoseconds))],
-  [`AUTO, 4096 bytes, p95 over ${formatInt(autoLong.samples)} runs`, formatMs(nanosecondsToMs(autoLong.p95_nanoseconds))],
-  ["router cold start, one run", formatMs(nanosecondsToMs(routing.cold_initialization_nanoseconds))],
+  ["280 characters · median fixture p95", formatMs(medianP95Ms(performance.fixtures, "-280"))],
+  ["280 characters · worst fixture p95", formatMs(worstP95Ms(performance.fixtures, "-280"))],
+  ["4,096 bytes · median fixture p95", formatMs(medianP95Ms(performance.fixtures, "-4096"))],
+  ["4,096 bytes · worst fixture p95", formatMs(worstP95Ms(performance.fixtures, "-4096"))],
+  ["Autodetect + judge · 280 characters, p95", formatMs(nanosecondsToMs(routing.timing.groups.unicode_scalars_280.p95_nanoseconds))],
+  ["Language router · cold initialization", formatMs(nanosecondsToMs(routing.cold_initialization_nanoseconds))],
 ];
-
 const builds = browser.browser_builds;
-const tableArtifact = sizes.artifacts[storageCode("EN")];
 const transferRows = [
-  ["default, raw", formatBytes(builds.full.raw_total_bytes), formatMegabytes(builds.full.raw_total_bytes)],
-  ["default, gzip", formatBytes(builds.full.gzip_total_bytes), formatMegabytes(builds.full.gzip_total_bytes)],
-  ["default, brotli", formatBytes(builds.full.brotli_total_bytes), formatMegabytes(builds.full.brotli_total_bytes)],
-  ["explicit-only, raw", formatBytes(builds.explicit_only.raw_total_bytes), formatMegabytes(builds.explicit_only.raw_total_bytes)],
-  ["explicit-only, brotli", formatBytes(builds.explicit_only.brotli_total_bytes), formatMegabytes(builds.explicit_only.brotli_total_bytes)],
-  ["one sparse table", formatBytes(tableArtifact.bytes), formatMegabytes(tableArtifact.bytes)],
+  ["English · detection off", formatMegabytes(builds.explicit_only.raw_total_bytes), formatMegabytes(builds.explicit_only.brotli_total_bytes)],
+  ["English · detection on", formatMegabytes(builds.english_routed.raw_total_bytes), formatMegabytes(builds.english_routed.brotli_total_bytes)],
+  [`All ${LANGUAGES.length} languages · detection on`, formatMegabytes(builds.full.raw_total_bytes), formatMegabytes(builds.full.brotli_total_bytes)],
 ];
-
-const totals = routingTotals(routing);
-const routingRows = [
-  ...LANGUAGES.map((language) => {
-    const entry = routing.languages[language.code];
-    return [language.code, formatInt(entry.rows), formatPercent(entry.route_accuracy.value, 2), formatPercent(entry.unknown_rate.value, 2), formatPercent(entry.misroute_rate.value, 3)];
-  }),
-  ["all supported", formatInt(totals.rows), formatPercent(routing.supported.route_accuracy.value, 2), formatPercent(totals.unknownRate, 2), formatPercent(totals.misrouteRate, 3)],
-];
-
-const behaviorTotals = caseTotals(behavior);
-const smokeTotals = caseTotals(smoke);
-const engine = browser.engines.map((entry) => `${entry.engine} ${entry.version}`).join(", ");
+const behaviorTotals = behavior;
+const smokeTotals = smoke;
+const engines = browser.engines.map((entry) => entry.engine + " " + entry.version).join(", ");
 const contractRows = [
-  ["behavior panels", `${formatInt(behaviorTotals.passed)} / ${formatInt(behaviorTotals.total)}`, label(behavior.evidence_status)],
-  ["native smoke", `${formatInt(smokeTotals.passed)} / ${formatInt(smokeTotals.total)}`, label(smoke.evidence_status)],
-  ["browser explicit", `${formatInt(browser.passed_case_count)} / ${formatInt(browser.supplied_case_count)}`, engine],
-  ["browser AUTO", `${formatInt(browser.passed_auto_case_count)} / ${formatInt(browser.auto_case_count)}`, engine],
-  ["browser unknown", `${formatInt(browser.passed_unknown_case_count)} / ${formatInt(browser.unknown_case_count)}`, engine],
-  ["known-route precision", `${formatInt(routing.supported.correct)} / ${formatInt(routing.supported.known_route_precision.denominator)}`, label(routing.evidence_status)],
+  ["Behavior cases", formatInt(behaviorTotals.passed) + " / " + formatInt(behaviorTotals.total), "Native behavior report"],
+  ["Native smoke", formatInt(smokeTotals.passed) + " / " + formatInt(smokeTotals.total), "CLI smoke report"],
+  ["Browser · explicit language", browser.passed_case_count + " / " + browser.supplied_case_count, engines],
+  ["Browser · autodetect", browser.passed_auto_case_count + " / " + browser.auto_case_count, engines],
+  ["Browser · unknown language", browser.passed_unknown_case_count + " / " + browser.unknown_case_count, engines],
 ];
-const rustVersion = performance.rust_version.split(" ").slice(0, 2).join(" ");
 ---
-<Spread id="reckoning" label="the reckoning" class="wide">
+<Spread id="reckoning" label="the reckoning · benchmarks" class="wide">
   <div class="stage">
     <header class="intro">
       <Numeral value="IV" />
-      <p class="rubric">chapter four</p>
-      <h2 id="reckoning-title" class="title">Weighed on committed evidence</h2>
-      <div class="prose">
-        <p class="copy">Every figure below is read from the JSON reports in this repository at build time. Nothing here is typed by hand. Each ledger names the evidence status of its source.</p>
-        <p class="copy"><b>The score is ordinal.</b> It is not a probability, and it is not calibrated across languages. The validation table is calibration evidence: those rows selected the boundaries, so they overstate live precision when toxic messages are rare. The clean-warned column is the clearer nuisance measure.</p>
-        <p class="copy">Limits stated by the reports: {routing.limitations.join(" ")} The detector targets native scripts and standard Latin spellings. It has no dedicated Pinyin, Arabizi, or Hinglish model. Source corpora use different toxicity definitions and do not represent live traffic. Chinese and Turkish recall is low by the precision-first policy.</p>
-        <p class="copy">Machine: {performance.computer}, {performance.target_triple}, {rustVersion}. Peak resident memory {formatMegabytes(performance.peak_rss_bytes, 1)}.</p>
-      </div>
+      <p class="rubric">chapter four · the benchmarks</p>
+      <h2 id="reckoning-title" class="title">The numbers. In every language.</h2>
+      <p class="copy">Test messages measure the detector after training and calibration. These {formatInt(rowCount(test.pooled))} messages use a known language, with autodetection disabled.</p>
     </header>
 
-    <svg class="rule" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><use href="#traceryRule"></use></svg>
+    <dl class="scorecard">
+      <div><dt>Precision</dt><dd>{percent(test.pooled.metrics.precision)}</dd><dd class="metric-description">Of the warnings, how many were right?</dd></div>
+      <div><dt>Recall</dt><dd>{percent(test.pooled.metrics.recall)}</dd><dd class="metric-description">Of the toxic messages, how many were caught?</dd></div>
+      <div><dt>False warnings</dt><dd>{percent(falseWarnings(test.pooled))}</dd><dd class="metric-description">Of the clean messages, how many triggered a warning?</dd></div>
+    </dl>
+    <p class="measurement-note">All languages pooled. Larger corpora carry more weight. These are corpus measurements, not live-traffic guarantees.</p>
 
-    <div class="ledgers">
-      <Ledger caption="Validation split" columns={["tongue", "rows", "precision", "recall", "clean warned"]} rows={validationRows} evidence={`${label(validation.evidence_status)}, split ${validation.split}`} />
-      <Ledger caption="Language routing" columns={["tongue", "rows", "correct", "unknown", "misrouted"]} rows={routingRows} evidence={`${label(routing.evidence_status)}, ${formatInt(routing.corpus.rows)} Tatoeba sentences, unsupported rejected ${formatPercent(routing.unsupported.unsupported_rejection_rate.value, 1)}`} />
-      <Ledger caption="Latency, release build" columns={["input", "p95"]} rows={latencyRows} evidence={`${label(performance.evidence_status)}, all latency gates ${performance.all_latency_gates_passed ? "passed" : "failed"}`} />
-      <Ledger caption="Transfer, WASM plus glue" columns={["build", "bytes", "size"]} rows={transferRows} evidence={`${label(browser.evidence_status)}, wasm-bindgen ${browser.wasm_bindgen_version}, ${engine}`} />
-      <Ledger caption="Contract evidence" columns={["suite", "passed", "source"]} rows={contractRows} />
-    </div>
+    <Ledger id="test-benchmark" caption="Toxicity · test split" columns={columns} rows={testRows} summary={resultRow("All languages (pooled)", test.pooled)} search="Find a language or code" sort={[0, 1, 2, 3, 4]} evidence={benchmarkEvidence} source={source(snapshotPath)} />
+
+    <details class="disclosure">
+      <summary>Calibration results and benchmark method</summary>
+      <p class="copy">Development rows train the weights. Validation rows set the boundary. Test rows measure the final verdicts. The table below uses the same recorded benchmark run.</p>
+      <Ledger id="validation-benchmark" caption="Toxicity · validation split" columns={columns} rows={validationRows} summary={resultRow("All languages (pooled)", benchmark.validation.pooled)} search="Find a validation language" sort={[0, 1, 2, 3, 4]} source={source(snapshotPath)} evidence="Calibration evidence. These rows selected the decision boundaries." />
+      <p class="copy">The benchmark rebuilds the detector and judges every test row through its CLI. Source labels differ between corpora. Low recall means the detector misses many toxic messages.</p>
+      <CodeBlock label="Reproduce the accuracy benchmark" code="cargo run --release --locked -p blasphem-bench -- accuracy" />
+      <p class="copy"><a href={source("crates/blasphem-bench/README.md")}>Read the benchmark method</a>.</p>
+    </details>
+
+    <section id="autodetect" class="autodetect" aria-labelledby="autodetect-title">
+      <header class="routing-intro">
+        <div>
+          <p class="rubric">the language comes first</p>
+          <h3 id="autodetect-title" class="sub">Automatic language detection.<br />No language picker required.</h3>
+          <p class="copy">Autodetection is on by default. The router chooses from your loaded languages before the toxicity check.</p>
+          <p class="copy">If no language matches, the result has <code>locale: null</code> and <code>safe: true</code>. The message was not judged.</p>
+        </div>
+        <div class="routing-seal">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><use href="#roseWindow"></use></svg>
+          <strong>{formatPercent(supported.known_route_precision.value, 2)}</strong>
+          <span>language detection precision</span>
+          <p>{formatInt(supported.correct)} correct / {formatInt(supported.known_route_precision.denominator)} assigned sentences in supported languages.</p>
+        </div>
+      </header>
+      <div class="definitions">
+        <p><b>Precision</b> counts correct assignments among assigned, supported-language sentences. It excludes unknown and unsupported sentences.</p>
+        <p><b>Correct</b> counts correct assignments across all sentences in each supported language. Unknown results count as misses.</p>
+      </div>
+      <Ledger id="language-benchmark" caption="Autodetection · Tatoeba sentences" columns={["Language", "Precision", "Correct", "Unknown", "Wrong language", "Sentences"]} rows={routingRows} summary={routingSummary} search="Find a detected language" sort={[0, 1, 2, 3, 4, 5]} source={source(snapshotPath)} evidence={formatInt(routing.corpus.rows) + " Tatoeba sentences. Language identification is measured separately from toxicity."} />
+      <div class="routing-notes">
+        <p class="copy"><b>{formatPercent(routing.unsupported.unsupported_rejection_rate.value, 2)} unsupported-language rejection.</b> The router rejected {formatInt(routing.unsupported.rejected_as_unknown)} of {formatInt(routing.unsupported.rows)} unsupported sentences. It incorrectly assigned {formatInt(routing.unsupported.falsely_routed)} to a supported language.</p>
+        <p class="copy">This corpus has limited coverage of mixed-language messages and romanized chat. If you know the language, load it and set <code>detectLanguage: false</code>.</p>
+      </div>
+    </section>
+
+    <details class="disclosure">
+      <summary>Speed, download size, and runtime checks</summary>
+      <p class="copy">Native timing: {performance.computer}. Target: {performance.target_triple}. Peak resident memory: {formatMegabytes(performance.peak_rss_bytes, 1)}. These reports are separate measurement snapshots.</p>
+      <div class="runtime-ledgers">
+        <Ledger id="latency" caption="Native latency" columns={["Measurement", "Time"]} rows={latencyRows} evidence={shortFixtures + " short fixtures; " + longFixtures + " long fixtures. Characters are Unicode scalars."} source={source(snapshotPath)} />
+        <Ledger id="transfer" caption="Browser download" columns={["Profile", "Raw", "Brotli"]} rows={transferRows} evidence="Includes WebAssembly, JavaScript glue, and the selected language data." source={source(snapshotPath)} />
+      </div>
+      <Ledger id="runtime-checks" caption="Runtime checks" columns={["Suite", "Passed / total", "Source"]} rows={contractRows} prose={[2]} source={source(snapshotPath)} />
+    </details>
   </div>
 </Spread>
 
 <style>
-  .stage {
-    width: 100%;
-  }
-  .intro {
-    text-align: center;
-  }
-  .intro :global(.numeral) {
-    margin: -18px 0 4px;
-    font-size: 168px;
-  }
-  .prose {
-    columns: 2;
-    column-gap: 56px;
-    text-align: left;
-    margin-top: 22px;
-  }
-  .prose .copy {
-    max-width: none;
-    break-inside: avoid;
-  }
-  .rule {
-    display: block;
-    width: 100%;
-    height: 18px;
-    margin: 42px 0 34px;
-    color: var(--blood);
-    opacity: 0.5;
-  }
-  .ledgers {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 56px;
-    align-items: start;
-  }
+  .intro { text-align: center; max-width: 760px; margin: 0 auto; }
+  .intro :global(.numeral) { margin: 0 0 24px; font-size: 130px; }
+  .intro .copy { max-width: 62ch; margin-inline: auto; font-size: 20px; }
+  .scorecard { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 40px 0 0; border-top: 1px solid var(--blood-hair); border-bottom: 1px solid var(--hair); background: var(--pitch); }
+  .scorecard > div { padding: 26px 24px; text-align: center; }
+  .scorecard > div + div { border-left: 1px solid var(--hair); }
+  dt { font: 11px var(--font-rubric); text-transform: uppercase; letter-spacing: .2em; color: var(--taupe-ink); }
+  dd { margin: 12px 0 8px; font: 400 clamp(42px, 5vw, 68px)/1 var(--font-goth); color: var(--blood-ink); }
+  .scorecard .metric-description { margin: 0; color: var(--parchment); font: 16px/1.4 var(--font-body); }
+  .measurement-note { margin: 14px 0 40px; text-align: center; font: 11px/1.8 var(--font-mono); color: var(--taupe-ink); }
+  .disclosure { border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); margin: 28px 0 0; }
+  summary { cursor: pointer; padding: 22px 0; font: 400 27px/1.3 var(--font-goth); color: var(--bone); }
+  summary::marker { color: var(--blood-ink); }
+  .disclosure > .copy { max-width: 85ch; margin-bottom: 24px; }
+  .autodetect { margin: 72px 0 48px; padding-top: 64px; border-top: 1px solid var(--blood-hair); scroll-margin-top: 28px; }
+  .routing-intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; }
+  .sub { margin: 14px 0 24px; font: 400 clamp(34px, 3.5vw, 48px)/1.05 var(--font-goth); }
+  .routing-seal { position: relative; text-align: center; padding: 38px 18px; isolation: isolate; }
+  .routing-seal svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; color: var(--blood); opacity: .13; z-index: -1; }
+  .routing-seal strong { display: block; color: var(--blood-ink); font: 400 clamp(62px, 6vw, 86px)/1 var(--font-goth); }
+  .routing-seal > span { display: block; margin-top: 12px; font: 10px var(--font-rubric); letter-spacing: .15em; text-transform: uppercase; }
+  .routing-seal p { max-width: 30ch; margin: 16px auto 0; font-size: 16px; color: var(--taupe-ink); line-height: 1.5; }
+  .definitions { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin: 32px 0; border-left: 1px solid var(--blood-hair); padding-left: 24px; }
+  .definitions p { margin: 0; font-size: 17px; line-height: 1.5; color: var(--parchment); }
+  .definitions b { color: var(--bone); font-weight: 500; }
+  .routing-notes, .runtime-ledgers { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .runtime-ledgers { margin-top: 36px; }
+  .routing-notes .copy { max-width: none; }
   @media (max-width: 1023px) {
-    .prose {
-      columns: 1;
-    }
-    .ledgers {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
+    .runtime-ledgers { grid-template-columns: 1fr; gap: 10px; }
+    .routing-intro { gap: 24px; }
+  }
+  @media (max-width: 700px) {
+    .scorecard > div { padding: 22px 9px; }
+    .scorecard dt { font-size: 9px; letter-spacing: .08em; }
+    .scorecard dd { font-size: 38px; }
+    .scorecard .metric-description { font-size: 14px; }
+    .routing-intro, .definitions, .routing-notes { grid-template-columns: 1fr; gap: 20px; }
+    .routing-seal { margin: 6px 0 20px; }
+    .definitions { margin-top: 32px; }
+    .autodetect { margin-top: 48px; padding-top: 46px; }
   }
 </style>

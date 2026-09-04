@@ -80,7 +80,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--storage-code", required=True, help='e.g. "PT"')
     parser.add_argument(
-        "--data-root", default=REPO_ROOT / "data" / "clean-room-v1", type=Path
+        "--data-root", default=REPO_ROOT / "lexicon", type=Path
     )
     parser.add_argument("--corpus", default=None, type=Path)
     parser.add_argument(

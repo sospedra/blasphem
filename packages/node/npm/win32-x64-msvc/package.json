@@ -1,7 +1,7 @@
 {
   "name": "@blasphem/node-win32-x64-msvc",
   "version": "0.1.0",
-  "description": "blasphem native engine for win32-x64-msvc",
+  "description": "blasphem native engine for win32-x64-msvc. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -20,8 +20,12 @@
   ],
   "main": "blasphem.win32-x64-msvc.node",
   "files": [
-    "blasphem.win32-x64-msvc.node"
+    "blasphem.win32-x64-msvc.node",
+    "NOTICE"
   ],
+  "scripts": {
+    "prepack": "node ../../../../scripts/copy-notice.mjs"
+  },
   "engines": {
     "node": ">= 20.6"
   }

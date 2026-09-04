@@ -16,8 +16,8 @@ fn size_command_writes_canonical_experimental_evidence() {
         .arg(&binary)
         .arg("--model-manifest")
         .arg(project_root.join("resources/models/multilingual-v2/manifest.json"))
-        .arg("--hurtlex-root")
-        .arg(project_root.join("data/clean-room-v1"))
+        .arg("--lexicon-root")
+        .arg(project_root.join("lexicon"))
         .arg("--target-triple")
         .arg("aarch64-apple-darwin")
         .arg("--output")
@@ -31,7 +31,7 @@ fn size_command_writes_canonical_experimental_evidence() {
     let evidence: SizeEvidence = serde_json::from_slice(&bytes).expect("valid size evidence");
     assert_eq!(evidence.evidence_status, "experimental");
     assert_eq!(evidence.artifacts.len(), 15);
-    assert_eq!(evidence.hurtlex.len(), 15);
+    assert_eq!(evidence.lexicon.len(), 15);
 }
 
 #[test]
@@ -48,7 +48,7 @@ fn auto_command_exposes_the_reproducible_evidence_inputs() {
         "--texts",
         "--labels",
         "--fixtures",
-        "--hurtlex-root",
+        "--lexicon-root",
         "--model-manifest",
         "--native-binary",
         "--language-model-artifact",

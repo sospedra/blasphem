@@ -13,8 +13,10 @@ const WARM_UP_CALLS: usize = 16;
 #[cfg_attr(debug_assertions, ignore = "latency gates require a release build")]
 fn dense_messages_meet_the_public_check_latency_gates() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let fixtures = load_benchmark_fixtures(&root.join("tests/fixtures/benchmark/messages.jsonl"))
-        .expect("benchmark fixtures");
+    let fixtures = load_benchmark_fixtures(
+        &root.join("crates/blasphem/tests/fixtures/benchmark/messages.jsonl"),
+    )
+    .expect("benchmark fixtures");
     let dense_fixtures = fixtures
         .iter()
         .filter(|fixture| fixture.kind == FixtureKind::Dense)
@@ -39,11 +41,11 @@ fn dense_messages_meet_the_public_check_latency_gates() {
     }
 
     for language in Language::ALL {
-        let hurtlex_path = root
-            .join("data/clean-room-v1")
+        let lexicon_path = root
+            .join("lexicon")
             .join(format!("{}.tsv", language.storage_code()));
-        let hurtlex = fs::read(hurtlex_path).expect("HurtLex data");
-        let detector = NudgeDetector::from_hurtlex_bytes(language, Some(&hurtlex))
+        let lexicon = fs::read(lexicon_path).expect("Lexicon data");
+        let detector = NudgeDetector::from_lexicon_bytes(language, Some(&lexicon))
             .expect("initialized detector");
 
         for fixture in dense_fixtures

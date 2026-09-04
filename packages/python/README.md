@@ -3,6 +3,11 @@
 Local toxicity checks through a PyO3 extension over the Rust engine.
 Requires Python 3.10 or later.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Installation
 
 Public PyPI packages are pending release.
@@ -71,8 +76,7 @@ The options after `locales` are keyword-only.
 With detection disabled, the judge returns the highest score across loaded locales.
 
 Use `id` for Indonesian and `ms` for Malay.
-Both resolve to the `ms` model profile.
-See [the locale list](../packs/README.md#locales).
+See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 ## Results and exceptions
 
@@ -95,7 +99,7 @@ See [the public implementation](python/blasphem/__init__.py) for all codes.
 
 ## Build from source
 
-First build [the shared packs](../packs/README.md#build-from-source).
+Use the committed [canonical packs](../../resources/packs/README.md).
 From the repository root:
 
 ```sh
@@ -105,6 +109,7 @@ python3 packages/python-packs/sync_packs.py
 Then run from `packages/python`:
 
 ```sh
+cp ../../NOTICE NOTICE
 uv venv .venv
 uv pip install --python .venv/bin/python maturin ../python-packs
 env VIRTUAL_ENV="$PWD/.venv" .venv/bin/maturin develop --release

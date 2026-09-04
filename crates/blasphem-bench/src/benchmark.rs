@@ -100,7 +100,7 @@ pub const fn latency_gate(length: FixtureLength, p95_nanoseconds: u64) -> bool {
 pub fn run_benchmark(
     fixtures_path: &Path,
     model_manifest_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
     computer: &str,
     target_triple: &str,
     rust_version: &str,
@@ -119,13 +119,13 @@ pub fn run_benchmark(
 
     let mut detectors = BTreeMap::new();
     for language in Language::ALL {
-        let path = hurtlex_path(hurtlex_root, language);
+        let path = lexicon_path(lexicon_root, language);
         let bytes = fs::read(&path).map_err(|source| BenchmarkError::ResourceIo {
             path: path.clone(),
             source,
         })?;
         let detector =
-            NudgeDetector::from_hurtlex_bytes(language, Some(&bytes)).map_err(|source| {
+            NudgeDetector::from_lexicon_bytes(language, Some(&bytes)).map_err(|source| {
                 BenchmarkError::Detector {
                     language,
                     reason: source.to_string(),
@@ -169,7 +169,7 @@ pub fn run_benchmark(
 pub fn run_auto_timing<I: LanguageIdentifier + ?Sized>(
     identifier: &I,
     fixtures_path: &Path,
-    hurtlex_root: &Path,
+    lexicon_root: &Path,
 ) -> Result<AutoTimingEvidence, BenchmarkError> {
     let fixtures_bytes = fs::read(fixtures_path).map_err(|source| BenchmarkError::FixtureIo {
         path: fixtures_path.to_owned(),
@@ -177,7 +177,7 @@ pub fn run_auto_timing<I: LanguageIdentifier + ?Sized>(
     })?;
     let fixtures = load_benchmark_fixtures(fixtures_path)?;
     validate_fixtures(&fixtures)?;
-    let detectors = load_detectors(hurtlex_root)?;
+    let detectors = load_detectors(lexicon_root)?;
 
     let mut eligible = Vec::with_capacity(fixtures.len());
     let mut rejected_fixtures = Vec::new();
@@ -263,13 +263,13 @@ pub fn run_auto_timing<I: LanguageIdentifier + ?Sized>(
 fn load_detectors(root: &Path) -> Result<BTreeMap<Language, NudgeDetector>, BenchmarkError> {
     let mut detectors = BTreeMap::new();
     for language in Language::ALL {
-        let path = hurtlex_path(root, language);
+        let path = lexicon_path(root, language);
         let bytes = fs::read(&path).map_err(|source| BenchmarkError::ResourceIo {
             path: path.clone(),
             source,
         })?;
         let detector =
-            NudgeDetector::from_hurtlex_bytes(language, Some(&bytes)).map_err(|source| {
+            NudgeDetector::from_lexicon_bytes(language, Some(&bytes)).map_err(|source| {
                 BenchmarkError::Detector {
                     language,
                     reason: source.to_string(),
@@ -427,7 +427,7 @@ fn measure(
     })
 }
 
-fn hurtlex_path(root: &Path, language: Language) -> PathBuf {
+fn lexicon_path(root: &Path, language: Language) -> PathBuf {
     root.join(format!("{}.tsv", language.storage_code()))
 }
 

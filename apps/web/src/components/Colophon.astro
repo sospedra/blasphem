@@ -4,7 +4,8 @@ const links = [
   { href: repository, label: "github" },
   { href: `${repository}/blob/main/CONTRIBUTING.md`, label: "contributing" },
   { href: `${repository}/blob/main/LICENSE`, label: "apache-2.0" },
-  { href: `${repository}/blob/main/docs/superpowers/specs/2026-09-02-blasphem-public-package-and-corpus-design.md`, label: "design spec" },
+  { href: `${repository}/blob/main/HOW.md`, label: "how it works" },
+  { href: `${repository}/blob/main/NOTICE`, label: "data notices" },
 ];
 const bars = [0, 4, 8, 14, 18, 23, 30, 34, 39, 43, 50, 54, 59, 66, 70, 75, 79, 85, 90, 94, 101, 105, 110, 116, 120, 125, 129, 136, 140, 145];
 const widths = [2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2, 3, 1, 2, 1, 4, 1, 2, 3];
@@ -13,13 +14,11 @@ const widths = [2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2
   <div class="rail" aria-hidden="true"><span>the colophon</span></div>
   <div class="page l">
     <p class="rubric">contribute</p>
-    <h2 id="colophon-title" class="title">Add a tongue, a row, a rule</h2>
+    <h2 id="colophon-title" class="title">Make the next verdict better.</h2>
     <h3 class="sub">Corpus rows</h3>
-    <p class="copy">A contribution is a TSV with three columns: <code>native_id</code>, <code>label</code>, <code>text</code>. The label is <code>toxic</code> or <code>clean</code>. Each source declares one role: <code>baseline</code>, <code>training_only</code>, or <code>sealed_evaluation</code>. New community corpora default to <code>training_only</code> and enter only the development partition. Sealed validation and test rows never move; the preparation command rejects a change to any sealed hash.</p>
-    <p class="copy">Record the language, the source identity, the license, and a citation. Pull request checks read only committed raw inputs and pinned dependencies. They fetch no contributor URL.</p>
+    <p class="copy">Contribute clean and toxic examples in your language. Include the source, license, and citation. The <a href={`${repository}/blob/main/CONTRIBUTING.md`}>contribution guide</a> explains the format and review process.</p>
     <h3 class="sub">Code</h3>
-    <p class="copy">Rust lives in the Cargo workspace. JavaScript lives in the pnpm workspace under <code>apps/web</code> and <code>packages/blasphem</code>. The data-offline reproduction command rebuilds every artifact from the committed inputs and stops on any mismatch: <code>cargo run --release --locked -p blasphem-train -- reproduce</code>.</p>
-    <p class="copy">Any row that shapes a rule becomes audit-only and leaves the quality evidence. The <a href={`${repository}/blob/main/CONTRIBUTING.md`}>contribution guide</a> describes both paths.</p>
+    <p class="copy">Improve a language pack, a client, or the shared Rust engine. <a href={`${repository}/blob/main/HOW.md`}>HOW.md</a> maps the path from source data to measured verdicts.</p>
   </div>
   <div class="page r">
     <nav class="links" aria-label="Repository links">
@@ -30,8 +29,8 @@ const widths = [2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2
     </svg>
     <p class="credits">set in pirata one, cinzel, eb garamond, ibm plex mono, archivo. self-hosted.</p>
     <p class="credits">plate: marble portrait bust of a woman with a scroll, the metropolitan museum of art, cc0.</p>
-    <p class="credits">hurtlex lexica cc by-nc-sa 4.0. language tables apache-2.0. notices ship in the package.</p>
-    <p class="credits">apache licensed. experimental. scores are ordinal.</p>
+    <p class="credits">code: apache-2.0. data licenses and attribution: <a href={`${repository}/blob/main/NOTICE`}>notice</a>.</p>
+    <p class="credits">experimental. scores measure evidence, not probability.</p>
   </div>
   <div class="skyline" aria-hidden="true">
     <svg viewBox="0 0 900 90">

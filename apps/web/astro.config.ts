@@ -4,8 +4,8 @@ import { fileURLToPath } from "node:url";
 import blasphemAssets from "./integrations/blasphem-assets";
 
 const site = process.env.SITE_URL ?? "https://blasphem.sospedra.me";
-const packageDist = fileURLToPath(new URL("../../packages/blasphem/dist/", import.meta.url));
-const packsDist = fileURLToPath(new URL("../../packages/packs/dist/", import.meta.url));
+const packageDist = fileURLToPath(new URL("../../packages/javascript/dist/", import.meta.url));
+const packsDist = fileURLToPath(new URL("../../resources/packs/", import.meta.url));
 
 export default defineConfig({
   site,

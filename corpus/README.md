@@ -7,7 +7,7 @@ Published runtime packages contain compiled tables, without corpus text.
 ## Files and format
 
 Each model profile has one file, such as [EN.tsv](EN.tsv).
-Indonesian and Malay share [ID.tsv](ID.tsv).
+See [all 16 supported input languages](../packages/javascript-packs/README.md#locales).
 
 | Column | Accepted values |
 | --- | --- |
@@ -44,7 +44,7 @@ Include clean examples for ambiguous words and benign contexts.
 For source imports, follow [the import guide](../CONTRIBUTING.md#import-an-upstream-corpus).
 
 Do not change validation or test rows.
-The [evaluation lock](../resources/datasets/evaluation-lock-v1.json) seals both partitions.
+The [evaluation lock](../crates/blasphem-train/metadata/evaluation-lock-v1.json) seals both partitions.
 Do not change its digests to accept a contribution.
 
 ## Verify
@@ -54,7 +54,7 @@ Run from the repository root:
 ```sh
 cargo run --release --locked -p blasphem-train -- corpus-verify \
   --corpus-root corpus \
-  --evaluation-lock resources/datasets/evaluation-lock-v1.json
+  --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json
 ```
 
 The command checks columns, escapes, ordering, duplicates, and sealed digests.
@@ -72,7 +72,7 @@ Read [the development guide](../CONTRIBUTING.md#update-generated-artifacts) befo
 
 ## Sources and licenses
 
-The [source lock](../resources/datasets/source-lock-v1.json) records upstream provenance.
+The [source lock](../crates/blasphem-train/metadata/source-lock-v1.json) records upstream provenance.
 [NOTICE](../NOTICE) records the source licenses and unresolved terms.
 Korean data includes K-MHaS.
 German data includes GermEval 2018 with an unresolved license record.

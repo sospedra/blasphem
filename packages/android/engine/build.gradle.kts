@@ -7,9 +7,22 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
+val noticeResources = tasks.register<Sync>("copyNotice") {
+    from(rootProject.file("../../NOTICE")) {
+        into("META-INF")
+    }
+    into(layout.buildDirectory.dir("generated/notice"))
+}
+
+tasks.named("preBuild") {
+    dependsOn(noticeResources)
+}
+
 android {
     namespace = "me.sospedra.blasphem"
     compileSdk = 35
+    sourceSets.getByName("main").resources.srcDir(layout.buildDirectory.dir("generated/notice"))
+    packaging.resources.excludes.remove("/META-INF/NOTICE")
 
     defaultConfig {
         minSdk = 24

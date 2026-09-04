@@ -4,7 +4,7 @@ import { SAMPLES } from "../lib/samples";
 import Numeral from "./Numeral.astro";
 import Spread from "./Spread.astro";
 
-const samples = SAMPLES.map((sample) => ({ code: sample.code, tag: sample.tag, text: sample.text }));
+const samples = SAMPLES.map(({ code, tag, kind, name, text }) => ({ code, tag, kind, name, text }));
 const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
 ---
 <Spread id="detector" label="the detector" class="solo">
@@ -13,28 +13,30 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
       <Numeral value="I" />
       <p class="rubric">chapter one</p>
       <h2 id="detector-title" class="title">Speak and be judged</h2>
-      <p class="copy">Write below. The judge wakes on your first keystroke, then rules on every one after it. Leave the tongue on <b>AUTO</b> and the router picks from fifteen, or name it yourself. Nothing you type is sent anywhere.</p>
+      <p class="copy">Write a message. The engine loads on your first keystroke, then checks locally. <b>AUTO</b> detects the language, or you can select one of {LANGUAGES.length}. <a href="#autodetect">See detection precision</a>.</p>
     </header>
 
-    <div class="detector grained" id="playground" data-state="idle">
+    <blasphem-detector class="detector grained" id="playground" data-state="idle">
       <svg class="corner tl" viewBox="0 0 48 48" aria-hidden="true"><use href="#quatrefoil"></use></svg>
       <svg class="corner br" viewBox="0 0 48 48" aria-hidden="true"><use href="#quatrefoil"></use></svg>
 
       <div class="head">
         <label class="tongue">
-          <span class="rubric mute">tongue</span>
+          <span class="rubric mute">language</span>
           <select id="language">
             <option value="AUTO" selected>AUTO · detect the language</option>
             {LANGUAGES.map((language) => (
-              <option value={language.code}>{language.code} · {language.name}{language.code === "MS" ? " (alias ID)" : ""}</option>
+              <option value={language.code}>{language.tag} · {language.name}</option>
             ))}
           </select>
         </label>
-        <button type="button" id="sample" class="sample">
-          <svg viewBox="0 0 24 26" aria-hidden="true"><use href="#cross"></use></svg>
-          <span>Try a sample</span>
-        </button>
+        <div class="samples" role="group" aria-label="Example messages">
+          <button type="button" id="sample" class="sample" data-kind="toxic">Hostile sample</button>
+          <button type="button" class="sample" data-kind="clean">Clean sample</button>
+        </div>
       </div>
+
+      <p class="sample-note" id="sample-note" role="status">Choose an example, or write your own message.</p>
 
       <div class="pane">
         <textarea id="message" rows="4" dir="auto" spellcheck="false" aria-label="Message to check" placeholder="Write the message you are about to send"></textarea>
@@ -49,6 +51,7 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
             <svg class="ring halo" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="66" stroke-width="1"></circle></svg>
             <span id="ruling"></span>
           </strong>
+          <span class="wax-seal" aria-hidden="true">b</span>
           <span class="clock" id="clock"></span>
         </div>
         <p class="note" id="note"></p>
@@ -58,32 +61,55 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
           <div><dt>safe</dt><dd id="f-safe"></dd></div>
           <div><dt>score</dt><dd id="f-score"></dd></div>
           <div><dt>locale</dt><dd id="f-locale"></dd></div>
-          <div class="wide"><dt>grawlix</dt><dd id="f-grawlix"></dd></div>
+          <div class="wide">
+            <dt class="masked-head">
+              <span>grawlix · masked message</span>
+              <button type="button" class="copy-control" id="copy-message" aria-label="Copy masked message" disabled>
+                <span class="copy-label" aria-hidden="true">Copy</span>
+                <span class="copied-label" aria-hidden="true">Copied</span>
+              </button>
+            </dt>
+            <dd id="f-grawlix" dir="auto"></dd>
+          </div>
         </dl>
+        <p id="copy-status" class="copy-status visually-hidden" role="status" aria-live="polite"></p>
       </div>
 
       <div class="failure" id="failure" hidden>
         <p id="failure-message"></p>
         <button type="button" class="act ghost" id="retry">Try again</button>
       </div>
-    </div>
+    </blasphem-detector>
 
-    <p class="evidence">samples from {samples.length} cases in the native smoke report</p>
+    <p class="evidence">samples from the native smoke report</p>
   </div>
 </Spread>
 
-<script type="application/json" id="sample-data" set:html={sampleJson}></script>
+<script is:inline type="application/json" id="sample-data" set:html={sampleJson}></script>
 
 <script>
   import { mountPlayground } from "../scripts/playground";
 
-  const root = document.getElementById("playground");
-  if (root) mountPlayground(root);
+  class BlasphemDetector extends HTMLElement {
+    private unmount?: () => void;
+
+    connectedCallback(): void {
+      this.unmount?.();
+      this.unmount = mountPlayground(this);
+    }
+
+    disconnectedCallback(): void {
+      this.unmount?.();
+    }
+  }
+
+  if (!customElements.get("blasphem-detector")) customElements.define("blasphem-detector", BlasphemDetector);
 </script>
 
 <style>
   .stage {
     width: 100%;
+    grid-template-columns: minmax(0, 1fr);
   }
   .intro {
     width: min(100%, 720px);
@@ -99,13 +125,25 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
     margin-inline: auto;
   }
   .detector {
+    display: block;
     position: relative;
     width: min(100%, 680px);
+    min-width: 0;
     margin: 0 auto;
     border: 1px solid var(--hair);
     background: linear-gradient(180deg, var(--coal), #080707);
     box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
     transition: border-color var(--dur-slow) var(--ease-out);
+  }
+  .detector::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(236, 231, 222, 0.06);
+    pointer-events: none;
+  }
+  .detector.grained::before {
+    opacity: 0.06;
   }
   .detector[data-state="loading"] {
     border-color: var(--ochre);
@@ -135,6 +173,9 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   }
   .tongue {
     display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 100%;
+    min-width: 0;
     align-items: center;
     gap: 12px;
   }
@@ -142,19 +183,34 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
     margin: 0;
   }
   select {
+    min-width: 0;
+    flex: 1;
+    max-width: 100%;
     background: var(--pitch);
     border: 1px solid var(--hair);
     color: var(--bone);
     font-family: var(--font-mono);
     font-size: 13px;
     padding: 8px 10px;
-    min-height: 40px;
+    min-height: 44px;
+  }
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sample-note {
+    min-height: 1.6em;
+    margin: 0;
+    padding: 14px 18px 0;
+    font: 11px/1.6 var(--font-mono);
+    color: var(--taupe-ink);
   }
   .sample {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 40px;
+    min-height: 44px;
     padding: 8px 14px;
     cursor: pointer;
     background: transparent;
@@ -172,6 +228,10 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   .sample:active {
     transform: scale(0.97);
   }
+  .sample[data-kind="clean"] {
+    color: var(--parchment);
+    border-color: var(--hair);
+  }
   .sample:disabled {
     opacity: 0.4;
     cursor: not-allowed;
@@ -188,7 +248,8 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   textarea {
     width: 100%;
     height: 132px;
-    resize: none;
+    min-height: 132px;
+    resize: vertical;
     background: transparent;
     border: none;
     color: var(--bone);
@@ -206,8 +267,8 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   .status {
     margin: 0;
     padding: 0 18px 14px;
-    height: calc(3.2em + 14px);
-    overflow: hidden;
+    min-height: calc(3.2em + 14px);
+    overflow-wrap: anywhere;
     font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.6;
@@ -229,20 +290,21 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
     border-top-color: var(--blood-hair);
   }
   .ruling {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    height: 84px;
+    gap: 4px 12px;
+    min-height: 108px;
   }
   .word {
     position: relative;
     display: flex;
     align-items: center;
-    height: 84px;
+    min-height: 84px;
+    min-width: 0;
     font-family: var(--font-goth);
     font-weight: 400;
-    font-size: 72px;
+    font-size: clamp(40px, 9vw, 72px);
     line-height: 1;
     color: var(--taupe);
     transition: color var(--dur-slow) var(--ease-out), text-shadow var(--dur-slow) var(--ease-out);
@@ -276,18 +338,17 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
     opacity: 0.9;
   }
   .clock {
+    grid-column: 1 / -1;
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--taupe-ink);
-    white-space: nowrap;
+    overflow-wrap: anywhere;
     font-variant-numeric: tabular-nums;
   }
   .note {
     margin: 6px 0 0;
-    height: 1.6em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    min-height: 1.6em;
+    overflow-wrap: anywhere;
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--taupe-ink);
@@ -320,19 +381,19 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   }
   .fields {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin: 0;
   }
   .fields div {
     border: 1px solid var(--hair);
     padding: 8px 10px;
-    height: 58px;
-    overflow: hidden;
+    min-width: 0;
+    min-height: 58px;
   }
   .fields .wide {
     grid-column: 1 / -1;
-    height: 86px;
+    min-height: 102px;
   }
   .fields dt {
     font-family: var(--font-mono);
@@ -344,11 +405,44 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
     font-family: var(--font-mono);
     font-size: 14px;
     color: var(--bone);
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .masked-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 12px;
+    margin-bottom: 8px;
+  }
+  .copy-status:not(.visually-hidden) {
+    margin: 12px 0 0;
+    color: var(--parchment);
+    font: 12px/1.6 var(--font-mono);
+  }
+  .wax-seal {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 3px double rgba(236, 231, 222, 0.3);
+    border-radius: 45% 51% 46% 49%;
+    background: radial-gradient(at 35% 25%, #973c31, var(--burgundy) 72%);
+    box-shadow: inset 0 1px 2px rgba(236, 231, 222, 0.2), inset 0 -2px 3px rgba(0, 0, 0, 0.6), 0 3px 4px rgba(0, 0, 0, 0.35);
+    color: var(--parchment);
+    font: 30px/1 var(--font-goth);
+    text-shadow: 0 -1px 1px var(--pitch);
+    transform: rotate(-8deg);
+    opacity: 0;
+  }
+  .verdict[data-stamped] .wax-seal {
+    opacity: 1;
+    animation: impress var(--dur-fast) var(--ease-out);
+  }
+  @keyframes impress {
+    from { transform: rotate(-8deg) scale(1.08); opacity: 0.6; }
+    to { transform: rotate(-8deg) scale(1); opacity: 1; }
   }
   .failure {
     border-top: 1px solid var(--blood-hair);
@@ -373,20 +467,37 @@ const sampleJson = JSON.stringify(samples).replaceAll("<", "\\u003c");
   }
   @media (max-width: 1023px) {
     .status {
-      height: calc(4.8em + 14px);
+      min-height: calc(4.8em + 14px);
     }
     .word {
-      font-size: clamp(40px, 12vw, 64px);
-      height: 72px;
+      font-size: clamp(36px, 10vw, 64px);
+      min-height: 72px;
     }
     .ruling {
-      height: 72px;
+      min-height: 96px;
+      height: auto;
+      gap: 4px 12px;
     }
     .fields {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .corner {
       display: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .tongue {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+    }
+    .word {
+      font-size: clamp(32px, 9.5vw, 44px);
+    }
+    .wax-seal {
+      width: 36px;
+      height: 36px;
+      font-size: 23px;
     }
   }
 </style>

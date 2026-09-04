@@ -1,15 +1,17 @@
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling==1.32.0"]
 build-backend = "hatchling.build"
 
 [project]
 name = "blasphem-packs"
 version = "0.1.0"
-description = "Per-locale data for blasphem: one .pack and one .detect per language, plus manifest.json."
+description = "Per-locale data for Blasphem: one .pack and one .detect per language, plus manifest.json. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference."
+readme = "README.md"
 license = { text = "CC-BY-NC-SA-4.0" }
 requires-python = ">=3.10"
 
+[tool.hatch.build]
+artifacts = ["blasphem_packs/*.pack", "blasphem_packs/*.detect", "blasphem_packs/manifest.json", "blasphem_packs/NOTICE"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["blasphem_packs"]
-# The data files are copied in by sync_packs.py and are gitignored; list them so hatch includes them anyway.
-artifacts = ["blasphem_packs/*.pack", "blasphem_packs/*.detect", "blasphem_packs/manifest.json"]

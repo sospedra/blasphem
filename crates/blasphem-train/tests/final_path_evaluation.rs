@@ -159,7 +159,7 @@ fn validation_evidence_matches_each_canonical_manifest_matrix() {
     let evidence = evaluate_validation(
         &project.join("corpus"),
         &model_path,
-        &project.join("data/clean-room-v1"),
+        &project.join("lexicon"),
     )
     .expect("final-path validation");
 
@@ -184,10 +184,10 @@ fn behavior_evidence_scores_all_360_cases_through_the_public_path() {
     let project = project_root();
 
     let evidence = evaluate_behavior(
-        &project.join("tests/fixtures/behavior"),
+        &project.join("crates/blasphem/tests/fixtures/behavior"),
         &project.join("corpus"),
         &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("data/clean-room-v1"),
+        &project.join("lexicon"),
     )
     .expect("final-path behavior evidence");
 
@@ -221,7 +221,7 @@ fn native_smoke_evidence_scores_all_60_cases_through_the_public_path() {
 
     let evidence = evaluate_cli_smoke(
         &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("data/clean-room-v1"),
+        &project.join("lexicon"),
     )
     .expect("native smoke evidence");
 
@@ -585,7 +585,7 @@ fn native_smoke_evidence_keeps_public_boolean_and_score_fields() {
 
 #[test]
 fn dataset_behavior_refs_are_final_audit_only_provenance_rows() {
-    let fixture_root = project_root().join("tests/fixtures/behavior");
+    let fixture_root = project_root().join("crates/blasphem/tests/fixtures/behavior");
     let panels = Language::ALL
         .into_iter()
         .map(|language| {
@@ -797,8 +797,8 @@ fn project_root() -> std::path::PathBuf {
 
 fn detector(language: Language) -> NudgeDetector {
     let path = project_root()
-        .join("data/clean-room-v1")
+        .join("lexicon")
         .join(format!("{}.tsv", language.storage_code()));
-    let bytes = fs::read(path).expect("HurtLex bytes");
-    NudgeDetector::from_hurtlex_bytes(language, Some(&bytes)).expect("fixed-language detector")
+    let bytes = fs::read(path).expect("Lexicon bytes");
+    NudgeDetector::from_lexicon_bytes(language, Some(&bytes)).expect("fixed-language detector")
 }

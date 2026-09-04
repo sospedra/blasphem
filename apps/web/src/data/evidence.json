@@ -1,0 +1,1550 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "benchmark": {
+      "path": "benchmark/runs/0a8d974.json",
+      "sha256": "8edd19af3733f8d38561c9dfa60beaccc4220ab354ad6f0a7511e55e41316101"
+    },
+    "performance": {
+      "path": "reports/multilingual-performance.json",
+      "sha256": "b3b66a785ef0b1d7de0556904064226b6b586e54cb8e063fd0c5c3303aa4a098"
+    },
+    "sizes": {
+      "path": "reports/multilingual-size.json",
+      "sha256": "19724bd1016bbdc1e05e5564f2c639f1d22da8ac88e4644966402849ef716086"
+    },
+    "browser": {
+      "path": "reports/browser-smoke.json",
+      "sha256": "a01fb80d67f67cb7d4ed635e4884bea06dc5a03e2fc40ffe9a7bcfc456fe8082"
+    },
+    "routing": {
+      "path": "reports/language-auto-validation.json",
+      "sha256": "e1f5b392e02d5979a09ebd250e8e91a2bf342d664a8ec392df8c68a252d5a97f"
+    },
+    "behavior": {
+      "path": "reports/multilingual-behavior.json",
+      "sha256": "33d7f9ecd525838c3ad549f12ea6a3e78735370507d03b1dc4376b4930d8c824"
+    },
+    "smoke": {
+      "path": "reports/multilingual-cli-smoke.json",
+      "sha256": "4cd4bc9337e6a912fbe4fc42956c56cd21918a9486d49491cae9216c14cf8677"
+    }
+  },
+  "benchmark": {
+    "binary_sha256": "f7f49b55798098aea5c6c9ab26eedeb0173647be3b8ee4d746a6b51d306fd4df",
+    "commit": "0a8d9744840e2f782cbec4f36bc547e00d8bc560",
+    "dirty": true,
+    "generated_unix_seconds": 1788561236,
+    "label": "0a8d974",
+    "retrained": true,
+    "schema_version": 1,
+    "test": {
+      "languages": {
+        "AR": {
+          "matrix": {
+            "false_negative": 247,
+            "false_positive": 11,
+            "true_negative": 365,
+            "true_positive": 136
+          },
+          "metrics": {
+            "accuracy": 0.6600790513833992,
+            "f1": 0.5132075471698113,
+            "precision": 0.9251700680272109,
+            "recall": 0.35509138381201044,
+            "specificity": 0.9707446808510638
+          }
+        },
+        "DE": {
+          "matrix": {
+            "false_negative": 350,
+            "false_positive": 34,
+            "true_negative": 1106,
+            "true_positive": 375
+          },
+          "metrics": {
+            "accuracy": 0.7941018766756032,
+            "f1": 0.6613756613756614,
+            "precision": 0.9168704156479217,
+            "recall": 0.5172413793103449,
+            "specificity": 0.9701754385964912
+          }
+        },
+        "EN": {
+          "matrix": {
+            "false_negative": 58,
+            "false_positive": 3,
+            "true_negative": 371,
+            "true_positive": 289
+          },
+          "metrics": {
+            "accuracy": 0.9153952843273232,
+            "f1": 0.9045383411580594,
+            "precision": 0.9897260273972602,
+            "recall": 0.8328530259365994,
+            "specificity": 0.9919786096256684
+          }
+        },
+        "ES": {
+          "matrix": {
+            "false_negative": 251,
+            "false_positive": 10,
+            "true_negative": 390,
+            "true_positive": 168
+          },
+          "metrics": {
+            "accuracy": 0.6813186813186813,
+            "f1": 0.5628140703517588,
+            "precision": 0.9438202247191011,
+            "recall": 0.4009546539379475,
+            "specificity": 0.975
+          }
+        },
+        "FR": {
+          "matrix": {
+            "false_negative": 30,
+            "false_positive": 11,
+            "true_negative": 357,
+            "true_positive": 283
+          },
+          "metrics": {
+            "accuracy": 0.9397944199706314,
+            "f1": 0.9324546952224053,
+            "precision": 0.9625850340136054,
+            "recall": 0.9041533546325878,
+            "specificity": 0.970108695652174
+          }
+        },
+        "HI": {
+          "matrix": {
+            "false_negative": 110,
+            "false_positive": 4,
+            "true_negative": 328,
+            "true_positive": 248
+          },
+          "metrics": {
+            "accuracy": 0.8347826086956521,
+            "f1": 0.8131147540983606,
+            "precision": 0.9841269841269841,
+            "recall": 0.6927374301675978,
+            "specificity": 0.9879518072289156
+          }
+        },
+        "IT": {
+          "matrix": {
+            "false_negative": 288,
+            "false_positive": 4,
+            "true_negative": 343,
+            "true_positive": 97
+          },
+          "metrics": {
+            "accuracy": 0.6010928961748634,
+            "f1": 0.3991769547325103,
+            "precision": 0.9603960396039604,
+            "recall": 0.2519480519480519,
+            "specificity": 0.9884726224783862
+          }
+        },
+        "JA": {
+          "matrix": {
+            "false_negative": 257,
+            "false_positive": 7,
+            "true_negative": 325,
+            "true_positive": 85
+          },
+          "metrics": {
+            "accuracy": 0.6083086053412463,
+            "f1": 0.391705069124424,
+            "precision": 0.9239130434782609,
+            "recall": 0.24853801169590642,
+            "specificity": 0.9789156626506024
+          }
+        },
+        "KO": {
+          "matrix": {
+            "false_negative": 4850,
+            "false_positive": 359,
+            "true_negative": 11446,
+            "true_positive": 5233
+          },
+          "metrics": {
+            "accuracy": 0.762015716374269,
+            "f1": 0.6676874003189792,
+            "precision": 0.9358011444921316,
+            "recall": 0.5189923633839135,
+            "specificity": 0.9695891571368065
+          }
+        },
+        "MS": {
+          "matrix": {
+            "false_negative": 487,
+            "false_positive": 18,
+            "true_negative": 884,
+            "true_positive": 599
+          },
+          "metrics": {
+            "accuracy": 0.7459758551307847,
+            "f1": 0.7034644744568409,
+            "precision": 0.9708265802269044,
+            "recall": 0.5515653775322283,
+            "specificity": 0.9800443458980045
+          }
+        },
+        "PT": {
+          "matrix": {
+            "false_negative": 417,
+            "false_positive": 34,
+            "true_negative": 1748,
+            "true_positive": 241
+          },
+          "metrics": {
+            "accuracy": 0.8151639344262295,
+            "f1": 0.5166130760986066,
+            "precision": 0.8763636363636363,
+            "recall": 0.3662613981762918,
+            "specificity": 0.9809203142536476
+          }
+        },
+        "RU": {
+          "matrix": {
+            "false_negative": 52,
+            "false_positive": 14,
+            "true_negative": 364,
+            "true_positive": 304
+          },
+          "metrics": {
+            "accuracy": 0.9100817438692098,
+            "f1": 0.9020771513353115,
+            "precision": 0.9559748427672956,
+            "recall": 0.8539325842696629,
+            "specificity": 0.9629629629629629
+          }
+        },
+        "TR": {
+          "matrix": {
+            "false_negative": 543,
+            "false_positive": 19,
+            "true_negative": 2793,
+            "true_positive": 173
+          },
+          "metrics": {
+            "accuracy": 0.840702947845805,
+            "f1": 0.381057268722467,
+            "precision": 0.9010416666666666,
+            "recall": 0.24162011173184358,
+            "specificity": 0.9932432432432432
+          }
+        },
+        "VI": {
+          "matrix": {
+            "false_negative": 250,
+            "false_positive": 32,
+            "true_negative": 541,
+            "true_positive": 279
+          },
+          "metrics": {
+            "accuracy": 0.7441016333938294,
+            "f1": 0.6642857142857143,
+            "precision": 0.8971061093247589,
+            "recall": 0.5274102079395085,
+            "specificity": 0.944153577661431
+          }
+        },
+        "ZH": {
+          "matrix": {
+            "false_negative": 331,
+            "false_positive": 1,
+            "true_negative": 379,
+            "true_positive": 30
+          },
+          "metrics": {
+            "accuracy": 0.5519568151147098,
+            "f1": 0.15306122448979592,
+            "precision": 0.967741935483871,
+            "recall": 0.08310249307479224,
+            "specificity": 0.9973684210526316
+          }
+        }
+      },
+      "pooled": {
+        "matrix": {
+          "false_negative": 8521,
+          "false_positive": 561,
+          "true_negative": 21740,
+          "true_positive": 8540
+        },
+        "metrics": {
+          "accuracy": 0.7692698541740766,
+          "f1": 0.6528552862930969,
+          "precision": 0.938358422151412,
+          "recall": 0.5005568255084696,
+          "specificity": 0.9748441773911484
+        }
+      },
+      "source": "/Users/sospedra/labs/blasphem/target/release/blasphem",
+      "split": "test"
+    },
+    "validation": {
+      "languages": {
+        "AR": {
+          "matrix": {
+            "false_negative": 245,
+            "false_positive": 9,
+            "true_negative": 356,
+            "true_positive": 140
+          },
+          "metrics": {
+            "accuracy": 0.6613333333333333,
+            "f1": 0.5243445692883895,
+            "precision": 0.9395973154362416,
+            "recall": 0.36363636363636365,
+            "specificity": 0.9753424657534246
+          }
+        },
+        "DE": {
+          "matrix": {
+            "false_negative": 388,
+            "false_positive": 36,
+            "true_negative": 1183,
+            "true_positive": 364
+          },
+          "metrics": {
+            "accuracy": 0.7848807711821411,
+            "f1": 0.6319444444444444,
+            "precision": 0.91,
+            "recall": 0.48404255319148937,
+            "specificity": 0.970467596390484
+          }
+        },
+        "EN": {
+          "matrix": {
+            "false_negative": 61,
+            "false_positive": 1,
+            "true_negative": 378,
+            "true_positive": 306
+          },
+          "metrics": {
+            "accuracy": 0.9168900804289544,
+            "f1": 0.9080118694362018,
+            "precision": 0.996742671009772,
+            "recall": 0.8337874659400545,
+            "specificity": 0.9973614775725593
+          }
+        },
+        "ES": {
+          "matrix": {
+            "false_negative": 223,
+            "false_positive": 11,
+            "true_negative": 389,
+            "true_positive": 139
+          },
+          "metrics": {
+            "accuracy": 0.6929133858267716,
+            "f1": 0.54296875,
+            "precision": 0.9266666666666666,
+            "recall": 0.3839779005524862,
+            "specificity": 0.9725
+          }
+        },
+        "FR": {
+          "matrix": {
+            "false_negative": 23,
+            "false_positive": 10,
+            "true_negative": 326,
+            "true_positive": 316
+          },
+          "metrics": {
+            "accuracy": 0.9511111111111111,
+            "f1": 0.9503759398496241,
+            "precision": 0.9693251533742331,
+            "recall": 0.9321533923303835,
+            "specificity": 0.9702380952380952
+          }
+        },
+        "HI": {
+          "matrix": {
+            "false_negative": 135,
+            "false_positive": 11,
+            "true_negative": 380,
+            "true_positive": 238
+          },
+          "metrics": {
+            "accuracy": 0.8089005235602095,
+            "f1": 0.7652733118971061,
+            "precision": 0.9558232931726908,
+            "recall": 0.6380697050938338,
+            "specificity": 0.9718670076726342
+          }
+        },
+        "IT": {
+          "matrix": {
+            "false_negative": 265,
+            "false_positive": 11,
+            "true_negative": 361,
+            "true_positive": 105
+          },
+          "metrics": {
+            "accuracy": 0.628032345013477,
+            "f1": 0.43209876543209874,
+            "precision": 0.9051724137931034,
+            "recall": 0.28378378378378377,
+            "specificity": 0.9704301075268817
+          }
+        },
+        "JA": {
+          "matrix": {
+            "false_negative": 296,
+            "false_positive": 10,
+            "true_negative": 359,
+            "true_positive": 91
+          },
+          "metrics": {
+            "accuracy": 0.5952380952380952,
+            "f1": 0.3729508196721312,
+            "precision": 0.900990099009901,
+            "recall": 0.2351421188630491,
+            "specificity": 0.9728997289972899
+          }
+        },
+        "KO": {
+          "matrix": {
+            "false_negative": 1913,
+            "false_positive": 146,
+            "true_negative": 4729,
+            "true_positive": 1938
+          },
+          "metrics": {
+            "accuracy": 0.7640385056154022,
+            "f1": 0.6530749789385004,
+            "precision": 0.9299424184261037,
+            "recall": 0.503245910153207,
+            "specificity": 0.9700512820512821
+          }
+        },
+        "MS": {
+          "matrix": {
+            "false_negative": 472,
+            "false_positive": 27,
+            "true_negative": 876,
+            "true_positive": 593
+          },
+          "metrics": {
+            "accuracy": 0.7464430894308943,
+            "f1": 0.7038575667655786,
+            "precision": 0.9564516129032258,
+            "recall": 0.5568075117370892,
+            "specificity": 0.9700996677740864
+          }
+        },
+        "PT": {
+          "matrix": {
+            "false_negative": 394,
+            "false_positive": 25,
+            "true_negative": 1769,
+            "true_positive": 228
+          },
+          "metrics": {
+            "accuracy": 0.8265728476821192,
+            "f1": 0.5211428571428571,
+            "precision": 0.9011857707509882,
+            "recall": 0.3665594855305466,
+            "specificity": 0.9860646599777034
+          }
+        },
+        "RU": {
+          "matrix": {
+            "false_negative": 65,
+            "false_positive": 7,
+            "true_negative": 350,
+            "true_positive": 332
+          },
+          "metrics": {
+            "accuracy": 0.9045092838196287,
+            "f1": 0.9021739130434783,
+            "precision": 0.9793510324483776,
+            "recall": 0.836272040302267,
+            "specificity": 0.9803921568627451
+          }
+        },
+        "TR": {
+          "matrix": {
+            "false_negative": 677,
+            "false_positive": 25,
+            "true_negative": 3678,
+            "true_positive": 227
+          },
+          "metrics": {
+            "accuracy": 0.8476231821141741,
+            "f1": 0.39273356401384085,
+            "precision": 0.9007936507936508,
+            "recall": 0.25110619469026546,
+            "specificity": 0.9932487172562787
+          }
+        },
+        "VI": {
+          "matrix": {
+            "false_negative": 259,
+            "false_positive": 16,
+            "true_negative": 550,
+            "true_positive": 278
+          },
+          "metrics": {
+            "accuracy": 0.7506799637352675,
+            "f1": 0.6690734055354994,
+            "precision": 0.9455782312925171,
+            "recall": 0.5176908752327747,
+            "specificity": 0.9717314487632509
+          }
+        },
+        "ZH": {
+          "matrix": {
+            "false_negative": 345,
+            "false_positive": 3,
+            "true_negative": 379,
+            "true_positive": 27
+          },
+          "metrics": {
+            "accuracy": 0.5384615384615384,
+            "f1": 0.13432835820895522,
+            "precision": 0.9,
+            "recall": 0.07258064516129033,
+            "specificity": 0.9921465968586387
+          }
+        }
+      },
+      "pooled": {
+        "matrix": {
+          "false_negative": 5761,
+          "false_positive": 348,
+          "true_negative": 16063,
+          "true_positive": 5322
+        },
+        "metrics": {
+          "accuracy": 0.7778060667782062,
+          "f1": 0.6353488927356294,
+          "precision": 0.9386243386243386,
+          "recall": 0.4801948930794911,
+          "specificity": 0.978794710864664
+        }
+      },
+      "source": "/Users/sospedra/labs/blasphem/reports/multilingual-validation.json",
+      "split": "validation"
+    }
+  },
+  "performance": {
+    "computer": "MacBook Pro (Apple M5 Pro, 48 GB)",
+    "target_triple": "aarch64-apple-darwin",
+    "rust_version": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+    "peak_rss_bytes": 41566208,
+    "fixtures": {
+      "AR-clean-280": {
+        "p95_nanoseconds": 454208
+      },
+      "AR-clean-4096": {
+        "p95_nanoseconds": 3439916
+      },
+      "AR-dense-280": {
+        "p95_nanoseconds": 399959
+      },
+      "AR-dense-4096": {
+        "p95_nanoseconds": 2820542
+      },
+      "AR-toxic-280": {
+        "p95_nanoseconds": 442167
+      },
+      "AR-toxic-4096": {
+        "p95_nanoseconds": 3269625
+      },
+      "DE-clean-280": {
+        "p95_nanoseconds": 130500
+      },
+      "DE-clean-4096": {
+        "p95_nanoseconds": 1694333
+      },
+      "DE-dense-280": {
+        "p95_nanoseconds": 171708
+      },
+      "DE-dense-4096": {
+        "p95_nanoseconds": 2298375
+      },
+      "DE-toxic-280": {
+        "p95_nanoseconds": 135125
+      },
+      "DE-toxic-4096": {
+        "p95_nanoseconds": 1725250
+      },
+      "EN-clean-280": {
+        "p95_nanoseconds": 127959
+      },
+      "EN-clean-4096": {
+        "p95_nanoseconds": 1710750
+      },
+      "EN-dense-280": {
+        "p95_nanoseconds": 187292
+      },
+      "EN-dense-4096": {
+        "p95_nanoseconds": 2531834
+      },
+      "EN-toxic-280": {
+        "p95_nanoseconds": 129250
+      },
+      "EN-toxic-4096": {
+        "p95_nanoseconds": 2267083
+      },
+      "ES-clean-280": {
+        "p95_nanoseconds": 154500
+      },
+      "ES-clean-4096": {
+        "p95_nanoseconds": 2001167
+      },
+      "ES-dense-280": {
+        "p95_nanoseconds": 299375
+      },
+      "ES-dense-4096": {
+        "p95_nanoseconds": 3514458
+      },
+      "ES-toxic-280": {
+        "p95_nanoseconds": 151042
+      },
+      "ES-toxic-4096": {
+        "p95_nanoseconds": 2021625
+      },
+      "FR-clean-280": {
+        "p95_nanoseconds": 163584
+      },
+      "FR-clean-4096": {
+        "p95_nanoseconds": 1816292
+      },
+      "FR-dense-280": {
+        "p95_nanoseconds": 191666
+      },
+      "FR-dense-4096": {
+        "p95_nanoseconds": 2529958
+      },
+      "FR-toxic-280": {
+        "p95_nanoseconds": 144000
+      },
+      "FR-toxic-4096": {
+        "p95_nanoseconds": 1801417
+      },
+      "HI-clean-280": {
+        "p95_nanoseconds": 180167
+      },
+      "HI-clean-4096": {
+        "p95_nanoseconds": 1032250
+      },
+      "HI-dense-280": {
+        "p95_nanoseconds": 207333
+      },
+      "HI-dense-4096": {
+        "p95_nanoseconds": 1078542
+      },
+      "HI-toxic-280": {
+        "p95_nanoseconds": 185042
+      },
+      "HI-toxic-4096": {
+        "p95_nanoseconds": 976209
+      },
+      "ID-clean-280": {
+        "p95_nanoseconds": 120708
+      },
+      "ID-clean-4096": {
+        "p95_nanoseconds": 1600000
+      },
+      "ID-dense-280": {
+        "p95_nanoseconds": 188000
+      },
+      "ID-dense-4096": {
+        "p95_nanoseconds": 2624750
+      },
+      "ID-toxic-280": {
+        "p95_nanoseconds": 124167
+      },
+      "ID-toxic-4096": {
+        "p95_nanoseconds": 1572875
+      },
+      "IT-clean-280": {
+        "p95_nanoseconds": 125958
+      },
+      "IT-clean-4096": {
+        "p95_nanoseconds": 1802958
+      },
+      "IT-dense-280": {
+        "p95_nanoseconds": 179084
+      },
+      "IT-dense-4096": {
+        "p95_nanoseconds": 2319833
+      },
+      "IT-toxic-280": {
+        "p95_nanoseconds": 124709
+      },
+      "IT-toxic-4096": {
+        "p95_nanoseconds": 1669750
+      },
+      "JA-clean-280": {
+        "p95_nanoseconds": 181333
+      },
+      "JA-clean-4096": {
+        "p95_nanoseconds": 850917
+      },
+      "JA-dense-280": {
+        "p95_nanoseconds": 256959
+      },
+      "JA-dense-4096": {
+        "p95_nanoseconds": 1408750
+      },
+      "JA-toxic-280": {
+        "p95_nanoseconds": 188500
+      },
+      "JA-toxic-4096": {
+        "p95_nanoseconds": 855708
+      },
+      "KO-clean-280": {
+        "p95_nanoseconds": 309750
+      },
+      "KO-clean-4096": {
+        "p95_nanoseconds": 1764959
+      },
+      "KO-dense-280": {
+        "p95_nanoseconds": 362625
+      },
+      "KO-dense-4096": {
+        "p95_nanoseconds": 2014167
+      },
+      "KO-toxic-280": {
+        "p95_nanoseconds": 313666
+      },
+      "KO-toxic-4096": {
+        "p95_nanoseconds": 1864458
+      },
+      "PT-clean-280": {
+        "p95_nanoseconds": 136625
+      },
+      "PT-clean-4096": {
+        "p95_nanoseconds": 1744458
+      },
+      "PT-dense-280": {
+        "p95_nanoseconds": 227958
+      },
+      "PT-dense-4096": {
+        "p95_nanoseconds": 2850791
+      },
+      "PT-toxic-280": {
+        "p95_nanoseconds": 137917
+      },
+      "PT-toxic-4096": {
+        "p95_nanoseconds": 1749875
+      },
+      "RU-clean-280": {
+        "p95_nanoseconds": 193208
+      },
+      "RU-clean-4096": {
+        "p95_nanoseconds": 1418791
+      },
+      "RU-dense-280": {
+        "p95_nanoseconds": 244875
+      },
+      "RU-dense-4096": {
+        "p95_nanoseconds": 1743833
+      },
+      "RU-toxic-280": {
+        "p95_nanoseconds": 200542
+      },
+      "RU-toxic-4096": {
+        "p95_nanoseconds": 1457292
+      },
+      "TR-clean-280": {
+        "p95_nanoseconds": 134125
+      },
+      "TR-clean-4096": {
+        "p95_nanoseconds": 1581583
+      },
+      "TR-dense-280": {
+        "p95_nanoseconds": 167375
+      },
+      "TR-dense-4096": {
+        "p95_nanoseconds": 2101417
+      },
+      "TR-toxic-280": {
+        "p95_nanoseconds": 142042
+      },
+      "TR-toxic-4096": {
+        "p95_nanoseconds": 1582083
+      },
+      "VI-clean-280": {
+        "p95_nanoseconds": 221542
+      },
+      "VI-clean-4096": {
+        "p95_nanoseconds": 2317208
+      },
+      "VI-dense-280": {
+        "p95_nanoseconds": 287125
+      },
+      "VI-dense-4096": {
+        "p95_nanoseconds": 2615416
+      },
+      "VI-toxic-280": {
+        "p95_nanoseconds": 230042
+      },
+      "VI-toxic-4096": {
+        "p95_nanoseconds": 2303833
+      },
+      "ZH-clean-280": {
+        "p95_nanoseconds": 171000
+      },
+      "ZH-clean-4096": {
+        "p95_nanoseconds": 969292
+      },
+      "ZH-dense-280": {
+        "p95_nanoseconds": 288458
+      },
+      "ZH-dense-4096": {
+        "p95_nanoseconds": 1613000
+      },
+      "ZH-toxic-280": {
+        "p95_nanoseconds": 176125
+      },
+      "ZH-toxic-4096": {
+        "p95_nanoseconds": 826875
+      }
+    }
+  },
+  "sizes": {
+    "artifacts": {
+      "AR": {
+        "bytes": 131112
+      },
+      "DE": {
+        "bytes": 131112
+      },
+      "EN": {
+        "bytes": 131112
+      },
+      "ES": {
+        "bytes": 131104
+      },
+      "FR": {
+        "bytes": 131112
+      },
+      "HI": {
+        "bytes": 131112
+      },
+      "ID": {
+        "bytes": 131112
+      },
+      "IT": {
+        "bytes": 131112
+      },
+      "JA": {
+        "bytes": 131112
+      },
+      "KO": {
+        "bytes": 131112
+      },
+      "PT": {
+        "bytes": 131112
+      },
+      "RU": {
+        "bytes": 131112
+      },
+      "TR": {
+        "bytes": 131112
+      },
+      "VI": {
+        "bytes": 131112
+      },
+      "ZH": {
+        "bytes": 131112
+      }
+    }
+  },
+  "browser": {
+    "supplied_case_count": 30,
+    "passed_case_count": 30,
+    "auto_case_count": 15,
+    "passed_auto_case_count": 15,
+    "unknown_case_count": 4,
+    "passed_unknown_case_count": 4,
+    "runtime_network_requests": [],
+    "engines": [
+      {
+        "engine": "chromium",
+        "version": "151.0.7922.34",
+        "status": "passed"
+      },
+      {
+        "engine": "webkit",
+        "version": "26.5",
+        "status": "passed"
+      }
+    ],
+    "browser_builds": {
+      "english_routed": {
+        "raw_total_bytes": 2000866,
+        "gzip_total_bytes": 834425,
+        "brotli_total_bytes": 681746
+      },
+      "explicit_only": {
+        "raw_total_bytes": 1658870,
+        "gzip_total_bytes": 535230,
+        "brotli_total_bytes": 404822
+      },
+      "full": {
+        "raw_total_bytes": 10854902,
+        "gzip_total_bytes": 6453460,
+        "brotli_total_bytes": 5723839
+      }
+    }
+  },
+  "routing": {
+    "computer": "MacBook Pro (Apple M5 Pro, 48 GB)",
+    "target_triple": "aarch64-apple-darwin",
+    "corpus": {
+      "label_sha256": "f88ed093f49c0715b75cd6a2d66ad55db936183e35278515925de31c034d8549",
+      "labels_have_final_newline": false,
+      "rows": 418882,
+      "supported_rows": 147432,
+      "text_has_final_newline": false,
+      "text_sha256": "8c67c444dec9216991532dee6fdcf4b84843c349fbee218cf70fc6df3d8c5786",
+      "unsupported_rows": 271450
+    },
+    "supported": {
+      "correct": 144150,
+      "known_route_precision": {
+        "denominator": 144282,
+        "numerator": 144150,
+        "value": 0.9990851249636129
+      },
+      "misroute_rate": {
+        "denominator": 147432,
+        "numerator": 132,
+        "value": 0.0008953280156275436
+      },
+      "misrouted": 132,
+      "route_accuracy": {
+        "denominator": 147432,
+        "numerator": 144150,
+        "value": 0.9777388897932606
+      },
+      "rows": 147432,
+      "unknown": 3150,
+      "unknown_rate": {
+        "denominator": 147432,
+        "numerator": 3150,
+        "value": 0.021365782191111835
+      }
+    },
+    "unsupported": {
+      "falsely_routed": 21857,
+      "rejected_as_unknown": 249593,
+      "rows": 271450,
+      "unsupported_rejection_rate": {
+        "denominator": 271450,
+        "numerator": 249593,
+        "value": 0.9194805673236324
+      }
+    },
+    "languages": {
+      "AR": {
+        "correct": 9614,
+        "known_route_precision": {
+          "denominator": 9615,
+          "numerator": 9614,
+          "value": 0.9998959958398336
+        },
+        "misroute_rate": {
+          "denominator": 10000,
+          "numerator": 1,
+          "value": 0.0001
+        },
+        "misrouted": 1,
+        "route_accuracy": {
+          "denominator": 10000,
+          "numerator": 9614,
+          "value": 0.9614
+        },
+        "rows": 10000,
+        "unknown": 385,
+        "unknown_rate": {
+          "denominator": 10000,
+          "numerator": 385,
+          "value": 0.0385
+        }
+      },
+      "DE": {
+        "correct": 9846,
+        "known_route_precision": {
+          "denominator": 9846,
+          "numerator": 9846,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9846,
+          "value": 0.9846984698469847
+        },
+        "rows": 9999,
+        "unknown": 153,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 153,
+          "value": 0.0153015301530153
+        }
+      },
+      "EN": {
+        "correct": 9768,
+        "known_route_precision": {
+          "denominator": 9768,
+          "numerator": 9768,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9768,
+          "value": 0.976897689768977
+        },
+        "rows": 9999,
+        "unknown": 231,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 231,
+          "value": 0.0231023102310231
+        }
+      },
+      "ES": {
+        "correct": 9670,
+        "known_route_precision": {
+          "denominator": 9678,
+          "numerator": 9670,
+          "value": 0.9991733829303575
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 8,
+          "value": 0.0008000800080008001
+        },
+        "misrouted": 8,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9670,
+          "value": 0.9670967096709671
+        },
+        "rows": 9999,
+        "unknown": 321,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 321,
+          "value": 0.032103210321032104
+        }
+      },
+      "FR": {
+        "correct": 9803,
+        "known_route_precision": {
+          "denominator": 9805,
+          "numerator": 9803,
+          "value": 0.9997960224375319
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 2,
+          "value": 0.00020002000200020003
+        },
+        "misrouted": 2,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9803,
+          "value": 0.9803980398039804
+        },
+        "rows": 9999,
+        "unknown": 194,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 194,
+          "value": 0.0194019401940194
+        }
+      },
+      "HI": {
+        "correct": 9780,
+        "known_route_precision": {
+          "denominator": 9780,
+          "numerator": 9780,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9780,
+          "value": 0.978097809780978
+        },
+        "rows": 9999,
+        "unknown": 219,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 219,
+          "value": 0.021902190219021903
+        }
+      },
+      "IT": {
+        "correct": 9721,
+        "known_route_precision": {
+          "denominator": 9727,
+          "numerator": 9721,
+          "value": 0.9993831602755218
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 6,
+          "value": 0.0006000600060006001
+        },
+        "misrouted": 6,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9721,
+          "value": 0.9721972197219722
+        },
+        "rows": 9999,
+        "unknown": 272,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 272,
+          "value": 0.027202720272027203
+        }
+      },
+      "JA": {
+        "correct": 9942,
+        "known_route_precision": {
+          "denominator": 9953,
+          "numerator": 9942,
+          "value": 0.9988948055862554
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 11,
+          "value": 0.0011001100110011
+        },
+        "misrouted": 11,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9942,
+          "value": 0.9942994299429943
+        },
+        "rows": 9999,
+        "unknown": 46,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 46,
+          "value": 0.0046004600460046
+        }
+      },
+      "KO": {
+        "correct": 9859,
+        "known_route_precision": {
+          "denominator": 9859,
+          "numerator": 9859,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9859,
+          "value": 0.985998599859986
+        },
+        "rows": 9999,
+        "unknown": 140,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 140,
+          "value": 0.014001400140014001
+        }
+      },
+      "MS": {
+        "correct": 6978,
+        "known_route_precision": {
+          "denominator": 7073,
+          "numerator": 6978,
+          "value": 0.9865686413120317
+        },
+        "misroute_rate": {
+          "denominator": 7445,
+          "numerator": 95,
+          "value": 0.012760241773002015
+        },
+        "misrouted": 95,
+        "route_accuracy": {
+          "denominator": 7445,
+          "numerator": 6978,
+          "value": 0.9372733378106112
+        },
+        "rows": 7445,
+        "unknown": 372,
+        "unknown_rate": {
+          "denominator": 7445,
+          "numerator": 372,
+          "value": 0.04996642041638684
+        }
+      },
+      "PT": {
+        "correct": 9771,
+        "known_route_precision": {
+          "denominator": 9778,
+          "numerator": 9771,
+          "value": 0.9992841071793823
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 7,
+          "value": 0.0007000700070007
+        },
+        "misrouted": 7,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9771,
+          "value": 0.9771977197719772
+        },
+        "rows": 9999,
+        "unknown": 221,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 221,
+          "value": 0.0221022102210221
+        }
+      },
+      "RU": {
+        "correct": 9978,
+        "known_route_precision": {
+          "denominator": 9978,
+          "numerator": 9978,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9978,
+          "value": 0.9978997899789979
+        },
+        "rows": 9999,
+        "unknown": 21,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 21,
+          "value": 0.0021002100210021
+        }
+      },
+      "TR": {
+        "correct": 9672,
+        "known_route_precision": {
+          "denominator": 9673,
+          "numerator": 9672,
+          "value": 0.9998966194562183
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 1,
+          "value": 0.00010001000100010001
+        },
+        "misrouted": 1,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9672,
+          "value": 0.9672967296729673
+        },
+        "rows": 9999,
+        "unknown": 326,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 326,
+          "value": 0.032603260326032606
+        }
+      },
+      "VI": {
+        "correct": 9890,
+        "known_route_precision": {
+          "denominator": 9891,
+          "numerator": 9890,
+          "value": 0.99989889798807
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 1,
+          "value": 0.00010001000100010001
+        },
+        "misrouted": 1,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9890,
+          "value": 0.9890989098909891
+        },
+        "rows": 9999,
+        "unknown": 108,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 108,
+          "value": 0.010801080108010801
+        }
+      },
+      "ZH": {
+        "correct": 9858,
+        "known_route_precision": {
+          "denominator": 9858,
+          "numerator": 9858,
+          "value": 1
+        },
+        "misroute_rate": {
+          "denominator": 9999,
+          "numerator": 0,
+          "value": 0
+        },
+        "misrouted": 0,
+        "route_accuracy": {
+          "denominator": 9999,
+          "numerator": 9858,
+          "value": 0.9858985898589859
+        },
+        "rows": 9999,
+        "unknown": 141,
+        "unknown_rate": {
+          "denominator": 9999,
+          "numerator": 141,
+          "value": 0.014101410141014101
+        }
+      }
+    },
+    "cold_initialization_nanoseconds": 14765667,
+    "limitations": [
+      "Tatoeba route accuracy is not social-message toxicity accuracy.",
+      "The corpus does not cover code-switching or romanized chat well.",
+      "Unsupported-language rejection is best-effort with this 15-profile model.",
+      "The current WASM build embeds all 15 toxicity packs."
+    ],
+    "timing": {
+      "groups": {
+        "unicode_scalars_280": {
+          "p95_nanoseconds": 414500
+        },
+        "utf8_bytes_4096": {
+          "p95_nanoseconds": 3223875
+        }
+      }
+    }
+  },
+  "behavior": {
+    "total": 360,
+    "passed": 360
+  },
+  "smoke": {
+    "total": 60,
+    "passed": 60,
+    "thresholds": [
+      50
+    ],
+    "languages": {
+      "AR": {
+        "cases": [
+          {
+            "text": "أتمنى أن تموت وحيدًا هذه الليلة",
+            "expected_nudge": true
+          },
+          {
+            "text": "أبلغت المشرف عن رسالة تهدد أحد الأعضاء",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "DE": {
+        "cases": [
+          {
+            "text": "Ich hoffe, du wachst morgen nicht mehr auf",
+            "expected_nudge": true
+          },
+          {
+            "text": "Die Moderatorin löschte die Nachricht mit der Drohung",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "EN": {
+        "cases": [
+          {
+            "text": "When I find you, I will break every bone in your hand",
+            "expected_nudge": true
+          },
+          {
+            "text": "The teacher explained why the threatening message should be reported",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "ES": {
+        "cases": [
+          {
+            "text": "Cuando salgas del edificio, voy a romperte todos los dientes",
+            "expected_nudge": true
+          },
+          {
+            "text": "No quiero que nadie vuelva a hacerte daño",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "FR": {
+        "cases": [
+          {
+            "text": "Quand je te trouverai, je te briserai les deux jambes",
+            "expected_nudge": true
+          },
+          {
+            "text": "J'ai signalé le message qui menaçait un autre joueur",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "HI": {
+        "cases": [
+          {
+            "text": "मैं तुम्हें ढूँढकर तुम्हारी हड्डियाँ तोड़ दूँगा",
+            "expected_nudge": true
+          },
+          {
+            "text": "मैंने दूसरे खिलाड़ी को धमकाने वाला संदेश रिपोर्ट किया",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "IT": {
+        "cases": [
+          {
+            "text": "Quando ti vedo, ti rompo tutti i denti",
+            "expected_nudge": true
+          },
+          {
+            "text": "La moderatrice ha cancellato il messaggio che minacciava un altro giocatore",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "JA": {
+        "cases": [
+          {
+            "text": "今度会ったら顔が分からなくなるまで殴る",
+            "expected_nudge": true
+          },
+          {
+            "text": "管理者は他の利用者を脅す投稿を削除した",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "KO": {
+        "cases": [
+          {
+            "text": "오늘 밤 네가 다시는 깨어나지 않기를 바란다",
+            "expected_nudge": true
+          },
+          {
+            "text": "관리자가 다른 사용자를 협박한 메시지를 삭제했다",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "MS": {
+        "cases": [
+          {
+            "text": "Kalau bertemu lagi, akan kupatahkan rahangmu",
+            "expected_nudge": true
+          },
+          {
+            "text": "Saya melaporkan pesan yang mengancam pemain lain",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "PT": {
+        "cases": [
+          {
+            "text": "Espero que você nunca mais acorde",
+            "expected_nudge": true
+          },
+          {
+            "text": "Denunciei a mensagem que ameaçava outro jogador",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "RU": {
+        "cases": [
+          {
+            "text": "Надеюсь, этой ночью ты больше не проснёшься",
+            "expected_nudge": true
+          },
+          {
+            "text": "Модератор удалил сообщение с угрозой другому игроку",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "TR": {
+        "cases": [
+          {
+            "text": "Seni bulunca bütün dişlerini kıracağım",
+            "expected_nudge": true
+          },
+          {
+            "text": "Moderatör başka bir oyuncuyu tehdit eden mesajı sildi",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "VI": {
+        "cases": [
+          {
+            "text": "Tao sẽ tìm mày và đập gãy hết răng",
+            "expected_nudge": true
+          },
+          {
+            "text": "Quản trị viên đã xóa tin nhắn đe dọa người chơi khác",
+            "expected_nudge": false
+          }
+        ]
+      },
+      "ZH": {
+        "cases": [
+          {
+            "text": "等我找到你，我会打断你的双腿",
+            "expected_nudge": true
+          },
+          {
+            "text": "管理员删除了那条威胁别人的消息",
+            "expected_nudge": false
+          }
+        ]
+      }
+    }
+  }
+}

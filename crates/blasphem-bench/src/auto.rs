@@ -21,9 +21,6 @@ const PINNED_UNSUPPORTED_ROWS: u64 = 271_450;
 const PINNED_TEXT_SHA256: &str = "8c67c444dec9216991532dee6fdcf4b84843c349fbee218cf70fc6df3d8c5786";
 const PINNED_LABEL_SHA256: &str =
     "f88ed093f49c0715b75cd6a2d66ad55db936183e35278515925de31c034d8549";
-const LANGUAGE_MODEL_ARTIFACT_BYTES: u64 = 18_498_380;
-const LANGUAGE_MODEL_ARTIFACT_SHA256: &str =
-    "69dd5c22723bbe60073575a67fb94fc1fb8ba60c3ed1ac150ddbef1935dd84da";
 const C_PARITY_ROWS: u64 = 100;
 const C_PARITY_TOLERANCE: f32 = 0.000_001;
 
@@ -171,7 +168,7 @@ pub struct AutoValidationConfig {
     pub texts: PathBuf,
     pub labels: PathBuf,
     pub fixtures: PathBuf,
-    pub hurtlex_root: PathBuf,
+    pub lexicon_root: PathBuf,
     pub model_manifest: PathBuf,
     pub native_binary: PathBuf,
     pub language_model_artifact: PathBuf,
@@ -220,7 +217,7 @@ pub enum AutoEvidenceError {
     UnequalRows(u64),
     #[error("empty language label at row {0}")]
     EmptyLabel(u64),
-    #[error("cannot parse browser build evidence: {0}")]
+    #[error("cannot parse AUTO evidence JSON: {0}")]
     BrowserJson(#[from] serde_json::Error),
     #[error("browser build totals do not match their files for {0}")]
     BrowserTotals(String),
@@ -368,7 +365,7 @@ pub fn run_auto_validation(
     let timing = run_auto_timing(
         &identifier,
         config.fixtures.as_path(),
-        config.hurtlex_root.as_path(),
+        config.lexicon_root.as_path(),
     )?;
     let model_manifest = read_file(&config.model_manifest)?;
     let browser_builds = load_browser_build_evidence(&config.browser_report)?;
@@ -378,11 +375,16 @@ pub fn run_auto_validation(
         None,
         None,
     )?;
+    let lock: LanguageArtifactLock = serde_json::from_slice(&read_file(
+        &config
+            .project_root
+            .join("resources/models/language-artifact-v1.json"),
+    )?)?;
     let language_model_artifact = record_file(
         &config.language_model_artifact,
         &relative_label(&config.project_root, &config.language_model_artifact),
-        Some(LANGUAGE_MODEL_ARTIFACT_SHA256),
-        Some(LANGUAGE_MODEL_ARTIFACT_BYTES),
+        Some(&lock.artifact_sha256),
+        Some(lock.artifact_bytes),
     )?;
     let c_parity = c_parity_evidence(&config.project_root, &config.c_parity_fixture)?;
     let explicit_only_dependency = explicit_dependency_evidence(&config.project_root)?;
@@ -411,9 +413,15 @@ pub fn run_auto_validation(
             "Tatoeba route accuracy is not social-message toxicity accuracy.".to_owned(),
             "The corpus does not cover code-switching or romanized chat well.".to_owned(),
             "Unsupported-language rejection is best-effort with this 15-profile model.".to_owned(),
-            "The current WASM build embeds all 15 toxicity packs.".to_owned(),
+            "Browser downloads depend on the selected language packs.".to_owned(),
         ],
     })
+}
+
+#[derive(Deserialize)]
+struct LanguageArtifactLock {
+    artifact_bytes: u64,
+    artifact_sha256: String,
 }
 
 fn validate_pinned_routes(evaluation: &AutoCorpusEvaluation) -> Result<(), AutoEvidenceError> {
@@ -821,16 +829,35 @@ pub struct CompressedFileRecord {
 pub struct WebBundleRecord {
     pub wasm: CompressedFileRecord,
     pub javascript_glue: CompressedFileRecord,
+    #[serde(default)]
+    pub packs: Vec<String>,
     pub raw_total_bytes: u64,
     pub gzip_total_bytes: u64,
     pub brotli_total_bytes: u64,
 }
 
 impl WebBundleRecord {
-    fn totals_match(&self) -> bool {
-        self.raw_total_bytes == self.wasm.raw_bytes + self.javascript_glue.raw_bytes
-            && self.gzip_total_bytes == self.wasm.gzip_bytes + self.javascript_glue.gzip_bytes
-            && self.brotli_total_bytes == self.wasm.brotli_bytes + self.javascript_glue.brotli_bytes
+    fn totals_match(&self, packs: &BTreeMap<&str, &CompressedFileRecord>) -> bool {
+        let mut files = vec![&self.wasm, &self.javascript_glue];
+        for path in &self.packs {
+            let Some(file) = packs.get(path.as_str()) else {
+                return false;
+            };
+            files.push(file);
+        }
+        let totals = files.iter().fold([0_u64; 3], |[raw, gzip, brotli], file| {
+            [
+                raw.saturating_add(file.raw_bytes),
+                gzip.saturating_add(file.gzip_bytes),
+                brotli.saturating_add(file.brotli_bytes),
+            ]
+        });
+        totals
+            == [
+                self.raw_total_bytes,
+                self.gzip_total_bytes,
+                self.brotli_total_bytes,
+            ]
     }
 }
 
@@ -839,11 +866,19 @@ impl WebBundleRecord {
 pub struct BrowserBuildEvidence {
     pub full: WebBundleRecord,
     pub explicit_only: WebBundleRecord,
+    pub english_routed: Option<WebBundleRecord>,
+}
+
+#[derive(Debug, Default, Deserialize)]
+struct BrowserPacks {
+    files: BTreeMap<String, CompressedFileRecord>,
 }
 
 #[derive(Debug, Deserialize)]
 struct BrowserReport {
     browser_builds: BrowserBuildEvidence,
+    #[serde(default)]
+    packs: BrowserPacks,
 }
 
 /// Loads size records for the full and explicit-only browser builds.
@@ -854,11 +889,25 @@ struct BrowserReport {
 pub fn load_browser_build_evidence(path: &Path) -> Result<BrowserBuildEvidence, AutoEvidenceError> {
     let bytes = read_file(path)?;
     let report: BrowserReport = serde_json::from_slice(&bytes)?;
-    if !report.browser_builds.full.totals_match() {
-        return Err(AutoEvidenceError::BrowserTotals("full".to_owned()));
-    }
-    if !report.browser_builds.explicit_only.totals_match() {
-        return Err(AutoEvidenceError::BrowserTotals("explicit_only".to_owned()));
+    let packs = report
+        .packs
+        .files
+        .values()
+        .map(|file| (file.relative_path.as_str(), file))
+        .collect();
+    let builds = [
+        Some(("full", &report.browser_builds.full)),
+        Some(("explicit_only", &report.browser_builds.explicit_only)),
+        report
+            .browser_builds
+            .english_routed
+            .as_ref()
+            .map(|build| ("english_routed", build)),
+    ];
+    for (name, build) in builds.into_iter().flatten() {
+        if !build.totals_match(&packs) {
+            return Err(AutoEvidenceError::BrowserTotals(name.to_owned()));
+        }
     }
     Ok(report.browser_builds)
 }

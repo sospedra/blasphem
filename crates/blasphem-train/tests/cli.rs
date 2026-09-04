@@ -179,117 +179,6 @@ fn acquire_rejects_a_missing_textdetox_digest_before_http() {
 }
 
 #[test]
-fn eval_rejects_the_removed_include_inclusive_argument() {
-    let output = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args(["eval", "--input", "missing.tsv", "--include-inclusive"])
-        .output()
-        .expect("run blasphem-train");
-
-    assert!(!output.status.success());
-    let stderr = String::from_utf8(output.stderr).expect("UTF-8 error");
-    assert!(stderr.contains("unexpected argument '--include-inclusive'"));
-}
-
-const EN_LEXICON: &str = concat!(
-    "id\tpos\tcategory\tstereotype\tlemma\tlevel\n",
-    "EN1\tn\tcds\tno\tbuffoon\tconservative\n",
-);
-#[test]
-fn eval_prints_overall_accuracy() {
-    let directory = tempdir().expect("temporary directory");
-    fs::write(directory.path().join("hurtlex_EN.tsv"), EN_LEXICON).expect("write English fixture");
-    let input_path = directory.path().join("eval.tsv");
-    fs::write(
-        &input_path,
-        concat!(
-            "language\tlabel\ttext\n",
-            "EN\ttoxic\tYou are a buffoon\n",
-            "EN\tclean\tThank you for your help\n",
-        ),
-    )
-    .expect("write evaluation fixture");
-
-    let output = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args([
-            "eval",
-            "--data-dir",
-            directory.path().to_str().expect("UTF-8 path"),
-            "--input",
-            input_path.to_str().expect("UTF-8 path"),
-        ])
-        .output()
-        .expect("run blasphem");
-
-    assert!(output.status.success());
-    let stdout = String::from_utf8(output.stdout).expect("UTF-8 output");
-    assert!(stdout.contains("scope=overall n=2 tp=1 tn=1 fp=0 fn=0"));
-    assert!(stdout.contains("accuracy=1.000"));
-}
-
-#[test]
-fn eval_uses_policy_rules_without_a_lexical_match() {
-    let directory = tempdir().expect("temporary directory");
-    fs::write(directory.path().join("hurtlex_EN.tsv"), EN_LEXICON).expect("write English fixture");
-    let input_path = directory.path().join("eval.tsv");
-    fs::write(
-        &input_path,
-        concat!("language\tlabel\ttext\n", "EN\ttoxic\tI will kill you\n",),
-    )
-    .expect("write evaluation fixture");
-
-    let output = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args([
-            "eval",
-            "--data-dir",
-            directory.path().to_str().expect("UTF-8 path"),
-            "--input",
-            input_path.to_str().expect("UTF-8 path"),
-        ])
-        .output()
-        .expect("run blasphem");
-
-    assert!(output.status.success());
-    let stdout = String::from_utf8(output.stdout).expect("UTF-8 output");
-    assert!(stdout.contains("scope=overall n=1 tp=1 tn=0 fp=0 fn=0"));
-}
-
-#[test]
-fn prepare_textdetox_publishes_all_files_after_deduplication() {
-    let directory = tempdir().expect("temporary directory");
-    let input_path = directory.path().join("source.tsv");
-    let output_directory = directory.path().join("prepared");
-    fs::write(
-        &input_path,
-        concat!(
-            "source_id\tlanguage\ttoxic\ttext\n",
-            "a\ten\t1\tYou are an idiot\n",
-            "b\ten\t1\tyou are an IDIOT!\n",
-            "c\ten\t0\tThank you\n",
-        ),
-    )
-    .expect("write acquisition TSV");
-
-    let rows = blasphem_train::parse_textdetox_rows(File::open(&input_path).expect("open source"))
-        .expect("parse source");
-    let prepared = blasphem_train::prepare_textdetox(
-        &rows,
-        &std::collections::BTreeSet::from(["EN".to_owned()]),
-    )
-    .expect("prepare source");
-    blasphem_train::publish_prepared_textdetox(&output_directory, &prepared)
-        .expect("publish source");
-    for name in [
-        "development.tsv",
-        "validation.tsv",
-        "test.tsv",
-        "provenance.tsv",
-    ] {
-        assert!(output_directory.join(name).is_file(), "missing {name}");
-    }
-    assert_eq!(prepared.summary.duplicate_rows, 1);
-}
-
-#[test]
 fn prepare_writes_publication_and_refuses_overwrite() {
     let directory = tempdir().expect("temporary directory");
     let (raw_root, lock, _) = write_prepare_fixture(directory.path());
@@ -369,24 +258,6 @@ fn fetch_rejects_zero_max_rows_before_http() {
 }
 
 #[test]
-fn eval_rejects_allow_as_a_minimum_action() {
-    let output = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args([
-            "eval",
-            "--input",
-            "missing.tsv",
-            "--minimum-action",
-            "allow",
-        ])
-        .output()
-        .expect("run blasphem");
-
-    assert!(!output.status.success());
-    let stderr = String::from_utf8(output.stderr).expect("UTF-8 error");
-    assert!(stderr.contains("invalid value 'allow'"));
-}
-
-#[test]
 fn fetch_rejects_an_unsupported_source_language_before_http() {
     let error = textdetox_rows_url("pt", 0, 1).expect_err("unsupported source language");
 
@@ -398,22 +269,6 @@ fn fetch_rejects_an_unsupported_source_language_before_http() {
         error.to_string(),
         "unsupported TextDetox source language: pt"
     );
-}
-
-#[test]
-fn prepare_textdetox_refuses_an_existing_output_directory() {
-    let directory = tempdir().expect("temporary directory");
-    let output_directory = directory.path().join("prepared");
-    fs::create_dir(&output_directory).expect("create existing output");
-    let prepared = blasphem_train::PreparedTextDetox {
-        development: Vec::new(),
-        validation: Vec::new(),
-        test: Vec::new(),
-        provenance: Vec::new(),
-        summary: blasphem_train::TextDetoxSummary::default(),
-    };
-    assert!(blasphem_train::publish_prepared_textdetox(&output_directory, &prepared).is_err());
-    assert!(output_directory.is_dir());
 }
 
 #[test]
@@ -494,9 +349,8 @@ fn help_exposes_the_task_four_command_contract() {
         "freeze-sources",
         "acquire",
         "prepare",
-        "setup",
         "compile",
-        "eval",
+        "evaluate",
     ] {
         assert!(text.contains(command), "missing {command}");
     }
@@ -511,22 +365,20 @@ fn help_exposes_the_task_four_command_contract() {
     for argument in [
         "--corpus-root",
         "--source-lock",
-        "--hurtlex-root",
+        "--lexicon-root",
         "--output",
     ] {
         assert!(compile_help.contains(argument), "missing {argument}");
     }
     assert!(!compile_help.contains("--development"));
 
-    let eval = Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args(["eval", "--help"])
-        .output()
-        .expect("run eval help");
-    assert!(
-        String::from_utf8(eval.stdout)
-            .expect("UTF-8 help")
-            .contains("--minimum-action")
-    );
+    for removed in ["setup", "eval"] {
+        let output = blasphem_train_command(&[removed, "--help"]);
+        assert!(
+            !output.status.success(),
+            "{removed} must not remain available"
+        );
+    }
 }
 
 struct FakeClient {
@@ -608,7 +460,7 @@ fn one_textdetox_source_lock(url: &str, revision: &str) -> String {
 }
 
 fn write_catalog_observation(path: &std::path::Path) {
-    let catalog_path = repo_root().join("resources/datasets/source-catalog-v1.json");
+    let catalog_path = repo_root().join("crates/blasphem-train/metadata/source-catalog-v1.json");
     let catalog: blasphem_train::source_manifest::SourceCatalog =
         serde_json::from_reader(File::open(catalog_path).expect("open catalog"))
             .expect("parse catalog");
@@ -893,10 +745,10 @@ fn write_prepare_fixture(
         ),
     );
     add_source(
-        DatasetId::HurtLex,
+        DatasetId::Lexicon,
         Language::Es,
-        "hurtlex-es-1.2",
-        "hurtlex/ES/1.2/hurtlex_ES.tsv",
+        "lexicon-es-clean-room-v1",
+        "lexicon/ES.tsv",
     );
 
     let observation = SourceObservation {
@@ -939,7 +791,7 @@ fn write_prepare_fixture(
     fs::write(
         &audit_path,
         format!(
-            "detector_language\tsource_id\treason\nEN\t{}\tfixture audit exclusion\n",
+            "source_id\tdetector_language_code\tlabel\tinclusion_status\texclusion_reason\ttext\treason\n{}\tEN\ttoxic\texcluded\taudit_only\tfixture text\tfixture audit exclusion\n",
             audit_source_id.expect("English development row")
         ),
     )
@@ -1085,7 +937,7 @@ fn corpus_verify_passes_on_the_committed_corpus() {
         .args(["corpus-verify", "--corpus-root", "../../corpus"])
         .args([
             "--evaluation-lock",
-            "../../resources/datasets/evaluation-lock-v1.json",
+            "../../crates/blasphem-train/metadata/evaluation-lock-v1.json",
         ])
         .output()
         .unwrap();
@@ -1116,7 +968,7 @@ fn corpus_verify_rejects_an_edited_sealed_row() {
         .arg(directory.path())
         .args([
             "--evaluation-lock",
-            "../../resources/datasets/evaluation-lock-v1.json",
+            "../../crates/blasphem-train/metadata/evaluation-lock-v1.json",
         ])
         .output()
         .unwrap();
@@ -1142,8 +994,8 @@ fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
             &path("resources/models/multilingual-v2"),
             "--language-model",
             &path("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
-            "--hurtlex-root",
-            &path("data/clean-room-v1"),
+            "--lexicon-root",
+            &path("lexicon"),
             "--output",
             output.to_str().expect("UTF-8 path"),
         ])
@@ -1156,22 +1008,8 @@ fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
     );
     let stdout = String::from_utf8_lossy(&result.stdout);
     assert!(
-        stdout.starts_with("status=packed locales=15 files=33 bytes="),
+        stdout.starts_with("status=packed locales=15 files=31 bytes="),
         "{stdout}"
-    );
-    let files_module = fs::read_to_string(output.join("files.js")).expect("files.js");
-    assert!(
-        files_module.contains("\"en.pack\": new URL(\"./en.pack\", import.meta.url),"),
-        "{files_module}"
-    );
-    assert_eq!(
-        files_module.matches("new URL(").count(),
-        31,
-        "{files_module}"
-    );
-    assert!(
-        files_module.contains("\"manifest.json\": MANIFEST,"),
-        "{files_module}"
     );
 
     let manifest: serde_json::Value =

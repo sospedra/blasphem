@@ -4,7 +4,7 @@ import "io/fs"
 
 // Options configures one judge. Locales is required.
 type Options struct {
-	// Locales are lowercase codes to load, such as "en" and "es". "id" is an alias for "ms".
+	// Locales are lowercase codes to load, such as "en", "es", "id" (Indonesian), and "ms" (Malay).
 	Locales []string
 	// Assets is the directory that holds manifest.json and the packs. Ignored when Packs is set.
 	Assets string

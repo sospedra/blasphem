@@ -1,0 +1,125 @@
+{
+  "formatVersion": 1,
+  "files": {
+    "ar.detect": {
+      "bytes": 199244,
+      "sha256": "44fcb92ba36692ed5077b7c6a5dc6c1b273c4a2fd62dc3fb96dcf6eff6faba64"
+    },
+    "ar.pack": {
+      "bytes": 143039,
+      "sha256": "b54e8e9e84dffa173df93510f5206b42cb2416707f612cc866253b3ce4cfa179"
+    },
+    "de.detect": {
+      "bytes": 447284,
+      "sha256": "863dabd8a2ce16af1bccc60a45aae7b86c8c96368a7ffc0838525574bdbb9bd3"
+    },
+    "de.pack": {
+      "bytes": 162245,
+      "sha256": "ab5a5fd10367af250975c8c89608e456fc5de5b15d56cafda8648c63663967eb"
+    },
+    "en.detect": {
+      "bytes": 341996,
+      "sha256": "d039692b2ce374e1f5fa12c423468c4d665b86323f498d41dae2537c4fc49035"
+    },
+    "en.pack": {
+      "bytes": 190034,
+      "sha256": "b64f3bf43d986f1dbe862c5e488e28d2d7f1f0ca6d01ad5d30285553b505c55f"
+    },
+    "es.detect": {
+      "bytes": 1085960,
+      "sha256": "ec223cf0cb1b8ded3d38328793561270f1574b94b79446d31da9229f84fe6823"
+    },
+    "es.pack": {
+      "bytes": 197812,
+      "sha256": "5d818a37bf9ad1d9461b13d55e8377fc942fb312f1dc80474116915390ee166e"
+    },
+    "fr.detect": {
+      "bytes": 428132,
+      "sha256": "190872f6dfd0741c17069569be211067ea3d7e43249481ca6257c0bd974feaaf"
+    },
+    "fr.pack": {
+      "bytes": 170305,
+      "sha256": "f57e70fde203b1d05d0b41731e27c588e8dfa99d7378a2589d8e05022ddb9a2a"
+    },
+    "hi.detect": {
+      "bytes": 25172,
+      "sha256": "3d91d62dddbaee82569d96b50d93ff3c1c757cf760b5ded64bbb921db062cbcf"
+    },
+    "hi.pack": {
+      "bytes": 144909,
+      "sha256": "ef9d230f61327739eb4fb2e7f626a4527e489d14a7ee8c804e4c042abece612d"
+    },
+    "it.detect": {
+      "bytes": 375392,
+      "sha256": "92924c25f9c8b35b65fc51e3a90ba9e8fe473f30bc77d19e63ed756cf88e7240"
+    },
+    "it.pack": {
+      "bytes": 150757,
+      "sha256": "5fa04d4be73595072eb276622821503e52302b61a7bbdd282b1b1047f89c434f"
+    },
+    "ja.detect": {
+      "bytes": 9404,
+      "sha256": "8159e39a3afe9f8237150d4bcae48bed390c1fb75f0e5dc07837d4617844f579"
+    },
+    "ja.pack": {
+      "bytes": 150237,
+      "sha256": "10109292eebb0af28b129124cbf0ffa94c57aacda00991747f5d2b0d2049dc06"
+    },
+    "ko.detect": {
+      "bytes": 3980,
+      "sha256": "c670cc52736dffacfaed04e908cc7e3ae8f549456faf4d1c0ec03ecf5be6ef16"
+    },
+    "ko.pack": {
+      "bytes": 191451,
+      "sha256": "c4fabada988eb282f13e92c0c93af738844ca0e0ffe1457f9ccf68459ce77d07"
+    },
+    "ms.detect": {
+      "bytes": 791168,
+      "sha256": "54072266fdc60c880754cef3529c1e77c8ccfa4618c1510fe5c6ae405aab8325"
+    },
+    "ms.pack": {
+      "bytes": 140250,
+      "sha256": "fdd5f51352d65ab531a8b305e17a3b31a966d73b769c9dbdca07abf2f784307d"
+    },
+    "pt.detect": {
+      "bytes": 434336,
+      "sha256": "6bd5d85418b2cdf365930e0a3b6f827fada3dae52ce88ec39fa6825bc9fcc364"
+    },
+    "pt.pack": {
+      "bytes": 152444,
+      "sha256": "d70ed55988ef1bca1bc0e606f9bf3262f82a0849757382a4c43288ae9851d800"
+    },
+    "ru.detect": {
+      "bytes": 230060,
+      "sha256": "08d9d833de6639df644afe51ed45f2848fefb13ea302f9f0f08056f3d94dd493"
+    },
+    "ru.pack": {
+      "bytes": 273338,
+      "sha256": "32495e970a8a3e2fc924672952ac50f9e84d41a7191042367e27df76a7e1c0dc"
+    },
+    "tr.detect": {
+      "bytes": 477032,
+      "sha256": "a87b2b5b84af0391212670dd2344a64fa9a77480566ada92cba2e0762d5e9b96"
+    },
+    "tr.pack": {
+      "bytes": 146471,
+      "sha256": "a2071238c5f071bc1ca837db29f340b146c39d7cf18215bc2e26b7c4d1740f29"
+    },
+    "vi.detect": {
+      "bytes": 114884,
+      "sha256": "01a49dc3bd36c2461c4787895c83b6d20e84066115f907178821d13c20ed519e"
+    },
+    "vi.pack": {
+      "bytes": 143679,
+      "sha256": "1a3b4e608be7bfa37437207819f2841088c2a6450f33cd87f501452ee2c2e4da"
+    },
+    "zh.detect": {
+      "bytes": 139388,
+      "sha256": "8ba36ecb073ad70b6a8a6f73f868f6c287813b92b1803c13dce5c017ca073d63"
+    },
+    "zh.pack": {
+      "bytes": 205522,
+      "sha256": "2b9d262edc8e6cc0ce19dca9bc937c7c7ca99e7c16227d6eecf56f21c4480473"
+    }
+  }
+}

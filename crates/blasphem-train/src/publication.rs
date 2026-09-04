@@ -11,9 +11,6 @@ use sha2::{Digest, Sha256};
 use thiserror::Error;
 
 use crate::atomic_publish::{AtomicPublishError, atomic_publish_noreplace};
-use crate::datasets::textdetox::{
-    PreparedTextDetox, TextDetoxError, write_textdetox_eval_tsv, write_textdetox_provenance_tsv,
-};
 use crate::datasets::{
     DatasetId, DatasetSplit, ExclusionReason, InclusionStatus, PreparedCounts,
     PreparedFileIdentity, PreparedLanguage, PreparedManifest, PreparedRow, ProvenanceRow,
@@ -115,106 +112,6 @@ pub enum PreparedPublicationError {
     },
     #[error("atomic no-replace publication is unsupported on this target")]
     UnsupportedAtomicPublish,
-}
-
-#[derive(Debug, Error)]
-pub enum TextDetoxPublicationError {
-    #[error("TextDetox output directory already exists: {0}")]
-    ExistingOutput(PathBuf),
-    #[error("TextDetox output directory must have a UTF-8 file name: {0}")]
-    InvalidOutput(PathBuf),
-    #[error("TextDetox staging directory already exists: {0}")]
-    ExistingStaging(PathBuf),
-    #[error("TextDetox file operation failed: {0}")]
-    Io(#[from] std::io::Error),
-    #[error("cannot write prepared TextDetox data: {0}")]
-    Write(#[from] TextDetoxError),
-    #[error("atomic no-replace publication is unsupported on this target")]
-    UnsupportedAtomicPublish,
-    #[cfg(test)]
-    #[error("injected writer failure")]
-    InjectedWriterFailure,
-}
-
-pub fn publish_prepared_textdetox(
-    output: &Path,
-    prepared: &PreparedTextDetox,
-) -> Result<(), TextDetoxPublicationError> {
-    publish_directory_with(output, |staging| {
-        write_textdetox_staged_file(&staging.join("development.tsv"), |file| {
-            write_textdetox_eval_tsv(file, &prepared.development)
-        })?;
-        write_textdetox_staged_file(&staging.join("validation.tsv"), |file| {
-            write_textdetox_eval_tsv(file, &prepared.validation)
-        })?;
-        write_textdetox_staged_file(&staging.join("test.tsv"), |file| {
-            write_textdetox_eval_tsv(file, &prepared.test)
-        })?;
-        write_textdetox_staged_file(&staging.join("provenance.tsv"), |file| {
-            write_textdetox_provenance_tsv(file, &prepared.provenance)
-        })?;
-        Ok(())
-    })
-}
-
-fn write_textdetox_staged_file(
-    path: &Path,
-    write: impl FnOnce(&mut File) -> Result<(), TextDetoxError>,
-) -> Result<(), TextDetoxPublicationError> {
-    let mut file = File::create(path)?;
-    write(&mut file)?;
-    file.flush()?;
-    file.sync_all()?;
-    Ok(())
-}
-
-fn publish_directory_with(
-    output: &Path,
-    writer: impl FnOnce(&Path) -> Result<(), TextDetoxPublicationError>,
-) -> Result<(), TextDetoxPublicationError> {
-    if output.exists() {
-        return Err(TextDetoxPublicationError::ExistingOutput(output.to_owned()));
-    }
-    let staging = publication_staging_path(output)?;
-    if staging.exists() {
-        return Err(TextDetoxPublicationError::ExistingStaging(staging));
-    }
-    fs::create_dir(&staging)?;
-    let result = (|| {
-        writer(&staging)?;
-        atomic_publish_noreplace(&staging, output)
-            .map_err(|error| map_atomic_publication_error(error, output))?;
-        Ok(())
-    })();
-    if result.is_err() && staging.exists() {
-        let _ = fs::remove_dir_all(&staging);
-    }
-    result
-}
-
-fn map_atomic_publication_error(
-    error: AtomicPublishError,
-    output: &Path,
-) -> TextDetoxPublicationError {
-    match error {
-        AtomicPublishError::DestinationExists => {
-            TextDetoxPublicationError::ExistingOutput(output.to_owned())
-        }
-        AtomicPublishError::Unsupported => TextDetoxPublicationError::UnsupportedAtomicPublish,
-        AtomicPublishError::Rename(source)
-        | AtomicPublishError::StagingSync(source)
-        | AtomicPublishError::ParentSync(source)
-        | AtomicPublishError::Cleanup(source) => TextDetoxPublicationError::Io(source),
-    }
-}
-
-fn publication_staging_path(output: &Path) -> Result<PathBuf, TextDetoxPublicationError> {
-    let parent = output.parent().unwrap_or_else(|| Path::new("."));
-    let name = output
-        .file_name()
-        .and_then(|name| name.to_str())
-        .ok_or_else(|| TextDetoxPublicationError::InvalidOutput(output.to_owned()))?;
-    Ok(parent.join(format!(".{name}.staging-{}", std::process::id())))
 }
 
 pub fn publish_prepared(
@@ -560,7 +457,7 @@ fn label_conversion_version(dataset: DatasetId) -> Option<&'static str> {
         DatasetId::KMHas => Some("k-mhas-clean-8-toxic-0-7-v1"),
         DatasetId::GermEval2018 => Some("germeval-2018-coarse-v1"),
         DatasetId::Community => Some("community-binary-v1"),
-        DatasetId::HurtLex => None,
+        DatasetId::Lexicon => None,
     }
 }
 
@@ -901,107 +798,5 @@ const fn exclusion_reason_name(reason: ExclusionReason) -> &'static str {
         ExclusionReason::LabelConflict => "label_conflict",
         ExclusionReason::SealedBaselineDuplicate => "sealed_baseline_duplicate",
         ExclusionReason::UnsupportedLanguage => "unsupported_language",
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use blasphem::{EvalLabel, EvalRow};
-    use tempfile::tempdir;
-
-    use crate::datasets::textdetox::{PreparedTextDetox, TextDetoxSummary};
-
-    use super::{TextDetoxPublicationError, publish_directory_with, publish_prepared_textdetox};
-
-    #[test]
-    fn legacy_publication_writes_the_complete_output_tree() {
-        let directory = tempdir().expect("temporary directory");
-        let output = directory.path().join("prepared");
-        let prepared = PreparedTextDetox {
-            development: vec![eval_row("development")],
-            validation: vec![eval_row("validation")],
-            test: vec![eval_row("test")],
-            provenance: Vec::new(),
-            summary: TextDetoxSummary::default(),
-        };
-
-        publish_prepared_textdetox(&output, &prepared).expect("publish");
-
-        for name in [
-            "development.tsv",
-            "validation.tsv",
-            "test.tsv",
-            "provenance.tsv",
-        ] {
-            let path = output.join(name);
-            assert!(path.is_file(), "missing {}", path.display());
-            assert!(
-                std::fs::metadata(path)
-                    .expect("prepared file metadata")
-                    .len()
-                    > 0
-            );
-        }
-    }
-
-    fn eval_row(text: &str) -> EvalRow {
-        EvalRow {
-            language: "EN".to_owned(),
-            label: EvalLabel::Clean,
-            text: text.to_owned(),
-        }
-    }
-
-    #[test]
-    fn removes_the_staging_directory_after_a_writer_failure() {
-        let directory = tempdir().expect("temporary directory");
-        let output = directory.path().join("prepared");
-
-        let error = publish_directory_with(&output, |staging| {
-            std::fs::write(staging.join("partial.tsv"), "partial")?;
-            Err(TextDetoxPublicationError::InjectedWriterFailure)
-        })
-        .expect_err("writer failure");
-
-        assert!(matches!(
-            error,
-            TextDetoxPublicationError::InjectedWriterFailure
-        ));
-        assert!(!output.exists());
-        assert_eq!(
-            std::fs::read_dir(directory.path())
-                .expect("read directory")
-                .count(),
-            0
-        );
-    }
-
-    #[test]
-    fn maps_a_concurrent_directory_to_existing_output_without_overwrite() {
-        let directory = tempdir().expect("temporary directory");
-        let output = directory.path().join("prepared");
-
-        let error = publish_directory_with(&output, |staging| {
-            std::fs::write(staging.join("data.tsv"), "staged")?;
-            std::fs::create_dir(&output)?;
-            std::fs::write(output.join("owner.txt"), "concurrent")?;
-            Ok(())
-        })
-        .expect_err("existing output");
-
-        assert!(matches!(
-            error,
-            TextDetoxPublicationError::ExistingOutput(path) if path == output
-        ));
-        assert_eq!(
-            std::fs::read_to_string(output.join("owner.txt")).expect("concurrent output"),
-            "concurrent"
-        );
-        assert_eq!(
-            std::fs::read_dir(directory.path())
-                .expect("read directory")
-                .count(),
-            1
-        );
     }
 }

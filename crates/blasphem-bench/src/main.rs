@@ -34,10 +34,10 @@ enum EvidenceCommand {
         /// Run name. Defaults to the short commit.
         #[arg(long)]
         label: Option<String>,
-        /// Defaults to benchmark/runs/<label>.json.
+        /// Defaults to reports/benchmarks/<label>.json.
         #[arg(long)]
         output: Option<PathBuf>,
-        /// Defaults to benchmark/baseline.json.
+        /// Defaults to crates/blasphem-bench/baseline.json.
         #[arg(long)]
         baseline: Option<PathBuf>,
         /// Validation report to read. Defaults to reports/multilingual-validation.json.
@@ -52,7 +52,7 @@ enum EvidenceCommand {
         #[arg(long)]
         fixtures: PathBuf,
         #[arg(long)]
-        hurtlex_root: PathBuf,
+        lexicon_root: PathBuf,
         #[arg(long)]
         model_manifest: PathBuf,
         #[arg(long)]
@@ -78,7 +78,7 @@ enum EvidenceCommand {
         #[arg(long)]
         model_manifest: PathBuf,
         #[arg(long)]
-        hurtlex_root: PathBuf,
+        lexicon_root: PathBuf,
         #[arg(long)]
         output: PathBuf,
         #[arg(long)]
@@ -92,7 +92,7 @@ enum EvidenceCommand {
         #[arg(long)]
         model_manifest: PathBuf,
         #[arg(long)]
-        hurtlex_root: PathBuf,
+        lexicon_root: PathBuf,
         #[arg(long)]
         target_triple: String,
         #[arg(long)]
@@ -124,7 +124,7 @@ fn main() -> Result<()> {
             })?;
             let output = output.unwrap_or_else(|| {
                 project_root
-                    .join("benchmark/runs")
+                    .join("reports/benchmarks")
                     .join(format!("{}.json", run.label))
             });
             write_canonical(&output, &run)?;
@@ -136,7 +136,8 @@ fn main() -> Result<()> {
                 run.test.pooled.metrics.recall,
                 output.display(),
             );
-            let baseline = baseline.unwrap_or_else(|| project_root.join("benchmark/baseline.json"));
+            let baseline = baseline
+                .unwrap_or_else(|| project_root.join("crates/blasphem-bench/baseline.json"));
             if baseline.exists() && baseline.canonicalize().ok() != output.canonicalize().ok() {
                 let bytes = fs::read(&baseline)
                     .with_context(|| format!("cannot read baseline {}", baseline.display()))?;
@@ -149,7 +150,7 @@ fn main() -> Result<()> {
             texts,
             labels,
             fixtures,
-            hurtlex_root,
+            lexicon_root,
             model_manifest,
             native_binary,
             language_model_artifact,
@@ -164,7 +165,7 @@ fn main() -> Result<()> {
                 texts,
                 labels,
                 fixtures,
-                hurtlex_root,
+                lexicon_root,
                 model_manifest,
                 native_binary,
                 language_model_artifact,
@@ -189,7 +190,7 @@ fn main() -> Result<()> {
         EvidenceCommand::Benchmark {
             fixtures,
             model_manifest,
-            hurtlex_root,
+            lexicon_root,
             output,
             computer,
             target_triple,
@@ -198,7 +199,7 @@ fn main() -> Result<()> {
             let evidence = run_benchmark(
                 &fixtures,
                 &model_manifest,
-                &hurtlex_root,
+                &lexicon_root,
                 &computer,
                 &target_triple,
                 &rust_version,
@@ -214,18 +215,18 @@ fn main() -> Result<()> {
         EvidenceCommand::Size {
             binary,
             model_manifest,
-            hurtlex_root,
+            lexicon_root,
             target_triple,
             output,
         } => {
             let evidence =
-                collect_size_evidence(&binary, &model_manifest, &hurtlex_root, &target_triple)?;
+                collect_size_evidence(&binary, &model_manifest, &lexicon_root, &target_triple)?;
             write_canonical(&output, &evidence)?;
             println!(
-                "status=measured binary_bytes={} artifacts={} hurtlex={}",
+                "status=measured binary_bytes={} artifacts={} lexicon={}",
                 evidence.binary.bytes,
                 evidence.artifacts.len(),
-                evidence.hurtlex.len(),
+                evidence.lexicon.len(),
             );
         }
     }

@@ -124,10 +124,11 @@ fn browser_size_evidence_requires_full_and_explicit_only_builds() {
         br#"{
           "browser_builds": {
             "explicit_only": {
-              "brotli_total_bytes": 17,
-              "gzip_total_bytes": 19,
+              "brotli_total_bytes": 18,
+              "gzip_total_bytes": 21,
               "javascript_glue": {"brotli_bytes": 7,"gzip_bytes": 8,"raw_bytes": 9,"relative_path":"explicit.js","sha256":"bb"},
-              "raw_total_bytes": 21,
+              "raw_total_bytes": 24,
+              "packs": ["en.pack"],
               "wasm": {"brotli_bytes": 10,"gzip_bytes": 11,"raw_bytes": 12,"relative_path":"explicit.wasm","sha256":"aa"}
             },
             "full": {
@@ -137,7 +138,11 @@ fn browser_size_evidence_requires_full_and_explicit_only_builds() {
               "raw_total_bytes": 41,
               "wasm": {"brotli_bytes": 20,"gzip_bytes": 21,"raw_bytes": 22,"relative_path":"full.wasm","sha256":"cc"}
             }
-          }
+          },
+          "packs": { "files": { "en.pack": {
+            "brotli_bytes": 1, "gzip_bytes": 2, "raw_bytes": 3,
+            "relative_path": "en.pack", "sha256": "ee"
+          } } }
         }"#,
     )
     .expect("browser report");
@@ -149,11 +154,16 @@ fn browser_size_evidence_requires_full_and_explicit_only_builds() {
     assert_eq!(evidence.full.gzip_total_bytes, 39);
     assert_eq!(evidence.full.brotli_total_bytes, 37);
     assert_eq!(evidence.explicit_only.wasm.raw_bytes, 12);
-    assert_eq!(evidence.explicit_only.raw_total_bytes, 21);
-    assert_eq!(evidence.explicit_only.gzip_total_bytes, 19);
-    assert_eq!(evidence.explicit_only.brotli_total_bytes, 17);
+    assert_eq!(evidence.explicit_only.raw_total_bytes, 24);
+    assert_eq!(evidence.explicit_only.gzip_total_bytes, 21);
+    assert_eq!(evidence.explicit_only.brotli_total_bytes, 18);
 
     let _: BrowserBuildEvidence = evidence;
+
+    let mut report: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    report["packs"]["files"]["en.pack"]["raw_bytes"] = serde_json::json!(4);
+    fs::write(&path, serde_json::to_vec(&report).unwrap()).unwrap();
+    assert!(load_browser_build_evidence(&path).is_err());
 }
 
 #[test]
@@ -202,13 +212,18 @@ fn c_parity_verification_rejects_one_changed_expected_score() {
 
 #[test]
 fn published_auto_evidence_requires_the_best_effort_unsupported_language_limitation() {
-    let path =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("../../reports/language-auto-validation.json");
-    let bytes = fs::read(path).expect("published AUTO evidence");
-    let evidence: blasphem_bench::AutoValidationEvidence =
-        serde_json::from_slice(&bytes).expect("AUTO evidence JSON");
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../apps/web/src/data/evidence.json");
+    let bytes = fs::read(path).expect("website evidence snapshot");
+    let evidence: serde_json::Value = serde_json::from_slice(&bytes).expect("snapshot JSON");
 
-    assert!(evidence.limitations.iter().any(|limitation| {
-        limitation == "Unsupported-language rejection is best-effort with this 15-profile model."
-    }));
+    assert!(
+        evidence["routing"]["limitations"]
+            .as_array()
+            .expect("routing limitations")
+            .iter()
+            .any(|limitation| {
+                limitation
+                    == "Unsupported-language rejection is best-effort with this 15-profile model."
+            })
+    );
 }

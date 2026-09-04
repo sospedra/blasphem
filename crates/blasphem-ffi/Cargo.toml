@@ -1,6 +1,7 @@
 [package]
 name = "blasphem-ffi"
 version.workspace = true
+description = "C bindings for local toxicity checks. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference."
 edition = "2024"
 rust-version = "1.85"
 publish = false
@@ -10,7 +11,7 @@ license = "Apache-2.0"
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-blasphem = { path = "../..", default-features = false, features = ["language-detection"] }
+blasphem = { path = "../blasphem", default-features = false, features = ["language-detection"] }
 
 [lints]
 workspace = true

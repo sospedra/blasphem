@@ -1,0 +1,74 @@
+{
+  "name": "blasphem",
+  "version": "0.1.0",
+  "description": "Local toxicity checks for JavaScript, TypeScript, and the command line. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sospedra/blasphem.git",
+    "directory": "packages/javascript"
+  },
+  "publishConfig": {
+    "provenance": true
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "11.13.0"
+  },
+  "main": "./dist/browser.js",
+  "module": "./dist/browser.js",
+  "types": "./dist/browser.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/browser.d.ts",
+      "browser": "./dist/browser.js",
+      "node": "./dist/node.js",
+      "default": "./dist/browser.js"
+    },
+    "./blasphem_bg.wasm": "./dist/blasphem_bg.wasm",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "blasphem": "./bin/blasphem.mjs",
+    "blasphem-assets": "./bin/blasphem-assets.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "NOTICE",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "node ../../scripts/copy-notice.mjs",
+    "pack:check": "node scripts/pack-check.mjs",
+    "test": "node scripts/pack-check.mjs && node scripts/node-smoke.mjs",
+    "test:node": "node scripts/node-smoke.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs"
+  },
+  "optionalDependencies": {
+    "@blasphem/cli-darwin-arm64": "workspace:*",
+    "@blasphem/cli-darwin-x64": "workspace:*",
+    "@blasphem/cli-linux-arm64-gnu": "workspace:*",
+    "@blasphem/cli-linux-arm64-musl": "workspace:*",
+    "@blasphem/cli-linux-x64-gnu": "workspace:*",
+    "@blasphem/cli-linux-x64-musl": "workspace:*",
+    "@blasphem/cli-win32-x64-msvc": "workspace:*",
+    "@blasphem/node-darwin-arm64": "workspace:*",
+    "@blasphem/node-darwin-x64": "workspace:*",
+    "@blasphem/node-linux-arm64-gnu": "workspace:*",
+    "@blasphem/node-linux-arm64-musl": "workspace:*",
+    "@blasphem/node-linux-x64-gnu": "workspace:*",
+    "@blasphem/node-linux-x64-musl": "workspace:*",
+    "@blasphem/node-win32-x64-msvc": "workspace:*"
+  },
+  "devDependencies": {
+    "@blasphem/packs": "workspace:*",
+    "@types/node": "24.10.1",
+    "playwright": "1.62.1",
+    "typescript": "5.9.3"
+  }
+}

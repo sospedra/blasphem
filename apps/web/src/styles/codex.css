@@ -90,6 +90,7 @@
 
 .spread.solo > .stage {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
 }
 
@@ -256,6 +257,50 @@
   transform: scale(0.97);
 }
 
+.act:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: -7px;
+}
+
+.copy-control {
+  display: inline-grid;
+  align-items: center;
+  min-height: 44px;
+  min-width: 74px;
+  padding: 8px 12px;
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--bone);
+  font: 11px/1.4 var(--font-mono);
+  cursor: pointer;
+}
+
+.copy-control span {
+  grid-area: 1 / 1;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.copy-control .copied-label,
+.copy-control[data-copied] .copy-label {
+  opacity: 0;
+}
+
+.copy-control[data-copied] .copied-label {
+  opacity: 1;
+}
+
+.copy-control:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copy-control:hover:not(:disabled) {
+    color: var(--blood-ink);
+    background: var(--coal);
+  }
+}
+
 .act.ghost {
   background: transparent;
   color: var(--bone);
@@ -279,65 +324,6 @@
   }
 }
 
-.ledger {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  border-top: 1px solid var(--blood-hair);
-  border-bottom: 1px solid var(--blood-hair);
-}
-
-.ledger caption {
-  text-align: left;
-  font-family: var(--font-rubric);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--taupe-ink);
-  padding: 0 0 10px;
-}
-
-.ledger th,
-.ledger td {
-  padding: 14px 8px;
-  text-align: right;
-  border-bottom: 1px solid var(--hair);
-  font-variant-numeric: tabular-nums;
-}
-
-.ledger th:first-child,
-.ledger td:first-child {
-  text-align: left;
-}
-
-.ledger thead th {
-  font-family: var(--font-goth);
-  font-weight: 400;
-  font-size: 17px;
-  color: var(--taupe-ink);
-}
-
-.ledger thead th.mine {
-  color: var(--blood-ink);
-}
-
-.ledger td:first-child {
-  font-family: var(--font-rubric);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--taupe-ink);
-}
-
-.ledger .us {
-  font-family: var(--font-mono);
-  color: var(--blood-ink);
-}
-
-.ledger .them {
-  font-family: var(--font-mono);
-  color: var(--taupe-ink);
-}
 
 .visually-hidden {
   position: absolute;
@@ -421,8 +407,4 @@
     margin-left: -8px;
   }
 
-  .ledger th,
-  .ledger td {
-    padding: 12px 6px;
-  }
 }

@@ -22,7 +22,7 @@ use crate::{
 };
 
 pub const MODEL_MANIFEST_SCHEMA_VERSION: u16 = 2;
-const SPANISH_HURTLEX_SHA256: &str =
+const SPANISH_LEXICON_SHA256: &str =
     "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc";
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -36,7 +36,7 @@ pub struct ModelManifestEntry {
     pub feature_schema: FeatureSchema,
     pub rule_pack_version: u16,
     pub rule_pack_sha256: Sha256Digest,
-    pub hurtlex_sha256: Option<Sha256Digest>,
+    pub lexicon_sha256: Option<Sha256Digest>,
     pub clean_control_rows: usize,
     pub clean_control_sha256: Option<Sha256Digest>,
     pub development_rows: usize,
@@ -70,7 +70,7 @@ pub struct ManifestInputs {
     pub prepared_counts: PreparedCounts,
     pub rule_pack_version: u16,
     pub rule_pack_sha256: Sha256Digest,
-    pub hurtlex_sha256: Option<Sha256Digest>,
+    pub lexicon_sha256: Option<Sha256Digest>,
     pub clean_control_rows: usize,
     pub clean_control_sha256: Option<Sha256Digest>,
 }
@@ -109,100 +109,6 @@ pub enum ModelSetError {
     InvalidModelManifestSchema { expected: u16, actual: u16 },
     #[error("invalid clean-control metadata for {}", .0.code())]
     CleanControlMetadataMismatch(Language),
-    #[error("cannot parse prepared manifest JSON: {0}")]
-    PreparedManifestJson(serde_json::Error),
-    #[error("invalid prepared manifest schema: {actual}")]
-    InvalidPreparedManifestSchema { actual: String },
-    #[error("prepared manifest has the wrong {field} language key set")]
-    PreparedLanguageKeySet { field: &'static str },
-    #[error("prepared manifest has the wrong prepared-file key set")]
-    PreparedFileKeySet,
-    #[error("prepared file identity key {key} declares path {declared}")]
-    PreparedIdentityPathMismatch { key: String, declared: String },
-    #[error("prepared manifest repeats source record {0}")]
-    DuplicateSourceRecord(String),
-    #[error("prepared manifest repeats source {source_id} for {}", language.code())]
-    DuplicateLanguageSourceId {
-        language: Language,
-        source_id: String,
-    },
-    #[error("prepared manifest references unknown source {source_id} for {}", language.code())]
-    UnknownLanguageSource {
-        language: Language,
-        source_id: String,
-    },
-    #[error(
-        "prepared source {source_id} has language {}; expected {}",
-        actual.code(),
-        expected.code()
-    )]
-    WrongLanguageSource {
-        expected: Language,
-        actual: Language,
-        source_id: String,
-    },
-    #[error("prepared manifest has no language entry for {}", .0.code())]
-    MissingPreparedLanguage(Language),
-    #[error("prepared manifest has no file identity for {0}")]
-    MissingPreparedIdentity(String),
-    #[error(
-        "prepared {split} count mismatch for {}: declared {declared}, file identity {file_rows}",
-        language.code()
-    )]
-    PreparedSplitCountMismatch {
-        language: Language,
-        split: &'static str,
-        declared: usize,
-        file_rows: usize,
-    },
-    #[error("cannot read prepared file {}: {source}", path.display())]
-    PreparedFileIo {
-        path: PathBuf,
-        #[source]
-        source: std::io::Error,
-    },
-    #[error("prepared file digest mismatch for {path}: expected {expected}, got {actual}")]
-    PreparedDigestMismatch {
-        path: String,
-        expected: Sha256Digest,
-        actual: Sha256Digest,
-    },
-    #[error("prepared {split} header mismatch for {}: {actual:?}", language.code())]
-    PreparedHeaderMismatch {
-        language: Language,
-        split: &'static str,
-        actual: Vec<String>,
-    },
-    #[error("cannot parse prepared TSV {path}: {source}")]
-    PreparedCsv {
-        path: String,
-        #[source]
-        source: csv::Error,
-    },
-    #[error("prepared file {path} contains invalid language {value}")]
-    InvalidPreparedLanguage { path: String, value: String },
-    #[error("prepared file {path} contains invalid label {value}")]
-    InvalidPreparedLabel { path: String, value: String },
-    #[error(
-        "prepared {split} row {source_id} has language {}; expected {}",
-        actual.code(),
-        expected.code()
-    )]
-    PreparedRowLanguageMismatch {
-        expected: Language,
-        actual: Language,
-        split: &'static str,
-        source_id: String,
-    },
-    #[error("prepared file {path} has rows={rows}, clean={clean_rows}, toxic={toxic_rows}")]
-    PreparedFileCountMismatch {
-        path: String,
-        rows: usize,
-        clean_rows: usize,
-        toxic_rows: usize,
-    },
-    #[error("prepared development and validation repeat source identifier {0}")]
-    DuplicatePreparedSourceId(String),
     #[error(
         "compiled validation predictions for {} have length {actual}; expected {expected}",
         language.code()
@@ -246,12 +152,12 @@ pub enum ModelSetError {
     ValidationGatesMismatch(Language),
     #[error("rule-pack metadata mismatch for {}", .0.code())]
     RulePackMetadataMismatch(Language),
-    #[error("model manifest misses a HurtLex digest for {}", .0.code())]
-    MissingHurtlexDigest(Language),
+    #[error("model manifest misses a Lexicon digest for {}", .0.code())]
+    MissingLexiconDigest(Language),
     #[error("dataset inputs do not use canonical order for {}", .0.code())]
     DatasetInputOrder(Language),
-    #[error("dataset inputs contain HurtLex for {}", .0.code())]
-    HurtlexDatasetInput(Language),
+    #[error("dataset inputs contain Lexicon for {}", .0.code())]
+    LexiconDatasetInput(Language),
     #[error(
         "validation row count mismatch for {}: declared {declared}, matrix total {actual}",
         language.code()
@@ -263,19 +169,19 @@ pub enum ModelSetError {
     },
     #[error("validation matrix total overflows for {}", .0.code())]
     ValidationMatrixTotalOverflow(Language),
-    #[error("{} has {actual} HurtLex source records; expected one", language.code())]
-    HurtlexSourceCount { language: Language, actual: usize },
-    #[error("unsafe HurtLex path for {}: {path}", language.code())]
-    UnsafeHurtlexPath { language: Language, path: String },
-    #[error("cannot read HurtLex data for {} at {}: {source}", language.code(), path.display())]
-    HurtlexIo {
+    #[error("{} has {actual} Lexicon source records; expected one", language.code())]
+    LexiconSourceCount { language: Language, actual: usize },
+    #[error("unsafe Lexicon path for {}: {path}", language.code())]
+    UnsafeLexiconPath { language: Language, path: String },
+    #[error("cannot read Lexicon data for {} at {}: {source}", language.code(), path.display())]
+    LexiconIo {
         language: Language,
         path: PathBuf,
         #[source]
         source: std::io::Error,
     },
-    #[error("HurtLex digest mismatch for {}", .0.code())]
-    HurtlexDigestMismatch(Language),
+    #[error("Lexicon digest mismatch for {}", .0.code())]
+    LexiconDigestMismatch(Language),
     #[error("cannot build the rule channel for {}: {source}", language.code())]
     RuleChannel {
         language: Language,
@@ -364,7 +270,7 @@ pub fn build_manifest_entry(
         feature_schema,
         rule_pack_version: inputs.rule_pack_version,
         rule_pack_sha256: inputs.rule_pack_sha256,
-        hurtlex_sha256: inputs.hurtlex_sha256,
+        lexicon_sha256: inputs.lexicon_sha256,
         clean_control_rows: inputs.clean_control_rows,
         clean_control_sha256: inputs.clean_control_sha256,
         development_rows: counts.development,
@@ -450,12 +356,12 @@ fn validate_entry_metadata(entry: &ModelManifestEntry) -> Result<(), ModelSetErr
     {
         return Err(ModelSetError::RulePackMetadataMismatch(entry.language));
     }
-    let hurtlex_sha256 = entry
-        .hurtlex_sha256
+    let lexicon_sha256 = entry
+        .lexicon_sha256
         .as_ref()
-        .ok_or(ModelSetError::MissingHurtlexDigest(entry.language))?;
-    if entry.language == Language::Es && hurtlex_sha256.as_str() != SPANISH_HURTLEX_SHA256 {
-        return Err(ModelSetError::HurtlexDigestMismatch(entry.language));
+        .ok_or(ModelSetError::MissingLexiconDigest(entry.language))?;
+    if entry.language == Language::Es && lexicon_sha256.as_str() != SPANISH_LEXICON_SHA256 {
+        return Err(ModelSetError::LexiconDigestMismatch(entry.language));
     }
     if (entry.clean_control_rows == 0) != entry.clean_control_sha256.is_none() {
         return Err(ModelSetError::CleanControlMetadataMismatch(entry.language));
@@ -463,9 +369,9 @@ fn validate_entry_metadata(entry: &ModelManifestEntry) -> Result<(), ModelSetErr
     if entry
         .dataset_inputs
         .iter()
-        .any(|input| input.dataset == DatasetId::HurtLex)
+        .any(|input| input.dataset == DatasetId::Lexicon)
     {
-        return Err(ModelSetError::HurtlexDatasetInput(entry.language));
+        return Err(ModelSetError::LexiconDatasetInput(entry.language));
     }
     if entry
         .dataset_inputs
@@ -530,7 +436,7 @@ pub const fn artifact_relative_path(language: Language) -> &'static str {
     match language {
         Language::En => "en-sparse-v2.bin",
         Language::Zh => "zh-sparse-v2.bin",
-        Language::Es => "es-chargram-v1.bin",
+        Language::Es => "es-sparse-v2.bin",
         Language::Ar => "ar-sparse-v2.bin",
         Language::Ms => "id-sparse-v2.bin",
         Language::Pt => "pt-sparse-v2.bin",

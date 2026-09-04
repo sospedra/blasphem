@@ -1,7 +1,7 @@
 {
   "name": "@blasphem/node-darwin-x64",
   "version": "0.1.0",
-  "description": "blasphem native engine for darwin-x64",
+  "description": "blasphem native engine for darwin-x64. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -20,8 +20,12 @@
   ],
   "main": "blasphem.darwin-x64.node",
   "files": [
-    "blasphem.darwin-x64.node"
+    "blasphem.darwin-x64.node",
+    "NOTICE"
   ],
+  "scripts": {
+    "prepack": "node ../../../../scripts/copy-notice.mjs"
+  },
   "engines": {
     "node": ">= 20.6"
   }

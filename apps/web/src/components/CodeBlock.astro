@@ -1,0 +1,69 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  label: string;
+  code: string;
+  lang?: "bash" | "typescript" | "swift" | "kotlin" | "python" | "go" | "rust" | "json";
+}
+const { label, code, lang = "bash" } = Astro.props;
+---
+<blasphem-code>
+  <div class="code-head">
+    <span>{label}</span>
+    <button type="button" class="copy-control" aria-label={`Copy ${label}`}>
+      <span class="copy-label" aria-hidden="true">Copy</span>
+      <span class="copied-label" aria-hidden="true">Copied</span>
+    </button>
+  </div>
+  <Code code={code} lang={lang} theme="css-variables" />
+  <span class="copy-status visually-hidden" role="status" aria-live="polite"></span>
+</blasphem-code>
+
+<script>
+  import { copyText } from "../scripts/clipboard";
+
+  async function copyCode(root: HTMLElement): Promise<void> {
+    const button = root.querySelector("button")!;
+    const status = root.querySelector<HTMLElement>(".copy-status")!;
+    await copyText(button, status, () => root.querySelector("code")!.textContent);
+  }
+
+  class BlasphemCode extends HTMLElement {
+    private events?: AbortController;
+
+    connectedCallback(): void {
+      this.events?.abort();
+      this.events = new AbortController();
+      this.querySelector("button")!.addEventListener("click", () => copyCode(this), { signal: this.events.signal });
+    }
+
+    disconnectedCallback(): void {
+      this.events?.abort();
+    }
+  }
+
+  if (!customElements.get("blasphem-code")) customElements.define("blasphem-code", BlasphemCode);
+</script>
+
+<style>
+  blasphem-code {
+    display: block; min-width: 0; margin: 20px 0; border: 1px solid var(--hair); background: #0b0909;
+    --astro-code-color-text: var(--parchment);
+    --astro-code-color-background: #0b0909;
+    --astro-code-token-keyword: var(--blood-ink);
+    --astro-code-token-string: #e5b4a5;
+    --astro-code-token-comment: var(--taupe-ink);
+    --astro-code-token-function: var(--bone);
+    --astro-code-token-constant: #d8b36b;
+    --astro-code-token-parameter: var(--parchment);
+    --astro-code-token-punctuation: var(--taupe-ink);
+    --astro-code-token-string-expression: #e5b4a5;
+    --astro-code-token-link: var(--blood-ink);
+  }
+  .code-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 44px; padding-left: 18px; border-bottom: 1px solid var(--hair); font: 11px/1.4 var(--font-mono); color: var(--taupe-ink); }
+  button { align-self: stretch; min-width: 74px; min-height: 44px; padding: 8px 16px; background: none; border: 0; border-left: 1px solid var(--hair); color: var(--bone); font: inherit; cursor: pointer; }
+  :global(blasphem-code pre) { margin: 0; padding: 20px; overflow: auto; font: 12px/1.9 var(--font-mono); tab-size: 2; scrollbar-color: var(--burgundy) var(--coal); }
+  :global(blasphem-code pre code) { font-family: inherit; }
+  .copy-status:not(.visually-hidden) { display: block; padding: 12px 18px; color: var(--parchment); font-size: 15px; }
+</style>

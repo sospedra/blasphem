@@ -16,7 +16,7 @@ use serde_json::{Value, json};
 #[test]
 fn every_current_source_declares_the_baseline_role() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../resources/datasets/source-lock-v1.json");
+        .join("../../crates/blasphem-train/metadata/source-lock-v1.json");
     let file = std::fs::File::open(path).expect("readable source lock");
     let lock =
         blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
@@ -200,13 +200,13 @@ fn source_manifest_parsers_require_exact_schema_versions_and_lowercase_hashes() 
 #[test]
 fn catalog_has_unique_exact_source_identities_and_paths() {
     let path = format!(
-        "{}/../../resources/datasets/source-catalog-v1.json",
+        "{}/../../crates/blasphem-train/metadata/source-catalog-v1.json",
         env!("CARGO_MANIFEST_DIR")
     );
     let catalog =
         parse_source_catalog(fs::File::open(path).expect("catalog")).expect("catalog parses");
 
-    assert_eq!(catalog.sources.len(), 38);
+    assert_eq!(catalog.sources.len(), 23);
     let unique_ids: BTreeSet<_> = catalog
         .sources
         .iter()
@@ -353,96 +353,6 @@ fn catalog_has_unique_exact_source_identities_and_paths() {
             Language::De,
             "datasets/germeval-2018-test/germeval2018.test.txt",
         ),
-        (
-            "hurtlex-en-1.2",
-            DatasetId::HurtLex,
-            Language::En,
-            "hurtlex/EN/1.2/hurtlex_EN.tsv",
-        ),
-        (
-            "hurtlex-zh-1.2",
-            DatasetId::HurtLex,
-            Language::Zh,
-            "hurtlex/ZH/1.2/hurtlex_ZH.tsv",
-        ),
-        (
-            "hurtlex-es-1.2",
-            DatasetId::HurtLex,
-            Language::Es,
-            "hurtlex/ES/1.2/hurtlex_ES.tsv",
-        ),
-        (
-            "hurtlex-ar-1.2",
-            DatasetId::HurtLex,
-            Language::Ar,
-            "hurtlex/AR/1.2/hurtlex_AR.tsv",
-        ),
-        (
-            "hurtlex-id-1.2",
-            DatasetId::HurtLex,
-            Language::Ms,
-            "hurtlex/ID/1.2/hurtlex_ID.tsv",
-        ),
-        (
-            "hurtlex-pt-1.2",
-            DatasetId::HurtLex,
-            Language::Pt,
-            "hurtlex/PT/1.2/hurtlex_PT.tsv",
-        ),
-        (
-            "hurtlex-fr-1.2",
-            DatasetId::HurtLex,
-            Language::Fr,
-            "hurtlex/FR/1.2/hurtlex_FR.tsv",
-        ),
-        (
-            "hurtlex-hi-1.2",
-            DatasetId::HurtLex,
-            Language::Hi,
-            "hurtlex/HI/1.2/hurtlex_HI.tsv",
-        ),
-        (
-            "hurtlex-ru-1.2",
-            DatasetId::HurtLex,
-            Language::Ru,
-            "hurtlex/RU/1.2/hurtlex_RU.tsv",
-        ),
-        (
-            "hurtlex-ja-1.2",
-            DatasetId::HurtLex,
-            Language::Ja,
-            "hurtlex/JA/1.2/hurtlex_JA.tsv",
-        ),
-        (
-            "hurtlex-de-1.2",
-            DatasetId::HurtLex,
-            Language::De,
-            "hurtlex/DE/1.2/hurtlex_DE.tsv",
-        ),
-        (
-            "hurtlex-tr-1.2",
-            DatasetId::HurtLex,
-            Language::Tr,
-            "hurtlex/TR/1.2/hurtlex_TR.tsv",
-        ),
-        (
-            "hurtlex-vi-1.2",
-            DatasetId::HurtLex,
-            Language::Vi,
-            "hurtlex/VI/1.2/hurtlex_VI.tsv",
-        ),
-        (
-            "hurtlex-ko-1.2",
-            DatasetId::HurtLex,
-            Language::Ko,
-            "hurtlex/KO/1.2/hurtlex_KO.tsv",
-        ),
-        (
-            "hurtlex-it-1.2",
-            DatasetId::HurtLex,
-            Language::It,
-            "hurtlex/IT/1.2/hurtlex_IT.tsv",
-        ),
     ];
 
     for (source_file_id, dataset, language, file_path) in expected {
@@ -461,13 +371,13 @@ fn catalog_has_unique_exact_source_identities_and_paths() {
         .iter()
         .filter(|source| source.dataset == DatasetId::TextDetox)
         .count();
-    let hurtlex = catalog
+    let lexicon = catalog
         .sources
         .iter()
-        .filter(|source| source.dataset == DatasetId::HurtLex)
+        .filter(|source| source.dataset == DatasetId::Lexicon)
         .count();
     assert_eq!(textdetox, 10);
-    assert_eq!(hurtlex, 15);
+    assert_eq!(lexicon, 0);
 
     let textdetox_revision = "01907546324b0330d2d8b7669648cc18823323e5";
     for source in catalog
@@ -570,7 +480,7 @@ fn source_identifiers_use_the_dataset_revision_split_and_native_id() {
 #[test]
 fn the_source_lock_registers_the_spanish_textdetox_input() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../resources/datasets/source-lock-v1.json");
+        .join("../../crates/blasphem-train/metadata/source-lock-v1.json");
     let file = std::fs::File::open(path).expect("readable source lock");
     let lock =
         blasphem_train::source_manifest::parse_frozen_source_lock(file).expect("valid source lock");
@@ -668,7 +578,7 @@ fn frozen_source_json() -> Value {
 
 #[test]
 fn every_frozen_source_states_the_upstream_license_year() {
-    let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
+    let bytes = std::fs::read("../../crates/blasphem-train/metadata/source-lock-v1.json").unwrap();
     let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
 
     assert_eq!(lock.sources.len(), 88);
@@ -684,7 +594,7 @@ fn every_frozen_source_states_the_upstream_license_year() {
 
 #[test]
 fn every_textdetox_lock_entry_carries_a_download_digest() {
-    let bytes = std::fs::read("../../resources/datasets/source-lock-v1.json").unwrap();
+    let bytes = std::fs::read("../../crates/blasphem-train/metadata/source-lock-v1.json").unwrap();
     let lock = blasphem_train::source_manifest::parse_frozen_source_lock(bytes.as_slice()).unwrap();
 
     let missing: Vec<&str> = lock

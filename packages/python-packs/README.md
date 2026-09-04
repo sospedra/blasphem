@@ -4,6 +4,11 @@ Language data for the [Blasphem Python package](../python/README.md).
 This wheel contains the manifest, toxicity packs, and language-detection slices.
 Requires Python 3.10 or later.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Installation
 
 The public PyPI release is pending.
@@ -46,15 +51,14 @@ Pass it as `assets` when constructing a Python judge.
 | `<code>.pack` | Toxicity model, lexicon, and rule identity |
 | `<code>.detect` | Language-detection data |
 
-See [the shared pack guide](../packs/README.md#locales) for language codes.
+See [the shared pack guide](../javascript-packs/README.md#locales) for all 16 supported languages.
 The data wheel carries no Python extension.
 
 ## Build from source
 
-Build the shared packs from the repository root:
+Export the committed packs from the repository root:
 
 ```sh
-pnpm --filter @blasphem/packs run build
 python3 packages/python-packs/sync_packs.py
 ```
 
@@ -64,7 +68,8 @@ Build the wheel from `packages/python-packs`:
 uv build
 ```
 
-The sync script copies the generated data from `packages/packs/dist/`.
+The sync script exports committed data from `resources/packs/`.
+It verifies manifest sizes and hashes and removes stale generated artifacts.
 Rebuild the wheel after any pack change.
 
 [Contribute](../../CONTRIBUTING.md)

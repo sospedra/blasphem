@@ -1,4 +1,4 @@
-import type { ContractReport, PerformanceFixture, RoutingReport } from "./reports";
+import type { PerformanceFixture, RoutingReport } from "./reports";
 
 const NANOSECONDS_PER_MILLISECOND = 1_000_000;
 
@@ -25,11 +25,6 @@ export function worstP95Ms(fixtures: Record<string, PerformanceFixture>, suffix:
 
 export function fixtureCount(fixtures: Record<string, PerformanceFixture>, suffix: string): number {
   return p95Values(fixtures, suffix).length;
-}
-
-export function caseTotals(report: ContractReport): { total: number; passed: number } {
-  const cases = Object.values(report.languages).flatMap((language) => language.cases);
-  return { total: cases.length, passed: cases.filter((entry) => entry.passed).length };
 }
 
 export function routingTotals(report: RoutingReport): { knownPrecision: number; unknownRate: number; misrouteRate: number; rows: number } {

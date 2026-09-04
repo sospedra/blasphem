@@ -4,7 +4,7 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-use blasphem::{ConfusionMatrix, Language};
+use blasphem::Language;
 use serde::Serialize;
 use thiserror::Error;
 
@@ -12,10 +12,7 @@ use crate::{
     atomic_publish::{AtomicPublishError, atomic_publish_replacing},
     calibration::GateResult,
     evidence::{Sha256Digest, sha256_digest},
-    model_manifest::{
-        ModelManifest, ModelManifestEntry, ModelSetError, artifact_relative_path,
-        parse_model_manifest,
-    },
+    model_manifest::{ModelManifest, ModelSetError, parse_model_manifest},
     reproduce::{
         CORPUS_ROOT, ProgramCall, ReproduceError, ReproduceOptions, cargo_program,
         generate_artifacts, model_root, read_language_artifact_lock, run_program, words,
@@ -24,31 +21,15 @@ use crate::{
 
 /// The step that publishes reviewed artifacts over the committed ones.
 pub const PUBLICATION_STEP: &str = "publish-reviewed-artifacts";
-/// The step that rewrites the committed evidence reports.
+/// The step that writes generated evidence reports outside Git.
 pub const EVIDENCE_STEP: &str = "write-evidence-reports";
 
 const MODEL_ROOT: &str = "resources/models/multilingual-v2";
 const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
-const SPANISH_ARTIFACT: &str = "resources/models/es-chargram-v1.bin";
-const SPANISH_RECORD: &str = "resources/models/es-chargram-v1.json";
 const LANGUAGE_ARTIFACT_LOCK: &str = "resources/models/language-artifact-v1.json";
-const HURTLEX_ROOT: &str = "data/clean-room-v1";
-const BEHAVIOR_ROOT: &str = "tests/fixtures/behavior";
+const LEXICON_ROOT: &str = "lexicon";
+const BEHAVIOR_ROOT: &str = "crates/blasphem/tests/fixtures/behavior";
 const REPORT_ROOT: &str = "reports";
-const SPANISH_DATASET: &str = "textdetox/multilingual_toxicity_dataset";
-const SPANISH_SPLIT_METHOD: &str = "FNV-1a over detector language and normalized text";
-const SPANISH_ALGORITHM: &str = "Naive Bayes weighted L2 logistic regression, C=1, beta=1, unweighted classes, fixed feature hashing";
-const SPANISH_FEATURES: [&str; 5] = [
-    "normalized word unigrams",
-    "normalized word bigrams",
-    "normalized character 3-grams",
-    "normalized character 4-grams",
-    "normalized character 5-grams",
-];
-const SPANISH_FEATURE_BINS: u32 = 65_536;
-const SPANISH_MINIMUM_DOCUMENT_FREQUENCY: u32 = 2;
-const SPANISH_WEIGHT_SCALE: u32 = 256;
-
 /// One evidence report and the subcommand that writes it.
 struct EvidenceReport {
     file_name: &'static str,
@@ -154,13 +135,9 @@ pub enum RegenerateError {
     },
     #[error("{} reports no validation gates", .0.code())]
     MissingValidationGate(Language),
-    #[error("{} has no dataset input", .0.code())]
-    MissingDatasetInput(Language),
-    #[error("the compiled manifest has no {} entry", .0.code())]
-    MissingManifestEntry(Language),
 }
 
-/// Regenerates every committed model artifact, lock, and evidence report.
+/// Regenerates committed models and locks, plus untracked evidence reports.
 ///
 /// # Errors
 ///
@@ -176,8 +153,6 @@ pub fn regenerate(options: &RegenerateOptions) -> Result<RegenerateReport, Regen
     check_validation_gates(&manifest)?;
 
     let mut files = publish_model_set(options, &reproduce, &manifest)?;
-    files.push(publish_spanish_artifact(options, &reproduce)?);
-    files.push(publish_spanish_record(options, &manifest)?);
     files.push(publish_language_artifact(options, &reproduce)?);
     files.push(publish_language_lock(options, &reproduce)?);
     files.extend(publish_evidence_reports(options, &reproduce)?);
@@ -219,23 +194,6 @@ fn publish_model_set(
     let manifest_bytes = read_file(&compiled.join("manifest.json"))?;
     files.push(publish_bytes(options, MODEL_MANIFEST, &manifest_bytes)?);
     Ok(files)
-}
-
-fn publish_spanish_artifact(
-    options: &RegenerateOptions,
-    reproduce: &ReproduceOptions,
-) -> Result<PublishedFile, RegenerateError> {
-    let bytes = read_file(&model_root(reproduce).join(artifact_relative_path(Language::Es)))?;
-    publish_bytes(options, SPANISH_ARTIFACT, &bytes)
-}
-
-fn publish_spanish_record(
-    options: &RegenerateOptions,
-    manifest: &ModelManifest,
-) -> Result<PublishedFile, RegenerateError> {
-    let entry = manifest_entry(manifest, Language::Es)?;
-    let record = spanish_record(entry)?;
-    publish_json(options, SPANISH_RECORD, &record)
 }
 
 fn publish_language_artifact(
@@ -310,86 +268,12 @@ fn evidence_arguments(
     arguments.extend(words(&[
         "--model-manifest",
         MODEL_MANIFEST,
-        "--hurtlex-root",
-        HURTLEX_ROOT,
+        "--lexicon-root",
+        LEXICON_ROOT,
         "--output",
     ]));
     arguments.push(staged.into());
     arguments
-}
-
-fn manifest_entry(
-    manifest: &ModelManifest,
-    language: Language,
-) -> Result<&ModelManifestEntry, RegenerateError> {
-    manifest
-        .entries
-        .iter()
-        .find(|entry| entry.language == language)
-        .ok_or(RegenerateError::MissingManifestEntry(language))
-}
-
-/// The published description of the frozen-format Spanish artifact.
-#[derive(Debug, Serialize)]
-struct SpanishRecord {
-    format: &'static str,
-    language: &'static str,
-    artifact: &'static str,
-    artifact_bytes: usize,
-    artifact_sha256: Sha256Digest,
-    dataset: &'static str,
-    dataset_revision: String,
-    source_rows: usize,
-    evaluation_rows: usize,
-    duplicate_rows: usize,
-    conflict_rows: usize,
-    split_method: &'static str,
-    development_rows: usize,
-    validation_rows: usize,
-    test_rows: usize,
-    algorithm: &'static str,
-    feature_bins: u32,
-    features: [&'static str; 5],
-    minimum_document_frequency: u32,
-    weight_scale: u32,
-    decision_boundary: i32,
-    score_scale: u32,
-    maximum_validation_false_positive_basis_points: u16,
-    sparse_validation: ConfusionMatrix,
-}
-
-fn spanish_record(entry: &ModelManifestEntry) -> Result<SpanishRecord, RegenerateError> {
-    let input = entry
-        .dataset_inputs
-        .first()
-        .ok_or(RegenerateError::MissingDatasetInput(entry.language))?;
-    let evaluation_rows = entry.development_rows + entry.validation_rows + entry.test_rows;
-    Ok(SpanishRecord {
-        format: "TOXSPRS1",
-        language: entry.language.code(),
-        artifact: artifact_relative_path(entry.language),
-        artifact_bytes: entry.artifact_bytes,
-        artifact_sha256: entry.artifact_sha256.clone(),
-        dataset: SPANISH_DATASET,
-        dataset_revision: input.revision.clone().unwrap_or_default(),
-        source_rows: evaluation_rows + entry.excluded_rows,
-        evaluation_rows,
-        duplicate_rows: entry.duplicate_rows,
-        conflict_rows: entry.conflict_rows,
-        split_method: SPANISH_SPLIT_METHOD,
-        development_rows: entry.development_rows,
-        validation_rows: entry.validation_rows,
-        test_rows: entry.test_rows,
-        algorithm: SPANISH_ALGORITHM,
-        feature_bins: SPANISH_FEATURE_BINS,
-        features: SPANISH_FEATURES,
-        minimum_document_frequency: SPANISH_MINIMUM_DOCUMENT_FREQUENCY,
-        weight_scale: SPANISH_WEIGHT_SCALE,
-        decision_boundary: entry.boundary,
-        score_scale: entry.score_scale,
-        maximum_validation_false_positive_basis_points: entry.false_warning_limit_basis_points,
-        sparse_validation: entry.validation,
-    })
 }
 
 fn publish_json<T: Serialize>(

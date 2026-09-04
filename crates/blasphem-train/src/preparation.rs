@@ -134,23 +134,24 @@ pub fn read_audit_exclusions(path: &Path) -> Result<BTreeMap<Language, BTreeSet<
         .from_path(path)
         .with_context(|| format!("cannot read {}", path.display()))?;
     let header = reader.headers()?.clone();
-    if header
-        .iter()
-        .ne(["detector_language", "source_id", "reason"])
-    {
-        bail!("audit exclusion header must be detector_language\\tsource_id\\treason");
-    }
+    let language_index = audit_column(&header, "detector_language_code")?;
+    let source_id_index = audit_column(&header, "source_id")?;
+    let reason_index = audit_column(&header, "reason")?;
+    let inclusion_index = audit_column(&header, "inclusion_status")?;
+    let exclusion_index = audit_column(&header, "exclusion_reason")?;
     let mut source_ids = BTreeSet::new();
     let mut output = BTreeMap::<Language, BTreeSet<String>>::new();
     for record in reader.records() {
         let record = record?;
-        if record.len() != 3 {
-            bail!("audit exclusion row must have three fields");
+        if record.get(inclusion_index) != Some("excluded")
+            || record.get(exclusion_index) != Some("audit_only")
+        {
+            bail!("audit exclusion row must be excluded as audit_only");
         }
-        let language = Language::from_str(record.get(0).unwrap_or_default())
+        let language = Language::from_str(record.get(language_index).unwrap_or_default())
             .map_err(|_| anyhow::anyhow!("audit exclusion has an unknown language"))?;
-        let source_id = record.get(1).unwrap_or_default().trim();
-        let reason = record.get(2).unwrap_or_default();
+        let source_id = record.get(source_id_index).unwrap_or_default().trim();
+        let reason = record.get(reason_index).unwrap_or_default();
         if source_id.is_empty() || reason.trim().is_empty() {
             bail!("audit exclusion source identifier and reason must be nonblank");
         }
@@ -163,6 +164,13 @@ pub fn read_audit_exclusions(path: &Path) -> Result<BTreeMap<Language, BTreeSet<
             .insert(source_id.to_owned());
     }
     Ok(output)
+}
+
+fn audit_column(header: &csv::StringRecord, name: &str) -> Result<usize> {
+    header
+        .iter()
+        .position(|column| column == name)
+        .with_context(|| format!("audit exclusion header misses {name}"))
 }
 
 fn import_all_rows(raw_root: &Path, sources: &[FrozenSource]) -> Result<Vec<ImportedRow>> {

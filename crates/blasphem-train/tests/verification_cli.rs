@@ -26,8 +26,8 @@ fn evaluate_rejects_test_before_it_opens_an_input() {
         "/missing/corpus",
         "--model-manifest",
         "/missing/model.json",
-        "--hurtlex-root",
-        "/missing/hurtlex",
+        "--lexicon-root",
+        "/missing/lexicon",
         "--output",
         report.to_str().expect("UTF-8 path"),
     ]);
@@ -44,14 +44,14 @@ fn cli_smoke_writes_canonical_60_case_evidence() {
     let directory = tempdir().expect("temporary directory");
     let report = directory.path().join("nested/smoke.json");
     let model_manifest = project.join("resources/models/multilingual-v2/manifest.json");
-    let hurtlex_root = project.join("data/clean-room-v1");
+    let lexicon_root = project.join("lexicon");
 
     let output = blasphem_train_command(&[
         "cli-smoke",
         "--model-manifest",
         model_manifest.to_str().expect("UTF-8 model path"),
-        "--hurtlex-root",
-        hurtlex_root.to_str().expect("UTF-8 HurtLex path"),
+        "--lexicon-root",
+        lexicon_root.to_str().expect("UTF-8 Lexicon path"),
         "--output",
         report.to_str().expect("UTF-8 path"),
     ]);

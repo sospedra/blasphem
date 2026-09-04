@@ -2,10 +2,25 @@ import com.android.build.gradle.LibraryExtension
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 
+buildscript {
+    configurations.classpath {
+        resolutionStrategy.failOnNonReproducibleResolution()
+    }
+}
+
 plugins {
     id("com.android.library") version "8.13.1" apply false
     id("org.jetbrains.kotlin.android") version "2.2.21" apply false
     id("com.vanniktech.maven.publish") version "0.37.0" apply false
+}
+
+allprojects {
+    configurations.configureEach {
+        resolutionStrategy.failOnNonReproducibleResolution()
+    }
+    buildscript.configurations.configureEach {
+        resolutionStrategy.failOnNonReproducibleResolution()
+    }
 }
 
 val publishedGroup = providers.gradleProperty("GROUP").get()
@@ -44,7 +59,7 @@ configure(dataModules) {
         coordinates(publishedGroup, artifactId, publishedVersion)
         pom {
             name.set(artifactId)
-            description.set("blasphem data for $code: ${descriptions.getValue(kind)}. Ships as assets/blasphem/$code.$kind.")
+            description.set("blasphem data for $code: ${descriptions.getValue(kind)}. Ships as assets/blasphem/$code.$kind. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.")
             licenses {
                 license {
                     name.set("CC-BY-NC-SA-4.0")

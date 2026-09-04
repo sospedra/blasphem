@@ -15,11 +15,11 @@ export type PhaseEvent =
 export function transition(phase: Phase, event: PhaseEvent): Phase {
   switch (event.type) {
     case "LOAD":
-      return phase.status === "idle" ? { status: "loading" } : phase;
+      return phase.status === "idle" || phase.status === "ready" ? { status: "loading" } : phase;
     case "LOADED":
       return phase.status === "loading" ? { status: "ready" } : phase;
     case "FAILED":
-      return phase.status === "loading" ? { status: "error", message: event.message } : phase;
+      return phase.status === "loading" || phase.status === "ready" ? { status: "error", message: event.message } : phase;
     case "RETRY":
       return phase.status === "error" ? { status: "idle" } : phase;
     case "UNAVAILABLE":

@@ -3,6 +3,11 @@
 Local toxicity checks for Kotlin applications.
 The library calls the Rust engine through JNI.
 
+Blasphem hashes word and character n-grams into sparse feature vectors.
+A linear classifier trained offline scores them with 16-bit weights.
+Lexicons and context rules contribute to the verdict.
+Detection runs locally without neural networks or cloud inference.
+
 ## Requirements
 
 Android API 24 or later.
@@ -82,7 +87,7 @@ The judge then returns the highest score across loaded locales.
 
 Use `id` for Indonesian and `ms` for Malay.
 Both use `blasphem-pack-ms` and `blasphem-detect-ms`.
-See [all locale codes](../packs/README.md#locales).
+See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 `grawlix` defaults to `false`.
 `JudgeOptions.packsDirectory` accepts a `java.io.File` instead of bundled assets.
@@ -117,7 +122,6 @@ rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-and
 env RUSTFLAGS="-C link-arg=-Wl,-z,max-page-size=16384" \
   cargo ndk --platform 24 -t arm64-v8a -t armeabi-v7a -t x86_64 \
   -o packages/android/engine/src/main/jniLibs build --release --locked -p blasphem-jni
-pnpm --filter @blasphem/packs run build
 node packages/android/scripts/sync-packs.mjs
 ```
 

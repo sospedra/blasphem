@@ -36,7 +36,7 @@ fn compile_help_exposes_only_batch_inputs() {
     let stdout = String::from_utf8(output.stdout).expect("UTF-8 help");
     assert!(stdout.contains("--corpus-root"));
     assert!(stdout.contains("--source-lock"));
-    assert!(stdout.contains("--hurtlex-root"));
+    assert!(stdout.contains("--lexicon-root"));
     assert!(stdout.contains("--behavior-root"));
     assert!(stdout.contains("--output"));
     assert!(!stdout.contains("--test"));
@@ -407,7 +407,7 @@ fn version_two_compiler_reports_a_validation_language_mismatch() {
 fn version_two_compiler_rejects_a_rule_channel_for_another_language() {
     let mut request = fixture_request(Language::En);
     request.rule_channel =
-        RuleChannel::from_hurtlex_bytes(Language::Pt, None).expect("Portuguese rule channel");
+        RuleChannel::from_lexicon_bytes(Language::Pt, None).expect("Portuguese rule channel");
 
     let error = compile_language(&request).expect_err("wrong rule channel");
 
@@ -443,7 +443,7 @@ fn fixture_request(language: Language) -> CompileRequest {
                 "have a nice day",
             ),
         ],
-        rule_channel: RuleChannel::from_hurtlex_bytes(language, None)
+        rule_channel: RuleChannel::from_lexicon_bytes(language, None)
             .expect("fixture rule channel"),
         clean_controls: Vec::new(),
     }
@@ -470,7 +470,7 @@ fn spanish_compiles_deterministically_from_corpus_input() {
         first.artifact, second.artifact,
         "training must be deterministic"
     );
-    assert_eq!(&first.artifact[..8], b"TOXSPRS1");
+    assert_eq!(&first.artifact[..8], b"TOXSPRS2");
     let model = SparseModel::from_bytes(&first.artifact).expect("parses");
     assert_eq!(model.language(), Language::Es);
     assert_eq!(
@@ -497,7 +497,7 @@ fn compile_corpus_language_for(
         language,
         development: prepared.development,
         validation: prepared.validation,
-        rule_channel: RuleChannel::from_hurtlex_bytes(language, None).expect("rule channel"),
+        rule_channel: RuleChannel::from_lexicon_bytes(language, None).expect("rule channel"),
         clean_controls: Vec::new(),
     })
     .expect("compile the prepared language")
@@ -553,26 +553,22 @@ fn model_set_publication_preserves_an_existing_destination() {
 }
 
 #[test]
-fn batch_compiler_rejects_a_hurtlex_digest_mismatch() {
+fn batch_compiler_rejects_a_lexicon_digest_mismatch() {
     let directory = tempdir().expect("temporary directory");
     let options = write_batch_fixture(directory.path());
-    fs::write(
-        options.hurtlex_root.join("EN/1.2/hurtlex_EN.tsv"),
-        b"changed",
-    )
-    .expect("changed HurtLex file");
+    fs::write(options.lexicon_root.join("EN.tsv"), b"changed").expect("changed Lexicon file");
 
-    let error = compile_model_set(&options).expect_err("HurtLex digest mismatch");
+    let error = compile_model_set(&options).expect_err("Lexicon digest mismatch");
 
     assert!(matches!(
         error,
-        ModelSetError::HurtlexDigestMismatch(Language::En)
+        ModelSetError::LexiconDigestMismatch(Language::En)
     ));
     assert!(!options.output.exists());
 }
 
 #[test]
-fn batch_compiler_requires_one_hurtlex_source_per_language() {
+fn batch_compiler_requires_one_lexicon_source_per_language() {
     let directory = tempdir().expect("temporary directory");
     let options = write_batch_fixture(directory.path());
     let mut lock: Value =
@@ -581,18 +577,18 @@ fn batch_compiler_requires_one_hurtlex_source_per_language() {
     lock["sources"]
         .as_array_mut()
         .expect("source array")
-        .retain(|source| source["source_file_id"] != "hurtlex-en");
+        .retain(|source| source["source_file_id"] != "lexicon-en");
     fs::write(
         &options.source_lock,
         serde_json::to_vec(&lock).expect("serialize changed lock"),
     )
     .expect("write changed lock");
 
-    let error = compile_model_set(&options).expect_err("missing HurtLex source");
+    let error = compile_model_set(&options).expect_err("missing Lexicon source");
 
     assert!(matches!(
         error,
-        ModelSetError::HurtlexSourceCount {
+        ModelSetError::LexiconSourceCount {
             language: Language::En,
             actual: 0,
         }
@@ -602,23 +598,23 @@ fn batch_compiler_requires_one_hurtlex_source_per_language() {
 
 fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
     let corpus_root = root.join("corpus");
-    let hurtlex_root = root.join("hurtlex");
+    let lexicon_root = root.join("lexicon");
     let source_lock = root.join("source-lock.json");
     let output = root.join("models");
     fs::create_dir(&corpus_root).expect("corpus root");
-    fs::create_dir(&hurtlex_root).expect("HurtLex root");
+    fs::create_dir(&lexicon_root).expect("Lexicon root");
 
     let mut sources = Vec::new();
     for language in Language::ALL {
         let code = language.storage_code();
         let dataset_source_id = format!("dataset-{}", code.to_ascii_lowercase());
-        let hurtlex_source_id = format!("hurtlex-{}", code.to_ascii_lowercase());
-        let hurtlex_relative_path = format!("hurtlex/{code}/1.2/hurtlex_{code}.tsv");
-        let hurtlex_bytes = hurtlex_fixture_bytes(language);
-        let hurtlex_path = hurtlex_root.join(format!("{code}/1.2/hurtlex_{code}.tsv"));
-        fs::create_dir_all(hurtlex_path.parent().expect("HurtLex parent"))
-            .expect("HurtLex language directory");
-        fs::write(&hurtlex_path, &hurtlex_bytes).expect("HurtLex fixture");
+        let lexicon_source_id = format!("lexicon-{}", code.to_ascii_lowercase());
+        let lexicon_relative_path = format!("lexicon/{code}.tsv");
+        let lexicon_bytes = lexicon_fixture_bytes(language);
+        let lexicon_path = lexicon_root.join(format!("{code}.tsv"));
+        fs::create_dir_all(lexicon_path.parent().expect("Lexicon parent"))
+            .expect("Lexicon language directory");
+        fs::write(&lexicon_path, &lexicon_bytes).expect("Lexicon fixture");
 
         sources.push(frozen_source(
             language,
@@ -629,10 +625,10 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
         ));
         sources.push(frozen_source(
             language,
-            DatasetId::HurtLex,
-            &hurtlex_source_id,
-            &hurtlex_relative_path,
-            sha256_digest(&hurtlex_bytes),
+            DatasetId::Lexicon,
+            &lexicon_source_id,
+            &lexicon_relative_path,
+            sha256_digest(&lexicon_bytes),
         ));
 
         fs::write(corpus_root.join(format!("{code}.tsv")), corpus_tsv()).expect("corpus fixture");
@@ -643,7 +639,7 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
     BatchCompileOptions {
         corpus_root,
         source_lock,
-        hurtlex_root,
+        lexicon_root,
         behavior_root: None,
         output,
     }
@@ -727,11 +723,10 @@ fn frozen_source(
     })
 }
 
-/// Spanish manifest entries pin the frozen HurtLex ES digest, so the fixture uses the real file.
-fn hurtlex_fixture_bytes(language: Language) -> Vec<u8> {
+/// Spanish manifest entries pin the frozen Lexicon ES digest, so the fixture uses the real file.
+fn lexicon_fixture_bytes(language: Language) -> Vec<u8> {
     if language == Language::Es {
-        return fs::read(project_root().join("data/clean-room-v1/ES.tsv"))
-            .expect("Spanish HurtLex data");
+        return fs::read(project_root().join("lexicon/ES.tsv")).expect("Spanish Lexicon data");
     }
     b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n".to_vec()
 }

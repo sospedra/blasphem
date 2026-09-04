@@ -1,7 +1,7 @@
 {
   "name": "@blasphem/react-native",
   "version": "0.1.0",
-  "description": "React Native binding for blasphem on Nitro Modules. Same createJudge as the web package, native engine underneath.",
+  "description": "Local toxicity checks for React Native through Nitro Modules. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",
   "type": "module",
   "repository": {
@@ -36,18 +36,20 @@
     "nitrogen/generated",
     "nitro.json",
     "*.podspec",
-    "README.md"
+    "README.md",
+    "NOTICE"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prepack": "node ../../scripts/copy-notice.mjs",
     "check": "tsc --noEmit --project tsconfig.json",
     "nitrogen": "nitrogen",
     "build:rust": "node scripts/rust.mjs"
   },
   "peerDependencies": {
     "blasphem": "workspace:*",
-    "react-native": "*",
-    "react-native-nitro-modules": "*"
+    "react-native": "0.87.1",
+    "react-native-nitro-modules": "0.37.1"
   },
   "peerDependenciesMeta": {
     "blasphem": {

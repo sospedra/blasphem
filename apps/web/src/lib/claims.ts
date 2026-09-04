@@ -1,7 +1,7 @@
 import { formatMegabytes, formatMs, formatPercent } from "./format";
 import { LANGUAGES } from "./languages";
 import { worstP95Ms } from "./metrics";
-import { browser, performance, validation } from "./reports";
+import { benchmark, browser, performance, routing } from "./reports";
 
 export type Claim = {
   numeral: string;
@@ -11,10 +11,8 @@ export type Claim = {
   glyph: "chalice" | "candle" | "censer" | "fleur" | "roseWindow" | "sacredHeart";
 };
 
-const precisions = Object.values(validation.languages).map((entry) => entry.metrics.precision);
-const lowestPrecision = Math.min(...precisions);
 const explicitBytes = browser.browser_builds.explicit_only.brotli_total_bytes;
-const routedBytes = browser.browser_builds.full.brotli_total_bytes;
+const routedBytes = browser.browser_builds.english_routed.brotli_total_bytes;
 const worstShort = worstP95Ms(performance.fixtures, "-280");
 const worstLong = worstP95Ms(performance.fixtures, "-4096");
 
@@ -22,43 +20,43 @@ export const CLAIMS: readonly Claim[] = [
   {
     numeral: "I",
     value: formatMegabytes(explicitBytes, 1),
-    label: "when you name the tongue",
-    evidence: `Brotli, without the language router. With AUTO routing: ${formatMegabytes(routedBytes, 1)}.`,
+    label: "English, without detection",
+    evidence: `Brotli download. English with autodetect: ${formatMegabytes(routedBytes, 1)}.`,
     glyph: "chalice",
   },
   {
     numeral: "II",
     value: formatMs(worstShort),
-    label: "worst p95, 280 chars",
-    evidence: `Native release build. A 4 KB message: ${formatMs(worstLong)}. Judge on every keystroke.`,
+    label: "short-message check",
+    evidence: `Worst native p95, 280 characters. At 4 KB: ${formatMs(worstLong)}.`,
     glyph: "candle",
   },
   {
     numeral: "III",
-    value: "No AI",
-    label: "runtime",
-    evidence: `Fixed integer tables. ${formatMegabytes(performance.peak_rss_bytes, 0)} peak resident.`,
+    value: "Runs locally",
+    label: "your text stays yours",
+    evidence: "A compact model and rules. No API key or inference service.",
     glyph: "censer",
   },
   {
     numeral: "IV",
-    value: "Isomorphic",
-    label: "browser and node",
-    evidence: "One entry for both. Rust from the crate.",
+    value: "Client & server",
+    label: "one Rust core",
+    evidence: "Web, Swift, Android, React Native. Node.js, Python, Go, Rust.",
     glyph: "fleur",
   },
   {
     numeral: "V",
-    value: `${formatPercent(lowestPrecision, 0)}+`,
-    label: "calibration precision",
-    evidence: `Every one of the ${precisions.length} measured languages, validation split.`,
+    value: benchmark.test.pooled.metrics.precision === null ? "Unmeasured" : formatPercent(benchmark.test.pooled.metrics.precision),
+    label: "test precision",
+    evidence: `Pooled test results. Recall: ${benchmark.test.pooled.metrics.recall === null ? "unmeasured" : formatPercent(benchmark.test.pooled.metrics.recall)}. See the benchmark below.`,
     glyph: "sacredHeart",
   },
   {
     numeral: "VI",
     value: String(LANGUAGES.length),
-    label: "tongues",
-    evidence: "Spoken by over 85% of the world.",
+    label: "supported languages",
+    evidence: `Estimated reach: ~80% of the world's population. ${formatPercent(routing.supported.known_route_precision.value, 2)} detection precision on assigned, supported-language sentences.`,
     glyph: "roseWindow",
   },
 ];

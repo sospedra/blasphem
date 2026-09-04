@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const coreSource = resolve(packageRoot, "../core/src");
+const coreSource = resolve(packageRoot, "../javascript-common/src");
 const coreCopy = resolve(packageRoot, "src/core");
 const distribution = resolve(packageRoot, "dist");
 

@@ -1,12 +1,3 @@
-[package]
-name = "blasphem"
-version.workspace = true
-edition = "2024"
-rust-version = "1.85"
-publish = false
-license = "Apache-2.0"
-repository = "https://github.com/sospedra/blasphem"
-
 [workspace.package]
 # The one version every crate, npm package, wheel, and jar in this repository carries.
 # `blasphem-train sync-versions` writes the mirrors; a test fails when one drifts.
@@ -14,7 +5,7 @@ version = "0.1.0"
 
 [workspace]
 members = [
-    ".",
+    "crates/blasphem",
     "crates/blasphem-language",
     "crates/blasphem-wasm",
     "crates/blasphem-napi",
@@ -23,19 +14,19 @@ members = [
     "crates/blasphem-bench",
     "crates/blasphem-train",
 ]
-default-members = [".", "crates/blasphem-language", "crates/blasphem-wasm", "crates/blasphem-bench", "crates/blasphem-train"]
+default-members = ["crates/blasphem", "crates/blasphem-language", "crates/blasphem-wasm", "crates/blasphem-bench", "crates/blasphem-train"]
 resolver = "2"
 
 [workspace.dependencies]
-anyhow = "1.0"
-clap = { version = "4.5", features = ["derive"] }
-csv = "1.3"
-serde = { version = "1.0", features = ["derive"] }
-serde_jcs = "0.2"
-serde_json = "1.0"
-sha2 = "0.10"
-tempfile = "3.20"
-thiserror = "2.0"
+anyhow = "=1.0.104"
+clap = { version = "=4.6.6", features = ["derive"] }
+csv = "=1.4.0"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_jcs = "=0.2.0"
+serde_json = "=1.0.151"
+sha2 = "=0.10.9"
+tempfile = "=3.27.0"
+thiserror = "=2.0.20"
 
 [workspace.lints.clippy]
 correctness = "deny"
@@ -43,38 +34,6 @@ suspicious = "warn"
 style = "warn"
 complexity = "warn"
 perf = "warn"
-
-[[bin]]
-name = "blasphem"
-path = "src/main.rs"
-required-features = ["embedded"]
-
-[features]
-default = ["language-detection", "embedded"]
-language-detection = ["dep:blasphem-language"]
-# Compiles the sparse artifacts, the lexica, and the language model into the
-# binary. The wasm and napi crates turn it off and load packs at run time.
-embedded = ["blasphem-language?/embedded-model"]
-
-[dependencies]
-aho-corasick = "1.1"
-anyhow.workspace = true
-charabia = { version = "0.9.9", default-features = false }
-clap.workspace = true
-csv.workspace = true
-blasphem-language = { path = "crates/blasphem-language", optional = true, default-features = false }
-serde.workspace = true
-serde_json.workspace = true
-sha2.workspace = true
-thiserror.workspace = true
-unicode-security = "0.1.2"
-unicode-normalization = "0.1"
-unicode-segmentation = "1.12"
-unicode-general-category = "1.0"
-unicode-script = "0.5"
-
-[dev-dependencies]
-tempfile.workspace = true
 
 [profile.release]
 lto = "thin"
@@ -90,10 +49,3 @@ strip = false
 # the reproduce binary share one recipe.
 [profile.dist]
 inherits = "release"
-
-# publish = false hides the binary from dist; opt it back in.
-[package.metadata.dist]
-dist = true
-
-[lints]
-workspace = true

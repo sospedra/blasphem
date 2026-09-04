@@ -1,4 +1,4 @@
-import { LANGUAGES, type LanguageCode } from "./languages";
+import { LANGUAGES, reportCode, type LanguageCode } from "./languages";
 import { smoke } from "./reports";
 
 export type Sample = {
@@ -11,8 +11,7 @@ export type Sample = {
 };
 
 export const SAMPLES: readonly Sample[] = LANGUAGES.flatMap((language) =>
-  smoke.languages[language.code].cases
-    .filter((entry) => entry.suite === "supplied")
+  smoke.languages[reportCode(language.code)].cases
     .map((entry) => ({
       code: language.code,
       tag: language.tag,

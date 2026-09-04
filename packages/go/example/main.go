@@ -1,6 +1,6 @@
 // Command example judges two messages with packs read from a directory:
 //
-//	go run ./example ../../packages/packs/dist
+//	go run ./example ../../resources/packs
 package main
 
 import (
