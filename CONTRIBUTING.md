@@ -1,135 +1,153 @@
 # Contributing to Blasphem
 
-This document covers three ways to add training data: a direct corpus edit, a
-community submission through an adapter, and a custom typed adapter for a new
-upstream source.
+Contributions can change code, documentation, labeled messages, or lexica.
+Keep each pull request focused on one change.
 
-## Licensing
+## Code and documentation
 
-By submitting a contribution, you agree it can be distributed under this
-project's terms. See `LICENSE` and `NOTICE`.
+Start with [the architecture](HOW.md) and the relevant [distribution guide](README.md#distributions).
 
-## The direct path: edit a corpus file
+| Path | Purpose |
+| --- | --- |
+| `crates/blasphem/` | Rust runtime, rules, and command-line interface |
+| `crates/blasphem-train/` | Corpus checks, lexicon tools, compilation, and reproduction |
+| `crates/blasphem-bench/` | Accuracy, latency, and size measurements |
+| `crates/blasphem-{ffi,jni,napi,python,wasm}/` | Runtime bindings |
+| `packages/` | Language packages, loaders, and packaging scripts |
+| `apps/web/` | Website and browser playground |
 
-`corpus/{LANGUAGE}.tsv` is the single source of truth for that language. Adding
-a row needs no code and no source record.
+### Set up
 
-1. Read `corpus/README.md` for the three columns, the escape rule, and the sort
-   rule.
-2. To add a row, insert a line in `corpus/{LANGUAGE}.tsv` with `split` set to
-   `development`. Put it in its sorted position by the whole line.
-3. To correct a label, change the `label` column and move the line to its new
-   sorted position.
-4. Never edit a `validation` or `test` row. Those partitions are sealed by
-   `resources/datasets/evaluation-lock-v1.json`.
-5. Run the gate:
+Use the Rust version in [rust-toolchain.toml](rust-toolchain.toml).
+Use the Node and pnpm versions in [package.json](package.json).
+Run these commands from the repository root:
 
-   ```bash
-   cargo run --release --locked -p blasphem-train -- corpus-verify \
-     --corpus-root corpus \
-     --evaluation-lock resources/datasets/evaluation-lock-v1.json
-   ```
+```sh
+pnpm install --frozen-lockfile
+cargo build --locked -p blasphem
+```
 
-6. Open a pull request.
+JavaScript builds also need the pinned `wasm-bindgen` CLI:
 
-`corpus verify` checks the header, the column count, the escape rule, the sort
-order, unique text, unique normalized text, and both sealed digests. It fetches
-nothing.
+```sh
+cargo install wasm-bindgen-cli --version 0.2.127 --locked
+pnpm --filter @blasphem/packs run build
+pnpm --filter blasphem run build
+```
 
-## The simple path: a community TSV
+Native packages have additional requirements in their READMEs.
 
-Add rows without writing code.
+Edit third-party attributions in the root [NOTICE](NOTICE) only.
+Package scripts copy it into distribution artifacts.
+Generated NOTICE copies are not tracked.
 
-1. Create `data/raw-v1/community/{language}/{source_file_id}.tsv` using the
-   canonical schema: three tab-separated columns, `native_id`, `label`,
-   `text`, with that exact header row.
-2. The `label` column holds `toxic` or `clean`.
-3. Add a source record to **two** files: `resources/datasets/source-lock-v1.json`
-   and `data/raw-v1/source-observation-v1.json`. `validate_observation_matches_lock`
-   in `crates/blasphem-train/src/acquisition.rs` rejects either file alone.
+### Check a change
 
-   Each record needs these fields: `dataset`, `detector_language`,
-   `source_role`, `source_file_id`, `immutable_source_url`, `file_path`
-   (the path under `data/raw-v1`), `file_sha256`, `license_id`,
-   `license_url`, `license_year`, `citation`, `upstream_lineage`, and
-   `lineage_status`.
-   The observation record also needs `acquired_at_unix_seconds`; the lock
-   record does not.
+Run the checks relevant to the changed code:
 
-   A community contribution uses `"dataset": "community"` and
-   `"source_role": "training_only"`. That path is wired and working; see
-   `crates/blasphem-train/src/community_corpus.rs`.
+```sh
+cargo fmt --all --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+```
 
-   Worked example, the existing `textdetox-en` entry in
-   `resources/datasets/source-lock-v1.json`:
+Each package README lists its package checks.
+Keep examples consistent with the public API.
+Include the commands and results in the pull request.
+Distinguish source checks from browser or device checks.
 
-   ```json
-   {
-     "dataset": "textdetox",
-     "detector_language": "EN",
-     "source_role": "baseline",
-     "source_file_id": "textdetox-en",
-     "immutable_source_url": "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset/resolve/01907546324b0330d2d8b7669648cc18823323e5/data/en-00000-of-00001.parquet",
-     "file_path": "textdetox/en.tsv",
-     "file_sha256": "9d17c991b87c4b43ea5f69c9950f3ad852c26a0a7b1aa4a5849323a1ae738988",
-     "license_id": "CC-BY-4.0",
-     "license_url": "https://creativecommons.org/licenses/by/4.0/",
-     "license_year": 2025,
-     "citation": "TextDetox multilingual toxicity dataset",
-     "upstream_lineage": [
-       "https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset"
-     ],
-     "lineage_status": "resolved"
-   }
-   ```
+### Reproduce artifacts
 
-   `crates/blasphem-train/src/publication.rs` rejects a source whose
-   `upstream_lineage` is empty. The error reads "prepared provenance has
-   incomplete source metadata".
-4. Run `prepare` with the evaluation lock:
+Install the browser engines before the full reproduction check:
 
-   ```bash
-   cargo run --release --locked -p blasphem-train -- prepare \
-     --source-lock resources/datasets/source-lock-v1.json \
-     --raw-root data/raw-v1 \
-     --evaluation-lock resources/datasets/evaluation-lock-v1.json \
-     --output data/prepared-draft-v1
-   ```
+```sh
+pnpm --filter blasphem exec playwright install chromium webkit
+cargo run --release --locked -p blasphem-train -- reproduce
+```
 
-5. Merge the prepared rows into `corpus/{LANGUAGE}.tsv` and run `corpus-verify`.
-   The corpus is the only copy the compiler reads.
-6. Open a pull request.
+For the Rust and artifact checks without JavaScript:
 
-`prepare` needs raw upstream files under `data/raw-v1`. This repository no
-longer ships a lexicon there: HurtLex is removed, and the clean-room lexica
-under `data/clean-room-v1` build through `lexicon-harvest` and
-`lexicon-build`, not through `prepare`. Supply your own source files under
-`data/raw-v1` for the other dataset types `prepare` covers. See
-`docs/clean-room-lexicon-report.md` for the lexicon build path.
+```sh
+cargo run --release --locked -p blasphem-train -- reproduce --skip-browser
+```
 
-## The custom path: a typed adapter
+Reproduction verifies the corpus, sealed partitions, model artifacts, and language data.
+It builds native and WASM binaries, then runs the configured checks.
+It reads local dataset inputs and generates comparison artifacts in a temporary directory.
+Package installation can still require network access.
+See [the reproduction implementation](crates/blasphem-train/src/reproduce.rs) for the exact checks.
 
-Add a new upstream source with its own parser.
+### Update generated artifacts
 
-1. Add a typed adapter under `crates/blasphem-train/src/datasets/`, modeled
-   on the existing adapters in that directory (for example
-   `germ_eval_2018.rs` or `vihos.rs`).
-2. Add fixtures under `crates/blasphem-train/tests/fixtures/`.
-3. Add adapter tests that exercise the new fixtures.
+Changes to training data or rules can require new artifacts:
 
-## Rules the pipeline enforces
+For lexicon changes, first refresh the [source input digests](lexicon/README.md#verify).
 
-- The canonical schema is `native_id`, `label`, `text`, tab separated, with
-  that header.
-- The label is `toxic` or `clean`.
-- A new source declares `source_role` `training_only`.
-- Training-only rows enter only the development partition.
-- A sealed baseline row wins a duplicate. The pipeline excludes the new
-  copy.
-- A duplicate with a conflicting label fails preparation.
-- A row used to create a rule goes into
-  `resources/datasets/rule-audit-v1.tsv` and never into later quality
-  evidence.
-- Pull request checks read only committed inputs. They fetch no
-  contributor URL.
-- The reproduction path reads `corpus/`. It never regenerates the corpus.
+```sh
+cargo run --release --locked -p blasphem-train -- regenerate
+```
+
+This command rewrites model artifacts, locks, and evidence reports.
+Review its diff before submission.
+Refresh the artifact and lexicon digests in [embedded.rs](crates/blasphem/src/embedded.rs).
+Use the values from [the model manifest](resources/models/multilingual-v2/manifest.json).
+Rebuild affected packages after the runtime changes.
+
+Use development data, validation reports, and behavior panels during iteration.
+Reserve [test-split benchmarks](benchmark/README.md) for the agreed final evaluation.
+Never tune rules or thresholds from test results.
+
+## Corpus contributions
+
+Read [the corpus guide](corpus/README.md).
+It covers direct edits, labels, escaping, sorting, and sealed partitions.
+
+## Lexicon contributions
+
+Read [the lexicon guide](lexicon/README.md).
+It covers categories, sense tables, source records, and the current mirrored files.
+
+## Import an upstream corpus
+
+Direct corpus edits need no adapter.
+Use the import pipeline for a new external dataset.
+
+1. Record the source, revision, license, citation, and lineage.
+2. Add matching source records to the lock and acquisition observation.
+3. Prepare the source files with the sealed evaluation lock.
+4. Merge accepted development rows into the corpus.
+5. Run the corpus verification command.
+
+The lock is [source-lock-v1.json](resources/datasets/source-lock-v1.json).
+The observation belongs at `data/raw-v1/source-observation-v1.json`.
+The repository does not supply the raw upstream corpus files.
+
+Community inputs use `data/raw-v1/community/{language}/{source_file_id}.tsv`.
+Their header is `native_id<TAB>label<TAB>text`.
+Labels are `clean` or `toxic`.
+Set `dataset` to `community` and `source_role` to `training_only`.
+See [the community adapter](crates/blasphem-train/src/community_corpus.rs) and
+[the source schema](crates/blasphem-train/src/source_manifest.rs).
+
+```sh
+cargo run --release --locked -p blasphem-train -- prepare \
+  --source-lock resources/datasets/source-lock-v1.json \
+  --raw-root data/raw-v1 \
+  --evaluation-lock resources/datasets/evaluation-lock-v1.json \
+  --output data/prepared-draft-v1
+```
+
+Use a new output directory.
+Training-only rows enter the development split.
+Sealed baseline rows take precedence over duplicates.
+Conflicting labels fail preparation.
+
+For a new format, follow the existing [typed adapters](crates/blasphem-train/src/datasets/).
+Record rule-derived audit examples in [rule-audit-v1.tsv](resources/datasets/rule-audit-v1.tsv).
+Exclude those examples from later quality measurements.
+
+## License
+
+Code contributions use the [Apache-2.0 license](LICENSE).
+Dataset contributions retain their recorded source terms.
+Record attribution and license information in [NOTICE](NOTICE).

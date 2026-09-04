@@ -1,14 +1,37 @@
-# Blasphem (Swift)
+# Blasphem for Swift
 
-Multilingual pre-send toxicity nudge for iOS and macOS apps, over the Rust
-core. Same `judge` contract as the JavaScript package. Swift Package Manager
-only; the package lives at `github.com/sospedra/blasphem-swift`.
+Local toxicity checks for iOS and macOS applications.
+Swift calls the Rust engine through a bundled XCFramework.
+
+## Requirements
+
+| Component | Minimum or supported target |
+| --- | --- |
+| Swift tools | 5.9 |
+| iOS | 15.1, arm64 devices and simulators |
+| macOS | 12, Apple silicon |
+
+The current XCFramework has no Intel or Mac Catalyst slices.
+See [the slice list](https://github.com/sospedra/blasphem/blob/main/packages/swift/scripts/xcframework.mjs).
+
+## Installation
+
+The public Swift package release is pending.
+Use [the local source build](#build-from-source) for the current checkout.
+
+The release distribution is configured for `sospedra/blasphem-swift`.
+Its Swift Package Manager dependency is:
 
 ```swift
-// Package.swift
-.package(url: "https://github.com/sospedra/blasphem-swift.git", from: "0.1.0")
+.package(
+    url: "https://github.com/sospedra/blasphem-swift.git",
+    from: "0.1.0"
+)
+```
 
-// The target that judges
+Add the engine and selected data products to your target dependencies:
+
+```swift
 .product(name: "Blasphem", package: "blasphem-swift"),
 .product(name: "BlasphemPackEN", package: "blasphem-swift"),
 .product(name: "BlasphemPackES", package: "blasphem-swift"),
@@ -16,71 +39,98 @@ only; the package lives at `github.com/sospedra/blasphem-swift`.
 .product(name: "BlasphemDetectES", package: "blasphem-swift"),
 ```
 
+## Usage
+
 ```swift
 import Blasphem
 
-let judge = try Judge(locales: ["en", "es"], detectLanguage: true, grawlix: true)
-try judge.judge("you are a stupid loser")
-// Judgement(safe: false, score: 0.95, locale: "en", grawlix: "you are a @#$%&! loser")
-judge.locales   // ["en", "es"]
-judge.close()
+let judge = try Judge(locales: ["en", "es"], grawlix: true)
+defer { judge.close() }
+
+let verdict = try judge.judge("you are a stupid loser")
+print(verdict)
 ```
 
-`Judge(locales:detectLanguage:grawlix:packsDirectory:)` reads the packs from
-the app bundle and builds the engine. It blocks on file reads, so call it off
-the main thread. `judge(_:)` is synchronous and safe from several threads.
-After `close()` it throws `.closed`. `deinit` closes.
+Construction reads files and should run off the main thread.
+Reuse the judge for later messages.
+The judge supports concurrent callers.
+`deinit` also releases the engine.
 
-## Products
+## Products and configuration
 
-| Product | Holds |
+| Product | Contents |
 | --- | --- |
-| `Blasphem` | the wrapper and the engine, `BlasphemFFI.xcframework` |
-| `BlasphemPack<CODE>` | `<code>.pack`: the sparse table, the lexicon, and the rule-pack version for one language |
-| `BlasphemDetect<CODE>` | `<code>.detect`: that language's slice of the language-identification model |
+| `Blasphem` | Swift API and Rust engine |
+| `BlasphemPack<CODE>` | One toxicity pack |
+| `BlasphemDetect<CODE>` | One language-detection slice |
 
-Codes: `AR DE EN ES FR HI IT JA KO MS PT RU TR VI ZH`. `id` is an alias for
-`ms` at the API; the products use `MS`. Link one pack product per locale you
-request, and one detect product per locale when `detectLanguage` is true, the
-default. Xcode copies every linked resource bundle into the app, so an app with
-`en` and `es` and detection carries four bundles and 2.08 MB of data; without
-detection two bundles and 0.72 MB. A missing product fails at construction
-with `.localeMissing` and names the product to add.
+Link one pack for each requested model profile.
+Detection defaults to `true` and also requires each matching detection product.
+Set `detectLanguage: false` to omit detection products.
+The judge then returns the highest score across loaded locales.
 
-`packsDirectory` reads `<code>.pack` and `<code>.detect` from a folder
-instead of the bundle. Tests and command-line hosts use it.
+Use `id` for Indonesian and `ms` for Malay.
+Both use `BlasphemPackMS` and `BlasphemDetectMS`.
+See [all locale codes](https://github.com/sospedra/blasphem/blob/main/packages/packs/README.md#locales).
 
-## Errors
+`grawlix` defaults to `false`.
+Set `packsDirectory` to a directory URL to read external pack files.
+That directory contains `<code>.pack` and any required `<code>.detect` files.
+The Swift loader does not read `manifest.json`.
 
-Construction throws `BlasphemError`; `code` is one of `.localesEmpty`,
-`.localeUnsupported`, `.localeMissing`, `.assetsRequired`, `.fetchFailed`,
-`.digestMismatch`, `.formatVersion`, `.packInvalid`, `.closed`. `message`
-carries the detail. `.assetsRequired` and `.digestMismatch` exist for parity
-with the JavaScript codes and are never raised here.
+## Results and errors
 
-## Platforms
+`Judgement` contains `safe: Bool`, `score: Double`, `locale: String?`, and `grawlix: String?`.
+The score is ordinal, between 0 and 1.
+It is not a probability.
+Unrouted text returns a safe verdict with zero score.
 
-iOS 15.1 and macOS 12, Apple silicon devices and simulators. Intel simulators
-and Mac Catalyst are out, as in `@blasphem/react-native`.
+Construction throws `BlasphemError` for invalid options, missing products, or invalid data.
+Its `code` and `message` describe the failure.
+A closed judge throws the `.closed` code.
+See [the API source](https://github.com/sospedra/blasphem/tree/main/packages/swift/Sources/Blasphem).
 
-## Build
+## Build from source
 
-The sources of truth are `packages/swift` in `sospedra/blasphem`. CI renders
-and pushes `sospedra/blasphem-swift`; nobody edits that repository by hand.
+The source repository is `sospedra/blasphem`.
+Run these commands from its root with Xcode installed:
 
-```bash
-node packages/swift/scripts/xcframework.mjs          # BlasphemFFI.xcframework and its zip
-swift build                                          # from packages/swift, against the local XCFramework
-node packages/swift/scripts/distribution.mjs \
-  --version 0.1.0 --checksum <sha256> --output /tmp/blasphem-swift   # the published tree, rendered locally
+```sh
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin
+node packages/swift/scripts/xcframework.mjs
+swift build --package-path packages/swift
+pnpm --filter @blasphem/packs run build
 ```
 
-`xcframework.mjs` needs the Rust targets `aarch64-apple-ios`,
-`aarch64-apple-ios-sim`, and `aarch64-apple-darwin`, plus Xcode. The `swift`
-job in `.github/workflows/publish.yml` uploads the zip to the GitHub Release,
-computes its checksum, and runs `distribution.mjs --repo`.
+Add `packages/swift` as a local Swift package dependency.
+The development manifest provides the `Blasphem` product.
+It does not create per-locale resource products.
+
+For local development, supply the generated pack directory:
+
+```swift
+import Blasphem
+import Foundation
+
+let judge = try Judge(
+    locales: ["en", "es"],
+    packsDirectory: URL(
+        fileURLWithPath: "/path/to/blasphem/packages/packs/dist",
+        isDirectory: true
+    )
+)
+defer { judge.close() }
+
+print(try judge.judge("you are a stupid loser"))
+```
+
+The release renderer creates the separate resource products.
+See [distribution.mjs](https://github.com/sospedra/blasphem/blob/main/packages/swift/scripts/distribution.mjs).
+Send code changes to [the source repository](https://github.com/sospedra/blasphem), not the generated distribution.
+
+[Contribute](https://github.com/sospedra/blasphem/blob/main/CONTRIBUTING.md)
 
 ## License
 
-The wrapper and the engine are Apache-2.0. The pack and detect products carry
-data under CC BY-NC-SA 4.0; see NOTICE.
+Code uses [Apache-2.0](https://github.com/sospedra/blasphem/blob/main/LICENSE).
+Language data retains the terms recorded in [NOTICE](https://github.com/sospedra/blasphem/blob/main/NOTICE).

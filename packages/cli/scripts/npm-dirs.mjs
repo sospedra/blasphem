@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { TARGETS, packageName } from "./targets.mjs";
@@ -20,9 +20,9 @@ for (const target of TARGETS) {
     cpu: [target.cpu],
     ...(target.libc ? { libc: [target.libc] } : {}),
     files: ["bin", "NOTICE"],
+    scripts: { prepack: "node ../../../../scripts/copy-notice.mjs" },
     engines: { node: ">= 20.6" },
   };
   writeFileSync(resolve(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
-  copyFileSync(resolve(packageRoot, "NOTICE"), resolve(directory, "NOTICE"));
   console.log(`wrote npm/${target.name}/package.json`);
 }

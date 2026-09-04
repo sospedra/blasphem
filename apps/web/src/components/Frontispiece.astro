@@ -41,7 +41,7 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
 
   <svg class="rose" viewBox="0 0 200 200" aria-hidden="true"><use href="#roseWindow"></use></svg>
 
-  <h1 id="front-title" class="wordmark">blas<span class="brk"></span>phem<i class="sp1"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp2"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp3"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i></h1>
+  <h1 id="front-title" class="wordmark" aria-label="blasphem"><span class="wordmark-glow" aria-hidden="true">blas<span class="brk"></span>phem</span><span class="wordmark-ink" aria-hidden="true">blas<span class="brk"></span>phem</span><i class="sp1"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp2"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i><i class="sp3"><svg viewBox="0 0 24 24"><use href="#star"></use></svg></i></h1>
 
   <Seal />
 
@@ -155,7 +155,32 @@ const words = ["profanity", "targeted abuse", "identity attack", "threat languag
     color: var(--blood);
     letter-spacing: -0.005em;
     white-space: nowrap;
-    filter: drop-shadow(0 0 44px rgba(226, 49, 39, 0.22));
+  }
+  .wordmark-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    color: var(--blood);
+    filter: blur(20px);
+    opacity: 0.18;
+    pointer-events: none;
+    will-change: opacity;
+    animation: wordmark-pulse 8s ease-in-out infinite;
+  }
+  @keyframes wordmark-pulse {
+    0%, 100% { opacity: 0.18; }
+    50% { opacity: 0.55; }
+  }
+  .wordmark-ink {
+    position: relative;
+    z-index: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark-glow {
+      animation: none;
+      opacity: 0.30;
+    }
   }
   .wordmark .brk {
     display: none;

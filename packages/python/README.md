@@ -1,54 +1,123 @@
-# blasphem (Python)
+# blasphem for Python
 
-Multilingual pre-send toxicity nudge over the Rust core, as a PyO3 extension.
-Same contract as the JavaScript package.
+Local toxicity checks through a PyO3 extension over the Rust engine.
+Requires Python 3.10 or later.
 
-```bash
-pip install blasphem blasphem-packs
+## Installation
+
+Public PyPI packages are pending release.
+Use [the source build](#build-from-source) for the current checkout.
+
+The release installation command is:
+
+```sh
+python -m pip install blasphem blasphem-packs
 ```
 
-The wheel is abi3 and covers Python 3.10 and later on macOS, Linux (glibc and
-musl), and Windows.
+`blasphem` contains the engine.
+`blasphem-packs` supplies the language data.
+
+## Quick start
 
 ```python
 import blasphem
 
 blasphem.init(["en", "es"], grawlix=True)
-blasphem.judge("you are a stupid loser")
-# Judgement(safe=False, score=0.95, locale='en', grawlix='you are a @#$%&! loser')
+try:
+    verdict = blasphem.judge("you are a stupid loser")
+    print(verdict)
+finally:
+    blasphem.close()
 ```
 
-`init` loads the locales once and installs the module judge. `judge` is
-synchronous and never raises: before `init` and after `close` it returns the
-fail-open verdict. `ready()` tells which. `init` with the same options is free;
-with other options it builds a new judge first and retires the old one after.
+Initialization loads the selected locales.
+Reuse the judge for subsequent messages.
+Calls to `judge` are synchronous.
 
-`blasphem.Judge(locales, *, assets=None, detect_language=True, grawlix=False)`
-builds an independent judge, usable as a context manager, when one per module
-is not enough.
+## API
 
-## Packs
+| Function | Purpose |
+| --- | --- |
+| `init(locales, **options)` | Initialize the module judge |
+| `judge(text)` | Return a `Judgement` |
+| `ready()` | Report whether initialization completed |
+| `close()` | Release the module judge |
+| `Judge(locales, **options)` | Create an independent judge |
 
-Packs come from `assets`, a directory with `manifest.json` and the `.pack` and
-`.detect` files, or from the installed `blasphem-packs` package when `assets`
-is omitted. Every file is verified against the manifest before it parses.
+Before `init` and after `close`, the module judge returns a safe verdict.
+Initialization with unchanged options reuses the current judge.
+Failed replacement initialization keeps the previous judge.
 
-## Errors
+Independent judges support context managers:
 
-`init` and `Judge` raise `BlasphemError`; `.code` is one of
-`BLASPHEM_LOCALES_EMPTY`, `BLASPHEM_LOCALE_UNSUPPORTED`, `BLASPHEM_LOCALE_MISSING`,
-`BLASPHEM_ASSETS_REQUIRED`, `BLASPHEM_FETCH_FAILED`, `BLASPHEM_DIGEST_MISMATCH`,
-`BLASPHEM_FORMAT_VERSION`, `BLASPHEM_PACK_INVALID`. A `Judge` raises
-`BLASPHEM_CLOSED` after `close()`; the module-level `judge` never raises.
+```python
+from blasphem import Judge
 
-## Build
-
-```bash
-uv venv .venv && uv pip install --python .venv/bin/python maturin
-VIRTUAL_ENV=$PWD/.venv .venv/bin/maturin develop --release   # from packages/python
+with Judge(["en"], detect_language=False) as detector:
+    print(detector.judge("you are a stupid loser"))
 ```
 
-`maturin build --release` writes an abi3 wheel for Python 3.10 and later. The
-Rust crate is `crates/blasphem-python`, a standalone Cargo workspace. The data
-package lives in `packages/python-packs`: run `python sync_packs.py`, then
-`uv build`.
+## Configuration
+
+| Parameter | Default | Meaning |
+| --- | --- | --- |
+| `locales` | Required | Nonempty iterable of locale codes |
+| `assets` | `None` | Pack directory, otherwise installed `blasphem_packs` |
+| `detect_language` | `True` | Route to the detected language |
+| `grawlix` | `False` | Return masked text |
+
+The options after `locales` are keyword-only.
+`assets` accepts a string or `pathlib.Path`.
+With detection disabled, the judge returns the highest score across loaded locales.
+
+Use `id` for Indonesian and `ms` for Malay.
+Both resolve to the `ms` model profile.
+See [the locale list](../packs/README.md#locales).
+
+## Results and exceptions
+
+`Judgement` is a frozen dataclass:
+
+| Attribute | Type | Meaning |
+| --- | --- | --- |
+| `safe` | `bool` | No warning is due |
+| `score` | `float` | Ordinal value from 0 to 1 |
+| `locale` | `str \| None` | Selected model profile |
+| `grawlix` | `str \| None` | Masked text when requested |
+
+The score is not a probability.
+Unrouted text returns a safe verdict with zero score.
+
+`init` and `Judge` raise `BlasphemError`.
+Its `code` identifies locale, asset, digest, or format failures.
+An independent judge raises `BLASPHEM_CLOSED` after closure.
+See [the public implementation](python/blasphem/__init__.py) for all codes.
+
+## Build from source
+
+First build [the shared packs](../packs/README.md#build-from-source).
+From the repository root:
+
+```sh
+python3 packages/python-packs/sync_packs.py
+```
+
+Then run from `packages/python`:
+
+```sh
+uv venv .venv
+uv pip install --python .venv/bin/python maturin ../python-packs
+env VIRTUAL_ENV="$PWD/.venv" .venv/bin/maturin develop --release
+```
+
+Run examples with `.venv/bin/python`.
+The native extension is [crates/blasphem-python](../../crates/blasphem-python/).
+It has a separate Cargo workspace.
+Maturin builds abi3 wheels with Python 3.10 as the minimum.
+
+[Contribute](../../CONTRIBUTING.md)
+
+## License
+
+Code uses [Apache-2.0](../../LICENSE).
+Language data retains the terms recorded in [NOTICE](../../NOTICE).

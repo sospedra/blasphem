@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const projectRoot = resolve(packageRoot, "../..");
 const source = resolve(process.argv[2] ?? resolve(projectRoot, "packages/packs/dist"));
-const notice = resolve(packageRoot, "NOTICE");
+const notice = resolve(projectRoot, "NOTICE");
 const packs = resolve(packageRoot, "packs");
 const MANIFEST = '<manifest xmlns:android="http://schemas.android.com/apk/res/android" />\n';
 const KINDS = new Set([".pack", ".detect"]);

@@ -1,55 +1,93 @@
 # @blasphem/packs
 
-Per-locale data for `blasphem` and `@blasphem/react-native`. The code packages
-carry no language data; every judge loads its locales from these files.
+Language data for the [JavaScript](../blasphem/README.md) and [React Native](../react-native/README.md) packages.
+Each judge loads only its requested model profiles.
 
-```bash
-pnpm add @blasphem/packs
+## Installation
+
+The public npm release is pending.
+For published versions, install matching engine and data versions:
+
+```sh
+npm install blasphem @blasphem/packs
 ```
 
-Python reads the same data from the `blasphem-packs` wheel.
+Use [the source build](#build-from-source) for the current checkout.
+Python distributes the same files through [blasphem-packs](../python-packs/README.md).
+
+## Usage
+
+Node discovers installed packs automatically:
+
+```ts
+import { init, judge } from "blasphem";
+
+await init({ locales: ["en", "es"] });
+console.log(judge("you are a stupid loser"));
+```
+
+For custom loaders, the package exports a file map:
+
+```ts
+import { FILES } from "@blasphem/packs/files";
+
+const manifestURL = FILES["manifest.json"];
+const englishPackURL = FILES["en.pack"];
+```
+
+The values are `URL` objects.
+The engine verifies pack digests against the manifest.
 
 ## Contents
 
-| File | Holds |
+| File | Purpose |
 | --- | --- |
-| `<code>.pack` | the sparse table, the lexicon, and the rule-pack version for one language |
-| `<code>.detect` | that language's slice of the language-identification model |
-| `manifest.json` | `formatVersion` and `{ bytes, sha256 }` per file |
+| `<code>.pack` | Sparse table, lexicon, and rule-pack identity |
+| `<code>.detect` | Language-identification slice |
+| `manifest.json` | Format version, file sizes, and SHA-256 digests |
+| `files.js` and `files.d.ts` | File URLs for Node and deployment tracing |
 
-Codes: `ar de en es fr hi it ja ko ms pt ru tr vi zh`. `id` is an alias for `ms`
-at the API; the files use `ms`.
+Each model profile has a pack and a detection slice.
+Detection-disabled judges need only the manifest and packs.
+Do not mix engine and data versions.
 
-Sizes in this build: 30 files, 9.19 MB. `en.pack` 0.42 MB, `en.detect` 0.33 MB.
+## Locales
 
-## Use
+Supported language codes:
 
-Node reads the files from `node_modules` when `init` or `createJudge` gets
-no `assets`.
+```text
+ar de en es fr hi id it ja ko ms pt ru tr vi zh
+```
 
-A web application copies `dist/*` next to `blasphem_bg.wasm` into its public
-directory and passes that path as `assets`. The loader fetches
-`manifest.json`, then one `.pack` and one `.detect` per requested locale.
-Nothing else downloads.
+Use `id` for Indonesian and `ms` for Malay.
+Both load `ms.pack` and `ms.detect`.
+Results report the canonical model code, `ms`.
+The 16 public language codes map to 15 model profiles.
 
-React Native copies the chosen locales into the application bundle.
+## Browser and native assets
 
-## Integrity
+For browser hosting, use [the asset helper](../blasphem/README.md#browser-assets).
+It copies the WASM module and data into your public directory.
 
-`blasphem` verifies every file against `manifest.json` before it parses a
-byte. A mismatch throws `BLASPHEM_DIGEST_MISMATCH` at construction and names
-the file. The manifest proves integrity in transit, not provenance.
+React Native reads files from [the application bundle](../react-native/README.md#bundle-language-data).
+Swift and Android supply data through their package products.
+Go accepts a directory or an `fs.FS`.
 
-## Build
+## Build from source
 
-```bash
+Run from the repository root after installing the [development tools](../../CONTRIBUTING.md#set-up):
+
+```sh
 pnpm --filter @blasphem/packs run build
 ```
 
-This runs `blasphem-train pack`, which checks every artifact and lexicon
-against `resources/models/multilingual-v2/manifest.json` and writes `dist/`.
+The [build script](scripts/build.mjs) runs `blasphem-train pack`.
+It reads the model manifest, compiled tables, clean-room lexica, and language model.
+It writes the distribution to `packages/packs/dist/`.
+The manifest records the current file sizes and digests.
 
-## License
+## Contributing and license
 
-The lexica are HurtLex 1.2, redistributed under CC BY-NC-SA 4.0. See NOTICE.
-The code in this repository is Apache-2.0; this package is not.
+[Corpus changes](../../corpus/README.md) and [lexicon changes](../../lexicon/README.md) require regenerated packs.
+Data retains the source terms recorded in [NOTICE](../../NOTICE).
+The first-party build code uses [Apache-2.0](../../LICENSE).

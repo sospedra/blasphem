@@ -32,6 +32,7 @@
     "NOTICE"
   ],
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "prepack": "node ../../scripts/copy-notice.mjs"
   }
 }

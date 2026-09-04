@@ -1,94 +1,140 @@
-# blasphem (Android)
+# Blasphem for Android
 
-Multilingual pre-send toxicity nudge for Android apps, over the Rust core
-through JNI. Same `judge` contract as the JavaScript package. Maven Central,
-group `me.sospedra.blasphem`, `minSdk 24`.
+Local toxicity checks for Kotlin applications.
+The library calls the Rust engine through JNI.
+
+## Requirements
+
+Android API 24 or later.
+The native library supports `arm64-v8a`, `armeabi-v7a`, and `x86_64`.
+The build targets JVM 17.
+
+## Installation
+
+The public Maven Central release is pending.
+First [build and publish locally](#build-from-source).
+
+For that local publication, add `mavenLocal()` to your dependency repositories.
+The release distribution uses `mavenCentral()`.
+Configure these repositories in `settings.gradle.kts`:
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+    }
+}
+```
+
+Add the BOM, engine, and language data in `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-  implementation(platform("me.sospedra.blasphem:blasphem-bom:0.1.0"))
-  implementation("me.sospedra.blasphem:blasphem")
-  implementation("me.sospedra.blasphem:blasphem-pack-en")
-  implementation("me.sospedra.blasphem:blasphem-pack-es")
-  implementation("me.sospedra.blasphem:blasphem-detect-en")
-  implementation("me.sospedra.blasphem:blasphem-detect-es")
+    implementation(platform("me.sospedra.blasphem:blasphem-bom:0.1.0"))
+    implementation("me.sospedra.blasphem:blasphem")
+    implementation("me.sospedra.blasphem:blasphem-pack-en")
+    implementation("me.sospedra.blasphem:blasphem-pack-es")
+    implementation("me.sospedra.blasphem:blasphem-detect-en")
+    implementation("me.sospedra.blasphem:blasphem-detect-es")
 }
 ```
+
+## Usage
+
+`context` is your application's Android `Context`.
 
 ```kotlin
 import me.sospedra.blasphem.Judge
 import me.sospedra.blasphem.JudgeOptions
 
-val judge = Judge.create(context, JudgeOptions(locales = listOf("en", "es"), detectLanguage = true, grawlix = true))
-judge.judge("you are a stupid loser")
-// Judgement(safe=false, score=0.95, locale=en, grawlix=you are a @#$%&! loser)
-judge.locales   // [en, es]
-judge.close()
+val options = JudgeOptions(
+    locales = listOf("en", "es"),
+    grawlix = true,
+)
+
+Judge.create(context, options).use { judge ->
+    val verdict = judge.judge("you are a stupid loser")
+    println(verdict)
+}
 ```
 
-`Judge.create` reads the packs from the app assets and builds the engine. It
-blocks on file reads, so call it off the main thread. `judge` is synchronous
-and safe from several threads. After `close()` it throws `BlasphemException`
-with `Code.CLOSED`. `Judge` implements `AutoCloseable`.
+Construction reads files and should run off the main thread.
+Keep one judge for repeated checks.
+`judge` is synchronous and supports concurrent callers.
+Call `close()` when its owner no longer needs it.
 
-## Artifacts
+## Artifacts and configuration
 
-| Artifact | Holds |
+| Artifact | Contents |
 | --- | --- |
-| `blasphem` | the Kotlin wrapper and `libblasphem_jni.so` for `arm64-v8a`, `armeabi-v7a`, `x86_64` |
-| `blasphem-pack-<code>` | `assets/blasphem/<code>.pack`: the sparse table, the lexicon, and the rule-pack version for one language |
-| `blasphem-detect-<code>` | `assets/blasphem/<code>.detect`: that language's slice of the language-identification model |
-| `blasphem-bom` | a Maven BOM pinning all 31 artifacts to one version |
+| `blasphem` | Kotlin API and native engine |
+| `blasphem-pack-<code>` | One toxicity pack |
+| `blasphem-detect-<code>` | One language-detection slice |
+| `blasphem-bom` | Matching artifact versions |
 
-Codes: `ar de en es fr hi it ja ko ms pt ru tr vi zh`. `id` is an alias for
-`ms` at the API; the artifacts use `ms`. Add one pack artifact per locale you
-request, and one detect artifact per locale when `detectLanguage` is true, the
-default. Gradle merges the `assets/blasphem/` folder of every AAR into the
-APK. A missing artifact fails at construction with `Code.LOCALE_MISSING` and
-names the artifact to add.
+Gradle merges each data AAR into `assets/blasphem/`.
+Add one pack for each requested model profile.
+Detection defaults to `true` and requires matching detection artifacts.
+Set `detectLanguage = false` to omit them.
+The judge then returns the highest score across loaded locales.
 
-The asset path matches what `@blasphem/react-native` reads, so an app that has
-both sees one folder.
+Use `id` for Indonesian and `ms` for Malay.
+Both use `blasphem-pack-ms` and `blasphem-detect-ms`.
+See [all locale codes](../packs/README.md#locales).
 
-`JudgeOptions.packsDirectory` reads `<code>.pack` and `<code>.detect` from a
-folder instead of the assets. Tests and command-line hosts use it.
+`grawlix` defaults to `false`.
+`JudgeOptions.packsDirectory` accepts a `java.io.File` instead of bundled assets.
+That directory contains the pack and required detection files.
+The Kotlin loader does not read `manifest.json`.
 
-## Errors
+## Results and errors
 
-`Judge.create` throws `BlasphemException`; `code` is one of `LOCALES_EMPTY`,
-`LOCALE_UNSUPPORTED`, `LOCALE_MISSING`, `ASSETS_REQUIRED`, `FETCH_FAILED`,
-`DIGEST_MISMATCH`, `FORMAT_VERSION`, `PACK_INVALID`, `CLOSED`. `message`
-carries the detail. `ASSETS_REQUIRED` and `DIGEST_MISMATCH` exist for parity
-with the JavaScript codes and are never thrown here.
+`Judgement` contains `safe: Boolean`, `score: Double`, `locale: String?`, and `grawlix: String?`.
+The score is ordinal, between 0 and 1.
+It is not a probability.
+Unrouted text returns a safe verdict with zero score.
 
-## Shrinking
+`Judge.create` throws `BlasphemException` for invalid options, missing data, or invalid packs.
+Its `code` and `message` describe the failure.
+A closed judge throws `Code.CLOSED`.
+See [the Kotlin API](engine/src/main/kotlin/me/sospedra/blasphem/).
 
-`consumer-rules.pro` ships in the AAR and keeps the native method names and
-the `Judgement` constructor the engine constructs through JNI. No app-side
-rule is needed.
+## R8
 
-## Build
+The AAR includes [consumer rules](engine/consumer-rules.pro).
+They preserve the JNI method names and native result constructor.
+Applications do not need to copy those rules.
 
-```bash
-RUSTFLAGS="-C link-arg=-Wl,-z,max-page-size=16384" \
+## Build from source
+
+Install the [development tools](../../CONTRIBUTING.md#set-up), JDK 17, Android SDK, NDK, and `cargo-ndk`.
+Run from the repository root:
+
+```sh
+rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+env RUSTFLAGS="-C link-arg=-Wl,-z,max-page-size=16384" \
   cargo ndk --platform 24 -t arm64-v8a -t armeabi-v7a -t x86_64 \
   -o packages/android/engine/src/main/jniLibs build --release --locked -p blasphem-jni
-node packages/android/scripts/sync-packs.mjs      # packs/<code>/{pack,detect} modules from packages/packs/dist
-cd packages/android && ./gradlew assembleRelease  # every AAR under */build/outputs/aar
+pnpm --filter @blasphem/packs run build
+node packages/android/scripts/sync-packs.mjs
 ```
 
-`cargo-ndk` and the Android NDK produce the three `.so`. The page-size flag
-aligns every `LOAD` segment to 16 KB, which Google Play requires for apps that
-target API 35 and later. `settings.gradle.kts` includes one module per data
-file present under `packs/`, so the sync must run before Gradle. The Rust
-crate is `crates/blasphem-jni`; the Kotlin table `Locales.generated.kt` comes
-from `blasphem-train locales-table --format kotlin`.
+Then run from `packages/android`:
 
-The `android` job in `.github/workflows/publish.yml` builds, runs the
-instrumented smoke test on an API 35 emulator, and publishes to the Central
-Portal with `com.vanniktech.maven.publish`.
+```sh
+./gradlew assembleRelease
+./gradlew publishToMavenLocal -PRELEASE_SIGNING_ENABLED=false
+```
+
+The sync script creates the locale modules before Gradle starts.
+The linker flag requests 16 KB page alignment.
+Local publication makes the artifacts available through `mavenLocal()`.
+
+[Contribute](../../CONTRIBUTING.md)
 
 ## License
 
-`blasphem` and `blasphem-bom` are Apache-2.0. The pack and detect artifacts
-carry data under CC BY-NC-SA 4.0 and include NOTICE.
+Code uses [Apache-2.0](../../LICENSE).
+Language data retains the terms recorded in [NOTICE](../../NOTICE).

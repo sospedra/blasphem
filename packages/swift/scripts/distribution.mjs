@@ -88,7 +88,7 @@ function render(tree, entries) {
     copyFileSync(resolve(options.packs, name), resolve(directory, "Resources", name));
   }
   copyFileSync(resolve(projectRoot, "LICENSE"), resolve(tree, "LICENSE"));
-  copyFileSync(resolve(packageRoot, "NOTICE"), resolve(tree, "NOTICE"));
+  copyFileSync(resolve(projectRoot, "NOTICE"), resolve(tree, "NOTICE"));
   copyFileSync(resolve(packageRoot, "README.md"), resolve(tree, "README.md"));
 }
 

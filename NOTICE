@@ -1,10 +1,22 @@
-# Third-party data notices
+# Third-party notices
 
 Copyright 2026 Rubén Sospedra
 
 Blasphem first-party code uses the Apache License 2.0. See LICENSE.
 
+Each notice applies to distributions that contain the corresponding component.
 The corpora and lexica below keep their own recorded licenses.
+
+## ELDC
+
+- Source: https://github.com/nitotm/eldc
+- Revision: a0301db809ff2e48a418018aa5359fb0c4354eb8
+- Author: Nito
+- License: Apache License 2.0
+- Unicode character tables: letter bits, CJK bits, and lowercase map ported
+  from ELDC and embedded in the runtime.
+- Language identification model: fifteen language profiles derived from
+  the upstream model, embedded in the CLI and distributed as `.detect` files.
 
 ## germeval-2018
 
@@ -78,15 +90,9 @@ The corpora and lexica below keep their own recorded licenses.
   for candidate terms; kept out of the CC accounting so its terms are not
   understated by folding it in with them.
 
-## vietnamese candidate corpora
-
-- `zerostratos/vietnamese_toxic_core`: Apache-2.0.
-- `uitnlp/vihsd` (UIT-ViHSD): MIT.
-- Status: both mined for Vietnamese candidate terms only. Neither corpus is
-  redistributed; neither is part of `corpus/`.
-
 ## ibrohim-budi
 
+- Source: https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
 - License year: 2023
@@ -95,6 +101,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## k-mhas
 
+- Source: https://github.com/adlnlp/K-MHaS
 - License: CC-BY-SA-4.0
 - License URL: https://creativecommons.org/licenses/by-sa/4.0/
 - License year: 2024
@@ -106,6 +113,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## offenseval-tr
 
+- Source: https://coltekin.github.io/offensive-turkish/
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
 - License year: 2020
@@ -114,6 +122,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## textdetox
 
+- Source: https://huggingface.co/datasets/textdetox/multilingual_toxicity_dataset
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
 - License year: 2025
@@ -122,6 +131,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## told-br
 
+- Source: https://github.com/joaoaleite/ToLD-Br
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
 - License year: 2025
@@ -130,14 +140,23 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## vihos
 
+- Source: https://github.com/phusroyal/ViHOS
 - License: CC-BY-4.0
 - License URL: https://creativecommons.org/licenses/by/4.0/
 - License year: 2023
 - Citation: ViHOS: Vietnamese Hate Speech Detection.
 - Sources: 3
 
+## Vietnamese candidate mining
+
+These sources supplied candidates only. Their data is not redistributed.
+
+- zerostratos/vietnamese_toxic_core: Apache-2.0
+- uitnlp/vihsd (UIT-ViHSD): MIT
+
 ## Model artifacts
 
+The training sources are recorded in `resources/datasets/source-lock-v1.json`.
 The model artifacts under `resources/models/` are weight tables trained on
 the corpora above. They contain no corpus text, but each is a derivative
 work of its training data and inherits that data's license.

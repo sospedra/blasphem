@@ -1,38 +1,119 @@
 # blasphem-wasm
 
-Browser bindings for the multilingual nudge detector. The wasm carries the
-code only. Language data arrives at run time as `.pack` and `.detect` files
-from `@blasphem/packs`.
-
-## Classes
-
-`BlasphemEngineBuilder(detectLanguage, grawlix)` collects locales:
-
-```js
-const builder = new BlasphemEngineBuilder(true, false);
-builder.add("en", enPackBytes, enPackSha256, enDetectBytes, enDetectSha256);
-const engine = builder.build(); // consumes the builder
-engine.locales;                 // ["en"]
-engine.judge("text");           // { safe, score, locale, grawlix }
-engine.free();
-```
-
-`add` takes `Uint8Array` buffers and optional 64-character hexadecimal digests.
-Rust verifies each digest before it parses the bytes.
-
-Every error is a string that starts with a contract code:
-`BLASPHEM_LOCALE_UNSUPPORTED`, `BLASPHEM_DIGEST_MISMATCH`,
-`BLASPHEM_FORMAT_VERSION`, `BLASPHEM_PACK_INVALID`, `BLASPHEM_LOCALES_EMPTY`.
+Low-level WebAssembly bindings for the Rust toxicity engine.
+The module contains code, without embedded language data.
+Most applications should use [the JavaScript package](../../packages/blasphem/README.md).
 
 ## Build
 
-`packages/blasphem/scripts/build.mjs` compiles this crate for
-`wasm32-unknown-unknown` with `default-features = false` on `blasphem`, so no
-artifact is embedded, then runs `wasm-bindgen --target web
---omit-default-module-path`. The JavaScript loader passes the wasm location
-explicitly; the glue never resolves it from `import.meta.url`.
+Install the [repository toolchain](../../CONTRIBUTING.md#set-up).
+Run from the repository root:
 
-## Test
+```sh
+cargo build --release --locked --target wasm32-unknown-unknown -p blasphem-wasm
+wasm-bindgen target/wasm32-unknown-unknown/release/blasphem_wasm.wasm \
+  --target web \
+  --omit-default-module-path \
+  --out-dir target/wasm-web \
+  --out-name blasphem
+```
 
-`cargo test -p blasphem-wasm` builds packs from the committed artifacts and
-exercises `blasphem::Engine`, the type both classes wrap.
+The CLI version must match the crate's `wasm-bindgen` pin.
+The generated loader requires an explicit module location.
+
+## Usage
+
+Serve the generated `blasphem.js` and `blasphem_bg.wasm` files.
+Serve matching [language packs](../../packages/packs/README.md) under `/blasphem`.
+
+```js
+import init, { BlasphemEngineBuilder } from "./blasphem.js";
+
+async function readBytes(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+await init({ module_or_path: "./blasphem_bg.wasm" });
+
+const manifestResponse = await fetch("/blasphem/manifest.json");
+if (!manifestResponse.ok) throw new Error("Could not load the pack manifest");
+const manifest = await manifestResponse.json();
+const [pack, detect] = await Promise.all([
+  readBytes("/blasphem/en.pack"),
+  readBytes("/blasphem/en.detect"),
+]);
+
+const builder = new BlasphemEngineBuilder(true, false);
+builder.add(
+  "en",
+  pack,
+  manifest.files["en.pack"].sha256,
+  detect,
+  manifest.files["en.detect"].sha256,
+);
+
+const engine = builder.build();
+try {
+  console.log(engine.locales);
+  console.log(engine.judge("you are a stupid loser"));
+} finally {
+  engine.free();
+}
+```
+
+Serve WASM with the `application/wasm` content type.
+Apply the [browser CSP requirements](../../packages/blasphem/README.md#content-security-policy).
+
+## API
+
+| Call | Purpose |
+| --- | --- |
+| `new BlasphemEngineBuilder(detectLanguage, grawlix)` | Create a locale builder |
+| `builder.add(locale, pack, packSha256, detect, detectSha256)` | Supply one locale's files |
+| `builder.build()` | Consume the builder and return an engine |
+| `engine.locales` | Read the loaded model codes |
+| `engine.judge(text)` | Return a plain verdict object |
+| `engine.free()` | Release the engine |
+
+`add` accepts `Uint8Array` data and optional hexadecimal SHA-256 digests.
+`build` verifies supplied digests and parses the packs.
+Detection-disabled builders do not need detection slices.
+Do not use a builder after `build` or an engine after `free`.
+
+Results contain `safe`, `score`, `locale`, and `grawlix`.
+The score is ordinal, between 0 and 1.
+Errors are strings prefixed with `BLASPHEM_*` contract codes.
+See [the bindings](src/lib.rs) and [engine](../blasphem/src/engine.rs).
+
+## Features
+
+`language-detection` is enabled by default.
+To remove detection support:
+
+```sh
+cargo build --release --locked --target wasm32-unknown-unknown \
+  -p blasphem-wasm --no-default-features
+```
+
+Use `detectLanguage = false` with that build.
+Language data remains external with either configuration.
+
+## Development
+
+Run from the repository root:
+
+```sh
+cargo test --locked -p blasphem-wasm
+```
+
+These Rust tests exercise the shared engine.
+The [JavaScript browser checks](../../packages/blasphem/README.md#build-from-source) exercise browser execution.
+
+[Contribute](../../CONTRIBUTING.md)
+
+## License
+
+Code uses [Apache-2.0](../../LICENSE).
+Language data retains the terms recorded in [NOTICE](../../NOTICE).

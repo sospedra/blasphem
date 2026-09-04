@@ -22,6 +22,9 @@
     "bin",
     "NOTICE"
   ],
+  "scripts": {
+    "prepack": "node ../../../../scripts/copy-notice.mjs"
+  },
   "engines": {
     "node": ">= 20.6"
   }

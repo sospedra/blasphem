@@ -1,89 +1,156 @@
 # @blasphem/react-native
 
-The `blasphem` pre-send nudge for React Native, on Nitro Modules. Same `init`
-and `judge` contract as the web package. The engine is the Rust core behind a
-C ABI, wrapped by C++ HybridObjects; `judge()` is synchronous over JSI.
+Local toxicity checks for React Native through Nitro Modules.
+The Rust engine runs behind C++ HybridObjects.
+Calls to `judge` are synchronous over JSI.
 
-```bash
-pnpm add @blasphem/react-native @blasphem/packs
+## Installation
+
+The public npm release is pending.
+Use [the source build](#build-from-source) for the current checkout.
+
+The release installation command includes the Nitro peer dependency:
+
+```sh
+npm install @blasphem/react-native @blasphem/packs react-native-nitro-modules
 ```
 
-`react-native-nitro-modules` is a peer dependency. `blasphem` is an optional
-peer, needed only when the application also targets the web.
+Run CocoaPods installation from your app's iOS directory:
 
-## Use
+```sh
+bundle exec pod install
+```
+
+Rebuild the native application after installation.
+This module requires a native build.
+For Expo applications, use a development build with native projects and bundled assets.
+
+## Requirements
+
+| Platform | Requirement |
+| --- | --- |
+| iOS | iOS 15.1+, CocoaPods, arm64 device or simulator |
+| Android | API 24+, Android NDK, supported Rust archives |
+| JavaScript | React Native and `react-native-nitro-modules` peers |
+
+The current iOS archive has no Intel simulator slice.
+Android archives cover `arm64-v8a`, `armeabi-v7a`, and `x86_64`.
+The package manifest records development versions.
+It does not define a tested React Native version range.
+
+## Bundle language data
+
+Copy files from `node_modules/@blasphem/packs/dist/` into your application:
+
+| Platform | Destination |
+| --- | --- |
+| iOS | A folder reference named `blasphem` in the app target |
+| Android | `android/app/src/main/assets/blasphem/` |
+
+For English and Spanish with detection, include:
+
+```text
+manifest.json
+en.pack
+en.detect
+es.pack
+es.detect
+```
+
+If detection is disabled, omit the `.detect` files.
+Keep the matching manifest.
+A manifest can list unused locales without requiring their files.
+
+## Usage
 
 ```ts
 import { init, judge } from "@blasphem/react-native";
 
 await init({ locales: ["en", "es"], grawlix: true });
 
-const v = judge("you are a stupid loser");
-v.safe;    // false
-v.score;   // 0.95
-v.locale;  // "en"
-v.grawlix; // "you are a @#$%&! loser"
+const verdict = judge("you are a stupid loser");
+console.log(verdict);
 ```
 
-`init` loads the locales once and installs one judge for the module. `judge()`
-is synchronous, so it runs on every keystroke. Before `init` resolves, and
-after `close()`, it returns the fail-open verdict and never throws. `ready()`
-says which.
+Initialize once and reuse the judge.
+Check the initialization promise for asset errors.
 
-`createJudge(options)` returns an independent `Judge` with its own `judge()`
-and `close()`, when one per module is not enough.
+## API and configuration
 
-`assets` is ignored here. Packs come from the app bundle.
-
-## Packs in the app bundle
-
-Copy the locales you ship from `node_modules/@blasphem/packs/dist/`:
-
-| Platform | Where | Read by |
-| --- | --- | --- |
-| iOS | a folder reference named `blasphem` in the app target, holding `manifest.json`, `<code>.pack`, `<code>.detect` | `ios/HybridBlasphemAssets.swift` through `Bundle.main` |
-| Android | `android/app/src/main/assets/blasphem/` | `HybridBlasphemAssets.kt` through `AssetManager` |
-
-Ship only the locales you request. A requested locale absent from
-`manifest.json` throws `BLASPHEM_LOCALE_MISSING` at construction. Every pack is
-verified against the manifest digest before it parses.
-
-## Expo web and react-native-web
-
-The `browser` export condition re-exports `init`, `judge`, `ready`, `close`,
-and `createJudge` from `blasphem`, an optional peer. Install `blasphem` and
-pass `assets` when the app also targets the web. The web page then needs the
-Content Security Policy from the `blasphem` README: `script-src
-'wasm-unsafe-eval'` and the `assets` origins in `connect-src`. Native builds
-have no CSP.
-
-## Build
-
-```bash
-pnpm --filter @blasphem/react-native run nitrogen     # regenerates nitrogen/generated from src/specs
-pnpm --filter @blasphem/react-native run build:rust   # ios/BlasphemFFI.xcframework and android/libs/<abi>/libblasphem_ffi.a
-pnpm --filter @blasphem/react-native run build        # dist/ with the inlined core
-```
-
-`build:rust` needs the Rust targets `aarch64-apple-ios`,
-`aarch64-apple-ios-sim`, `aarch64-linux-android`, `armv7-linux-androideabi`,
-and `x86_64-linux-android`, plus Xcode for `xcodebuild -create-xcframework`.
-The Android archives are static libraries; the app's NDK links them through
-`android/CMakeLists.txt`.
-
-## Layout
-
-| Path | Holds |
+| Export | Purpose |
 | --- | --- |
-| `src/specs/BlasphemEngine.nitro.ts` | the Nitro spec: `BlasphemEngineBuilder`, `BlasphemEngine` (C++), `BlasphemAssets` (Swift, Kotlin) |
-| `cpp/` | the C++ HybridObjects over `blasphem.h` |
-| `ios/` | the Swift asset reader and the vendored XCFramework |
-| `android/` | Gradle, CMake, the Kotlin asset reader, the JNI entry |
-| `nitrogen/generated/` | nitrogen output, committed |
+| `init(options)` | Load bundled data and initialize the module judge |
+| `judge(text)` | Check a message synchronously |
+| `ready()` | Report whether the module judge is ready |
+| `close()` | Release the module judge |
+| `createJudge(options)` | Build an independent judge |
 
-## Verification status
+The options require a nonempty `locales` array.
+`detectLanguage` defaults to `true`.
+`grawlix` defaults to `false`.
+Native loaders ignore `assets` and read the app bundle.
 
-Verified in this repository: nitrogen generates the specs, the Rust archives
-build for every target, the C++ compiles against the generated headers and
-Nitro's headers, and the TypeScript compiles. Not verified: an iOS or Android
-application build, which needs an example app.
+Use `id` for Indonesian and `ms` for Malay.
+Both need the `ms` data files.
+See [the locale list](../packs/README.md#locales).
+
+Results contain `safe`, `score`, `locale`, and `grawlix`.
+The score is ordinal, between 0 and 1.
+It is not a probability.
+
+Before initialization and after closure, the module judge returns a safe verdict.
+Independent judges throw `BLASPHEM_CLOSED` after closure.
+See [the public exports](src/index.ts) and [shared contract](../core/src/contract.ts).
+
+## Asset errors
+
+Initialization rejects missing files, unsupported locales, and invalid data.
+The error carries a `BLASPHEM_*` code.
+Pack digests must match `manifest.json`.
+See [the shared error codes](../core/src/errors.ts).
+
+## Web support
+
+The browser export forwards to the optional `blasphem` peer.
+Install that package when the application targets the web.
+Configure its [browser assets and CSP](../blasphem/README.md#browser-assets).
+The native bundle setup does not provide web assets.
+
+## Build from source
+
+Install the [development tools](../../CONTRIBUTING.md#set-up), Xcode, and the required Rust targets:
+
+```sh
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+```
+
+Run from the repository root:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --filter @blasphem/packs run build
+pnpm --filter @blasphem/react-native run nitrogen
+pnpm --filter @blasphem/react-native run build:rust
+pnpm --filter @blasphem/react-native run build
+```
+
+Link `packages/react-native` and `packages/packs` into the consuming application.
+Install its Nitro peer and copy the language data.
+Run CocoaPods and rebuild the app.
+
+The TypeScript check is:
+
+```sh
+pnpm --filter @blasphem/react-native run check
+```
+
+Package compilation does not verify native autolinking or device behavior.
+Check initialization and judging in the consuming iOS and Android applications.
+
+[Contribute](../../CONTRIBUTING.md)
+
+## License
+
+Code uses [Apache-2.0](../../LICENSE).
+Language data retains the terms recorded in [NOTICE](../../NOTICE).

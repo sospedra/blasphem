@@ -5,6 +5,8 @@
 /packages/blasphem/dist/
 /packages/blasphem/node_modules/
 /packages/blasphem/*.tgz
+# Distribution notices are copied from the root NOTICE during packaging.
+/packages/**/NOTICE
 node_modules/
 .turbo/
 /apps/web/dist/
