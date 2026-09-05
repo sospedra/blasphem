@@ -110,8 +110,7 @@ go run ./example ../../resources/packs
 Rebuild the embedded engine from the repository root after Rust changes:
 
 ```sh
-cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
-cp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
+node packages/go/scripts/build-wasm.mjs
 ```
 
 Verify the package from `packages/go`:

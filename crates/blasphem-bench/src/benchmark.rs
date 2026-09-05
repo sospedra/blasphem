@@ -147,7 +147,7 @@ pub fn run_benchmark(
 
     Ok(BenchmarkEvidence {
         schema_version: 1,
-        evidence_status: "experimental".to_owned(),
+        evidence_status: "measured".to_owned(),
         computer: computer.to_owned(),
         rust_version: rust_version.to_owned(),
         target_triple: target_triple.to_owned(),

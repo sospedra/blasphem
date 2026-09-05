@@ -18,8 +18,7 @@ import (
 // engineWasm is crates/blasphem-ffi compiled for wasm32-unknown-unknown. It
 // carries no packs. Rebuild it at the repository root after a Rust change:
 //
-//	cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
-//	cp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/
+//	node packages/go/scripts/build-wasm.mjs
 //
 // CI rebuilds it and fails when the bytes differ from this file.
 //

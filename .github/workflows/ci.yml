@@ -49,9 +49,7 @@ jobs:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
       - name: Verify the Go engine matches source
-        run: |
-          cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
-          cmp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
+        run: node packages/go/scripts/build-wasm.mjs --check
 
       - name: Verify canonical packs
         run: node scripts/generate-packs.mjs --check
@@ -70,7 +68,7 @@ jobs:
 
       - name: Read the Playwright version
         id: playwright
-        run: echo "version=$(pnpm --filter blasphem exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+        run: node -p "'version=' + require('./packages/javascript/node_modules/playwright/package.json').version" >> "$GITHUB_OUTPUT"
 
       - name: Cache Playwright browsers
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
@@ -250,9 +248,7 @@ jobs:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
       - name: Verify the Go engine matches source
-        run: |
-          cargo build --release --locked -p blasphem-ffi --target wasm32-unknown-unknown
-          cmp target/wasm32-unknown-unknown/release/blasphem_ffi.wasm packages/go/blasphem_ffi.wasm
+        run: node packages/go/scripts/build-wasm.mjs --check
 
       - name: Verify the corpus
         run: |

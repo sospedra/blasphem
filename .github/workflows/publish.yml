@@ -1,11 +1,12 @@
-# Publishes what `release.yml` built. cargo-dist owns the GitHub Release and the
-# standalone binaries; this workflow owns npm, PyPI, the Go module tag, the
-# Swift distribution repository, and Maven Central.
+# Publishes npm packages and the Go module tag.
+# cargo-dist owns the GitHub Release and the standalone binaries.
+# Python, Swift, and Android publication and registry consumer checks are paused.
+# Builds stay enabled. The !always() conditions disable paused jobs and steps.
 #
-# It starts from the Release run, not from the tag, so a failed build never
-# reaches a registry. npm, PyPI, and Go authenticate over OIDC. Maven Central
-# and the Swift repository hold five repository secrets: MAVEN_CENTRAL_USERNAME,
-# MAVEN_CENTRAL_PASSWORD, SIGNING_KEY, SIGNING_PASSWORD, BLASPHEM_SWIFT_DEPLOY_KEY.
+# npm authenticates over OIDC. Go pushes its module tag with GITHUB_TOKEN.
+# Paused publication steps retain their configuration for later use: PyPI OIDC,
+# MAVEN_CENTRAL_USERNAME, MAVEN_CENTRAL_PASSWORD, SIGNING_KEY, SIGNING_PASSWORD,
+# and BLASPHEM_SWIFT_DEPLOY_KEY.
 name: Publish
 
 on:
@@ -15,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "The release tag to publish, for example v0.1.0"
+        description: "The release tag to publish, for example v1.0.0"
         required: true
         type: string
 
@@ -229,7 +230,7 @@ jobs:
           cache: pnpm
 
       - name: Add the mobile Rust targets
-        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
       - name: Cache cargo
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
@@ -401,6 +402,8 @@ jobs:
 
   pypi:
     name: pypi
+    # Pause publication only. Wheel and source-distribution builds stay enabled.
+    if: ${{ !always() }}
     needs: [plan, wheels, sdists]
     runs-on: ubuntu-24.04
     permissions:
@@ -543,7 +546,11 @@ jobs:
       - name: Build the XCFramework
         run: node packages/apple/scripts/xcframework.mjs
 
+      - name: Build the local Swift package
+        run: swift build --package-path packages/apple
+
       - name: Upload the XCFramework to the Release
+        if: ${{ !always() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.plan.outputs.tag }} packages/apple/BlasphemFFI.xcframework.zip --clobber
@@ -553,6 +560,7 @@ jobs:
         run: echo "sum=$(swift package compute-checksum packages/apple/BlasphemFFI.xcframework.zip)" >> "$GITHUB_OUTPUT"
 
       - name: Install the deploy key
+        if: ${{ !always() }}
         env:
           DEPLOY_KEY: ${{ secrets.BLASPHEM_SWIFT_DEPLOY_KEY }}
         run: |
@@ -564,6 +572,7 @@ jobs:
           echo "GIT_SSH_COMMAND=ssh -i $HOME/.ssh/blasphem_swift -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
 
       - name: Publish sospedra/blasphem-swift
+        if: ${{ !always() }}
         run: |
           node packages/apple/scripts/distribution.mjs \
             --version ${{ needs.plan.outputs.version }} \
@@ -643,6 +652,7 @@ jobs:
           script: ./gradlew :engine:connectedDebugAndroidTest --no-daemon
 
       - name: Publish to the Central Portal
+        if: ${{ !always() }}
         working-directory: packages/android
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -653,7 +663,7 @@ jobs:
 
   verify:
     name: verify (${{ matrix.runner }})
-    needs: [plan, npm, pypi, swift, android]
+    needs: [plan, npm]
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -670,6 +680,7 @@ jobs:
           node-version-file: source/.tool-versions
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        if: ${{ !always() }}
         with:
           python-version-file: source/.tool-versions
 
@@ -692,6 +703,7 @@ jobs:
           fi
 
       - name: Judge through the published wheel
+        if: ${{ !always() }}
         shell: bash
         # blasphem finds the packs through the installed blasphem-packs, so this
         # checks that the two distributions work together.
@@ -703,7 +715,7 @@ jobs:
           python -c "import blasphem; blasphem.init(['en']); v = blasphem.judge('you are a stupid loser'); print(v); assert v.safe is False, v"
 
       - name: Judge through the published Swift package
-        if: matrix.runner == 'macos-15'
+        if: ${{ !always() }}
         env:
           VERSION: ${{ needs.plan.outputs.version }}
         run: |
@@ -738,13 +750,13 @@ jobs:
           cd "$scratch" && swift run Scratch
 
       - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
-        if: matrix.runner == 'ubuntu-24.04'
+        if: ${{ !always() }}
         with:
           distribution: temurin
           java-version-file: source/.tool-versions
 
       - name: Resolve the published Android artifacts
-        if: matrix.runner == 'ubuntu-24.04'
+        if: ${{ !always() }}
         # Central publishes within minutes but promises no bound; the poll stops
         # at 30 minutes and a rerun of this job is the remedy.
         env:

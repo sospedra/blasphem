@@ -391,7 +391,7 @@ pub fn run_auto_validation(
 
     Ok(AutoValidationEvidence {
         schema_version: 1,
-        evidence_status: "experimental".to_owned(),
+        evidence_status: "measured".to_owned(),
         computer: config.computer.clone(),
         rust_version: config.rust_version.clone(),
         target_triple: config.target_triple.clone(),

@@ -187,7 +187,7 @@ pub fn collect_size_evidence(
 
     Ok(SizeEvidence {
         schema_version: 1,
-        evidence_status: "experimental".to_owned(),
+        evidence_status: "measured".to_owned(),
         target_triple: target_triple.to_owned(),
         binary,
         artifacts,

@@ -1,4 +1,4 @@
-//! Experimental performance and size evidence tools.
+//! Performance and size evidence tools.
 
 use std::{
     collections::BTreeSet,

@@ -1,4 +1,4 @@
-//! Experimental multilingual toxicity detector.
+//! Multilingual toxicity detector.
 //!
 //! Blasphem hashes word and character n-grams into sparse feature vectors.
 //! A linear classifier trained offline scores them with 16-bit weights.

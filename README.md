@@ -1,7 +1,7 @@
 # † Blasphem
 
 Blasphem checks text for toxicity before someone sends it.
-It provides an experimental warning for [16 languages](packages/javascript-packs/README.md#locales).
+It provides a warning for [16 languages](packages/javascript-packs/README.md#locales).
 Use `id` for Indonesian and `ms` for Malay.
 
 Blasphem hashes word and character n-grams into sparse feature vectors.

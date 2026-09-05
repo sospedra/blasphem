@@ -1,7 +1,7 @@
 [workspace.package]
 # The one version every crate, npm package, wheel, and jar in this repository carries.
 # `blasphem-train sync-versions` writes the mirrors; a test fails when one drifts.
-version = "0.1.0"
+version = "1.0.0"
 
 [workspace]
 members = [

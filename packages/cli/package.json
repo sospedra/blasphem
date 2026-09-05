@@ -1,6 +1,6 @@
 {
   "name": "@blasphem/cli",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Builds the blasphem command-line binary and the @blasphem/cli-<os>-<cpu> platform packages. Never published itself. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",

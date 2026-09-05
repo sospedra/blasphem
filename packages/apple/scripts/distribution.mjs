@@ -13,8 +13,8 @@ import { canonicalPacks, copyPack, loadPacks } from "../../../scripts/packs.mjs"
  * --repo it clones the distribution repository, replaces its tree, commits
  * `Publish <version>`, pushes main, and pushes the tag v<version>.
  *
- *   node scripts/distribution.mjs --version 0.1.0 --checksum <sha256> --output /tmp/blasphem-swift
- *   node scripts/distribution.mjs --version 0.1.0 --checksum <sha256> --repo git@github.com:sospedra/blasphem-swift.git
+ *   node scripts/distribution.mjs --version 1.0.0 --checksum <sha256> --output /tmp/blasphem-swift
+ *   node scripts/distribution.mjs --version 1.0.0 --checksum <sha256> --repo git@github.com:sospedra/blasphem-swift.git
  */
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const projectRoot = resolve(packageRoot, "../..");

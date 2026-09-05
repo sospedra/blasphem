@@ -1,6 +1,6 @@
 {
   "name": "@blasphem/cli-win32-x64-msvc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "blasphem command-line binary for win32-x64-msvc, with the language data embedded. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0 AND CC-BY-NC-SA-4.0",
   "repository": {

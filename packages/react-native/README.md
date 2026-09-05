@@ -39,7 +39,7 @@ For Expo applications, use a development build with native projects and bundled 
 | JavaScript | React Native and `react-native-nitro-modules` peers |
 
 The current iOS archive has no Intel simulator slice.
-Android archives cover `arm64-v8a`, `armeabi-v7a`, and `x86_64`.
+Android archives cover `arm64-v8a`, `armeabi-v7a`, `x86`, and `x86_64`.
 The package manifest records development versions.
 It does not define a tested React Native version range.
 
@@ -127,7 +127,7 @@ Install the [development tools](../../CONTRIBUTING.md#set-up), Xcode, and the re
 
 ```sh
 rustup target add aarch64-apple-ios aarch64-apple-ios-sim
-rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 ```
 
 Run from the repository root:

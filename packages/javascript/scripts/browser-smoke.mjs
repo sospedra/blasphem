@@ -226,7 +226,7 @@ const englishRouted = packRecords.filter((record) => /\/en\.(pack|detect)$/.test
 const status = engines.length === ENGINES.length && engines.every((engine) => engine.status === "passed") ? "passed" : "failed";
 const report = {
   schema_version: SCHEMA_VERSION,
-  evidence_status: "experimental",
+  evidence_status: "measured",
   execution_environment: "actual_browser",
   status,
   package: { name: manifest.name, version: manifest.version, entry: "dist/browser.js" },

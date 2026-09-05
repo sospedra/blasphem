@@ -18,7 +18,7 @@ use serde::Serialize;
 #[command(
     name = "blasphem",
     version,
-    about = "Experimental multilingual lexical toxicity detector"
+    about = "Multilingual lexical toxicity detector"
 )]
 struct Cli {
     #[command(subcommand)]

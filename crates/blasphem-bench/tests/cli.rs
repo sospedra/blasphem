@@ -3,7 +3,7 @@ use std::{fs, path::Path, process::Command};
 use blasphem_bench::SizeEvidence;
 
 #[test]
-fn size_command_writes_canonical_experimental_evidence() {
+fn size_command_writes_canonical_measured_evidence() {
     let project_root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
     let temporary = tempfile::tempdir().expect("temporary directory");
     let binary = temporary.path().join("blasphem");
@@ -29,7 +29,7 @@ fn size_command_writes_canonical_experimental_evidence() {
     let bytes = fs::read(&output).expect("size evidence");
     assert_ne!(bytes.last(), Some(&b'\n'));
     let evidence: SizeEvidence = serde_json::from_slice(&bytes).expect("valid size evidence");
-    assert_eq!(evidence.evidence_status, "experimental");
+    assert_eq!(evidence.evidence_status, "measured");
     assert_eq!(evidence.artifacts.len(), 15);
     assert_eq!(evidence.lexicon.len(), 15);
 }

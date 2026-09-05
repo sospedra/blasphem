@@ -1,6 +1,6 @@
 {
   "name": "@blasphem/packs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Language data for blasphem: toxicity detection in 16 languages, optional language identification, and a SHA-256 integrity manifest. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "CC-BY-NC-SA-4.0",
   "type": "module",

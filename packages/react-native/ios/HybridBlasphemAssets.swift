@@ -13,7 +13,7 @@ class HybridBlasphemAssets: HybridBlasphemAssetsSpec {
         throw RuntimeError.error(withMessage: "BLASPHEM_FETCH_FAILED: \(name) is not in the app bundle")
       }
       let data = try Data(contentsOf: url)
-      return ArrayBuffer.copy(data: data)
+      return try ArrayBuffer.copy(data: data)
     }
   }
 }

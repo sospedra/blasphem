@@ -9,10 +9,7 @@ use clap::{Parser, Subcommand};
 use serde::Serialize;
 
 #[derive(Debug, Parser)]
-#[command(
-    name = "blasphem-bench",
-    about = "Experimental blasphem runtime evidence"
-)]
+#[command(name = "blasphem-bench", about = "Blasphem runtime evidence")]
 struct Cli {
     #[command(subcommand)]
     command: EvidenceCommand,

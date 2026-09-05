@@ -37,7 +37,7 @@ Add the BOM, engine, and language data in `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation(platform("me.sospedra.blasphem:blasphem-bom:0.1.0"))
+    implementation(platform("me.sospedra.blasphem:blasphem-bom:1.0.0"))
     implementation("me.sospedra.blasphem:blasphem")
     implementation("me.sospedra.blasphem:blasphem-pack-en")
     implementation("me.sospedra.blasphem:blasphem-pack-es")

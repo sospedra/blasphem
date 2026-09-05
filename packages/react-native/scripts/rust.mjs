@@ -22,6 +22,7 @@ const IOS = [
 const ANDROID = [
   { triple: "aarch64-linux-android", abi: "arm64-v8a" },
   { triple: "armv7-linux-androideabi", abi: "armeabi-v7a" },
+  { triple: "i686-linux-android", abi: "x86" },
   { triple: "x86_64-linux-android", abi: "x86_64" },
 ];
 

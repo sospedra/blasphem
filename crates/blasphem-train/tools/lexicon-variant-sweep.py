@@ -15,7 +15,7 @@ This script only proposes candidates and reports corpus evidence for a
 human to read; it makes no decisions and writes nothing. Every candidate
 still needs an individual read of its corpus hits before promotion, the
 same discipline as the rest of this project's lexicon construction --
-see `.superpowers/sdd/2026-09-03-clean-room-resources/lexicon/task-3-PT-report.md`
+see `.superpowers/sdd/2026-09-03-clean-room-lexicon/task-3-PT-report.md`
 for the worked example, including several rejected candidates (`feminista`,
 the naive feminine of the coined mockery term `feministo`, is the ordinary
 neutral word "feminist" and must not be added) that a human catches and a
