@@ -17,7 +17,7 @@ sha2.workspace = true
 thiserror.workspace = true
 blasphem = { path = "../blasphem" }
 
-[target.'cfg(target_os = "macos")'.dependencies]
+[target.'cfg(any(target_os = "macos", target_os = "linux"))'.dependencies]
 libc = "=0.2.189"
 
 [dev-dependencies]

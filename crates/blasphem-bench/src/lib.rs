@@ -129,6 +129,8 @@ pub enum BenchmarkError {
     PeakRss(std::io::Error),
     #[error("peak resident memory was negative")]
     NegativePeakRss,
+    #[error("peak resident memory byte count overflow")]
+    PeakRssOverflow,
     #[error("peak resident memory is unsupported on this target")]
     UnsupportedPeakRssTarget,
 }

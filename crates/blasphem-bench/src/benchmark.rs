@@ -436,7 +436,7 @@ fn lexicon_path(root: &Path, language: Language) -> PathBuf {
 /// # Errors
 ///
 /// Returns an error when the operating system cannot provide the value.
-#[cfg(target_os = "macos")]
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 pub fn peak_rss_bytes() -> Result<u64, BenchmarkError> {
     let mut usage = std::mem::MaybeUninit::<libc::rusage>::uninit();
 
@@ -448,7 +448,11 @@ pub fn peak_rss_bytes() -> Result<u64, BenchmarkError> {
 
     // SAFETY: A successful getrusage call initialized the complete value.
     let usage = unsafe { usage.assume_init() };
-    u64::try_from(usage.ru_maxrss).map_err(|_| BenchmarkError::NegativePeakRss)
+    let units = u64::try_from(usage.ru_maxrss).map_err(|_| BenchmarkError::NegativePeakRss)?;
+    let bytes_per_unit = if cfg!(target_os = "linux") { 1024 } else { 1 };
+    units
+        .checked_mul(bytes_per_unit)
+        .ok_or(BenchmarkError::PeakRssOverflow)
 }
 
 /// Reports that peak resident memory is unavailable on this target.
@@ -456,7 +460,7 @@ pub fn peak_rss_bytes() -> Result<u64, BenchmarkError> {
 /// # Errors
 ///
 /// Always returns the unsupported-target error.
-#[cfg(not(target_os = "macos"))]
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 pub fn peak_rss_bytes() -> Result<u64, BenchmarkError> {
     Err(BenchmarkError::UnsupportedPeakRssTarget)
 }

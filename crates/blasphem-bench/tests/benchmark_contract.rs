@@ -60,8 +60,11 @@ fn fixture_latency_gates_use_strict_length_specific_limits() {
     ));
 }
 
-#[cfg(target_os = "macos")]
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 #[test]
-fn macos_peak_rss_reports_concrete_bytes() {
-    assert!(blasphem_bench::peak_rss_bytes().expect("peak RSS") > 0);
+fn peak_rss_reports_allocated_bytes() {
+    let allocation = vec![1_u8; 8 * 1024 * 1024];
+    std::hint::black_box(&allocation);
+    let peak_rss = blasphem_bench::peak_rss_bytes().expect("peak RSS");
+    assert!(peak_rss >= u64::try_from(allocation.len()).expect("allocation size"));
 }
