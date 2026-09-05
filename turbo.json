@@ -57,7 +57,8 @@
         "BLASPHEM_WASM_PREBUILT"
       ],
       "dependsOn": [
-        "@blasphem/core#check"
+        "@blasphem/core#check",
+        "@blasphem/packs#build"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
