@@ -63,6 +63,8 @@
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/NOTICE",
+        "$TURBO_ROOT$/scripts/copy-notice.mjs",
         "$TURBO_ROOT$/Cargo.toml",
         "$TURBO_ROOT$/Cargo.lock",
         "$TURBO_ROOT$/rust-toolchain.toml",
@@ -73,6 +75,7 @@
       ],
       "outputs": [
         "dist/**",
+        "NOTICE",
         "src/blasphem.js",
         "src/blasphem.d.ts",
         "src/blasphem_bg.wasm",
