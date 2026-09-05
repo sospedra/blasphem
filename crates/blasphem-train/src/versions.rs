@@ -67,12 +67,20 @@ fn mirrors(root: &Path) -> Result<Vec<Mirror>, VersionsError> {
             pattern: toml(),
         },
         Mirror {
+            path: root.join("packages/python/pyproject.toml"),
+            pattern: Regex::new(r#"blasphem-packs==([^"]+)"#).expect("valid regex"),
+        },
+        Mirror {
             path: root.join("packages/python-packs/pyproject.toml"),
             pattern: toml(),
         },
         Mirror {
             path: root.join("packages/android/gradle.properties"),
             pattern: Regex::new(r"(?m)^VERSION_NAME=(.+)$").expect("valid regex"),
+        },
+        Mirror {
+            path: root.join("packages/apple/Sources/Blasphem/Version.generated.swift"),
+            pattern: Regex::new(r#"let blasphemEngineVersion = "([^"]+)""#).expect("valid regex"),
         },
     ];
     for package in [

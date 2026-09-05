@@ -26,7 +26,8 @@
       "browser": "./dist/web.js",
       "default": "./dist/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./app.plugin": "./app.plugin.cjs"
   },
   "files": [
     "dist",
@@ -35,6 +36,8 @@
     "android",
     "nitrogen/generated",
     "nitro.json",
+    "app.plugin.cjs",
+    "scripts/bundle-assets.cjs",
     "*.podspec",
     "README.md",
     "NOTICE"
@@ -46,20 +49,25 @@
     "nitrogen": "nitrogen",
     "build:rust": "node scripts/rust.mjs"
   },
+  "dependencies": {
+    "@blasphem/packs": "workspace:*",
+    "blasphem": "workspace:*"
+  },
   "peerDependencies": {
-    "blasphem": "workspace:*",
-    "react-native": "0.87.1",
+    "@expo/config-plugins": "57.0.9",
+    "react-native": "0.86.3",
     "react-native-nitro-modules": "0.37.1"
   },
   "peerDependenciesMeta": {
-    "blasphem": {
+    "@expo/config-plugins": {
       "optional": true
     }
   },
   "devDependencies": {
+    "@expo/config-plugins": "57.0.9",
     "@types/node": "24.10.1",
     "nitrogen": "0.37.1",
-    "react-native": "0.87.1",
+    "react-native": "0.86.3",
     "react-native-nitro-modules": "0.37.1",
     "typescript": "5.9.3"
   }

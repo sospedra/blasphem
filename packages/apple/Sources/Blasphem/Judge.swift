@@ -17,8 +17,8 @@ public final class Judge: @unchecked Sendable {
     ///
     /// - Parameters:
     ///   - locales: lowercase codes such as `["en", "es"]`, `id` (Indonesian), or `ms` (Malay). Empty throws.
-    ///   - detectLanguage: route by detected language. Every locale then needs its `BlasphemDetect<CODE>` product.
-    ///   - grawlix: populate `Judgement.grawlix`.
+    ///   - detectLanguage: route by detected language. Every locale then needs its detection slice.
+    ///   - grawlix: populate `Judgement.grawlix` for unsafe verdicts.
     ///   - packsDirectory: read `<code>.pack` and `<code>.detect` from this folder instead of the app bundle.
     public init(
         locales requested: [String],

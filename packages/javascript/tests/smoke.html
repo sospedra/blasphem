@@ -41,17 +41,17 @@
         report.split_assets_passed = split.judge("eres un idiota").safe === false && split.locales.join() === "es";
         split.close();
 
-        // Omitting assets means the jsDelivr preset: exact pinned versions, wasm and packs from their own npm packages.
         // The test runner routes cdn.jsdelivr.net to local files, so this checks URL construction, not the CDN.
         const { VERSION } = await import("../dist/browser.js");
         const beforeCdn = performance.getEntriesByType("resource").length;
-        const cdn = await createJudge({ locales: ["en"] });
+        const cdn = await createJudge({ locales: ["en"], assets: "remote" });
         await settle();
         const cdnRequests = performance.getEntriesByType("resource").slice(beforeCdn).map((entry) => entry.name).sort();
         report.jsdelivr_requests = cdnRequests;
         const packsBase = `https://cdn.jsdelivr.net/npm/@blasphem/packs@${VERSION}/dist`;
+        const wasmUrl = `https://cdn.jsdelivr.net/npm/blasphem@${VERSION}/dist/blasphem_bg.wasm`;
         report.jsdelivr_passed = cdn.judge("you are a stupid loser").safe === false
-          && JSON.stringify(cdnRequests) === JSON.stringify([`${packsBase}/en.detect`, `${packsBase}/en.pack`, `${packsBase}/manifest.json`]);
+          && JSON.stringify(cdnRequests) === JSON.stringify([`${packsBase}/en.detect`, `${packsBase}/en.pack`, `${packsBase}/manifest.json`, wasmUrl].sort());
         cdn.close();
         const explicitCdn = await createJudge({ locales: ["en"], assets: "jsdelivr" });
         // Two features are below the router's reliability floor, so a full sentence is needed to route.

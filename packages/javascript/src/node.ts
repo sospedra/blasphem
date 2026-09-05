@@ -4,8 +4,9 @@ import { fileURLToPath } from "node:url";
 import { createJudgeWith, createSingleton, fail, resolvePacksDirectory, type Judge, type JudgeOptions, type Transport } from "./core/index.js";
 import { buildNativeEngine, loadNative } from "./native.js";
 import { buildWasmEngine } from "./wasm-engine.js";
+import { nodeOptions } from "./node-config.js";
 
-export type { AssetBases, Judge, JudgeOptions, Judgement } from "./core/index.js";
+export type { AssetBases, Judge, JudgeOptions, InitOptions, Judgement } from "./core/index.js";
 export { JSDELIVR, LOCALES, jsdelivrBases, type LocaleCode } from "./core/index.js";
 export { VERSION } from "./version.generated.js";
 
@@ -22,7 +23,7 @@ async function installedPacks(): Promise<PackFiles> {
   try {
     return (await import("@blasphem/packs/files")) as PackFiles;
   } catch (error) {
-    throw fail("BLASPHEM_ASSETS_REQUIRED", `install @blasphem/packs or pass assets as a directory: ${error instanceof Error ? error.message : String(error)}`);
+    throw fail("BLASPHEM_ASSETS_REQUIRED", `The internal data dependency is unavailable: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -68,12 +69,12 @@ function nodeTransport(directory: string | null): Transport {
  * `@blasphem/packs`, or from `options.assets` when it names a directory, and
  * runs the native binary for this platform when its package is installed.
  */
-export function createJudge(options: JudgeOptions): Promise<Judge> {
+export async function createJudge(options: JudgeOptions): Promise<Judge> {
   return createJudgeWith(nodeTransport(resolvePacksDirectory(options?.assets)), options);
 }
 
 // The module-level judge: `init` once, `judge` on every keystroke.
-const singleton = createSingleton(createJudge);
+const singleton = createSingleton(async (options) => createJudge(await nodeOptions(options)));
 export const init = singleton.init;
 export const judge = singleton.judge;
 export const ready = singleton.ready;

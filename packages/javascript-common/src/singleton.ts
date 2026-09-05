@@ -1,4 +1,4 @@
-import type { Judge, JudgeOptions, Judgement } from "./contract.js";
+import type { Judge, InitOptions, Judgement } from "./contract.js";
 
 /** The verdict for text nothing judges: the nudge fails open. */
 export function failOpen(): Judgement {
@@ -13,7 +13,7 @@ export interface Singleton {
    * after the new one is ready, so `judge` never has a gap. Rejects with the
    * coded errors of `createJudge` and leaves the previous judge in place.
    */
-  init(options: JudgeOptions): Promise<void>;
+  init(options?: InitOptions): Promise<void>;
   /** Synchronous. Before `init` resolves, or after `close`, returns the fail-open verdict. Never throws. */
   judge(text: string): Judgement;
   /** True once `init` has resolved and until `close`. */
@@ -22,22 +22,25 @@ export interface Singleton {
   close(): void;
 }
 
-function keyOf(options: JudgeOptions): string {
-  const locales = Array.isArray(options?.locales) ? [...options.locales].map(String).sort() : null;
-  return JSON.stringify({ locales, assets: options?.assets ?? null, detectLanguage: options?.detectLanguage ?? true, grawlix: options?.grawlix ?? false });
+function keyOf(options: InitOptions): string {
+  const locales = Array.isArray(options.locales) ? [...options.locales].map(String).sort() : options.locales;
+  return JSON.stringify({ locales, assets: options.assets ?? null, detectLanguage: options.detectLanguage ?? null, grawlix: options.grawlix ?? false });
 }
 
 /** Wraps a runtime's `createJudge` in module state. Every function is a closure, so callers may destructure them. */
-export function createSingleton(create: (options: JudgeOptions) => Promise<Judge>): Singleton {
+export function createSingleton(create: (options: InitOptions) => Promise<Judge>): Singleton {
   let current: Judge | null = null;
   let currentKey: string | null = null;
   let pending: { key: string; promise: Promise<void> } | null = null;
 
-  const init = (options: JudgeOptions): Promise<void> => {
+  const init = (options: InitOptions = {}): Promise<void> => {
     const key = keyOf(options);
-    if (current !== null && currentKey === key) return Promise.resolve();
+    if (current !== null && currentKey === key) {
+      pending = null;
+      return Promise.resolve();
+    }
     if (pending !== null && pending.key === key) return pending.promise;
-    const promise: Promise<void> = create(options).then(
+    const promise: Promise<void> = Promise.resolve().then(() => create(options)).then(
       (judge) => {
         // A newer init or a close superseded this one.
         if (pending?.promise !== promise) {

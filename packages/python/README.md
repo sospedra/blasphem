@@ -16,11 +16,11 @@ Use [the source build](#build-from-source) for the current checkout.
 The release installation command is:
 
 ```sh
-python -m pip install blasphem blasphem-packs
+python -m pip install blasphem
 ```
 
-`blasphem` contains the engine.
-`blasphem-packs` supplies the language data.
+The runtime resolves its exact internal data dependency automatically.
+Installed wheels contain all data. Initialization loads only selected files.
 
 ## Quick start
 
@@ -66,13 +66,16 @@ with Judge(["en"], detect_language=False) as detector:
 
 | Parameter | Default | Meaning |
 | --- | --- | --- |
-| `locales` | Required | Nonempty iterable of locale codes |
-| `assets` | `None` | Pack directory, otherwise installed `blasphem_packs` |
+| `locales` | Required | Nonempty iterable of locale codes or `"all"` |
+| `assets` | `None` | Local directory, otherwise automatically installed data |
 | `detect_language` | `True` | Route to the detected language |
-| `grawlix` | `False` | Return masked text |
+| `grawlix` | `False` | Return masked text for unsafe verdicts |
 
 The options after `locales` are keyword-only.
 `assets` accepts a string or `pathlib.Path`.
+`"bundled"` selects installed data. Remote delivery modes and URLs are rejected.
+`"all"` resolves every locale in this engine release.
+Unknown codes and empty selections fail. Aliases normalize and deduplicate.
 With detection disabled, the judge returns the highest score across loaded locales.
 
 Use `id` for Indonesian and `ms` for Malay.
@@ -87,7 +90,7 @@ See [all 16 supported languages](../javascript-packs/README.md#locales).
 | `safe` | `bool` | No warning is due |
 | `score` | `float` | Ordinal value from 0 to 1 |
 | `locale` | `str \| None` | Selected model profile |
-| `grawlix` | `str \| None` | Masked text when requested |
+| `grawlix` | `str \| None` | Masked text for unsafe verdicts when requested, otherwise `None` |
 
 The score is not a probability.
 Unrouted text returns a safe verdict with zero score.
@@ -96,6 +99,21 @@ Unrouted text returns a safe verdict with zero score.
 Its `code` identifies locale, asset, digest, or format failures.
 An independent judge raises `BLASPHEM_CLOSED` after closure.
 See [the public implementation](python/blasphem/__init__.py) for all codes.
+
+## Reduced deployments
+
+```sh
+python -m blasphem export --locales en,es --output ./vendor
+```
+
+The output includes the Python package, native extension, selected data, and required notices.
+Use `--no-detect` to omit language detection data.
+Add `vendor` to Python's import path or copy its `blasphem` directory into your application.
+The exported runtime needs no complete data package or site-packages installation.
+`deployment.json` records its version, platform, and Python compatibility.
+The native extension retains its operating-system, CPU, and Python ABI requirements.
+Explicit `"all"` fails on reduced exports. Failed initialization preserves the previous judge.
+Existing output directories are rejected.
 
 ## Build from source
 
@@ -109,7 +127,7 @@ python3 packages/python-packs/sync_packs.py
 Then run from `packages/python`:
 
 ```sh
-cp ../../NOTICE NOTICE
+cp ../../NOTICE ../../LICENSE .
 uv venv .venv
 uv pip install --python .venv/bin/python maturin ../python-packs
 env VIRTUAL_ENV="$PWD/.venv" .venv/bin/maturin develop --release

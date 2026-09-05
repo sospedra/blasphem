@@ -30,6 +30,14 @@ namespace margelo::nitro::blasphem::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void()>
+  Func_void create_Func_void(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = BlasphemReactNative::Func_void::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)]() mutable -> void {
+      swiftClosure.call();
+    };
+  }
+
   // pragma MARK: std::shared_ptr<HybridBlasphemAssetsSpec>
   std::shared_ptr<HybridBlasphemAssetsSpec> create_std__shared_ptr_HybridBlasphemAssetsSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     BlasphemReactNative::HybridBlasphemAssetsSpec_cxx swiftPart = BlasphemReactNative::HybridBlasphemAssetsSpec_cxx::fromUnsafe(swiftUnsafePointer);

@@ -13,11 +13,13 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-
+// Forward declaration of `DownloadIntegrity` to properly resolve imports.
+namespace margelo::nitro::blasphem { struct DownloadIntegrity; }
 
 #include <NitroModules/ArrayBuffer.hpp>
 #include <NitroModules/Promise.hpp>
 #include <string>
+#include "DownloadIntegrity.hpp"
 
 namespace margelo::nitro::blasphem {
 
@@ -51,6 +53,9 @@ namespace margelo::nitro::blasphem {
     public:
       // Methods
       virtual std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readBundled(const std::string& name) = 0;
+      virtual std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readManifest(const std::string& url, bool refresh) = 0;
+      virtual std::shared_ptr<Promise<void>> commitManifest(const std::string& url, const std::shared_ptr<ArrayBuffer>& bytes) = 0;
+      virtual std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readDownloaded(const std::string& url, const DownloadIntegrity& expected) = 0;
 
     protected:
       // Hybrid Setup

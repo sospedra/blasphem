@@ -1,6 +1,6 @@
 # blasphem-packs
 
-Language data for the [Blasphem Python package](../python/README.md).
+Internal language data for the [Blasphem Python package](../python/README.md).
 This wheel contains the manifest, toxicity packs, and language-detection slices.
 Requires Python 3.10 or later.
 
@@ -12,10 +12,10 @@ Detection runs locally without neural networks or cloud inference.
 ## Installation
 
 The public PyPI release is pending.
-For published versions, install the matching engine and data versions:
+The runtime resolves the exact data version automatically:
 
 ```sh
-python -m pip install blasphem blasphem-packs
+python -m pip install blasphem
 ```
 
 For the current checkout, use [the source build](#build-from-source).

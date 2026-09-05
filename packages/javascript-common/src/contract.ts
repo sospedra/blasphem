@@ -2,33 +2,32 @@ import type { AssetBases } from "./assets.js";
 
 /** Options for one judge. `locales` is required. */
 export interface JudgeOptions {
-  /** Lowercase codes such as ["en", "es"], "id" (Indonesian), or "ms" (Malay). Empty throws. */
-  locales: string[];
+  /** Locale codes or every locale in this engine release. Empty arrays throw. */
+  locales: string[] | "all";
   /**
-   * Where the bytes come from. Browser: omitted means the jsDelivr npm CDN at
-   * this build's exact versions; a path serves the wasm and the packs from
-   * your origin; `{ wasm, packs }` splits them. Node: omitted means the
-   * installed `@blasphem/packs`; a string is a packs directory. React Native:
-   * ignored, packs come from the app bundle.
+   * Bundled by default. Remote clients accept "remote" and its "jsdelivr" alias.
+   * Advanced browser instances accept asset bases. Node accepts a local directory.
    */
   assets?: string | AssetBases;
-  /** Route by detected language. Defaults to true. */
+  /** Route by detected language. Native bundled assets inherit the bundle selection; otherwise defaults to true. */
   detectLanguage?: boolean;
-  /** Populate `grawlix` on the result. Defaults to false. */
+  /** Populate `grawlix` for unsafe verdicts. Defaults to false. */
   grawlix?: boolean;
 }
 
-/** One verdict for one message. */
-export interface Judgement {
-  /** True when no nudge is due. Unroutable text is safe; the nudge fails open. */
-  safe: boolean;
+/** Default initialization reads the application's build configuration. */
+export type InitOptions = Partial<JudgeOptions>;
+
+/** One verdict for one message. Safe verdicts never include masked text. */
+export type Judgement = {
   /** Ordinal risk from 0 through 1. Not a probability. */
   score: number;
   /** The locale that produced the score, or null. */
   locale: string | null;
-  /** The masked text when `grawlix` was requested, otherwise null. */
-  grawlix: string | null;
-}
+} & (
+  | { safe: true; grawlix: null }
+  | { safe: false; grawlix: string | null }
+);
 
 /** A judge built once and called on every keystroke. */
 export interface Judge {

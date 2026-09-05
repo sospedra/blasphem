@@ -15,6 +15,9 @@ namespace margelo::nitro::blasphem {
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridMethod("readBundled", &HybridBlasphemAssetsSpec::readBundled);
+      prototype.registerHybridMethod("readManifest", &HybridBlasphemAssetsSpec::readManifest);
+      prototype.registerHybridMethod("commitManifest", &HybridBlasphemAssetsSpec::commitManifest);
+      prototype.registerHybridMethod("readDownloaded", &HybridBlasphemAssetsSpec::readDownloaded);
     });
   }
 

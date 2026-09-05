@@ -27,7 +27,7 @@ export class BlasphemEngine {
      *
      * Returns an error only when the host rejects a property write.
      * @param {string} text
-     * @returns {any}
+     * @returns {Judgement}
      */
     judge(text) {
         try {

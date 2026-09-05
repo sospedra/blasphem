@@ -8,6 +8,7 @@ private val registryOrder: Map<String, Int> =
 
 /** Lowercases, resolves aliases, rejects unknown codes, and returns registry order without repeats. */
 internal fun normalizeLocales(requested: List<String>): List<String> {
+    if (requested.size == 1 && requested.single().trim().lowercase() == "all") return LOCALES.map { it.first }
     if (requested.isEmpty()) {
         throw BlasphemException(BlasphemException.Code.LOCALES_EMPTY, "pass at least one locale, such as listOf(\"en\")")
     }

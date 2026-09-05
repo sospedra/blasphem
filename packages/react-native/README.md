@@ -11,16 +11,20 @@ Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
-The public npm release is pending.
+These registry commands require the published `1.0.0` release.
 Use [the source build](#build-from-source) for the current checkout.
 
-The release installation command includes the Nitro peer dependency:
+Install the native module and its required Nitro peer:
 
 ```sh
-npm install @blasphem/react-native @blasphem/packs react-native-nitro-modules
+npm install @blasphem/react-native react-native-nitro-modules
 ```
 
-Run CocoaPods installation from your app's iOS directory:
+The library resolves its exact internal data dependency automatically.
+Development installations contain all data. Application bundles contain only selected data.
+Choose [bundled locales](#bundle-language-data) or [CDN downloads](#download-language-data).
+
+For bare React Native, run CocoaPods from the app's iOS directory:
 
 ```sh
 bundle exec pod install
@@ -28,7 +32,39 @@ bundle exec pod install
 
 Rebuild the native application after installation.
 This module requires a native build.
-For Expo applications, use a development build with native projects and bundled assets.
+Nitro remains required with either data source.
+
+## Expo
+
+This package targets Expo SDK 57, React Native 0.86.3, and Nitro 0.37.1.
+Expo SDK 57 requires iOS 16.4 or later.
+Use a development or production build. Expo Go cannot load this native module.
+
+```sh
+npx expo install @blasphem/react-native react-native-nitro-modules
+```
+
+Register the plugin in `app.json`:
+
+```json
+{
+  "expo": {
+    "plugins": ["@blasphem/react-native/app.plugin"]
+  }
+}
+```
+
+The plugin reads the `blasphem` selection from your application's `package.json`.
+It prepares the same assets used by CocoaPods and Gradle.
+`@expo/config-plugins` is an optional peer for Expo integration.
+Bare React Native applications do not need Expo packages.
+
+Build the native application after choosing a data source:
+
+```sh
+npx expo run:ios
+npx expo run:android
+```
 
 ## Requirements
 
@@ -36,42 +72,77 @@ For Expo applications, use a development build with native projects and bundled 
 | --- | --- |
 | iOS | iOS 15.1+, CocoaPods, arm64 device or simulator |
 | Android | API 24+, Android NDK, supported Rust archives |
-| JavaScript | React Native and `react-native-nitro-modules` peers |
+| JavaScript | React Native 0.86.3 and `react-native-nitro-modules` 0.37.1 peers |
 
 The current iOS archive has no Intel simulator slice.
 Android archives cover `arm64-v8a`, `armeabi-v7a`, `x86`, and `x86_64`.
-The package manifest records development versions.
-It does not define a tested React Native version range.
+The package manifest pins the supported peer versions.
 
 ## Bundle language data
 
-Copy files from `node_modules/@blasphem/packs/dist/` into your application:
+Select locales in your application's `package.json`:
 
-| Platform | Destination |
-| --- | --- |
-| iOS | A folder reference named `blasphem` in the app target |
-| Android | `android/app/src/main/assets/blasphem/` |
-
-For English and Spanish with detection, include:
-
-```text
-manifest.json
-en.pack
-en.detect
-es.pack
-es.detect
+```json
+{
+  "blasphem": {
+    "locales": ["en", "es"],
+    "assets": "bundled",
+    "detectLanguage": true
+  }
+}
 ```
 
-If detection is disabled, omit the `.detect` files.
-Keep the matching manifest.
-A manifest can list unused locales without requiring their files.
+CocoaPods and Gradle copy selected data automatically. Manual file copies are unnecessary.
+Only selected `.pack` files and their manifest enter the application binary.
+With detection enabled, the build also includes selected `.detect` files.
+`detectLanguage: false` omits detection files and becomes the bundled initialization default.
+Missing configuration, unknown locales, and empty arrays fail the build.
+Use `"locales": "all"` for every locale in the installed release.
+Removing a locale removes its generated assets on the next build.
+
+The packs version must match the native package version.
+Missing packs, unsupported locales, and invalid digests stop the build.
+After changing the selection, rerun CocoaPods on iOS and rebuild the native application.
+Expo prebuild also refreshes the selected assets.
+
+## Download language data
+
+Keep the same locale selection and set `"assets": "remote"` in `package.json`.
+The build emits configuration and notices, without language data.
+The native engine remains bundled. The build makes no CDN requests.
+Both delivery modes use configuration-only initialization:
+
+```ts
+import { init, judge } from "@blasphem/react-native";
+
+await init();
+const verdict = judge("you are a stupid loser");
+```
+
+The native loader downloads the exact package version from jsDelivr.
+It requests only selected locales and required detection files.
+It verifies file sizes and SHA-256 digests before storing the data locally.
+Data stays in iOS Application Support or Android application files storage.
+Later launches reuse verified files and the manifest without network requests.
+
+Each locale version downloads once per installation while its stored data remains valid.
+Data removal, corruption, or a package version change can require another download.
+First use needs a network connection. Failed downloads reject initialization.
+After initialization, `judge()` stays synchronous and runs locally.
+Concurrent requests share verified downloads. Each file gets at most two attempts.
+Downloads have a 30-second deadline and use atomic native file replacement.
+Cancellation and failed replacement preserve valid stored data.
+Version namespaces remain separate during upgrades.
+Remote delivery changes bundle size, not selected model memory.
+
+The CDN requires the matching npm release. Unpublished versions cannot download from jsDelivr.
 
 ## Usage
 
 ```ts
 import { init, judge } from "@blasphem/react-native";
 
-await init({ locales: ["en", "es"], grawlix: true });
+await init({ grawlix: true });
 
 const verdict = judge("you are a stupid loser");
 console.log(verdict);
@@ -84,26 +155,33 @@ Check the initialization promise for asset errors.
 
 | Export | Purpose |
 | --- | --- |
-| `init(options)` | Load bundled data and initialize the module judge |
+| `init(options?)` | Read generated configuration and initialize the module judge |
 | `judge(text)` | Check a message synchronously |
 | `ready()` | Report whether the module judge is ready |
 | `close()` | Release the module judge |
 | `createJudge(options)` | Build an independent judge |
 
-The options require a nonempty `locales` array.
-`detectLanguage` defaults to `true`.
+Application configuration requires a nonempty `locales` array or `"all"`.
+Delivery defaults to `"bundled"`. Detection defaults to `true`.
+Default initialization needs no repeated locale, delivery, or detection selection.
 `grawlix` defaults to `false`.
-Native loaders ignore `assets` and read the app bundle.
+Advanced independent instances retain explicit options.
+`assets: "jsdelivr"` remains an alias for `"remote"`.
+Other native `assets` values reject with `BLASPHEM_ASSETS_REQUIRED`.
+The runtime locale selection must have matching files in the chosen data source.
 
 Use `id` for Indonesian and `ms` for Malay.
 Both need the `ms` data files.
 See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 Results contain `safe`, `score`, `locale`, and `grawlix`.
+`grawlix` contains masked text for unsafe verdicts when requested, otherwise `null`.
+TypeScript narrows `grawlix` to `null` when `safe` is `true`.
 The score is ordinal, between 0 and 1.
 It is not a probability.
 
 Before initialization and after closure, the module judge returns a safe verdict.
+Failed replacement initialization preserves the previous ready judge.
 Independent judges throw `BLASPHEM_CLOSED` after closure.
 See [the public exports](src/index.ts) and [shared contract](../javascript-common/src/contract.ts).
 
@@ -116,8 +194,7 @@ See [the shared error codes](../javascript-common/src/errors.ts).
 
 ## Web support
 
-The browser export forwards to the optional `blasphem` peer.
-Install that package when the application targets the web.
+The browser export forwards to the automatically installed `blasphem` dependency.
 Configure its [browser assets and CSP](../javascript/README.md#browser-assets).
 The native bundle setup does not provide web assets.
 
@@ -140,9 +217,9 @@ pnpm --filter @blasphem/react-native run build:rust
 pnpm --filter @blasphem/react-native run build
 ```
 
-Link `packages/react-native` and `packages/javascript-packs` into the consuming application.
-Install its Nitro peer and copy the language data.
-Run CocoaPods and rebuild the app.
+Link `packages/react-native` into the consuming application and install its Nitro peer.
+Configure the selected locales in the application's `package.json`.
+Run CocoaPods or Expo prebuild, then rebuild the app.
 
 The TypeScript check is:
 

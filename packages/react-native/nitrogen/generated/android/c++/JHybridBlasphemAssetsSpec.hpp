@@ -55,6 +55,9 @@ namespace margelo::nitro::blasphem {
   public:
     // Methods
     std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readBundled(const std::string& name) override;
+    std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readManifest(const std::string& url, bool refresh) override;
+    std::shared_ptr<Promise<void>> commitManifest(const std::string& url, const std::shared_ptr<ArrayBuffer>& bytes) override;
+    std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readDownloaded(const std::string& url, const DownloadIntegrity& expected) override;
 
   private:
     jni::global_ref<JHybridBlasphemAssetsSpec::JavaPart> _javaPart;

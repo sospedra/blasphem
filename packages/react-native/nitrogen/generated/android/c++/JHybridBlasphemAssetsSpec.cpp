@@ -7,13 +7,17 @@
 
 #include "JHybridBlasphemAssetsSpec.hpp"
 
-
+// Forward declaration of `DownloadIntegrity` to properly resolve imports.
+namespace margelo::nitro::blasphem { struct DownloadIntegrity; }
 
 #include <NitroModules/ArrayBuffer.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/JPromise.hpp>
 #include <NitroModules/JArrayBuffer.hpp>
+#include <NitroModules/JUnit.hpp>
 #include <string>
+#include "DownloadIntegrity.hpp"
+#include "JDownloadIntegrity.hpp"
 
 namespace margelo::nitro::blasphem {
 
@@ -51,6 +55,53 @@ namespace margelo::nitro::blasphem {
   std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> JHybridBlasphemAssetsSpec::readBundled(const std::string& name) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* name */)>("readBundled");
     auto __result = method(_javaPart, jni::make_jstring(name));
+    return [&]() {
+      auto __promise = Promise<std::shared_ptr<ArrayBuffer>>::create();
+      __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
+        auto __result = jni::static_ref_cast<JArrayBuffer::javaobject>(__boxedResult);
+        __promise->resolve(__result->cthis()->getArrayBuffer());
+      });
+      __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
+        jni::JniException __jniError(__throwable);
+        __promise->reject(std::make_exception_ptr(__jniError));
+      });
+      return __promise;
+    }();
+  }
+  std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> JHybridBlasphemAssetsSpec::readManifest(const std::string& url, bool refresh) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* url */, jboolean /* refresh */)>("readManifest");
+    auto __result = method(_javaPart, jni::make_jstring(url), refresh);
+    return [&]() {
+      auto __promise = Promise<std::shared_ptr<ArrayBuffer>>::create();
+      __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {
+        auto __result = jni::static_ref_cast<JArrayBuffer::javaobject>(__boxedResult);
+        __promise->resolve(__result->cthis()->getArrayBuffer());
+      });
+      __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
+        jni::JniException __jniError(__throwable);
+        __promise->reject(std::make_exception_ptr(__jniError));
+      });
+      return __promise;
+    }();
+  }
+  std::shared_ptr<Promise<void>> JHybridBlasphemAssetsSpec::commitManifest(const std::string& url, const std::shared_ptr<ArrayBuffer>& bytes) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* url */, jni::alias_ref<JArrayBuffer::javaobject> /* bytes */)>("commitManifest");
+    auto __result = method(_javaPart, jni::make_jstring(url), JArrayBuffer::wrap(bytes));
+    return [&]() {
+      auto __promise = Promise<void>::create();
+      __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& /* unit */) {
+        __promise->resolve();
+      });
+      __result->cthis()->addOnRejectedListener([=](const jni::alias_ref<jni::JThrowable>& __throwable) {
+        jni::JniException __jniError(__throwable);
+        __promise->reject(std::make_exception_ptr(__jniError));
+      });
+      return __promise;
+    }();
+  }
+  std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> JHybridBlasphemAssetsSpec::readDownloaded(const std::string& url, const DownloadIntegrity& expected) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPromise::javaobject>(jni::alias_ref<jni::JString> /* url */, jni::alias_ref<JDownloadIntegrity> /* expected */)>("readDownloaded");
+    auto __result = method(_javaPart, jni::make_jstring(url), JDownloadIntegrity::fromCpp(expected));
     return [&]() {
       auto __promise = Promise<std::shared_ptr<ArrayBuffer>>::create();
       __result->cthis()->addOnResolvedListener([=](const jni::alias_ref<jni::JObject>& __boxedResult) {

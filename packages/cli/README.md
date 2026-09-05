@@ -16,7 +16,7 @@ Build from this checkout:
 cargo install --locked --path crates/blasphem
 ```
 
-Published binaries are pending the first public release.
+These installation commands require published release binaries.
 The release workflow targets [GitHub Releases](https://github.com/sospedra/blasphem/releases).
 After publication, the npm package also supports:
 
@@ -47,18 +47,29 @@ blasphem judge [OPTIONS] [TEXT]
 | Flag | Effect |
 | --- | --- |
 | `--locales en,es` | Load only the selected locales |
+| `--locales all` | Load every release locale; reject reduced builds |
 | `--no-detect` | Return the highest score across loaded locales |
-| `--grawlix` | Include masked text |
+| `--grawlix` | Include masked text for unsafe verdicts |
 | `--json` | Write JSON output |
 | `--help` | Show command help |
 
 The default supports all 16 languages.
 Use `id` for Indonesian and `ms` for Malay.
 See [the language list](../javascript-packs/README.md#locales).
+Prebuilt binaries contain all languages. Runtime flags change loading, not compiled bytes.
+Smaller binaries require a selected Cargo build:
+
+```sh
+cargo build --release -p blasphem --no-default-features --features embedded,language-detection,en,es
+```
+
+The default locale selection in this build loads its compiled English and Spanish data.
+See [the Rust feature contract](../../crates/blasphem/README.md).
 
 ## Output and exit status
 
 JSON objects contain `safe`, `score`, `locale`, and `grawlix`.
+`grawlix` contains masked text for unsafe verdicts when requested, otherwise `null`.
 The score ranges from 0 to 1.
 It is an ordinal value, not a probability.
 Unrouted text produces a safe verdict with zero score.

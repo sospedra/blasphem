@@ -4,6 +4,9 @@ import android.content.Context
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * A judge built once and called on every keystroke.
@@ -33,6 +36,29 @@ class Judge private constructor(handle: Long) : AutoCloseable {
     }
 
     companion object {
+        /** Reads the Gradle configuration and obtains the complete selected release. */
+        @JvmStatic
+        suspend fun create(context: Context): Judge {
+            val (config, sources) = withContext(Dispatchers.IO) {
+                val config = try { BundleConfiguration.read(context) }
+                catch (failure: Exception) {
+                    throw BlasphemException(BlasphemException.Code.FETCH_FAILED, "bundle.json: ${failure.message}")
+                }
+                val read = try { config.sources(context) }
+                catch (failure: Exception) {
+                    throw BlasphemException(BlasphemException.Code.FETCH_FAILED, "language data: ${failure.message}")
+                }
+                val sources = config.locales.map { Source(it, read, config.detectLanguage) }
+                config to sources
+            }
+            return suspendCancellableCoroutine { continuation ->
+                if (continuation.isActive) {
+                    val judge = Judge(buildEngine(sources, JudgeOptions(config.locales, config.detectLanguage)))
+                    continuation.resume(judge) { _, value, _ -> value.close() }
+                }
+            }
+        }
+
         /**
          * Loads `options.locales` from `context.assets`, or from `options.packsDirectory`
          * when set, and builds the engine. Blocks on file reads.

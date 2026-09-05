@@ -24,6 +24,14 @@ The release distribution uses `mavenCentral()`.
 Configure these repositories in `settings.gradle.kts`:
 
 ```kotlin
+pluginManagement {
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 dependencyResolutionManagement {
     repositories {
         google()
@@ -33,16 +41,16 @@ dependencyResolutionManagement {
 }
 ```
 
-Add the BOM, engine, and language data in `build.gradle.kts`:
+Apply the plugin and select languages in `build.gradle.kts`:
 
 ```kotlin
-dependencies {
-    implementation(platform("me.sospedra.blasphem:blasphem-bom:1.0.0"))
-    implementation("me.sospedra.blasphem:blasphem")
-    implementation("me.sospedra.blasphem:blasphem-pack-en")
-    implementation("me.sospedra.blasphem:blasphem-pack-es")
-    implementation("me.sospedra.blasphem:blasphem-detect-en")
-    implementation("me.sospedra.blasphem:blasphem-detect-es")
+plugins {
+    id("me.sospedra.blasphem") version "1.0.0"
+}
+blasphem {
+    locales.set(listOf("en", "es")) // Or locales.set("all").
+    assets.set("bundled") // Default. Use "remote" for jsDelivr.
+    detectLanguage.set(true) // Independent of the delivery mode.
 }
 ```
 
@@ -52,20 +60,14 @@ dependencies {
 
 ```kotlin
 import me.sospedra.blasphem.Judge
-import me.sospedra.blasphem.JudgeOptions
-
-val options = JudgeOptions(
-    locales = listOf("en", "es"),
-    grawlix = true,
-)
-
-Judge.create(context, options).use { judge ->
+// Inside a coroutine. Configuration comes from the Gradle plugin.
+Judge.create(context).use { judge ->
     val verdict = judge.judge("you are a stupid loser")
     println(verdict)
 }
 ```
 
-Construction reads files and should run off the main thread.
+The suspend factory reads files through the IO dispatcher.
 Keep one judge for repeated checks.
 `judge` is synchronous and supports concurrent callers.
 Call `close()` when its owner no longer needs it.
@@ -79,10 +81,13 @@ Call `close()` when its owner no longer needs it.
 | `blasphem-detect-<code>` | One language-detection slice |
 | `blasphem-bom` | Matching artifact versions |
 
-Gradle merges each data AAR into `assets/blasphem/`.
-Add one pack for each requested model profile.
-Detection defaults to `true` and requires matching detection artifacts.
-Set `detectLanguage = false` to omit them.
+The plugin adds the engine and exact internal data dependencies automatically.
+Gradle merges only selected data AARs into `assets/blasphem/`.
+Both delivery modes emit `assets/blasphem/bundle.json`.
+The selection must contain at least one supported language or `"all"`.
+Unknown codes and empty selections fail the build.
+Detection defaults to `true`.
+Set `detectLanguage.set(false)` to omit detection files.
 The judge then returns the highest score across loaded locales.
 
 Use `id` for Indonesian and `ms` for Malay.
@@ -92,11 +97,31 @@ See [all 16 supported languages](../javascript-packs/README.md#locales).
 `grawlix` defaults to `false`.
 `JudgeOptions.packsDirectory` accepts a `java.io.File` instead of bundled assets.
 That directory contains the pack and required detection files.
-The Kotlin loader does not read `manifest.json`.
+Use `Judge.create(context, JudgeOptions(...))` for explicit directories or runtime options such as `grawlix`.
+This advanced overload remains synchronous.
+
+## Remote data
+
+`assets.set("remote")` bundles configuration and the native engine without language data.
+`"jsdelivr"` remains a compatibility alias.
+The factory downloads selected files from the exact `@blasphem/packs@1.0.0` jsDelivr release.
+The build embeds the trusted release manifest length and SHA-256 digest.
+Remote builds make no CDN requests.
+Initialization fails if that exact release is unavailable.
+
+Private files storage retains verified manifests and data across process restarts.
+The storage separates versions, format versions, filenames, and integrity identities.
+Each cache read verifies the file length and SHA-256 digest.
+Downloads have 30-second request deadlines and at most two attempts per file.
+Concurrent requests share verified downloads, and temporary files commit through atomic renames.
+The factory constructs an engine only after every selected file is available.
+Valid cached selections start offline with no network requests.
+Cancellation and failed initialization preserve valid cached files.
 
 ## Results and errors
 
 `Judgement` contains `safe: Boolean`, `score: Double`, `locale: String?`, and `grawlix: String?`.
+`grawlix` contains masked text for unsafe verdicts when requested, otherwise `null`.
 The score is ordinal, between 0 and 1.
 It is not a probability.
 Unrouted text returns a safe verdict with zero score.
@@ -133,6 +158,10 @@ Then run from `packages/android`:
 ```
 
 The sync script creates the locale modules before Gradle starts.
+It also generates plugin locale tables and trusted release manifest constants.
+The plugin publishes an implementation JAR and the `me.sospedra.blasphem` marker POM.
+`generatePomFileForPluginMavenPublication` and
+`generatePomFileForBlasphemPluginMarkerMavenPublication` inspect metadata without publication.
 The linker flag requests 16 KB page alignment.
 Local publication makes the artifacts available through `mavenLocal()`.
 

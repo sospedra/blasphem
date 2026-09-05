@@ -13,7 +13,7 @@ export function buildWasmEngine(entries: Entry[], detectLanguage: boolean, grawl
     const engine = builder.build();
     return {
       locales: engine.locales,
-      judge: (text: string): Judgement => engine.judge(text) as Judgement,
+      judge: (text: string): Judgement => engine.judge(text),
       free: (): void => engine.free(),
     };
   } finally {

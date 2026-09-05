@@ -14,6 +14,9 @@ public protocol HybridBlasphemAssetsSpec_protocol: HybridObject {
 
   // Methods
   func readBundled(name: String) throws -> Promise<ArrayBuffer>
+  func readManifest(url: String, refresh: Bool) throws -> Promise<ArrayBuffer>
+  func commitManifest(url: String, bytes: ArrayBuffer) throws -> Promise<Void>
+  func readDownloaded(url: String, expected: DownloadIntegrity) throws -> Promise<ArrayBuffer>
 }
 
 public extension HybridBlasphemAssetsSpec_protocol {

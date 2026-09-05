@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { packageRoot, projectRoot } from "./crate.mjs";
 
-const ENTRY_FILES = ["browser", "node", "native", "wasm-engine", "version.generated"].flatMap((name) => [`dist/${name}.js`, `dist/${name}.d.ts`]);
+const ENTRY_FILES = ["browser", "browser-cache", "browser-config", "bundle.generated", "node", "node-config", "native", "wasm-engine", "version.generated"].flatMap((name) => [`dist/${name}.js`, `dist/${name}.d.ts`]);
 const GLUE_FILES = ["dist/blasphem.d.ts", "dist/blasphem.js", "dist/blasphem_bg.wasm", "dist/blasphem_bg.wasm.d.ts"];
 const FORBIDDEN_PREFIXES = ["crates/", "data/", "reports/", "resources/", "src/", "target/"];
 const FORBIDDEN_SUFFIXES = [".pack", ".detect", ".node"];
@@ -35,7 +35,7 @@ function coreFiles() {
 }
 
 function requiredFiles() {
-  return ["LICENSE", "NOTICE", "README.md", "package.json", "bin/blasphem-assets.mjs", "bin/blasphem.mjs", ...ENTRY_FILES, ...GLUE_FILES, ...coreFiles()].toSorted();
+  return ["LICENSE", "NOTICE", "README.md", "package.json", "bin/blasphem-assets.mjs", "bin/blasphem-export.mjs", "bin/blasphem.mjs", "integrations/assets.mjs", "integrations/assets.d.mts", "integrations/vite.mjs", "integrations/vite.d.mts", ...ENTRY_FILES, ...GLUE_FILES, ...coreFiles()].toSorted();
 }
 
 function assertManifest(manifest) {
@@ -50,7 +50,7 @@ function assertManifest(manifest) {
   if (manifest.exports?.["./blasphem_bg.wasm"] !== "./dist/blasphem_bg.wasm") throw new Error('exports["./blasphem_bg.wasm"] must point at dist');
   const optional = Object.keys(manifest.optionalDependencies ?? {}).toSorted();
   if (optional.join(",") !== OPTIONAL_PACKAGES.join(",")) throw new Error(`optionalDependencies must list ${OPTIONAL_PACKAGES.join(", ")}`);
-  if (manifest.dependencies !== undefined) throw new Error("the package must not declare dependencies; @blasphem/packs is the application's choice");
+  if (manifest.dependencies?.["@blasphem/packs"] !== "workspace:*") throw new Error("@blasphem/packs must be an exact internal workspace dependency");
 }
 
 function assertDistribution() {

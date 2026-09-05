@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "blasphem-android"
 
-include(":engine", ":bom")
+include(":engine", ":bom", ":gradle-plugin")
 
 // One module per data file present. scripts/sync-packs.mjs exports resources/packs.
 val codeDirectories = rootDir.resolve("packs").listFiles { file -> file.isDirectory }?.sorted() ?: emptyList()

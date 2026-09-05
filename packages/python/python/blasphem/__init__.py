@@ -9,7 +9,7 @@ Detection runs locally without neural networks or cloud inference.
 
     blasphem.init(["en", "es"], grawlix=True)
     blasphem.judge("you are a stupid loser")
-    # Judgement(safe=False, score=0.64, locale="en", grawlix="you are a @#$%&! loser")
+    # Judgement(safe=False, score=0.95, locale="en", grawlix="you are a @#$%&! @#$%&")
 
 ``init`` loads the locales once and installs the module judge. ``judge`` is
 synchronous and never raises: before ``init`` and after ``close`` it returns
@@ -79,14 +79,18 @@ class Judgement:
     locale: str | None
     """The locale that produced the score, or None."""
     grawlix: str | None
-    """The masked text when requested, otherwise None."""
+    """Masked text for unsafe verdicts when requested, otherwise None."""
 
 
 def _fail_open() -> Judgement:
     return Judgement(True, 0.0, None, None)
 
 
-def _normalize(locales: Iterable[str] | None) -> list[str]:
+def _normalize(locales: Iterable[str] | str | None) -> list[str]:
+    if locales == "all":
+        return [code for code, _ in LOCALES]
+    if isinstance(locales, str):
+        raise BlasphemError("BLASPHEM_LOCALE_UNSUPPORTED", 'locales must be an array or "all"')
     requested = list(locales or [])
     if not requested:
         raise BlasphemError("BLASPHEM_LOCALES_EMPTY", 'pass at least one locale, such as ["en"]')
@@ -100,12 +104,17 @@ def _normalize(locales: Iterable[str] | None) -> list[str]:
 
 
 def _packs_directory(assets: str | Path | None) -> Path:
-    if assets is not None and str(assets).strip():
+    if str(assets) in {"remote", "jsdelivr"} or "://" in str(assets):
+        raise BlasphemError("BLASPHEM_ASSETS_REQUIRED", "Python supports only bundled data or a local directory")
+    if assets not in {None, "bundled"} and str(assets).strip():
         return Path(assets)
+    exported = Path(__file__).parent / "_data"
+    if exported.is_dir():
+        return exported
     try:
         import blasphem_packs  # type: ignore[import-not-found]
     except ImportError as error:
-        raise BlasphemError("BLASPHEM_ASSETS_REQUIRED", f"install blasphem-packs or pass assets as a directory: {error}") from None
+        raise BlasphemError("BLASPHEM_ASSETS_REQUIRED", f"The internal data dependency is unavailable: {error}") from None
     return Path(blasphem_packs.directory())
 
 
@@ -128,9 +137,20 @@ def _manifest(directory: Path) -> dict[str, dict[str, object]]:
     if not isinstance(files, dict):
         raise BlasphemError("BLASPHEM_PACK_INVALID", "manifest.json lacks a files map")
     for name, record in files.items():
+        if not re.fullmatch(r"[a-z]{2,3}\.(pack|detect)", name):
+            raise BlasphemError("BLASPHEM_PACK_INVALID", f"manifest.json has an invalid filename {name!r}")
         if not isinstance(record, dict) or not isinstance(record.get("sha256"), str) or not _HEX64.match(record["sha256"]):
             raise BlasphemError("BLASPHEM_PACK_INVALID", f"manifest.json entry {name!r} needs a 64-character sha256")
+        if type(record.get("bytes")) is not int or record["bytes"] <= 0:
+            raise BlasphemError("BLASPHEM_PACK_INVALID", f"manifest.json entry {name!r} needs a positive byte length")
     return files
+
+
+def _sized_read(directory: Path, name: str, files: dict) -> bytes:
+    data = _read(directory, name)
+    if len(data) != files[name]["bytes"]:
+        raise BlasphemError("BLASPHEM_DIGEST_MISMATCH", f"{name} has the wrong length")
+    return data
 
 
 def _entries(directory: Path, codes: list[str], detect_language: bool) -> list[tuple]:
@@ -150,8 +170,8 @@ def _entries(directory: Path, codes: list[str], detect_language: bool) -> list[t
         if detect_language:
             detect_name = f"{code}.detect"
             detect_sha = digest(detect_name, code)
-            detect_bytes = _read(directory, detect_name)
-        entries.append((code, _read(directory, pack_name), pack_sha, detect_bytes, detect_sha))
+            detect_bytes = _sized_read(directory, detect_name, files)
+        entries.append((code, _sized_read(directory, pack_name, files), pack_sha, detect_bytes, detect_sha))
     return entries
 
 
@@ -160,7 +180,7 @@ class Judge:
 
     def __init__(
         self,
-        locales: Iterable[str],
+        locales: Iterable[str] | str,
         *,
         assets: str | Path | None = None,
         detect_language: bool = True,
@@ -213,7 +233,7 @@ def _key(locales: Iterable[str], assets: str | Path | None, detect_language: boo
 
 
 def init(
-    locales: Iterable[str],
+    locales: Iterable[str] | str,
     *,
     assets: str | Path | None = None,
     detect_language: bool = True,
@@ -226,12 +246,12 @@ def init(
     raises ``BlasphemError`` and keeps the previous judge.
     """
     global _current, _current_key
-    locales = list(locales or [])
-    key = _key(locales, assets, detect_language, grawlix)
+    codes = _normalize(locales)
+    key = _key(codes, assets, detect_language, grawlix)
     with _lock:
         if _current is not None and _current_key == key:
             return
-        replacement = Judge(locales, assets=assets, detect_language=detect_language, grawlix=grawlix)
+        replacement = Judge(codes, assets=assets, detect_language=detect_language, grawlix=grawlix)
         previous, _current, _current_key = _current, replacement, key
     if previous is not None:
         previous.close()

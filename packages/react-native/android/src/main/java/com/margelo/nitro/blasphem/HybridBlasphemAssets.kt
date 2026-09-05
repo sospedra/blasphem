@@ -1,7 +1,6 @@
 package com.margelo.nitro.blasphem
 
 import com.facebook.proguard.annotations.DoNotStrip
-import com.margelo.nitro.NitroModules
 import com.margelo.nitro.core.ArrayBuffer
 import com.margelo.nitro.core.Promise
 
@@ -12,17 +11,26 @@ import com.margelo.nitro.core.Promise
 @DoNotStrip
 class HybridBlasphemAssets : HybridBlasphemAssetsSpec() {
   override fun readBundled(name: String): Promise<ArrayBuffer> {
-    return Promise.async {
-      val context = NitroModules.applicationContext
-        ?: throw Error("BLASPHEM_FETCH_FAILED: $name cannot load without an application context")
-      val bytes = try {
-        context.assets.open("blasphem/$name").use { it.readBytes() }
-      } catch (error: Exception) {
-        throw Error("BLASPHEM_FETCH_FAILED: assets/blasphem/$name: ${error.message}")
-      }
-      val buffer = ArrayBuffer.allocate(bytes.size)
-      buffer.getBuffer(false).put(bytes)
-      buffer
+    return Promise.parallel {
+      require(name == java.io.File(name).name) { "BLASPHEM_FETCH_FAILED: Invalid bundled filename" }
+      val bytes = BlasphemFileIO.context().assets.open("blasphem/$name").use { it.readBytes() }
+      buffer(bytes)
     }
   }
+
+  override fun readManifest(url: String, refresh: Boolean): Promise<ArrayBuffer> =
+    Promise.parallel { buffer(BlasphemDownloadStore.manifest(url, refresh)) }
+
+  override fun commitManifest(url: String, bytes: ArrayBuffer): Promise<Unit> {
+    val source = bytes.getBuffer(true).duplicate()
+    val copy = ByteArray(source.remaining())
+    source.get(copy)
+    return Promise.parallel { BlasphemDownloadStore.commit(url, copy) }
+  }
+
+  override fun readDownloaded(url: String, expected: DownloadIntegrity): Promise<ArrayBuffer> =
+    Promise.parallel { buffer(BlasphemDownloadStore.downloaded(url, expected)) }
+
+  private fun buffer(bytes: ByteArray): ArrayBuffer =
+    ArrayBuffer.allocate(bytes.size).also { it.getBuffer(false).put(bytes) }
 }

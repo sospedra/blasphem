@@ -28,15 +28,18 @@
       "default": "./dist/browser.js"
     },
     "./blasphem_bg.wasm": "./dist/blasphem_bg.wasm",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./vite": "./integrations/vite.mjs"
   },
   "bin": {
     "blasphem": "./bin/blasphem.mjs",
-    "blasphem-assets": "./bin/blasphem-assets.mjs"
+    "blasphem-assets": "./bin/blasphem-assets.mjs",
+    "blasphem-export": "./bin/blasphem-export.mjs"
   },
   "files": [
     "dist",
     "bin",
+    "integrations",
     "README.md",
     "NOTICE",
     "LICENSE"
@@ -66,8 +69,10 @@
     "@blasphem/node-linux-x64-musl": "workspace:*",
     "@blasphem/node-win32-x64-msvc": "workspace:*"
   },
+  "dependencies": {
+    "@blasphem/packs": "workspace:*"
+  },
   "devDependencies": {
-    "@blasphem/packs": "workspace:*",
     "@types/node": "24.10.1",
     "playwright": "1.62.1",
     "typescript": "5.9.3"

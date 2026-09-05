@@ -11,13 +11,13 @@ Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
-The public npm release is pending.
+These registry commands require the published `1.0.0` release.
 Use [the source build](#build-from-source) for the current checkout.
 
 The release installation command is:
 
 ```sh
-npm install blasphem @blasphem/packs
+npm install blasphem
 ```
 
 The package includes TypeScript declarations and ESM exports.
@@ -25,13 +25,25 @@ Its manifest specifies Node 24.18.0 and pnpm 11.13.0.
 
 ## Quick start
 
-This example uses Node's installed language packs.
-For a browser, configure [browser assets](#browser-assets) first.
+Declare the selection once in the application's `package.json`:
+
+```json
+{
+  "blasphem": {
+    "locales": ["en", "es"],
+    "assets": "bundled",
+    "detectLanguage": true
+  }
+}
+```
+
+Node reads this configuration from the application directory.
+Browsers require the [build integration or asset helper](#browser-assets).
 
 ```ts
 import { init, judge } from "blasphem";
 
-await init({ locales: ["en", "es"], grawlix: true });
+await init();
 
 const verdict = judge("you are a stupid loser");
 console.log(verdict);
@@ -39,12 +51,13 @@ console.log(verdict);
 
 Initialize once and reuse the judge.
 The call to `judge` is synchronous.
+Runtime behavior remains configurable with `await init({ grawlix: true })`.
 
 ## API
 
 | Export | Purpose |
 | --- | --- |
-| `init(options)` | Load data and initialize the module judge |
+| `init(options?)` | Read application configuration and initialize the module judge |
 | `judge(text)` | Return a `Judgement` synchronously |
 | `ready()` | Report whether a module judge is ready |
 | `close()` | Release the module judge |
@@ -72,14 +85,19 @@ try {
 An independent judge throws `BLASPHEM_CLOSED` after closure.
 Its `transport` is `"native"` or `"wasm"`.
 
-## Options
+## Configuration
 
 | Option | Default | Meaning |
 | --- | --- | --- |
-| `locales` | Required | Nonempty array of supported locale codes |
-| `assets` | Runtime-specific | Pack directory or browser asset bases |
+| `locales` | Required | Nonempty locale array or `"all"` |
+| `assets` | `"bundled"` | Local data, or `"remote"` in browsers |
 | `detectLanguage` | `true` | Route to the detected language |
-| `grawlix` | `false` | Return masked text |
+
+`grawlix` is an initialization option, not a packaging choice. Its default is `false`.
+The library installs its exact internal data dependency automatically.
+`"all"` expands against the installed engine release, never the CDN catalog.
+Unknown codes and empty arrays fail. Aliases normalize and deduplicate in registry order.
+Explicit `"all"` fails when a reduced export lacks release data.
 
 With detection disabled, the judge returns the highest score across loaded locales.
 Use `id` for Indonesian and `ms` for Malay.
@@ -92,43 +110,62 @@ See [all 16 supported languages](../javascript-packs/README.md#locales).
 | `safe` | `boolean` | No warning is due |
 | `score` | `number` | Ordinal value from 0 to 1 |
 | `locale` | `string \| null` | Selected model profile |
-| `grawlix` | `string \| null` | Masked text when requested |
+| `grawlix` | `string \| null` | Masked text for unsafe verdicts when requested, otherwise `null` |
 
 The score is not a probability.
+TypeScript narrows `grawlix` to `null` when `safe` is `true`.
 Unrouted text returns `{ safe: true, score: 0, locale: null, grawlix: null }`.
 See [the API contract](../javascript-common/src/contract.ts).
 
 ## Browser assets
 
-Copy the engine and packs from your application's installed packages:
-
-```sh
-pnpm exec blasphem-assets public/blasphem
-```
-
-Serve that directory at `/blasphem`, then initialize the browser entry:
+For Vite, register the build integration:
 
 ```ts
-import { init, judge } from "blasphem";
+// vite.config.ts
+import { defineConfig } from "vite";
+import blasphem from "blasphem/vite";
 
-await init({
-  locales: ["en", "es"],
-  assets: "/blasphem",
-  grawlix: true,
-});
-
-console.log(judge("you are a stupid loser"));
+export default defineConfig({ plugins: [blasphem()] });
 ```
 
-The loader fetches the manifest and files for the requested profiles.
+The integration emits configuration and only selected local assets.
+Generated URLs include Vite's public `base` path.
+No additional initialization options are required.
+
+Other builds can publish assets with the helper:
+
+```sh
+pnpm exec blasphem-assets public/blasphem --base /blasphem
+```
+
+Serve that directory at `/blasphem`. Load its configuration before the application module:
+
+```html
+<script src="/blasphem/config.js"></script>
+<script type="module" src="/src/main.ts"></script>
+```
+
+Use the application's public prefix in both `--base` and the script URL.
+The helper reads the same `package.json` selection as Vite.
+It removes only its previously generated files after selection changes.
+Bundled builds include selected packs, optional detection slices, WASM, and notices.
+Remote builds emit configuration and notices, without language data or WASM.
+Builds do not request CDN files.
 Serve `.wasm` files as `application/wasm`.
 Message checks need no network connection after initialization.
 
-| `assets` value | Browser behavior |
-| --- | --- |
-| `"/blasphem"` | Load code and data from one base |
-| `{ wasm: "/engine", packs: "/packs" }` | Use separate directory bases |
-| Omitted or `"jsdelivr"` | Use versioned npm CDN URLs |
+Set `"assets": "remote"` in application configuration for exact-version jsDelivr delivery.
+`"jsdelivr"` remains a compatibility alias.
+The browser stores the verified manifest, selected files, and WASM in IndexedDB.
+It rechecks file lengths and SHA-256 hashes before reuse.
+Offline restarts make zero asset requests while the host application can start offline.
+Storage eviction or corruption can require downloads again.
+Downloads share in-flight requests and allow at most two attempts per file.
+Each request has a 30-second deadline. Invalid or unavailable files reject initialization.
+Remote delivery reduces bundle size, not selected model memory.
+
+Advanced `createJudge` options also accept a directory URL or `{ wasm, packs }` bases.
 
 The CDN mode requires a published version.
 Use local assets for unreleased builds.
@@ -149,7 +186,7 @@ The [`wasm-unsafe-eval` directive](https://developer.mozilla.org/en-US/docs/Web/
 
 Node reads the installed `@blasphem/packs` by default.
 Set `assets` to a filesystem directory to use custom files.
-It does not use the browser CDN preset.
+Node rejects `"remote"`, `"jsdelivr"`, and URL sources.
 
 `BLASPHEM_FORCE_WASM=1` disables native addon selection.
 
@@ -166,6 +203,19 @@ export default config;
 ```
 
 Initialize the browser entry from client-side application code.
+
+### Reduced Node deployments
+
+```sh
+pnpm exec blasphem-export --locales en,es --output ./vendor
+```
+
+The new directory contains a runtime, selected data, configuration, and required notices.
+It includes the installed compatible native addon, or its local WASM fallback.
+Use `--no-detect` to omit detection files.
+Run the application from `vendor`, or copy its configuration and `node_modules` into your deployment.
+The output runs without the full data catalog. Existing output directories are rejected.
+Native addons retain their operating-system and CPU requirements.
 
 ## Errors
 
@@ -199,7 +249,7 @@ pnpm --filter blasphem run build
 Link the built packages from your application's directory:
 
 ```sh
-pnpm add link:/path/to/blasphem/packages/javascript link:/path/to/blasphem/packages/javascript-packs
+pnpm add link:/path/to/blasphem/packages/javascript
 ```
 
 Run the Node checks from the repository root:

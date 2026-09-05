@@ -31,11 +31,12 @@ function isBases(value: unknown): value is AssetBases {
 
 /**
  * The browser needs a place for the wasm and a place for the packs.
- * Omitted or `"jsdelivr"`: the npm CDN at this build's pinned versions.
+ * Omitted or `"bundled"`: the application's generated local assets.
  * A path serves both from your origin; an object splits them.
  */
 export function resolveBrowserAssets(input: unknown, version: string): AssetBases {
-  if (input === undefined || input === null || input === JSDELIVR) return jsdelivrBases(version);
+  if (input === undefined || input === "bundled") return { wasm: "/blasphem", packs: "/blasphem" };
+  if (input === "remote" || input === JSDELIVR) return jsdelivrBases(version);
   if (isBases(input)) return { wasm: trimSlash(input.wasm), packs: trimSlash(input.packs) };
   if (typeof input === "string" && input.trim() !== "") {
     const base = trimSlash(input);
@@ -46,11 +47,13 @@ export function resolveBrowserAssets(input: unknown, version: string): AssetBase
 
 /** Node reads packs from a directory. Returns null when the caller wants the installed @blasphem/packs. */
 export function resolvePacksDirectory(input: unknown): string | null {
-  if (input === undefined || input === null) return null;
-  if (isBases(input)) return input.packs;
+  if (input === undefined || input === "bundled") return null;
+  if (isBases(input)) throw fail("BLASPHEM_ASSETS_REQUIRED", "Node assets must be bundled or a local directory");
   if (typeof input === "string" && input.trim() !== "") {
-    if (input === JSDELIVR) throw fail("BLASPHEM_ASSETS_REQUIRED", `"${JSDELIVR}" is a browser preset; on Node install @blasphem/packs or pass a directory`);
+    if (input === JSDELIVR || input === "remote" || input.includes("://")) {
+      throw fail("BLASPHEM_ASSETS_REQUIRED", "Node supports only bundled data or a local directory");
+    }
     return input;
   }
-  return null;
+  throw fail("BLASPHEM_ASSETS_REQUIRED", "Node assets must be bundled or a local directory");
 }

@@ -6,7 +6,7 @@ public struct Judgement: Equatable, Sendable {
     public let score: Double
     /// The locale that produced the score, or nil.
     public let locale: String?
-    /// The masked text when `grawlix` was requested, otherwise nil.
+    /// Masked text for unsafe verdicts when requested, otherwise nil.
     public let grawlix: String?
 
     public init(safe: Bool, score: Double, locale: String?, grawlix: String?) {

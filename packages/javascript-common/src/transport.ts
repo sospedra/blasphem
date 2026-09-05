@@ -22,3 +22,15 @@ export interface Transport {
   read(name: string): Promise<Uint8Array>;
   engine(entries: Entry[], detectLanguage: boolean, grawlix: boolean): Promise<EngineHandle>;
 }
+
+export function normalizeJudgement(verdict: {
+  safe: boolean;
+  score: number;
+  locale?: string | null;
+  grawlix?: string | null;
+}): Judgement {
+  const { safe, score } = verdict;
+  const locale = verdict.locale ?? null;
+  if (safe) return { safe, score, locale, grawlix: null };
+  return { safe, score, locale, grawlix: verdict.grawlix ?? null };
+}

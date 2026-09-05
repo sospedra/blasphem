@@ -15,6 +15,18 @@ buildscript {
 apply plugin: "com.android.library"
 apply plugin: "org.jetbrains.kotlin.android"
 
+def blasphemScript = new File(projectDir, "../scripts/bundle-assets.cjs").canonicalPath
+def blasphemApp = rootProject.projectDir.parentFile.canonicalPath
+def blasphemPaths = new groovy.json.JsonSlurper().parseText(providers.exec {
+  commandLine "node", blasphemScript, "android", blasphemApp, "--paths"
+}.standardOutput.asText.get())
+
+def generateBlasphemAssets = tasks.register("generateBlasphemAssets", Exec) {
+  commandLine "node", blasphemScript, "android", blasphemApp
+  outputs.dir(blasphemPaths.assetsRoot)
+  outputs.upToDateWhen { false }
+}
+
 configurations.configureEach {
   resolutionStrategy.failOnNonReproducibleResolution()
 }
@@ -25,6 +37,7 @@ def safeExtGet(prop, fallback) {
 
 android {
   namespace "com.margelo.nitro.blasphem"
+  sourceSets.main.assets.srcDir(blasphemPaths.assetsRoot)
   compileSdkVersion safeExtGet("compileSdkVersion", 35)
 
   defaultConfig {
@@ -52,6 +65,10 @@ android {
   buildFeatures {
     prefab true
   }
+}
+
+tasks.named("preBuild").configure {
+  dependsOn(generateBlasphemAssets)
 }
 
 def reactNativeArchitectures() {

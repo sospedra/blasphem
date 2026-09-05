@@ -1,0 +1,12 @@
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { canonicalPacks, copyPack, loadPacks } from "../../../scripts/packs.mjs";
+const output = fileURLToPath(new URL("../Sources/BlasphemAssetGenerator/Resources/", import.meta.url));
+mkdirSync(output, { recursive: true });
+copyFileSync(new URL("../Sources/Blasphem/Locales.generated.swift", import.meta.url), new URL("../Sources/BlasphemAssetGenerator/Locales.generated.swift", import.meta.url));
+for (const file of loadPacks().files) copyPack(file, `${output}/${file.name}`);
+for (const name of ["manifest.json", "NOTICE"]) copyFileSync(`${canonicalPacks}/${name}`, `${output}/${name}`);
+const cargo = readFileSync(new URL("../../../Cargo.toml", import.meta.url), "utf8");
+writeFileSync(`${output}/version.txt`, cargo.match(/^version = "([^"]+)"/m)[1]);
+writeFileSync(new URL("../Sources/Blasphem/Version.generated.swift", import.meta.url), `let blasphemEngineVersion = ${JSON.stringify(cargo.match(/^version = "([^"]+)"/m)[1])}\n`);
+console.log("status=prepared apple release resources");

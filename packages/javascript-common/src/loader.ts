@@ -1,7 +1,7 @@
 import type { Judge, JudgeOptions, Judgement } from "./contract.js";
 import { fail, fromEngineError } from "./errors.js";
 import { detectFile, normalizeLocales, packFile } from "./locales.js";
-import { MANIFEST_FILE, parseManifest, type Manifest } from "./manifest.js";
+import { MANIFEST_FILE, parseManifest, type Manifest, type ManifestFile } from "./manifest.js";
 import type { EngineHandle, Entry, Transport } from "./transport.js";
 
 async function read(transport: Transport, name: string): Promise<Uint8Array> {
@@ -12,22 +12,29 @@ async function read(transport: Transport, name: string): Promise<Uint8Array> {
   }
 }
 
-function requireFile(manifest: Manifest, name: string, locale: string): string {
+function requireFile(manifest: Manifest, name: string, locale: string): ManifestFile {
   const record = manifest.files[name];
   if (record === undefined) throw fail("BLASPHEM_LOCALE_MISSING", `${MANIFEST_FILE} lists no ${name}; the packs do not include ${locale}`);
-  return record.sha256;
+  return record;
 }
 
-async function loadEntry(transport: Transport, manifest: Manifest, locale: string, detectLanguage: boolean): Promise<Entry> {
+async function readFile(transport: Transport, name: string, expected: ManifestFile): Promise<Uint8Array> {
+  const bytes = await read(transport, name);
+  if (bytes.byteLength !== expected.bytes) throw fail("BLASPHEM_DIGEST_MISMATCH", `${name} has the wrong length`);
+  return bytes;
+}
+
+async function loadEntry(transport: Transport, manifest: Manifest, selection: { locale: string; detectLanguage: boolean }): Promise<Entry> {
+  const { locale, detectLanguage } = selection;
   const packName = packFile(locale as never);
   const detectName = detectFile(locale as never);
-  const packSha256 = requireFile(manifest, packName, locale);
-  const detectSha256 = detectLanguage ? requireFile(manifest, detectName, locale) : null;
+  const packRecord = requireFile(manifest, packName, locale);
+  const detectRecord = detectLanguage ? requireFile(manifest, detectName, locale) : null;
   const [pack, detect] = await Promise.all([
-    read(transport, packName),
-    detectLanguage ? read(transport, detectName) : Promise.resolve(null),
+    readFile(transport, packName, packRecord),
+    detectRecord ? readFile(transport, detectName, detectRecord) : Promise.resolve(null),
   ]);
-  return { locale, pack, packSha256, detect, detectSha256 };
+  return { locale, pack, packSha256: packRecord.sha256, detect, detectSha256: detectRecord?.sha256 ?? null };
 }
 
 function wrap(handle: EngineHandle, transport: Transport["name"]): Judge {
@@ -56,8 +63,11 @@ export async function createJudgeWith(transport: Transport, options: JudgeOption
   const locales = normalizeLocales(options?.locales);
   const detectLanguage = options.detectLanguage ?? true;
   const grawlix = options.grawlix ?? false;
+  if (typeof detectLanguage !== "boolean" || typeof grawlix !== "boolean") {
+    throw fail("BLASPHEM_PACK_INVALID", "detectLanguage and grawlix must be booleans");
+  }
   const manifest = parseManifest(await read(transport, MANIFEST_FILE));
-  const entries = await Promise.all(locales.map((locale) => loadEntry(transport, manifest, locale, detectLanguage)));
+  const entries = await Promise.all(locales.map((locale) => loadEntry(transport, manifest, { locale, detectLanguage })));
   let handle: EngineHandle;
   try {
     handle = await transport.engine(entries, detectLanguage, grawlix);

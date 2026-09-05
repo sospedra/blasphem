@@ -8,10 +8,13 @@
 #pragma once
 
 // Forward declarations of C++ defined types
+// Forward declaration of `DownloadIntegrity` to properly resolve imports.
+namespace margelo::nitro::blasphem { struct DownloadIntegrity; }
 // Forward declaration of `HybridBlasphemAssetsSpec` to properly resolve imports.
 namespace margelo::nitro::blasphem { class HybridBlasphemAssetsSpec; }
 
 // Include C++ defined types
+#include "DownloadIntegrity.hpp"
 #include "HybridBlasphemAssetsSpec.hpp"
 #include <NitroModules/ArrayBuffer.hpp>
 #include <NitroModules/Promise.hpp>

@@ -1,6 +1,6 @@
 # @blasphem/packs
 
-Language data for the [JavaScript](../javascript/README.md) and [React Native](../react-native/README.md) packages.
+Internal language data for the [JavaScript](../javascript/README.md) and [React Native](../react-native/README.md) packages.
 Each judge loads only its requested model profiles.
 
 Blasphem hashes word and character n-grams into sparse feature vectors.
@@ -10,11 +10,11 @@ Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
-The public npm release is pending.
-For published versions, install matching engine and data versions:
+These registry commands require the published `1.0.0` release.
+Applications install one library. Its exact data dependency resolves automatically:
 
 ```sh
-npm install blasphem @blasphem/packs
+npm install blasphem
 ```
 
 Use [the source build](#build-from-source) for the current checkout.
@@ -22,12 +22,13 @@ Python distributes the same files through [blasphem-packs](../python-packs/READM
 
 ## Usage
 
-Node discovers installed packs automatically:
+Declare `blasphem.locales` in the application's `package.json`.
+Node discovers this configuration and its installed packs automatically:
 
 ```ts
 import { init, judge } from "blasphem";
 
-await init({ locales: ["en", "es"] });
+await init();
 console.log(judge("you are a stupid loser"));
 ```
 
@@ -72,8 +73,8 @@ For browser hosting, use [the asset helper](../javascript/README.md#browser-asse
 It copies the WASM module and data into your public directory.
 
 React Native reads files from [the application bundle](../react-native/README.md#bundle-language-data).
-Swift and Android supply data through their package products.
-Go accepts a directory or an `fs.FS`.
+Swift and Android build plugins select internal data automatically.
+Go locale subpackages embed selected data. Custom directories remain available.
 
 ## Build from source
 

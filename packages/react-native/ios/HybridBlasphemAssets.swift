@@ -1,18 +1,33 @@
 import Foundation
 import NitroModules
 
-/// Reads `manifest.json`, `<code>.pack`, and `<code>.detect` from the app
-/// bundle. Add the files to the target as a folder reference named `blasphem`,
-/// or at the bundle root.
 class HybridBlasphemAssets: HybridBlasphemAssetsSpec {
   func readBundled(name: String) throws -> Promise<ArrayBuffer> {
     return Promise.async {
-      let url = Bundle.main.url(forResource: name, withExtension: nil, subdirectory: "blasphem")
-        ?? Bundle.main.url(forResource: name, withExtension: nil)
-      guard let url else {
-        throw RuntimeError.error(withMessage: "BLASPHEM_FETCH_FAILED: \(name) is not in the app bundle")
-      }
-      let data = try Data(contentsOf: url)
+      let data = try BlasphemBundle.read(name)
+      return try ArrayBuffer.copy(data: data)
+    }
+  }
+
+  func readManifest(url: String, refresh: Bool) throws -> Promise<ArrayBuffer> {
+    return Promise.async {
+      let data = try await BlasphemDownloadStore.shared.manifest(url, refresh: refresh)
+      return try ArrayBuffer.copy(data: data)
+    }
+  }
+
+  func commitManifest(url: String, bytes: ArrayBuffer) throws -> Promise<Void> {
+    // Copy before leaving the bridge invocation. JavaScript owns the buffer.
+    let data = Data(bytes: bytes.data, count: bytes.size)
+    return Promise.async {
+      try await BlasphemDownloadStore.shared.commit(url, data: data)
+    }
+  }
+
+  func readDownloaded(url: String, expected: DownloadIntegrity) throws -> Promise<ArrayBuffer> {
+    let integrity = BlasphemIntegrity(bytes: expected.bytes, sha256: expected.sha256)
+    return Promise.async {
+      let data = try await BlasphemDownloadStore.shared.downloaded(url, expected: integrity)
       return try ArrayBuffer.copy(data: data)
     }
   }

@@ -35,6 +35,18 @@ abstract class HybridBlasphemAssetsSpec: HybridObject() {
   @Keep
   abstract fun readBundled(name: String): Promise<ArrayBuffer>
 
+  @DoNotStrip
+  @Keep
+  abstract fun readManifest(url: String, refresh: Boolean): Promise<ArrayBuffer>
+
+  @DoNotStrip
+  @Keep
+  abstract fun commitManifest(url: String, bytes: ArrayBuffer): Promise<Unit>
+
+  @DoNotStrip
+  @Keep
+  abstract fun readDownloaded(url: String, expected: DownloadIntegrity): Promise<ArrayBuffer>
+
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {
     return "[HybridObject BlasphemAssets]"

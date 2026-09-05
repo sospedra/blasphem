@@ -1,8 +1,10 @@
 import { copyFileSync, cpSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { packageRoot, projectRoot, readCrate } from "./crate.mjs";
 import { assertPrebuilt, GLUE_FILES, PREBUILT_MANIFEST, writePrebuiltManifest } from "./prebuilt.mjs";
-import { assertWasmBindgen, buildWasm, generateGlue, stream } from "./wasm.mjs";
+import { assertWasmBindgen, buildWasm, generateGlue } from "./wasm.mjs";
 
 const distribution = resolve(packageRoot, "dist");
 const sources = resolve(packageRoot, "src");
@@ -25,7 +27,11 @@ function writeVersion() {
   const own = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8")).version;
   const packs = JSON.parse(readFileSync(resolve(projectRoot, "packages/javascript-packs/package.json"), "utf8")).version;
   if (own !== packs) throw new Error(`blasphem is ${own} but @blasphem/packs is ${packs}. Run: cargo run -p blasphem-train -- sync-versions`);
-  writeFileSync(resolve(sources, VERSION_FILE), `// Written by scripts/build.mjs. Do not edit.\nexport const VERSION = ${JSON.stringify(own)};\n`);
+  const wasm = readFileSync(resolve(sources, "blasphem_bg.wasm"));
+  const integrity = { bytes: wasm.length, sha256: createHash("sha256").update(wasm).digest("hex") };
+  const manifest = readFileSync(resolve(projectRoot, "resources/packs/manifest.json"));
+  const manifestIntegrity = { bytes: manifest.length, sha256: createHash("sha256").update(manifest).digest("hex") };
+  writeFileSync(resolve(sources, VERSION_FILE), `// Written by scripts/build.mjs. Do not edit.\nexport const VERSION = ${JSON.stringify(own)};\nexport const WASM_INTEGRITY = ${JSON.stringify(integrity)};\nexport const MANIFEST_INTEGRITY = ${JSON.stringify(manifestIntegrity)};\n`);
   return own;
 }
 
@@ -45,7 +51,7 @@ function assertClasses() {
 }
 
 function compileTypeScript() {
-  stream("pnpm", ["exec", "tsc", "--project", resolve(packageRoot, "tsconfig.json")]);
+  execFileSync("pnpm", ["exec", "tsc", "--project", resolve(packageRoot, "tsconfig.json")], { cwd: packageRoot, stdio: "inherit" });
 }
 
 function copyGlue() {
@@ -57,9 +63,9 @@ const crate = readCrate();
 if (prebuilt) assertPrebuilt();
 else assertWasmBindgen(crate.wasmBindgenVersion);
 clean();
-const version = writeVersion();
 const coreFiles = inlineCore();
 if (!prebuilt) generateGlue(buildWasm(crate, { targetDir }), sources);
+const version = writeVersion();
 assertClasses();
 compileTypeScript();
 copyGlue();

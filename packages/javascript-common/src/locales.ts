@@ -18,6 +18,7 @@ const ORDER = new Map<ModelLocaleCode, number>(MODEL_LOCALES.map((locale, index)
 
 /** Lowercases, resolves aliases, rejects unknown codes, and returns registry order without repeats. */
 export function normalizeLocales(input: unknown): ModelLocaleCode[] {
+  if (input === "all") return MODEL_LOCALES.map(({ code }) => code);
   if (!Array.isArray(input) || input.length === 0) {
     throw fail("BLASPHEM_LOCALES_EMPTY", "pass at least one locale, such as [\"en\"]");
   }
@@ -29,6 +30,11 @@ export function normalizeLocales(input: unknown): ModelLocaleCode[] {
     codes.add(code);
   }
   return [...codes].sort((left, right) => (ORDER.get(left) ?? 0) - (ORDER.get(right) ?? 0));
+}
+
+export function selectedFiles(locales: readonly ModelLocaleCode[], detectLanguage: boolean): string[] {
+  return [...new Set(locales.flatMap((locale) => detectLanguage
+    ? [packFile(locale), detectFile(locale)] : [packFile(locale)]))];
 }
 
 export function packFile(code: ModelLocaleCode): string {

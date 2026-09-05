@@ -7,6 +7,7 @@
 /packages/javascript/*.tgz
 # Distribution notices are copied from the root NOTICE during packaging.
 /packages/**/NOTICE
+/packages/python/LICENSE
 /resources/packs/NOTICE
 node_modules/
 .turbo/

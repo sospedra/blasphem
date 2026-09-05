@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import type { EngineHandle, Entry, Judgement } from "./core/index.js";
+import { normalizeJudgement, type EngineHandle, type Entry, type Judgement } from "./core/index.js";
 
 const require = createRequire(import.meta.url);
 
@@ -66,11 +66,7 @@ export function buildNativeEngine(native: NativeModule, entries: Entry[], detect
   const engine = builder.build();
   return {
     locales: engine.locales,
-    // napi drops absent optionals; the contract promises null.
-    judge: (text: string): Judgement => {
-      const verdict = engine.judge(text);
-      return { safe: verdict.safe, score: verdict.score, locale: verdict.locale ?? null, grawlix: verdict.grawlix ?? null };
-    },
+    judge: (text: string): Judgement => normalizeJudgement(engine.judge(text)),
     free: (): void => engine.close(),
   };
 }

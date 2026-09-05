@@ -82,7 +82,7 @@ export function invariantsHold(verdict, grawlixRequested) {
   if (Object.keys(verdict).sort().join(",") !== VERDICT_KEYS) return false;
   const { safe, score, locale, grawlix } = verdict;
   const hundredths = nearlyEqual(score * 100, Math.round(score * 100));
-  const grawlixMatches = grawlixRequested ? typeof grawlix === "string" : grawlix === null;
+  const grawlixMatches = grawlixRequested && !safe ? typeof grawlix === "string" : grawlix === null;
   return typeof safe === "boolean"
     && Number.isFinite(score) && score >= 0 && score <= 1 && hundredths
     && safe === (score < 0.5)
@@ -178,6 +178,11 @@ async function packageCases(createJudge, withAssets, autoJudge) {
   const maskedVerdict = masked.judge(README_EXAMPLE.text);
   const unmaskedVerdict = unmasked.judge(README_EXAMPLE.text);
   record("grawlix-only-when-requested", invariantsHold(maskedVerdict, true) && invariantsHold(unmaskedVerdict, false) && maskedVerdict.grawlix !== README_EXAMPLE.text && maskedVerdict.score === unmaskedVerdict.score, { masked: maskedVerdict.grawlix, unmasked: unmaskedVerdict.grawlix });
+  for (const [caseId, text] of [["clean", "good morning everyone"], ["safe-profanity", "this damn printer is broken again"], ["empty", ""]]) {
+    const verdict = masked.judge(text);
+    const withoutGrawlix = unmasked.judge(text);
+    record(`grawlix-safe-${caseId}`, invariantsHold(verdict, true) && verdict.safe === true && verdict.grawlix === null && verdict.score === withoutGrawlix.score && verdict.locale === withoutGrawlix.locale, { verdict });
+  }
   const empty = unmasked.judge("");
   record("empty-text-explicit-locale", invariantsHold(empty, false) && empty.safe === true, { verdict: empty });
   record("default-detects-language", invariantsHold(autoJudge.judge("hello there"), false), {});

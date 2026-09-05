@@ -1,6 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
+/** One verdict for one message. Safe verdicts never include masked text. */
+export type Judgement =
+| { safe: true; score: number; locale: string | null; grawlix: null }
+| { safe: false; score: number; locale: string | null; grawlix: string | null };
+
+
+
 /**
  * The browser-facing engine. `judge` returns a plain object, so callers never free it.
  */
@@ -15,7 +22,7 @@ export class BlasphemEngine {
      *
      * Returns an error only when the host rejects a property write.
      */
-    judge(text: string): any;
+    judge(text: string): Judgement;
     /**
      * The loaded locales as lowercase codes.
      */

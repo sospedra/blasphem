@@ -34,10 +34,16 @@ export function parseManifest(bytes: Uint8Array): Manifest {
   if (!isRecord(parsed.files)) throw fail("BLASPHEM_PACK_INVALID", `${MANIFEST_FILE} lacks a files map`);
   const files: Record<string, ManifestFile> = {};
   for (const [name, record] of Object.entries(parsed.files)) {
-    if (!isRecord(record) || typeof record.bytes !== "number" || typeof record.sha256 !== "string" || !HEX_64.test(record.sha256)) {
+    if (!validFile(name, record)) {
       throw fail("BLASPHEM_PACK_INVALID", `${MANIFEST_FILE} entry ${JSON.stringify(name)} needs bytes and a 64-character sha256`);
     }
     files[name] = { bytes: record.bytes, sha256: record.sha256 };
   }
   return { formatVersion: MANIFEST_FORMAT_VERSION, files };
+}
+
+function validFile(name: string, record: unknown): record is ManifestFile {
+  if (!/^[a-z]{2,3}\.(pack|detect)$/.test(name) || !isRecord(record)) return false;
+  const validLength = typeof record.bytes === "number" && Number.isSafeInteger(record.bytes) && record.bytes > 0;
+  return validLength && typeof record.sha256 === "string" && HEX_64.test(record.sha256);
 }

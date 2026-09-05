@@ -1,38 +1,36 @@
 #!/usr/bin/env node
-// Copies blasphem_bg.wasm and the installed @blasphem/packs into one directory
-// for self-hosting. Usage: blasphem-assets <directory>, for example
-// `blasphem-assets public/blasphem` in a prebuild script.
-import { copyFileSync, mkdirSync, readdirSync, statSync } from "node:fs";
-import { createRequire } from "node:module";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
+import { basename, resolve } from "node:path";
+import { randomUUID } from "node:crypto";
+import { parseArgs } from "node:util";
+import { browserAssets } from "../integrations/assets.mjs";
 
-const target = process.argv[2];
+const { values, positionals } = parseArgs({ allowPositionals: true, options: { base: { type: "string", default: "/blasphem/" } } });
+const target = positionals[0];
 if (!target) {
-  console.error("usage: blasphem-assets <directory>");
+  console.error("usage: blasphem-assets <directory> [--base /application/blasphem/]");
   process.exit(2);
 }
 
-// Resolve from the caller's project, where both packages are installed.
-const require = createRequire(resolve(process.cwd(), "package.json"));
-const wasm = require.resolve("blasphem/blasphem_bg.wasm");
-let packs;
-try {
-  packs = dirname(require.resolve("@blasphem/packs/manifest.json"));
-} catch {
-  console.error("@blasphem/packs is not installed. Run: pnpm add @blasphem/packs");
-  process.exit(1);
-}
-
+const { entries } = browserAssets(process.cwd(), values.base);
 const destination = resolve(process.cwd(), target);
 mkdirSync(destination, { recursive: true });
-let bytes = 0;
-const names = readdirSync(packs).filter((name) => name === "manifest.json" || name.endsWith(".pack") || name.endsWith(".detect"));
-for (const name of names) {
-  copyFileSync(resolve(packs, name), resolve(destination, name));
-  bytes += statSync(resolve(packs, name)).size;
+const marker = resolve(destination, ".blasphem-files.json");
+const previous = existsSync(marker) ? JSON.parse(readFileSync(marker, "utf8")) : [];
+const names = entries.map(([name]) => name);
+const generatedName = (name) => typeof name === "string" && basename(name) === name &&
+  (["NOTICE", "manifest.json", "bundle.json", "config.js", "blasphem_bg.wasm"].includes(name) || /^[a-z]{2,3}\.(pack|detect)$/.test(name));
+if (!Array.isArray(previous) || previous.some((name) => !generatedName(name))) {
+  throw new Error("Invalid generated asset ownership file");
 }
-copyFileSync(wasm, resolve(destination, "blasphem_bg.wasm"));
-bytes += statSync(wasm).size;
-console.log(`status=copied files=${names.length + 1} mb=${(bytes / 1048576).toFixed(2)} to=${target}`);
-export {};
+for (const [name, bytes] of entries) {
+  const temporary = resolve(destination, `.${name}.${randomUUID()}.tmp`);
+  writeFileSync(temporary, bytes);
+  renameSync(temporary, resolve(destination, name));
+}
+for (const name of previous.filter((name) => !names.includes(name))) {
+  if (existsSync(resolve(destination, name))) unlinkSync(resolve(destination, name));
+}
+writeFileSync(marker, `${JSON.stringify(names)}\n`);
+const bytes = entries.reduce((total, entry) => total + entry[1].length, 0);
+console.log(`status=copied files=${names.length} bytes=${bytes} to=${target}`);

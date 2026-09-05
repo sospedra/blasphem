@@ -22,7 +22,16 @@ export interface BlasphemEngine extends HybridObject<{ ios: "c++"; android: "c++
   close(): void;
 }
 
-/** Reads a pack file the app bundle carries: `manifest.json`, `<code>.pack`, `<code>.detect`. */
+export interface DownloadIntegrity {
+  bytes: number;
+  sha256: string;
+}
+
+/** Native bundle reads and persistent, verified CDN downloads. */
 export interface BlasphemAssets extends HybridObject<{ ios: "swift"; android: "kotlin" }> {
   readBundled(name: string): Promise<ArrayBuffer>;
+  readManifest(url: string, refresh: boolean): Promise<ArrayBuffer>;
+  /** Called only after JavaScript validates the manifest schema. */
+  commitManifest(url: string, bytes: ArrayBuffer): Promise<void>;
+  readDownloaded(url: string, expected: DownloadIntegrity): Promise<ArrayBuffer>;
 }

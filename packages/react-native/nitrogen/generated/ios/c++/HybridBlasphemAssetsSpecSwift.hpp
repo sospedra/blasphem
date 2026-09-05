@@ -14,11 +14,14 @@ namespace BlasphemReactNative { class HybridBlasphemAssetsSpec_cxx; }
 
 // Forward declaration of `ArrayBufferHolder` to properly resolve imports.
 namespace NitroModules { class ArrayBufferHolder; }
+// Forward declaration of `DownloadIntegrity` to properly resolve imports.
+namespace margelo::nitro::blasphem { struct DownloadIntegrity; }
 
 #include <NitroModules/ArrayBuffer.hpp>
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/ArrayBufferHolder.hpp>
 #include <string>
+#include "DownloadIntegrity.hpp"
 
 #include "BlasphemReactNative-Swift-Cxx-Umbrella.hpp"
 
@@ -72,6 +75,30 @@ namespace margelo::nitro::blasphem {
     // Methods
     inline std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readBundled(const std::string& name) override {
       auto __result = _swiftPart.readBundled(name);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readManifest(const std::string& url, bool refresh) override {
+      auto __result = _swiftPart.readManifest(url, std::forward<decltype(refresh)>(refresh));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::shared_ptr<Promise<void>> commitManifest(const std::string& url, const std::shared_ptr<ArrayBuffer>& bytes) override {
+      auto __result = _swiftPart.commitManifest(url, ArrayBufferHolder(bytes));
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::shared_ptr<Promise<std::shared_ptr<ArrayBuffer>>> readDownloaded(const std::string& url, const DownloadIntegrity& expected) override {
+      auto __result = _swiftPart.readDownloaded(url, std::forward<decltype(expected)>(expected));
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

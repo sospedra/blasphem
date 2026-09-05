@@ -8,6 +8,6 @@ data class Judgement(
     val score: Double,
     /** The locale that produced the score, or null. */
     val locale: String?,
-    /** The masked text when `grawlix` was requested, otherwise null. */
+    /** Masked text for unsafe verdicts when requested, otherwise null. */
     val grawlix: String?,
 )
