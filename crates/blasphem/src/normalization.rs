@@ -2,17 +2,17 @@ use unicode_normalization::UnicodeNormalization;
 
 use crate::NormalizationProfile;
 
-pub fn normalize_v2(profile: NormalizationProfile, text: &str) -> String {
+pub fn normalize(profile: NormalizationProfile, text: &str) -> String {
     match profile {
         NormalizationProfile::SpanishCharabia => crate::normalize_text(text),
-        NormalizationProfile::GenericV2 => nfkc_lower(text),
-        NormalizationProfile::TurkishV2 => turkish(text),
-        NormalizationProfile::VietnameseV2 => nfkc_lower(text),
-        NormalizationProfile::ArabicV2 => arabic(text),
-        NormalizationProfile::HindiV2 => text.nfkc().collect(),
-        NormalizationProfile::ChineseV2
-        | NormalizationProfile::JapaneseV2
-        | NormalizationProfile::KoreanV2 => nfkc_lower(text),
+        NormalizationProfile::Generic => nfkc_lower(text),
+        NormalizationProfile::Turkish => turkish(text),
+        NormalizationProfile::Vietnamese => nfkc_lower(text),
+        NormalizationProfile::Arabic => arabic(text),
+        NormalizationProfile::Hindi => text.nfkc().collect(),
+        NormalizationProfile::Chinese
+        | NormalizationProfile::Japanese
+        | NormalizationProfile::Korean => nfkc_lower(text),
     }
 }
 

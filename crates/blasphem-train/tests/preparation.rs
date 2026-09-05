@@ -516,7 +516,7 @@ fn a_training_only_source_never_enters_validation_or_test() {
         language: Language::Es,
         split_policy: SplitPolicy::Hash70_15_15,
         split_version: "fnv1a-uppercase-v1",
-        normalization_version: "runtime-normalize-v2",
+        normalization_version: "runtime-normalize",
         audit_only_source_ids: Default::default(),
         source_roles: roles,
     };

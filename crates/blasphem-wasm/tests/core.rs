@@ -17,7 +17,7 @@ fn read(relative: &str) -> Vec<u8> {
 
 fn rule_pack_version(language: Language) -> u16 {
     let manifest: serde_json::Value =
-        serde_json::from_slice(&read("resources/models/multilingual-v2/manifest.json"))
+        serde_json::from_slice(&read("resources/metadata/model-manifest.json"))
             .expect("valid model manifest");
     let entry = manifest["entries"]
         .as_array()
@@ -31,12 +31,12 @@ fn rule_pack_version(language: Language) -> u16 {
 fn pack(language: Language) -> Vec<u8> {
     let storage = language.storage_code();
     let artifact_name = if language == Language::Es {
-        "es-sparse-v2.bin".to_owned()
+        "es-sparse.bin".to_owned()
     } else {
-        format!("{}-sparse-v2.bin", storage.to_ascii_lowercase())
+        format!("{}-sparse.bin", storage.to_ascii_lowercase())
     };
-    let artifact = read(&format!("resources/models/multilingual-v2/{artifact_name}"));
-    let lexicon = read(&format!("lexicon/{storage}.tsv"));
+    let artifact = read(&format!("resources/models/{artifact_name}"));
+    let lexicon = read(&format!("resources/lexicon/{storage}.tsv"));
     blasphem::encode_pack(&PackInput {
         language,
         rule_pack_version: rule_pack_version(language),
@@ -46,7 +46,7 @@ fn pack(language: Language) -> Vec<u8> {
 }
 
 fn detect(language: Language) -> Vec<u8> {
-    let model = read("crates/blasphem-language/data/blasphem-language-15-v2.bin");
+    let model = read("crates/blasphem-language/data/blasphem-language-15.bin");
     let code = language.code().to_ascii_lowercase();
     blasphem_language::slice::write_slices(&model)
         .expect("slices")

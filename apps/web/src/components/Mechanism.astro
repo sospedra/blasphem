@@ -80,7 +80,7 @@ const points = [
 
     <details class="scoring-details">
       <summary>Rule points and calibration gates</summary>
-      <p class="copy">Spanish uses the full policy frames below. The other 14 languages use the V2 tables. Their lexicon hits add 30 points and cannot flag a message alone.</p>
+      <p class="copy">Spanish uses the full policy frames below. The other 14 languages use the static rule tables. Their lexicon hits add 30 points and cannot flag a message alone.</p>
       <Ledger id="rule-points" caption="Rule channel · evidence points" columns={["Evidence", "Points", "Context"]} rows={points} prose={[2]} source="https://github.com/sospedra/blasphem/blob/main/HOW.md#rule-channel" />
       <p class="copy">A validation boundary must keep false warnings at or below 3% and precision at or above 90%. It must also keep every clean control below the warning threshold.</p>
       <p class="copy">These are calibration gates. The separate test benchmark reports measured performance after calibration.</p>

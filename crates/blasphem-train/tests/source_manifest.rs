@@ -183,11 +183,11 @@ fn textdetox_lock_accepts_only_the_exact_pinned_one_file_url() {
 #[test]
 fn source_manifest_parsers_require_exact_schema_versions_and_lowercase_hashes() {
     let mut catalog = valid_source_catalog_json();
-    catalog["schema_version"] = json!("source-catalog-v2");
+    catalog["schema_version"] = json!("source-catalog-unknown");
     assert!(parse_source_catalog(&serde_json::to_vec(&catalog).expect("JSON")[..]).is_err());
 
     let mut observation = valid_source_observation_json();
-    observation["schema_version"] = json!("source-observation-v2");
+    observation["schema_version"] = json!("source-observation-unknown");
     assert!(
         parse_source_observation(&serde_json::to_vec(&observation).expect("JSON")[..]).is_err()
     );

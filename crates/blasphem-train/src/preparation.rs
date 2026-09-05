@@ -90,7 +90,7 @@ fn prepare_every_language(
             language,
             split_policy: split_policy(language),
             split_version: "fnv1a-uppercase-v1",
-            normalization_version: "runtime-normalize-v2",
+            normalization_version: "runtime-normalize",
             audit_only_source_ids: audit_only.remove(&language).unwrap_or_default(),
             source_roles: source_roles.clone(),
         };

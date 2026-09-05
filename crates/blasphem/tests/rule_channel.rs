@@ -25,7 +25,7 @@ fn every_language_resolves_to_one_static_rule_path() {
 
 #[test]
 fn every_locked_lexicon_file_builds_its_matching_language_channel() {
-    let root = Path::new(concat!(env!("CARGO_MANIFEST_DIR"), "/../..")).join("lexicon");
+    let root = Path::new(concat!(env!("CARGO_MANIFEST_DIR"), "/../..")).join("resources/lexicon");
 
     for language in Language::ALL {
         let path = root.join(format!("{}.tsv", language.storage_code()));
@@ -38,7 +38,7 @@ fn every_locked_lexicon_file_builds_its_matching_language_channel() {
 
 #[test]
 fn supplied_cjk_messages_pass_through_the_shared_channel() {
-    let root = Path::new(concat!(env!("CARGO_MANIFEST_DIR"), "/../..")).join("lexicon");
+    let root = Path::new(concat!(env!("CARGO_MANIFEST_DIR"), "/../..")).join("resources/lexicon");
     let cases = [
         (
             Language::Zh,

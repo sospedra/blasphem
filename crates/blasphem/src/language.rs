@@ -43,16 +43,16 @@ pub enum Language {
 pub enum FeatureProfile {
     #[serde(rename = "SpanishWordChar35")]
     SpanishWordChar35 = 1,
-    #[serde(rename = "WordChar35V2")]
-    WordChar35V2 = 2,
-    #[serde(rename = "Char25V2")]
-    Char25V2 = 3,
-    #[serde(rename = "TurkishChar35V3")]
-    TurkishChar35V3 = 4,
-    #[serde(rename = "ChineseScriptChar15V3")]
-    ChineseScriptChar15V3 = 5,
-    #[serde(rename = "KoreanWordChar25V3")]
-    KoreanWordChar25V3 = 6,
+    #[serde(rename = "WordChar35")]
+    WordChar35 = 2,
+    #[serde(rename = "Char25")]
+    Char25 = 3,
+    #[serde(rename = "TurkishChar35")]
+    TurkishChar35 = 4,
+    #[serde(rename = "ChineseScriptChar15")]
+    ChineseScriptChar15 = 5,
+    #[serde(rename = "KoreanWordChar25")]
+    KoreanWordChar25 = 6,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -60,29 +60,29 @@ pub enum FeatureProfile {
 pub enum NormalizationProfile {
     #[serde(rename = "SpanishCharabia")]
     SpanishCharabia = 1,
-    #[serde(rename = "GenericV2")]
-    GenericV2 = 2,
-    #[serde(rename = "TurkishV2")]
-    TurkishV2 = 3,
-    #[serde(rename = "VietnameseV2")]
-    VietnameseV2 = 4,
-    #[serde(rename = "ArabicV2")]
-    ArabicV2 = 5,
-    #[serde(rename = "HindiV2")]
-    HindiV2 = 6,
-    #[serde(rename = "ChineseV2")]
-    ChineseV2 = 7,
-    #[serde(rename = "JapaneseV2")]
-    JapaneseV2 = 8,
-    #[serde(rename = "KoreanV2")]
-    KoreanV2 = 9,
+    #[serde(rename = "Generic")]
+    Generic = 2,
+    #[serde(rename = "Turkish")]
+    Turkish = 3,
+    #[serde(rename = "Vietnamese")]
+    Vietnamese = 4,
+    #[serde(rename = "Arabic")]
+    Arabic = 5,
+    #[serde(rename = "Hindi")]
+    Hindi = 6,
+    #[serde(rename = "Chinese")]
+    Chinese = 7,
+    #[serde(rename = "Japanese")]
+    Japanese = 8,
+    #[serde(rename = "Korean")]
+    Korean = 9,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[repr(u16)]
 pub enum FeatureSchema {
-    #[serde(rename = "SparseV2")]
-    SparseV2 = 2,
+    #[serde(rename = "Sparse")]
+    Sparse = 2,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Error)]
@@ -160,49 +160,49 @@ impl Language {
     pub const fn profiles(self) -> (FeatureProfile, NormalizationProfile, FeatureSchema) {
         match self {
             Self::En | Self::Ms | Self::Pt | Self::Fr | Self::Ru | Self::De | Self::It => (
-                FeatureProfile::WordChar35V2,
-                NormalizationProfile::GenericV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::WordChar35,
+                NormalizationProfile::Generic,
+                FeatureSchema::Sparse,
             ),
             Self::Zh => (
-                FeatureProfile::ChineseScriptChar15V3,
-                NormalizationProfile::ChineseV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::ChineseScriptChar15,
+                NormalizationProfile::Chinese,
+                FeatureSchema::Sparse,
             ),
             Self::Es => (
                 FeatureProfile::SpanishWordChar35,
                 NormalizationProfile::SpanishCharabia,
-                FeatureSchema::SparseV2,
+                FeatureSchema::Sparse,
             ),
             Self::Ar => (
-                FeatureProfile::WordChar35V2,
-                NormalizationProfile::ArabicV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::WordChar35,
+                NormalizationProfile::Arabic,
+                FeatureSchema::Sparse,
             ),
             Self::Hi => (
-                FeatureProfile::WordChar35V2,
-                NormalizationProfile::HindiV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::WordChar35,
+                NormalizationProfile::Hindi,
+                FeatureSchema::Sparse,
             ),
             Self::Ja => (
-                FeatureProfile::Char25V2,
-                NormalizationProfile::JapaneseV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::Char25,
+                NormalizationProfile::Japanese,
+                FeatureSchema::Sparse,
             ),
             Self::Tr => (
-                FeatureProfile::TurkishChar35V3,
-                NormalizationProfile::TurkishV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::TurkishChar35,
+                NormalizationProfile::Turkish,
+                FeatureSchema::Sparse,
             ),
             Self::Vi => (
-                FeatureProfile::WordChar35V2,
-                NormalizationProfile::VietnameseV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::WordChar35,
+                NormalizationProfile::Vietnamese,
+                FeatureSchema::Sparse,
             ),
             Self::Ko => (
-                FeatureProfile::KoreanWordChar25V3,
-                NormalizationProfile::KoreanV2,
-                FeatureSchema::SparseV2,
+                FeatureProfile::KoreanWordChar25,
+                NormalizationProfile::Korean,
+                FeatureSchema::Sparse,
             ),
         }
     }

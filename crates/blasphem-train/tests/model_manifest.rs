@@ -2,8 +2,7 @@ use std::{fs, path::Path};
 
 use blasphem::{
     ConfusionMatrix, FeatureProfile, FeatureSchema, Language, Metrics, NormalizationProfile,
-    SparseV2Input, arabic_hindi_rules, canonical_rule_identity, cjk_rules, encode_sparse_v2,
-    word_rules,
+    SparseInput, arabic_hindi_rules, canonical_rule_identity, cjk_rules, encode_sparse, word_rules,
 };
 use blasphem_train::{
     calibration::CalibrationResult,
@@ -81,21 +80,21 @@ fn validation_metrics_round_trip_without_numeric_drift() {
 #[test]
 fn artifact_paths_cover_every_language_in_runtime_order() {
     let expected = [
-        "en-sparse-v2.bin",
-        "zh-sparse-v2.bin",
-        "es-sparse-v2.bin",
-        "ar-sparse-v2.bin",
-        "id-sparse-v2.bin",
-        "pt-sparse-v2.bin",
-        "fr-sparse-v2.bin",
-        "hi-sparse-v2.bin",
-        "ru-sparse-v2.bin",
-        "ja-sparse-v2.bin",
-        "de-sparse-v2.bin",
-        "tr-sparse-v2.bin",
-        "vi-sparse-v2.bin",
-        "ko-sparse-v2.bin",
-        "it-sparse-v2.bin",
+        "en-sparse.bin",
+        "zh-sparse.bin",
+        "es-sparse.bin",
+        "ar-sparse.bin",
+        "id-sparse.bin",
+        "pt-sparse.bin",
+        "fr-sparse.bin",
+        "hi-sparse.bin",
+        "ru-sparse.bin",
+        "ja-sparse.bin",
+        "de-sparse.bin",
+        "tr-sparse.bin",
+        "vi-sparse.bin",
+        "ko-sparse.bin",
+        "it-sparse.bin",
     ];
 
     let actual = Language::ALL.map(artifact_relative_path);
@@ -106,11 +105,11 @@ fn artifact_paths_cover_every_language_in_runtime_order() {
 #[test]
 fn manifest_entry_derives_artifact_and_validation_metadata() {
     let weights = vec![0_i16; 65_536];
-    let artifact = encode_sparse_v2(&SparseV2Input {
+    let artifact = encode_sparse(&SparseInput {
         language: Language::En,
-        feature_profile: FeatureProfile::WordChar35V2,
-        normalization_profile: NormalizationProfile::GenericV2,
-        feature_schema: FeatureSchema::SparseV2,
+        feature_profile: FeatureProfile::WordChar35,
+        normalization_profile: NormalizationProfile::Generic,
+        feature_schema: FeatureSchema::Sparse,
         bias: 0,
         decision_boundary: 5,
         score_scale: 7,
@@ -167,9 +166,9 @@ fn manifest_entry_derives_artifact_and_validation_metadata() {
     let entry = build_manifest_entry(&compiled, inputs).expect("manifest entry");
 
     assert_eq!(entry.language, Language::En);
-    assert_eq!(entry.artifact_relative_path, "en-sparse-v2.bin");
+    assert_eq!(entry.artifact_relative_path, "en-sparse.bin");
     assert_eq!(entry.dataset_inputs[0].source_file_id, "a-source");
-    assert_eq!(entry.feature_profile, FeatureProfile::WordChar35V2);
+    assert_eq!(entry.feature_profile, FeatureProfile::WordChar35);
     assert_eq!(entry.boundary, 5);
     assert_eq!(entry.score_scale, 7);
     assert_eq!(entry.validation, validation);
@@ -220,7 +219,7 @@ fn model_set_rejects_a_duplicate_entry() {
 fn model_set_rejects_an_invalid_artifact_path() {
     let directory = tempdir().expect("temporary directory");
     let mut manifest = complete_manifest_stub();
-    manifest.entries[0].artifact_relative_path = "nested/en-sparse-v2.bin".to_owned();
+    manifest.entries[0].artifact_relative_path = "nested/en-sparse.bin".to_owned();
 
     let error = validate_model_set(directory.path(), &manifest).expect_err("invalid path");
 
@@ -357,8 +356,7 @@ fn model_set_rejects_an_overflowing_validation_matrix_total() {
 fn model_set_rejects_a_missing_artifact() {
     let directory = tempdir().expect("temporary directory");
     let manifest = write_complete_model_set(directory.path());
-    fs::remove_file(directory.path().join("en-sparse-v2.bin"))
-        .expect("remove one fixture artifact");
+    fs::remove_file(directory.path().join("en-sparse.bin")).expect("remove one fixture artifact");
 
     let error = validate_model_set(directory.path(), &manifest).expect_err("missing artifact");
 
@@ -372,7 +370,7 @@ fn model_set_rejects_a_missing_artifact() {
 fn model_set_rejects_an_artifact_digest_mismatch() {
     let directory = tempdir().expect("temporary directory");
     let manifest = write_complete_model_set(directory.path());
-    let path = directory.path().join("en-sparse-v2.bin");
+    let path = directory.path().join("en-sparse.bin");
     let mut artifact = fs::read(&path).expect("read fixture artifact");
     artifact[40] ^= 1;
     fs::write(&path, artifact).expect("mutate one artifact byte");
@@ -394,7 +392,7 @@ fn model_set_rejects_changed_header_metadata_after_digest_update() {
     let entry = &mut manifest.entries[0];
     entry.artifact_bytes = artifact.len();
     entry.artifact_sha256 = sha256(&artifact);
-    fs::write(directory.path().join("en-sparse-v2.bin"), artifact).expect("fixture artifact");
+    fs::write(directory.path().join("en-sparse.bin"), artifact).expect("fixture artifact");
 
     let error = validate_model_set(directory.path(), &manifest).expect_err("changed score scale");
 
@@ -413,7 +411,7 @@ fn model_set_rejects_a_nonstandard_false_warning_limit() {
     entry.false_warning_limit_basis_points = 301;
     entry.artifact_bytes = artifact.len();
     entry.artifact_sha256 = sha256(&artifact);
-    fs::write(directory.path().join("en-sparse-v2.bin"), artifact).expect("fixture artifact");
+    fs::write(directory.path().join("en-sparse.bin"), artifact).expect("fixture artifact");
 
     let error = validate_model_set(directory.path(), &manifest).expect_err("invalid policy limit");
 
@@ -526,7 +524,7 @@ fn fixture_artifact(
     false_warning_limit_basis_points: u16,
 ) -> Vec<u8> {
     let (feature_profile, normalization_profile, feature_schema) = language.profiles();
-    encode_sparse_v2(&SparseV2Input {
+    encode_sparse(&SparseInput {
         language,
         feature_profile,
         normalization_profile,

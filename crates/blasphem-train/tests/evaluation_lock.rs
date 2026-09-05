@@ -29,7 +29,7 @@ fn a_moved_test_row_fails_verification() {
     use blasphem_train::corpus::{parse_corpus, split_digest};
     use blasphem_train::datasets::DatasetSplit;
 
-    let path = project_root().join("corpus/EN.tsv");
+    let path = project_root().join("resources/corpus/EN.tsv");
     let mut rows = parse_corpus(fs::File::open(&path).expect("English corpus")).unwrap();
     let sealed = split_digest(&rows, DatasetSplit::Test);
 
@@ -63,7 +63,7 @@ fn the_evaluation_lock_seals_the_committed_corpus_rows() {
 
     assert_eq!(lock.languages.len(), 15);
     for (code, sealed) in &lock.languages {
-        let path = format!("../../corpus/{code}.tsv");
+        let path = format!("../../resources/corpus/{code}.tsv");
         let file = std::fs::File::open(&path).unwrap_or_else(|_| panic!("missing {path}"));
         let rows = parse_corpus(file).unwrap();
 

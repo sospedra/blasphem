@@ -9,10 +9,10 @@ fn sha256_hex(bytes: &[u8]) -> String {
 
 #[test]
 fn spanish_assets_match_the_published_manifest() {
-    let model = include_bytes!("../../../resources/models/multilingual-v2/es-sparse-v2.bin");
+    let model = include_bytes!("../../../resources/models/es-sparse.bin");
     let audit = include_bytes!("fixtures/spanish-audit.tsv");
     let manifest: serde_json::Value = serde_json::from_str(include_str!(
-        "../../../resources/models/multilingual-v2/manifest.json"
+        "../../../resources/metadata/model-manifest.json"
     ))
     .expect("model manifest");
     let published = manifest["entries"]
@@ -46,7 +46,7 @@ fn check(text: &str) -> String {
             "--language",
             "ES",
             "--data-dir",
-            "lexicon",
+            "resources/lexicon",
             "--text",
             text,
         ])
@@ -68,7 +68,7 @@ fn spanish_product_results_are_frozen() {
 
 #[test]
 fn spanish_runtime_preserves_rules_for_the_complete_behavior_panel() {
-    let lexicon = include_bytes!("../../../lexicon/ES.tsv");
+    let lexicon = include_bytes!("../../../resources/lexicon/ES.tsv");
     let entries = parse_lexicon(&lexicon[..], "ES")
         .expect("Spanish Lexicon")
         .into_iter()

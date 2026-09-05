@@ -3,7 +3,7 @@
   "entries": [
     {
       "language": "EN",
-      "artifact_relative_path": "en-sparse-v2.bin",
+      "artifact_relative_path": "en-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -36,9 +36,9 @@
           "file_sha256": "6c507a86bd768a1bfcab9959446ba36cd58324076e0c8974cdc52b2201dd2513"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "83f12c208705486045927869c1adc40d5987064de60cc5665bb24e5ee20f1bd3",
       "lexicon_sha256": "47e158ffb912b3f6fc6ada64bf6c1deeb05fe45d9d9e552c942a6cf87479b871",
@@ -76,7 +76,7 @@
     },
     {
       "language": "ZH",
-      "artifact_relative_path": "zh-sparse-v2.bin",
+      "artifact_relative_path": "zh-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -103,9 +103,9 @@
           "file_sha256": "46840b1cecc3bf73a422a754c749ef4b10f6b57c40007200062a2b7e15d3653e"
         }
       ],
-      "feature_profile": "ChineseScriptChar15V3",
-      "normalization_profile": "ChineseV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "ChineseScriptChar15",
+      "normalization_profile": "Chinese",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "6faedfcb637f60f23a58ff24e3473023a2484707774fe90277cb217c9b3d7941",
       "lexicon_sha256": "8f789c2eb2b8dd62a13ff91aafea6c7b84559bec43599be3150917ff5d920923",
@@ -143,7 +143,7 @@
     },
     {
       "language": "ES",
-      "artifact_relative_path": "es-sparse-v2.bin",
+      "artifact_relative_path": "es-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -172,7 +172,7 @@
       ],
       "feature_profile": "SpanishWordChar35",
       "normalization_profile": "SpanishCharabia",
-      "feature_schema": "SparseV2",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "8bb5ad315f8abe69611cb192bfdf3712d8005cd331565547ec87573720a48246",
       "lexicon_sha256": "7ac642a30c91308b8fd2bfcf75c827238999b776aae502dddf8c3dbb20cde7cc",
@@ -210,7 +210,7 @@
     },
     {
       "language": "AR",
-      "artifact_relative_path": "ar-sparse-v2.bin",
+      "artifact_relative_path": "ar-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -237,9 +237,9 @@
           "file_sha256": "a3f9012730717ad23e8ff3c5f0587d148acb5e8db432a0312945ec3e95cabace"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "ArabicV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Arabic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 2,
       "rule_pack_sha256": "a882fa77392de6d327db51fc15a97729d63378df59b9ae564360e9b86aaff7ef",
       "lexicon_sha256": "9e8967963e86214257a19f2cf8d914e8f442be4d8317097924e8b7df0b6deeaa",
@@ -277,7 +277,7 @@
     },
     {
       "language": "MS",
-      "artifact_relative_path": "id-sparse-v2.bin",
+      "artifact_relative_path": "id-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "ibrohim-budi",
@@ -298,9 +298,9 @@
           "file_sha256": "d72184282c12724ecfa3e326035a02c73974a3730f18e47688a7c45fdbe1a092"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "32b05ecb070b353590ed6b2f29e4d6a13023ec4b33cfa7f48679f16475182861",
       "lexicon_sha256": "d0c159269fa1fa00cae3c409f45608259a23687ccc384ca9eef0f50ecae5fe82",
@@ -338,7 +338,7 @@
     },
     {
       "language": "PT",
-      "artifact_relative_path": "pt-sparse-v2.bin",
+      "artifact_relative_path": "pt-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "told-br",
@@ -365,9 +365,9 @@
           "file_sha256": "8d400474bd78870af4e3f55011e2d549403114adf134ac60ed83b032451f28a5"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "76b8c7927042582bee11d3c4444e1cf61c199782a223d1f95e60ea536c2a69aa",
       "lexicon_sha256": "5fbd7342e88d89418ba5a993ce0578f3e5a84a6ce65f4a2deda89302d53db556",
@@ -405,7 +405,7 @@
     },
     {
       "language": "FR",
-      "artifact_relative_path": "fr-sparse-v2.bin",
+      "artifact_relative_path": "fr-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -438,9 +438,9 @@
           "file_sha256": "86923b2070432a56c9eacb0c05c4cdd95c8fbbf3896d5dd7fcc9fbe000683963"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "d944d890212aefb86324d2d6dd4518a724f0e6de6daefee2706fb7be0e3fabc6",
       "lexicon_sha256": "b191619a61722f2fee05531c086a802f336c000cb5767ea252d333ae282b792c",
@@ -478,7 +478,7 @@
     },
     {
       "language": "HI",
-      "artifact_relative_path": "hi-sparse-v2.bin",
+      "artifact_relative_path": "hi-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -511,9 +511,9 @@
           "file_sha256": "f1c2b69bf2d287db7a4a91fcb2ec52b3a9460d886a178db3eeb144ec8fddde30"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "HindiV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Hindi",
+      "feature_schema": "Sparse",
       "rule_pack_version": 2,
       "rule_pack_sha256": "eed30552d88d22ecc5cb33da64aaa4786299b78f046c3ff5fd0a1f744f6fb275",
       "lexicon_sha256": "3fc8e4c387b96a3634922d10322c51fa8dd2a15666f8caea6df65982395cf647",
@@ -551,7 +551,7 @@
     },
     {
       "language": "RU",
-      "artifact_relative_path": "ru-sparse-v2.bin",
+      "artifact_relative_path": "ru-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -584,9 +584,9 @@
           "file_sha256": "cb9ad1f8a811744c6ac69de54492a604d6d1f7be156497adf8f87467f54121af"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "2d3f7288619d2e801eeb2a52ea7243207752c08ee49c54098c70fb294c059b01",
       "lexicon_sha256": "2c196c7b84b99e43ec8daacd064de7264726e5eee03bf166ce2821927d0e4d8a",
@@ -624,7 +624,7 @@
     },
     {
       "language": "JA",
-      "artifact_relative_path": "ja-sparse-v2.bin",
+      "artifact_relative_path": "ja-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -657,9 +657,9 @@
           "file_sha256": "c08def3a2e29ca45a25cb2f5c75ea8570400184baa2774ad3c66612327edbbec"
         }
       ],
-      "feature_profile": "Char25V2",
-      "normalization_profile": "JapaneseV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "Char25",
+      "normalization_profile": "Japanese",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "8474720d2e8e0e85ba97e3a08f949dfa9b429b1538bff6a7b593bd32d6c9b2a1",
       "lexicon_sha256": "fd709e7d92472193bc30f8a18db179cf8ad8e5e4d8922604bfd605c287b7dd50",
@@ -697,7 +697,7 @@
     },
     {
       "language": "DE",
-      "artifact_relative_path": "de-sparse-v2.bin",
+      "artifact_relative_path": "de-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -742,9 +742,9 @@
           "file_sha256": "828445d639efea4724b6a281f6c38ee1bfa5146b8a3e5d48db1d9aa59cd6f49d"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "b48d46b1d9a84a9cf4781cd32d16f08acbeef426811919bdb6f870d52b837f96",
       "lexicon_sha256": "c03d37a2fea09c5bacdf19307387aca0c720c46ab6bb9280870e93a08da367a8",
@@ -782,7 +782,7 @@
     },
     {
       "language": "TR",
-      "artifact_relative_path": "tr-sparse-v2.bin",
+      "artifact_relative_path": "tr-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "offenseval-tr",
@@ -821,9 +821,9 @@
           "file_sha256": "96853496474b2a18a5ca045103fa0001cef4d9c1b3829dfc7267ba0b3f49d9ba"
         }
       ],
-      "feature_profile": "TurkishChar35V3",
-      "normalization_profile": "TurkishV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "TurkishChar35",
+      "normalization_profile": "Turkish",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "1ead20c976e68da4fdb683cdebbe680e40d7561bed08b807f595925fe663a932",
       "lexicon_sha256": "5398b7ae04964b79d9b69376d9aba85120a76b086942b3b2fafc6f17af8ff886",
@@ -861,7 +861,7 @@
     },
     {
       "language": "VI",
-      "artifact_relative_path": "vi-sparse-v2.bin",
+      "artifact_relative_path": "vi-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "vihos",
@@ -894,9 +894,9 @@
           "file_sha256": "569d8d963304834b9beab135ce88acefd38bcf66d477e62daf63b5f68d3797ee"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "VietnameseV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Vietnamese",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "13fcb5ae0b82f081bd942acd347469290b369e39a159287a646ebcb4a835ff64",
       "lexicon_sha256": "b03dc19155e27ad8327b79a25337ed6843d0f8c366d9eaff794b818a5c46dd6e",
@@ -934,7 +934,7 @@
     },
     {
       "language": "KO",
-      "artifact_relative_path": "ko-sparse-v2.bin",
+      "artifact_relative_path": "ko-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "k-mhas",
@@ -973,9 +973,9 @@
           "file_sha256": "8f7b0cb69bfa592dfeca663be62f9e2828201e0165480e0963cea992a21a4e37"
         }
       ],
-      "feature_profile": "KoreanWordChar25V3",
-      "normalization_profile": "KoreanV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "KoreanWordChar25",
+      "normalization_profile": "Korean",
+      "feature_schema": "Sparse",
       "rule_pack_version": 1,
       "rule_pack_sha256": "51f02655fed2ffe57b000f4f557cf88ff03ee15fd5cb1e9b356b0fffae879a35",
       "lexicon_sha256": "1fe1886792cc809f4685aa5de19872fa5b40b183e74e2791caca217f7984b824",
@@ -1013,7 +1013,7 @@
     },
     {
       "language": "IT",
-      "artifact_relative_path": "it-sparse-v2.bin",
+      "artifact_relative_path": "it-sparse.bin",
       "dataset_inputs": [
         {
           "dataset": "textdetox",
@@ -1046,9 +1046,9 @@
           "file_sha256": "0091dccec38f0c28f286895869844d595b6dbcb0004b277f1a9be46a5e31e7cd"
         }
       ],
-      "feature_profile": "WordChar35V2",
-      "normalization_profile": "GenericV2",
-      "feature_schema": "SparseV2",
+      "feature_profile": "WordChar35",
+      "normalization_profile": "Generic",
+      "feature_schema": "Sparse",
       "rule_pack_version": 2,
       "rule_pack_sha256": "c1e8cf9f3612964383114fe3108d5ae08c2d98c3662dceb24f56219c9dc8129e",
       "lexicon_sha256": "1904d7807553a0263c0472f17f983edba5bc2ebe7af69aa0e2ed95fa980879b8",

@@ -130,7 +130,7 @@ See [the reproduction implementation](crates/blasphem-train/src/reproduce.rs) fo
 
 Changes to training data or rules can require new artifacts:
 
-For lexicon changes, first refresh the [source input digests](lexicon/README.md#verify).
+For lexicon changes, first refresh the [source input digests](resources/lexicon/README.md#verify).
 
 ```sh
 cargo run --release --locked -p blasphem-train -- regenerate
@@ -139,7 +139,7 @@ cargo run --release --locked -p blasphem-train -- regenerate
 This command rewrites model artifacts, locks, and evidence reports.
 Review its diff before submission.
 Refresh the artifact and lexicon digests in [embedded.rs](crates/blasphem/src/embedded.rs).
-Use the values from [the model manifest](resources/models/multilingual-v2/manifest.json).
+Use the values from [the model manifest](resources/metadata/model-manifest.json).
 Rebuild affected packages after the runtime changes.
 
 Use development data, validation reports, and behavior panels during iteration.
@@ -148,12 +148,12 @@ Never tune rules or thresholds from test results.
 
 ## Corpus contributions
 
-Read [the corpus guide](corpus/README.md).
+Read [the corpus guide](resources/corpus/README.md).
 It covers direct edits, labels, escaping, sorting, and sealed partitions.
 
 ## Lexicon contributions
 
-Read [the lexicon guide](lexicon/README.md).
+Read [the lexicon guide](resources/lexicon/README.md).
 It covers categories, sense tables, source records, and the current mirrored files.
 
 ## Import an upstream corpus

@@ -22,8 +22,8 @@ fn size_evidence_contains_every_language_resource() {
 
     let evidence = collect_size_evidence(
         &binary,
-        &project_root.join("resources/models/multilingual-v2/manifest.json"),
-        &project_root.join("lexicon"),
+        &project_root.join("resources/metadata/model-manifest.json"),
+        &project_root.join("resources/lexicon"),
         "aarch64-apple-darwin",
     )
     .expect("size evidence");

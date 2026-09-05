@@ -80,7 +80,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--storage-code", required=True, help='e.g. "PT"')
     parser.add_argument(
-        "--data-root", default=REPO_ROOT / "lexicon", type=Path
+        "--data-root", default=REPO_ROOT / "resources" / "lexicon", type=Path
     )
     parser.add_argument("--corpus", default=None, type=Path)
     parser.add_argument(
@@ -91,7 +91,7 @@ def main() -> None:
     )
     args = parser.parse_args()
     code = args.storage_code.upper()
-    corpus_path = args.corpus or (REPO_ROOT / "corpus" / f"{code}.tsv")
+    corpus_path = args.corpus or (REPO_ROOT / "resources" / "corpus" / f"{code}.tsv")
     senses_path = args.data_root / f"{code}.senses.tsv"
     drops_path = args.data_root / f"{code}.drops.txt"
 

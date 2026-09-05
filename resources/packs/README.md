@@ -6,7 +6,7 @@ The repository root holds the canonical NOTICE.
 Do not edit generated artifacts by hand.
 
 `manifest.json` records each artifact's byte length and SHA-256 digest.
-`<code>.pack` contains a V2 sparse model, lexicon, and rule identity.
+`<code>.pack` contains a sparse model, lexicon, and rule identity.
 `<code>.detect` contains the language-identification slice.
 Indonesian and Malay share the `ms` files.
 
@@ -19,7 +19,7 @@ pnpm packs:generate
 pnpm packs:check
 ```
 
-Generation reads `resources/models/multilingual-v2`, `lexicon`, and the compiled language model.
+Generation reads `resources/models`, `resources/lexicon`, and the compiled language model.
 The generator validates source digests before replacing artifacts.
 The check regenerates into a temporary directory and compares the manifest.
 `pnpm regenerate` regenerates models and then these packs.
@@ -34,7 +34,7 @@ Runtime adapters and distribution instructions belong under `packages/`.
 This directory contains shared artifacts and their documentation.
 
 Use matching engine and pack release versions.
-Spanish now uses V2 artifacts. Older engines can reject these packs.
+Spanish now uses sparse artifacts. Older engines can reject these packs.
 Spanish normalization, features, weights, and linguistic rules remain unchanged.
 
 ## License

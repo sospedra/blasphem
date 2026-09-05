@@ -1,12 +1,12 @@
 use blasphem::{
-    FeatureProfile, FeatureSchema, Language, NormalizationProfile, SparseModel, SparseModelError,
-    SparseV2Input, encode_sparse_v2,
+    FeatureProfile, FeatureSchema, Language, NormalizationProfile, SparseInput, SparseModel,
+    SparseModelError, encode_sparse,
 };
 use std::ops::Range;
 
-fn fixture_v2_input(language: Language, weights: &[i16]) -> SparseV2Input<'_> {
+fn fixture_sparse_input(language: Language, weights: &[i16]) -> SparseInput<'_> {
     let (feature_profile, normalization_profile, feature_schema) = language.profiles();
-    SparseV2Input {
+    SparseInput {
         language,
         feature_profile,
         normalization_profile,
@@ -20,34 +20,29 @@ fn fixture_v2_input(language: Language, weights: &[i16]) -> SparseV2Input<'_> {
 }
 
 #[test]
-fn v2_declares_the_spanish_profiles() {
-    let model = SparseModel::from_bytes(include_bytes!(
-        "../../../resources/models/multilingual-v2/es-sparse-v2.bin"
-    ))
-    .expect("Spanish model");
+fn sparse_format_declares_the_spanish_profiles() {
+    let model = SparseModel::from_bytes(include_bytes!("../../../resources/models/es-sparse.bin"))
+        .expect("Spanish model");
     assert_eq!(model.language(), Language::Es);
     assert_eq!(model.feature_profile(), FeatureProfile::SpanishWordChar35);
     assert_eq!(
         model.normalization_profile(),
         NormalizationProfile::SpanishCharabia
     );
-    assert_eq!(model.feature_schema(), FeatureSchema::SparseV2);
+    assert_eq!(model.feature_schema(), FeatureSchema::Sparse);
 }
 
 #[test]
-fn v2_round_trip_preserves_every_header_field() {
+fn sparse_format_round_trip_preserves_every_header_field() {
     let weights = vec![0_i16; 65_536];
-    let input = fixture_v2_input(Language::Tr, &weights);
-    let artifact = encode_sparse_v2(&input).expect("encode");
+    let input = fixture_sparse_input(Language::Tr, &weights);
+    let artifact = encode_sparse(&input).expect("encode");
     assert_eq!(artifact.len(), 131_112);
     let model = SparseModel::from_bytes(&artifact).expect("parse");
     assert_eq!(model.language(), Language::Tr);
-    assert_eq!(model.feature_profile(), FeatureProfile::TurkishChar35V3);
-    assert_eq!(
-        model.normalization_profile(),
-        NormalizationProfile::TurkishV2
-    );
-    assert_eq!(model.feature_schema(), FeatureSchema::SparseV2);
+    assert_eq!(model.feature_profile(), FeatureProfile::TurkishChar35);
+    assert_eq!(model.normalization_profile(), NormalizationProfile::Turkish);
+    assert_eq!(model.feature_schema(), FeatureSchema::Sparse);
     assert_eq!(model.raw_score(""), -64);
     assert_eq!(model.raw_boundary(), 128);
     assert_eq!(model.score_scale(), 256);
@@ -55,29 +50,29 @@ fn v2_round_trip_preserves_every_header_field() {
 }
 
 #[test]
-fn v2_encoder_accepts_spanish_and_rejects_invalid_calibration() {
+fn sparse_format_encoder_accepts_spanish_and_rejects_invalid_calibration() {
     let weights = vec![0_i16; 65_536];
 
-    let spanish = fixture_v2_input(Language::Es, &weights);
-    let spanish_bytes = encode_sparse_v2(&spanish).expect("Spanish V2 encoding");
+    let spanish = fixture_sparse_input(Language::Es, &weights);
+    let spanish_bytes = encode_sparse(&spanish).expect("sparse format encoding");
     assert_eq!(
         SparseModel::from_bytes(&spanish_bytes)
-            .expect("Spanish V2 model")
+            .expect("sparse format model")
             .language(),
         Language::Es
     );
 
-    let mut invalid_scale = fixture_v2_input(Language::Tr, &weights);
+    let mut invalid_scale = fixture_sparse_input(Language::Tr, &weights);
     invalid_scale.score_scale = 0;
     assert_eq!(
-        encode_sparse_v2(&invalid_scale),
+        encode_sparse(&invalid_scale),
         Err(SparseModelError::ZeroScoreScale)
     );
 
-    let mut invalid_limit = fixture_v2_input(Language::Tr, &weights);
+    let mut invalid_limit = fixture_sparse_input(Language::Tr, &weights);
     invalid_limit.max_false_warning_basis_points = 10_001;
     assert_eq!(
-        encode_sparse_v2(&invalid_limit),
+        encode_sparse(&invalid_limit),
         Err(SparseModelError::InvalidFalseWarningLimit(10_001))
     );
 }
@@ -85,10 +80,10 @@ fn v2_encoder_accepts_spanish_and_rejects_invalid_calibration() {
 type ErrorCheck = fn(&SparseModelError) -> bool;
 
 #[test]
-fn v2_rejects_each_invalid_header_field() {
+fn sparse_format_rejects_each_invalid_header_field() {
     let weights = vec![0_i16; 65_536];
-    let input = fixture_v2_input(Language::Tr, &weights);
-    let artifact = encode_sparse_v2(&input).expect("encode");
+    let input = fixture_sparse_input(Language::Tr, &weights);
+    let artifact = encode_sparse(&input).expect("encode");
     let cases: &[(&str, Range<usize>, &[u8], ErrorCheck)] = &[
         ("retired V1 magic", 0..8, b"TOXSPRS1", |error| {
             matches!(error, &SparseModelError::InvalidMagic)
@@ -140,10 +135,10 @@ fn v2_rejects_each_invalid_header_field() {
 }
 
 #[test]
-fn v2_rejects_language_profile_mismatch_and_nonexact_payload_sizes() {
+fn sparse_format_rejects_language_profile_mismatch_and_nonexact_payload_sizes() {
     let weights = vec![0_i16; 65_536];
-    let input = fixture_v2_input(Language::Tr, &weights);
-    let artifact = encode_sparse_v2(&input).expect("encode");
+    let input = fixture_sparse_input(Language::Tr, &weights);
+    let artifact = encode_sparse(&input).expect("encode");
 
     let mut spanish = artifact.clone();
     spanish[10..12].copy_from_slice(b"ES");

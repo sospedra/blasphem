@@ -6,7 +6,7 @@ They also provide category markers for some model profiles.
 ## Files
 
 Each model profile uses an uppercase storage code.
-See [all 16 supported input languages](../packages/javascript-packs/README.md#locales).
+See [all 16 supported input languages](../../packages/javascript-packs/README.md#locales).
 
 | File | Purpose |
 | --- | --- |
@@ -17,8 +17,8 @@ See [all 16 supported input languages](../packages/javascript-packs/README.md#lo
 
 The build reads these files directly.
 This directory is the single source for runtime lexica.
-See [the pack build](../packages/javascript-packs/scripts/build.mjs) and
-[embedded resources](../crates/blasphem/src/embedded.rs).
+See [the pack build](../../packages/javascript-packs/scripts/build.mjs) and
+[embedded resources](../../crates/blasphem/src/embedded.rs).
 
 ## Row format
 
@@ -48,8 +48,8 @@ ps rci pa ddf ddp dmc is or an asm asf pr om qas cds re svp
 ```
 
 Identity categories are `ps`, `rci`, `om`, `ddf`, and `ddp`.
-See [the TSV parser](../crates/blasphem/src/lexicon.rs) and
-[the assignment rules](../crates/blasphem-train/src/lexicon.rs).
+See [the TSV parser](../../crates/blasphem/src/lexicon.rs) and
+[the assignment rules](../../crates/blasphem-train/src/lexicon.rs).
 
 ## Contribute
 
@@ -73,7 +73,7 @@ lemma	category	level
 
 Do not assume a new word will produce a warning by itself.
 The runtime combines lexicon evidence with rules and model scores.
-Read [the architecture](../HOW.md#rule-channel) before changing match levels.
+Read [the architecture](../../HOW.md#rule-channel) before changing match levels.
 
 ## Rebuild from a harvest
 
@@ -87,7 +87,7 @@ For an existing English harvest, run from the repository root:
 cargo run --release --locked -p blasphem-train -- lexicon-build \
   --harvest /path/to/harvests \
   --storage-code EN \
-  --output lexicon
+  --output resources/lexicon
 ```
 
 The original harvest JSON files are not committed.
@@ -108,19 +108,19 @@ Do not replace the recorded harvest digest with an unrelated digest.
 For an English change, record the runtime digest:
 
 ```sh
-shasum -a 256 lexicon/EN.tsv
+shasum -a 256 resources/lexicon/EN.tsv
 ```
 
 Run `lexicon-build` when the matching harvest is available.
 It checks sense-table categories, levels, duplicates, and supported sibling constraints.
-Update the matching `file_sha256` in [the source lock](../crates/blasphem-train/metadata/source-lock-v1.json).
+Update the matching `file_sha256` in [the source lock](../../crates/blasphem-train/metadata/source-lock-v1.json).
 Its clean-room entries use the `dataset: "lexicon"` identifier.
-The [reproduction check](../crates/blasphem-train/src/reproduce.rs) verifies these input digests before compilation.
-Follow [artifact regeneration](../CONTRIBUTING.md#update-generated-artifacts) before shipping changed lexica.
+The [reproduction check](../../crates/blasphem-train/src/reproduce.rs) verifies these input digests before compilation.
+Follow [artifact regeneration](../../CONTRIBUTING.md#update-generated-artifacts) before shipping changed lexica.
 Runtime initialization checks the pinned lexicon and artifact digests.
 
 ## License
 
-Source terms are recorded in [NOTICE](../NOTICE).
+Source terms are recorded in [NOTICE](../../NOTICE).
 The lexica draw from Wiktionary and other recorded sources.
 Do not describe all language data with one blanket code license.

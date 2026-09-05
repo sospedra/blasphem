@@ -285,7 +285,7 @@ fn parse_slots(source: &str, name: &str) -> Result<Vec<Slot>, String> {
     Ok(slots)
 }
 
-/// The version-two table layout. Two bitmaps cover every upstream position,
+/// The compact table layout. Two bitmaps cover every upstream position,
 /// and only live slots store a fingerprint. Dead slots, whose scores all
 /// belonged to dropped languages, stay occupied so probe chains do not change.
 struct CompactLayout {

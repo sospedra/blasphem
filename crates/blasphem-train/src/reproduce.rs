@@ -34,15 +34,15 @@ pub const STEP_NAMES: [&str; 8] = [
 pub const REENTRY_GUARD_VARIABLE: &str = "BLASPHEM_REPRODUCE_ACTIVE";
 
 /// The committed corpus: one hand-editable TSV file per language.
-pub const CORPUS_ROOT: &str = "corpus";
+pub const CORPUS_ROOT: &str = "resources/corpus";
 
 const SOURCE_LOCK: &str = "crates/blasphem-train/metadata/source-lock-v1.json";
 const EVALUATION_LOCK: &str = "crates/blasphem-train/metadata/evaluation-lock-v1.json";
-const LEXICON_ROOT: &str = "lexicon";
+const LEXICON_ROOT: &str = "resources/lexicon";
 const BEHAVIOR_ROOT: &str = "crates/blasphem/tests/fixtures/behavior";
-const LANGUAGE_ARTIFACT_LOCK: &str = "resources/models/language-artifact-v1.json";
+const LANGUAGE_ARTIFACT_LOCK: &str = "resources/metadata/language-artifact.json";
 const LANGUAGE_ARTIFACT_SCHEMA_VERSION: &str = "language-artifact-v1";
-const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
+const MODEL_MANIFEST: &str = "resources/metadata/model-manifest.json";
 const VENDOR_ROOT: &str = "crates/blasphem-language/vendor";
 const WASM_MODULE: &str = "target/wasm32-unknown-unknown/release/blasphem_wasm.wasm";
 
@@ -190,7 +190,7 @@ fn verify_lexicon_inputs(
     {
         let relative = source
             .file_path
-            .strip_prefix("lexicon/")
+            .strip_prefix("resources/lexicon/")
             .unwrap_or(source.file_path.as_str());
         let actual = file_digest(step, &lexicon_root.join(relative))?;
         if actual != source.file_sha256 {
@@ -234,6 +234,7 @@ fn compile_model_artifacts(options: &ReproduceOptions) -> StepResult {
         lexicon_root: options.project_root.join(LEXICON_ROOT),
         behavior_root: Some(options.project_root.join(BEHAVIOR_ROOT)),
         output: model_root(options),
+        manifest_output: model_manifest_path(options),
     })
     .map_err(|error| failure(STEP, error.to_string()))?;
     Ok(format!(
@@ -562,6 +563,10 @@ pub(crate) fn cargo_program() -> String {
 
 pub(crate) fn model_root(options: &ReproduceOptions) -> PathBuf {
     options.work_root.join("models")
+}
+
+pub(crate) fn model_manifest_path(options: &ReproduceOptions) -> PathBuf {
+    options.work_root.join("metadata/model-manifest.json")
 }
 
 fn open_project_file(

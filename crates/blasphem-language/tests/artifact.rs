@@ -18,9 +18,8 @@ fn the_committed_artifact_rebuilds_from_the_vendored_tables() {
     assert!(status.success(), "the builder must succeed");
 
     let rebuilt = fs::read(output.path()).expect("readable rebuild");
-    let committed =
-        fs::read(root.join("crates/blasphem-language/data/blasphem-language-15-v2.bin"))
-            .expect("readable committed artifact");
+    let committed = fs::read(root.join("crates/blasphem-language/data/blasphem-language-15.bin"))
+        .expect("readable committed artifact");
     assert_eq!(
         rebuilt, committed,
         "the rebuild must match the committed artifact"
@@ -30,7 +29,7 @@ fn the_committed_artifact_rebuilds_from_the_vendored_tables() {
 #[test]
 fn the_committed_tables_match_the_committed_model() {
     let root = project_root();
-    let model = fs::read(root.join("crates/blasphem-language/data/blasphem-language-15-v2.bin"))
+    let model = fs::read(root.join("crates/blasphem-language/data/blasphem-language-15.bin"))
         .expect("readable committed model");
     let tables = blasphem_language::slice::write_tables(&model).expect("tables section");
     assert_eq!(tables, blasphem_language::slice::TABLES);

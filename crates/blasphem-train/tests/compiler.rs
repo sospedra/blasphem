@@ -7,7 +7,7 @@ use std::{
 
 use blasphem::{
     EvalLabel, FeatureProfile, FeatureSchema, Language, NormalizationProfile, ReplyTarget,
-    RuleChannel, SparseModel, SparseV2Input, encode_sparse_v2,
+    RuleChannel, SparseInput, SparseModel, encode_sparse,
 };
 use blasphem_train::{
     compiler::{
@@ -39,6 +39,7 @@ fn compile_help_exposes_only_batch_inputs() {
     assert!(stdout.contains("--lexicon-root"));
     assert!(stdout.contains("--behavior-root"));
     assert!(stdout.contains("--output"));
+    assert!(stdout.contains("--manifest-output"));
     assert!(!stdout.contains("--test"));
     assert!(!stdout.contains("--development"));
     assert!(!stdout.contains("--validation"));
@@ -66,8 +67,8 @@ fn training_counts_a_repeated_feature_once_per_document() {
     ];
 
     let trained = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &development,
     )
     .expect("train weights");
@@ -79,7 +80,7 @@ fn training_counts_a_repeated_feature_once_per_document() {
 }
 
 #[test]
-fn training_fixture_has_a_stable_version_two_artifact() {
+fn training_fixture_has_a_stable_sparse_artifact() {
     let development = vec![
         prepared_row(Language::En, EvalLabel::Toxic, "toxic/1", "tox"),
         prepared_row(Language::En, EvalLabel::Toxic, "toxic/2", "tox"),
@@ -87,16 +88,16 @@ fn training_fixture_has_a_stable_version_two_artifact() {
         prepared_row(Language::En, EvalLabel::Clean, "clean/2", "abc"),
     ];
     let trained = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &development,
     )
     .expect("train golden fixture");
-    let artifact = encode_sparse_v2(&SparseV2Input {
+    let artifact = encode_sparse(&SparseInput {
         language: Language::En,
-        feature_profile: FeatureProfile::WordChar35V2,
-        normalization_profile: NormalizationProfile::GenericV2,
-        feature_schema: FeatureSchema::SparseV2,
+        feature_profile: FeatureProfile::WordChar35,
+        normalization_profile: NormalizationProfile::Generic,
+        feature_schema: FeatureSchema::Sparse,
         bias: trained.bias,
         decision_boundary: 17,
         score_scale: 90,
@@ -146,16 +147,16 @@ fn turkish_training_fixture_has_a_stable_balanced_artifact() {
         prepared_row(Language::Tr, EvalLabel::Toxic, "toxic/2", "aptallar"),
     ];
     let trained = train_weights(
-        FeatureProfile::TurkishChar35V3,
-        NormalizationProfile::TurkishV2,
+        FeatureProfile::TurkishChar35,
+        NormalizationProfile::Turkish,
         &development,
     )
     .expect("train Turkish fixture");
-    let artifact = encode_sparse_v2(&SparseV2Input {
+    let artifact = encode_sparse(&SparseInput {
         language: Language::Tr,
-        feature_profile: FeatureProfile::TurkishChar35V3,
-        normalization_profile: NormalizationProfile::TurkishV2,
-        feature_schema: FeatureSchema::SparseV2,
+        feature_profile: FeatureProfile::TurkishChar35,
+        normalization_profile: NormalizationProfile::Turkish,
+        feature_schema: FeatureSchema::Sparse,
         bias: trained.bias,
         decision_boundary: 17,
         score_scale: 90,
@@ -182,14 +183,14 @@ fn training_excludes_document_frequency_one_from_weights_and_bias() {
     with_singleton[0].text = "tox singletononly".to_owned();
 
     let baseline = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &baseline,
     )
     .expect("baseline weights");
     let with_singleton = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &with_singleton,
     )
     .expect("singleton weights");
@@ -206,16 +207,16 @@ fn training_is_independent_of_development_row_order() {
         prepared_row(Language::En, EvalLabel::Clean, "clean/2", "abc"),
     ];
     let first = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &forward,
     )
     .expect("forward weights");
     forward.reverse();
 
     let reversed = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &forward,
     )
     .expect("reversed weights");
@@ -233,8 +234,8 @@ fn training_reports_the_missing_language_class() {
     )];
 
     let error = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &development,
     )
     .expect_err("missing toxic class");
@@ -257,8 +258,8 @@ fn training_reports_a_row_language_mismatch_with_its_source() {
     ];
 
     let error = train_weights(
-        FeatureProfile::WordChar35V2,
-        NormalizationProfile::GenericV2,
+        FeatureProfile::WordChar35,
+        NormalizationProfile::Generic,
         &development,
     )
     .expect_err("language mismatch");
@@ -303,7 +304,7 @@ fn score_scale_rejects_an_empty_validation_split() {
 }
 
 #[test]
-fn version_two_compiler_is_deterministic() {
+fn sparse_compiler_is_deterministic() {
     let first = compile_language(&fixture_request(Language::En)).expect("first compilation");
     let second = compile_language(&fixture_request(Language::En)).expect("second compilation");
 
@@ -340,7 +341,7 @@ fn clean_controls_must_not_trigger_the_rule_channel() {
 }
 
 #[test]
-fn serialized_version_two_model_matches_final_validation_predictions() {
+fn serialized_sparse_model_matches_final_validation_predictions() {
     let request = fixture_request(Language::En);
     let compiled = compile_language(&request).expect("compile fixture");
     let model = SparseModel::from_bytes(&compiled.artifact).expect("parse compiled artifact");
@@ -367,7 +368,7 @@ fn serialized_version_two_model_matches_final_validation_predictions() {
 }
 
 #[test]
-fn version_two_compiler_reports_a_missing_validation_class() {
+fn sparse_compiler_reports_a_missing_validation_class() {
     let mut request = fixture_request(Language::En);
     request
         .validation
@@ -386,7 +387,7 @@ fn version_two_compiler_reports_a_missing_validation_class() {
 }
 
 #[test]
-fn version_two_compiler_reports_a_validation_language_mismatch() {
+fn sparse_compiler_reports_a_validation_language_mismatch() {
     let mut request = fixture_request(Language::En);
     request.validation[1].detector_language = Language::Pt;
 
@@ -404,7 +405,7 @@ fn version_two_compiler_reports_a_validation_language_mismatch() {
 }
 
 #[test]
-fn version_two_compiler_rejects_a_rule_channel_for_another_language() {
+fn sparse_compiler_rejects_a_rule_channel_for_another_language() {
     let mut request = fixture_request(Language::En);
     request.rule_channel =
         RuleChannel::from_lexicon_bytes(Language::Pt, None).expect("Portuguese rule channel");
@@ -520,17 +521,16 @@ fn batch_compiler_publishes_a_complete_model_set_without_test_files() {
             .iter()
             .all(|entry| entry.development_rows == 4 && entry.validation_rows == 2)
     );
-    let parsed = parse_model_manifest(
-        fs::File::open(options.output.join("manifest.json")).expect("published manifest"),
-    )
-    .expect("parse published manifest");
+    let parsed =
+        parse_model_manifest(fs::File::open(&options.manifest_output).expect("published manifest"))
+            .expect("parse published manifest");
     assert_eq!(parsed, manifest);
     validate_model_set(&options.output, &parsed).expect("validate published model set");
     assert_eq!(
         fs::read_dir(&options.output)
             .expect("published directory")
             .count(),
-        Language::ALL.len() + 1
+        Language::ALL.len()
     );
 }
 
@@ -550,6 +550,36 @@ fn model_set_publication_preserves_an_existing_destination() {
         ModelSetError::PublicationDestinationExists(ref path) if path == &options.output
     ));
     assert_eq!(destination_bytes(&options.output), before);
+
+    #[cfg(unix)]
+    {
+        fs::remove_dir_all(&options.output).expect("remove existing destination");
+        let alias = directory.path().join("alias");
+        std::os::unix::fs::symlink(directory.path(), &alias).expect("fixture root alias");
+        let mut collision_options = options.clone();
+        collision_options.manifest_output = alias.join("models");
+
+        let error = compile_model_set(&collision_options).expect_err("manifest collision");
+
+        assert!(matches!(
+            error,
+            ModelSetError::PublicationDestinationExists(ref path)
+                if path == &collision_options.manifest_output
+        ));
+        assert!(!collision_options.output.exists());
+        collision_options.manifest_output = options.manifest_output.clone();
+        compile_model_set(&collision_options).expect("retry compilation");
+    }
+
+    let nested_directory = tempdir().expect("nested temporary directory");
+    let mut nested_options = write_batch_fixture(nested_directory.path());
+    nested_options.manifest_output = nested_options.output.join("manifest.json");
+    let error = compile_model_set(&nested_options).expect_err("nested manifest output");
+    assert!(matches!(
+        error,
+        ModelSetError::InvalidOutputPath(ref path) if path == &nested_options.manifest_output
+    ));
+    assert!(!nested_options.output.exists());
 }
 
 #[test]
@@ -601,6 +631,7 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
     let lexicon_root = root.join("lexicon");
     let source_lock = root.join("source-lock.json");
     let output = root.join("models");
+    let manifest_output = root.join("metadata/model-manifest.json");
     fs::create_dir(&corpus_root).expect("corpus root");
     fs::create_dir(&lexicon_root).expect("Lexicon root");
 
@@ -609,7 +640,7 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
         let code = language.storage_code();
         let dataset_source_id = format!("dataset-{}", code.to_ascii_lowercase());
         let lexicon_source_id = format!("lexicon-{}", code.to_ascii_lowercase());
-        let lexicon_relative_path = format!("lexicon/{code}.tsv");
+        let lexicon_relative_path = format!("resources/lexicon/{code}.tsv");
         let lexicon_bytes = lexicon_fixture_bytes(language);
         let lexicon_path = lexicon_root.join(format!("{code}.tsv"));
         fs::create_dir_all(lexicon_path.parent().expect("Lexicon parent"))
@@ -642,6 +673,7 @@ fn write_batch_fixture(root: &Path) -> BatchCompileOptions {
         lexicon_root,
         behavior_root: None,
         output,
+        manifest_output,
     }
 }
 
@@ -726,7 +758,8 @@ fn frozen_source(
 /// Spanish manifest entries pin the frozen Lexicon ES digest, so the fixture uses the real file.
 fn lexicon_fixture_bytes(language: Language) -> Vec<u8> {
     if language == Language::Es {
-        return fs::read(project_root().join("lexicon/ES.tsv")).expect("Spanish Lexicon data");
+        return fs::read(project_root().join("resources/lexicon/ES.tsv"))
+            .expect("Spanish Lexicon data");
     }
     b"id\tpos\tcategory\tstereotype\tlemma\tlevel\n".to_vec()
 }

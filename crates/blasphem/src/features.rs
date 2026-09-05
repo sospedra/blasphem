@@ -4,7 +4,7 @@ use thiserror::Error;
 use unicode_general_category::{GeneralCategory, get_general_category};
 use unicode_script::{Script, UnicodeScript};
 
-use crate::{FeatureProfile, NormalizationProfile, normalize_text, normalize_v2};
+use crate::{FeatureProfile, NormalizationProfile, normalize, normalize_text};
 
 const BIN_COUNT: usize = 65_536;
 const FNV_OFFSET: u64 = 0xcbf2_9ce4_8422_2325;
@@ -86,26 +86,26 @@ pub fn extract_feature_bins(
             Ok(spanish_feature_bins(text))
         }
         (
-            FeatureProfile::WordChar35V2,
-            NormalizationProfile::GenericV2
-            | NormalizationProfile::TurkishV2
-            | NormalizationProfile::VietnameseV2
-            | NormalizationProfile::ArabicV2
-            | NormalizationProfile::HindiV2,
+            FeatureProfile::WordChar35,
+            NormalizationProfile::Generic
+            | NormalizationProfile::Turkish
+            | NormalizationProfile::Vietnamese
+            | NormalizationProfile::Arabic
+            | NormalizationProfile::Hindi,
         ) => word_char_35(normalization, text),
         (
-            FeatureProfile::Char25V2,
-            NormalizationProfile::ChineseV2
-            | NormalizationProfile::JapaneseV2
-            | NormalizationProfile::KoreanV2,
+            FeatureProfile::Char25,
+            NormalizationProfile::Chinese
+            | NormalizationProfile::Japanese
+            | NormalizationProfile::Korean,
         ) => compact_char_25(normalization, text),
-        (FeatureProfile::TurkishChar35V3, NormalizationProfile::TurkishV2) => {
+        (FeatureProfile::TurkishChar35, NormalizationProfile::Turkish) => {
             token_char(normalization, text, 3..=5)
         }
-        (FeatureProfile::ChineseScriptChar15V3, NormalizationProfile::ChineseV2) => {
+        (FeatureProfile::ChineseScriptChar15, NormalizationProfile::Chinese) => {
             chinese_script_char_15(normalization, text)
         }
-        (FeatureProfile::KoreanWordChar25V3, NormalizationProfile::KoreanV2) => {
+        (FeatureProfile::KoreanWordChar25, NormalizationProfile::Korean) => {
             korean_word_char_25(normalization, text)
         }
         _ => Err(FeatureError::ProfileMismatch {
@@ -124,7 +124,7 @@ fn word_tokens(
     profile: NormalizationProfile,
     text: &str,
 ) -> Result<Vec<NormalizedToken>, FeatureError> {
-    let normalized = normalize_v2(profile, text);
+    let normalized = normalize(profile, text);
     let characters = normalized.chars().collect::<Vec<_>>();
     let mut tokens = Vec::new();
     let mut current = String::new();
@@ -172,7 +172,7 @@ fn is_word_character(character: char) -> bool {
 }
 
 fn is_hindi_joiner(characters: &[char], index: usize, profile: NormalizationProfile) -> bool {
-    if profile != NormalizationProfile::HindiV2
+    if profile != NormalizationProfile::Hindi
         || !matches!(characters[index], '\u{200c}' | '\u{200d}')
     {
         return false;
@@ -278,7 +278,7 @@ fn chinese_script_char_15(
     normalization: NormalizationProfile,
     text: &str,
 ) -> Result<Vec<usize>, FeatureError> {
-    let normalized = normalize_v2(normalization, text);
+    let normalized = normalize(normalization, text);
     let mut bins = BTreeSet::new();
     let mut segment = Vec::new();
     for character in normalized.chars() {
@@ -345,7 +345,7 @@ fn compact_char_25_with(
     text: &str,
     mut emit: impl FnMut(u8, usize),
 ) -> Result<(), FeatureError> {
-    let normalized = normalize_v2(normalization, text);
+    let normalized = normalize(normalization, text);
     let mut segment = Vec::new();
     for character in normalized.chars() {
         if is_compact_boundary(character) {
@@ -454,8 +454,8 @@ mod tests {
                 ],
             ),
             (
-                FeatureProfile::WordChar35V2,
-                NormalizationProfile::GenericV2,
+                FeatureProfile::WordChar35,
+                NormalizationProfile::Generic,
                 "ab cd. ef",
                 &[
                     3680, 10476, 13789, 21170, 23008, 35036, 36904, 36952, 40269, 43645, 45500,
@@ -463,22 +463,22 @@ mod tests {
                 ],
             ),
             (
-                FeatureProfile::Char25V2,
-                NormalizationProfile::ChineseV2,
+                FeatureProfile::Char25,
+                NormalizationProfile::Chinese,
                 "你 去死。",
                 &[
                     1283, 1579, 15489, 22698, 26691, 32640, 47167, 50706, 51814, 59498,
                 ],
             ),
             (
-                FeatureProfile::ChineseScriptChar15V3,
-                NormalizationProfile::ChineseV2,
+                FeatureProfile::ChineseScriptChar15,
+                NormalizationProfile::Chinese,
                 "你a",
                 &[6375, 27751, 30612, 31883, 44600, 48369, 55720],
             ),
             (
-                FeatureProfile::TurkishChar35V3,
-                NormalizationProfile::TurkishV2,
+                FeatureProfile::TurkishChar35,
+                NormalizationProfile::Turkish,
                 "aptal",
                 &[
                     14770, 22416, 23221, 23671, 24107, 32100, 32515, 39396, 39410, 42525, 63138,
@@ -497,7 +497,7 @@ mod tests {
     fn char_profile_emits_only_character_namespace_events() {
         let mut namespaces = Vec::new();
         compact_char_25_with(
-            NormalizationProfile::ChineseV2,
+            NormalizationProfile::Chinese,
             "你 去死。",
             |namespace, _| namespaces.push(namespace),
         )
@@ -513,8 +513,8 @@ mod tests {
         let spaced = extract_feature_bins(feature, normalization, "가 나").expect("features");
         let joined = extract_feature_bins(feature, normalization, "가나").expect("features");
         let legacy = extract_feature_bins(
-            FeatureProfile::Char25V2,
-            NormalizationProfile::KoreanV2,
+            FeatureProfile::Char25,
+            NormalizationProfile::Korean,
             "가 나",
         )
         .expect("legacy features");
@@ -526,8 +526,8 @@ mod tests {
     #[test]
     fn chinese_script_profile_scores_one_han_character() {
         let bins = extract_feature_bins(
-            FeatureProfile::ChineseScriptChar15V3,
-            NormalizationProfile::ChineseV2,
+            FeatureProfile::ChineseScriptChar15,
+            NormalizationProfile::Chinese,
             "你",
         )
         .expect("features");
@@ -550,7 +550,7 @@ mod tests {
         let cases = [("\u{0970}\u{200d}क", "क"), ("क\u{200d}\u{0970}", "क")];
 
         for (text, expected) in cases {
-            let tokens = word_tokens(NormalizationProfile::HindiV2, text).expect("tokens");
+            let tokens = word_tokens(NormalizationProfile::Hindi, text).expect("tokens");
             assert_eq!(tokens.len(), 1);
             assert_eq!(tokens[0].text, expected);
         }

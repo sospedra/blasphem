@@ -5,14 +5,14 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const reports = resolve(root, "reports");
 const inputs = resolve(root, "target/evidence-inputs");
-const manifest = "resources/models/multilingual-v2/manifest.json";
+const manifest = "resources/metadata/model-manifest.json";
 const fixtures = "crates/blasphem/tests/fixtures/benchmark/messages.jsonl";
 const target = execFileSync("rustc", ["-vV"], { encoding: "utf8" })
   .split("\n").find((line) => line.startsWith("host: "))?.slice(6);
 if (!target) throw new Error("rustc did not report its host target");
 const computer = process.env.GITHUB_RUN_ID ? `GitHub Actions ${process.env.RUNNER_OS}` : `${process.platform} ${process.arch}`;
 const measured = ["--computer", computer, "--target-triple", target];
-const modelInputs = ["--model-manifest", manifest, "--lexicon-root", "lexicon"];
+const modelInputs = ["--model-manifest", manifest, "--lexicon-root", "resources/lexicon"];
 const source = "https://raw.githubusercontent.com/nitotm/eldc/a0301db809ff2e48a418018aa5359fb0c4354eb8/benchmark/text_files";
 
 function run(program, arguments_) {
@@ -51,7 +51,7 @@ bench(["size", "--binary", "target/release/blasphem", ...modelInputs,
   "--target-triple", target, "--output", resolve(reports, "multilingual-size.json")]);
 bench(["auto", "--texts", texts, "--labels", labels, "--fixtures", fixtures,
   ...modelInputs, ...measured, "--native-binary", "target/release/blasphem",
-  "--language-model-artifact", "crates/blasphem-language/data/blasphem-language-15-v2.bin",
+  "--language-model-artifact", "crates/blasphem-language/data/blasphem-language-15.bin",
   "--browser-report", resolve(reports, "browser-smoke.json"),
   "--c-parity-fixture", "crates/blasphem-language/tests/fixtures/c-parity-v1.jsonl",
   "--project-root", root, "--output", resolve(reports, "language-auto-validation.json")]);

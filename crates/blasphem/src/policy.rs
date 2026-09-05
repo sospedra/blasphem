@@ -249,7 +249,7 @@ const fn category_score(scores: &CategoryScores, category: PolicyCategory) -> u8
 
 /// Rebuilds the category scores of a rule channel that keeps the highest point of each category.
 ///
-/// The clause rules of the fourteen v2 languages combine with `max`. The legacy Spanish policy
+/// The clause rules of the fourteen static-rule languages combine with `max`. The legacy Spanish policy
 /// accumulates instead, at `score_lexical` and `score_threats`, so it reports its own scores.
 pub(crate) fn category_scores_from_evidence(evidence: &[RuleEvidence]) -> CategoryScores {
     let mut scores = CategoryScores::default();

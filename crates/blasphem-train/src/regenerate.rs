@@ -15,7 +15,8 @@ use crate::{
     model_manifest::{ModelManifest, ModelSetError, parse_model_manifest},
     reproduce::{
         CORPUS_ROOT, ProgramCall, ReproduceError, ReproduceOptions, cargo_program,
-        generate_artifacts, model_root, read_language_artifact_lock, run_program, words,
+        generate_artifacts, model_manifest_path, model_root, read_language_artifact_lock,
+        run_program, words,
     },
 };
 
@@ -24,10 +25,10 @@ pub const PUBLICATION_STEP: &str = "publish-reviewed-artifacts";
 /// The step that writes generated evidence reports outside Git.
 pub const EVIDENCE_STEP: &str = "write-evidence-reports";
 
-const MODEL_ROOT: &str = "resources/models/multilingual-v2";
-const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
-const LANGUAGE_ARTIFACT_LOCK: &str = "resources/models/language-artifact-v1.json";
-const LEXICON_ROOT: &str = "lexicon";
+const MODEL_ROOT: &str = "resources/models";
+const MODEL_MANIFEST: &str = "resources/metadata/model-manifest.json";
+const LANGUAGE_ARTIFACT_LOCK: &str = "resources/metadata/language-artifact.json";
+const LEXICON_ROOT: &str = "resources/lexicon";
 const BEHAVIOR_ROOT: &str = "crates/blasphem/tests/fixtures/behavior";
 const REPORT_ROOT: &str = "reports";
 /// One evidence report and the subcommand that writes it.
@@ -160,7 +161,7 @@ pub fn regenerate(options: &RegenerateOptions) -> Result<RegenerateReport, Regen
 }
 
 fn read_compiled_manifest(reproduce: &ReproduceOptions) -> Result<ModelManifest, RegenerateError> {
-    let bytes = read_file(&model_root(reproduce).join("manifest.json"))?;
+    let bytes = read_file(&model_manifest_path(reproduce))?;
     Ok(parse_model_manifest(bytes.as_slice())?)
 }
 
@@ -191,7 +192,7 @@ fn publish_model_set(
         let bytes = read_file(&compiled.join(&entry.artifact_relative_path))?;
         files.push(publish_bytes(options, &relative, &bytes)?);
     }
-    let manifest_bytes = read_file(&compiled.join("manifest.json"))?;
+    let manifest_bytes = read_file(&model_manifest_path(reproduce))?;
     files.push(publish_bytes(options, MODEL_MANIFEST, &manifest_bytes)?);
     Ok(files)
 }

@@ -10,9 +10,8 @@ use std::{
 
 use blasphem::{
     ConfusionMatrix, EvalLabel, FeatureError, FeatureProfile, Language, NormalizationProfile,
-    ReplyTarget, RuleChannel, SparseModel, SparseModelError, SparseV2Input,
-    canonical_rule_identity, encode_sparse_v2, extract_feature_bins, lexicon_marked_text,
-    uses_lexicon_features,
+    ReplyTarget, RuleChannel, SparseInput, SparseModel, SparseModelError, canonical_rule_identity,
+    encode_sparse, extract_feature_bins, lexicon_marked_text, uses_lexicon_features,
 };
 use liblinear::{LibLinearModel, SolverType, util::TrainingInput};
 use sha2::{Digest, Sha256};
@@ -47,6 +46,7 @@ pub struct BatchCompileOptions {
     pub lexicon_root: PathBuf,
     pub behavior_root: Option<PathBuf>,
     pub output: PathBuf,
+    pub manifest_output: PathBuf,
 }
 
 struct CompiledModel {
@@ -55,7 +55,13 @@ struct CompiledModel {
 }
 
 pub fn compile_model_set(options: &BatchCompileOptions) -> Result<ModelManifest, ModelSetError> {
+    if options.manifest_output.starts_with(&options.output) {
+        return Err(ModelSetError::InvalidOutputPath(
+            options.manifest_output.clone(),
+        ));
+    }
     reject_existing_output(&options.output)?;
+    reject_existing_output(&options.manifest_output)?;
     let lock = read_source_lock(&options.source_lock)?;
     let mut models = Vec::with_capacity(Language::ALL.len());
     for language in Language::ALL {
@@ -180,13 +186,12 @@ fn read_lexicon(
     source_record: &SourceRecord,
 ) -> Result<Vec<u8>, ModelSetError> {
     let declared = Path::new(&source_record.file_path);
-    let relative =
-        declared
-            .strip_prefix("lexicon")
-            .map_err(|_| ModelSetError::UnsafeLexiconPath {
-                language,
-                path: source_record.file_path.clone(),
-            })?;
+    let relative = declared.strip_prefix("resources/lexicon").map_err(|_| {
+        ModelSetError::UnsafeLexiconPath {
+            language,
+            path: source_record.file_path.clone(),
+        }
+    })?;
     if relative.as_os_str().is_empty()
         || relative
             .components()
@@ -225,20 +230,56 @@ fn publish_model_set(
     let mut manifest_bytes =
         serde_json::to_vec_pretty(manifest).map_err(ModelSetError::ManifestSerialization)?;
     manifest_bytes.push(b'\n');
-    let manifest_path = staging.join("manifest.json");
-    write_staged_file(&manifest_path, &manifest_bytes)?;
+    let (staged_manifest, mut manifest_file) = create_staging_file(&options.manifest_output)?;
+    let manifest_guard = StagingGuard(staged_manifest.clone());
+    manifest_file
+        .write_all(&manifest_bytes)
+        .and_then(|()| manifest_file.flush())
+        .and_then(|()| manifest_file.sync_all())
+        .map_err(|source| ModelSetError::StagingIo {
+            path: staged_manifest.clone(),
+            source,
+        })?;
     let parsed = parse_model_manifest(
-        fs::read(&manifest_path)
+        fs::read(&staged_manifest)
             .map_err(|source| ModelSetError::StagingIo {
-                path: manifest_path,
+                path: staged_manifest.clone(),
                 source,
             })?
             .as_slice(),
     )?;
     validate_model_set(&staging, &parsed)?;
-    atomic_publish_noreplace(&staging, &options.output)
-        .map_err(|error| map_atomic_error(error, &options.output))?;
+    if let Err(error) = atomic_publish_noreplace(&staging, &options.output) {
+        if matches!(&error, AtomicPublishError::ParentSync(_)) {
+            fs::remove_dir_all(&options.output).map_err(|source| {
+                ModelSetError::AtomicPublicationIo {
+                    operation: "model publication rollback",
+                    source,
+                }
+            })?;
+        }
+        return Err(map_atomic_error(error, &options.output));
+    }
     drop(guard);
+    if let Err(error) = atomic_publish_noreplace(&staged_manifest, &options.manifest_output) {
+        let mut rollback_error = None;
+        if matches!(&error, AtomicPublishError::ParentSync(_)) {
+            if let Err(source) = fs::remove_file(&options.manifest_output) {
+                rollback_error = Some(source);
+            }
+        }
+        if let Err(source) = fs::remove_dir_all(&options.output) {
+            rollback_error.get_or_insert(source);
+        }
+        if let Some(source) = rollback_error {
+            return Err(ModelSetError::AtomicPublicationIo {
+                operation: "publication rollback",
+                source,
+            });
+        }
+        return Err(map_atomic_error(error, &options.manifest_output));
+    }
+    drop(manifest_guard);
     Ok(parsed)
 }
 
@@ -267,6 +308,39 @@ fn create_staging_directory(output: &Path) -> Result<PathBuf, ModelSetError> {
         source: std::io::Error::new(
             std::io::ErrorKind::AlreadyExists,
             "cannot allocate a unique staging directory",
+        ),
+    })
+}
+
+fn create_staging_file(output: &Path) -> Result<(PathBuf, File), ModelSetError> {
+    let parent = output.parent().unwrap_or_else(|| Path::new("."));
+    fs::create_dir_all(parent).map_err(|source| ModelSetError::StagingIo {
+        path: parent.to_owned(),
+        source,
+    })?;
+    let name = output
+        .file_name()
+        .ok_or_else(|| ModelSetError::InvalidOutputPath(output.to_owned()))?
+        .to_string_lossy();
+    for _ in 0..100 {
+        let sequence = STAGING_SEQUENCE.fetch_add(1, Ordering::Relaxed);
+        let staging = parent.join(format!(".{name}.staging-{}-{sequence}", std::process::id()));
+        match File::options().write(true).create_new(true).open(&staging) {
+            Ok(file) => return Ok((staging, file)),
+            Err(source) if source.kind() == std::io::ErrorKind::AlreadyExists => {}
+            Err(source) => {
+                return Err(ModelSetError::StagingIo {
+                    path: staging,
+                    source,
+                });
+            }
+        }
+    }
+    Err(ModelSetError::StagingIo {
+        path: parent.to_owned(),
+        source: std::io::Error::new(
+            std::io::ErrorKind::AlreadyExists,
+            "cannot allocate a unique staging path",
         ),
     })
 }
@@ -318,8 +392,10 @@ struct StagingGuard(PathBuf);
 
 impl Drop for StagingGuard {
     fn drop(&mut self) {
-        if self.0.exists() {
+        if self.0.is_dir() {
             let _ = fs::remove_dir_all(&self.0);
+        } else if self.0.exists() {
+            let _ = fs::remove_file(&self.0);
         }
     }
 }
@@ -923,7 +999,7 @@ pub fn compile_language_with_learner(
 
     let calibration = calibrate_at_or_above(request.language, &calibration_rows, minimum_boundary)?;
     let score_scale = validation_score_scale(&raw_scores, calibration.boundary)?;
-    let artifact = encode_sparse_v2(&SparseV2Input {
+    let artifact = encode_sparse(&SparseInput {
         language: request.language,
         feature_profile,
         normalization_profile,

@@ -83,7 +83,7 @@ fn evaluation_accepts_exactly_300_rows_per_new_language_class() {
 fn validation_loader_reads_one_declared_validation_split() {
     let directory = tempdir().expect("temporary directory");
     fs::copy(
-        project_root().join("corpus/EN.tsv"),
+        project_root().join("resources/corpus/EN.tsv"),
         directory.path().join("EN.tsv"),
     )
     .expect("English corpus file");
@@ -152,14 +152,14 @@ fn language_evaluation_rejects_a_row_for_another_language() {
 #[test]
 fn validation_evidence_matches_each_canonical_manifest_matrix() {
     let project = project_root();
-    let model_path = project.join("resources/models/multilingual-v2/manifest.json");
-    let inputs =
-        load_evidence_inputs(&project.join("corpus"), &model_path).expect("canonical inputs");
+    let model_path = project.join("resources/metadata/model-manifest.json");
+    let inputs = load_evidence_inputs(&project.join("resources/corpus"), &model_path)
+        .expect("canonical inputs");
 
     let evidence = evaluate_validation(
-        &project.join("corpus"),
+        &project.join("resources/corpus"),
         &model_path,
-        &project.join("lexicon"),
+        &project.join("resources/lexicon"),
     )
     .expect("final-path validation");
 
@@ -185,9 +185,9 @@ fn behavior_evidence_scores_all_360_cases_through_the_public_path() {
 
     let evidence = evaluate_behavior(
         &project.join("crates/blasphem/tests/fixtures/behavior"),
-        &project.join("corpus"),
-        &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("lexicon"),
+        &project.join("resources/corpus"),
+        &project.join("resources/metadata/model-manifest.json"),
+        &project.join("resources/lexicon"),
     )
     .expect("final-path behavior evidence");
 
@@ -220,8 +220,8 @@ fn native_smoke_evidence_scores_all_60_cases_through_the_public_path() {
     let project = project_root();
 
     let evidence = evaluate_cli_smoke(
-        &project.join("resources/models/multilingual-v2/manifest.json"),
-        &project.join("lexicon"),
+        &project.join("resources/metadata/model-manifest.json"),
+        &project.join("resources/lexicon"),
     )
     .expect("native smoke evidence");
 
@@ -244,20 +244,50 @@ fn native_smoke_evidence_scores_all_60_cases_through_the_public_path() {
 }
 
 #[test]
-fn published_pretest_reports_are_canonical_and_pass() {
-    let reports = project_root().join("reports");
+fn generated_pretest_reports_are_canonical_and_pass() {
+    let project = project_root();
+    let temporary = tempdir().expect("temporary reports directory");
+    let reports = temporary.path();
+    let model_manifest = project.join("resources/metadata/model-manifest.json");
+    let corpus = project.join("resources/corpus");
+    let lexicon = project.join("resources/lexicon");
+    let validation_path = reports.join("multilingual-validation.json");
+    let behavior_path = reports.join("multilingual-behavior.json");
+    let smoke_path = reports.join("multilingual-cli-smoke.json");
+
+    write_canonical_json(
+        &validation_path,
+        &evaluate_validation(&corpus, &model_manifest, &lexicon).expect("validation evidence"),
+    )
+    .expect("write validation report");
+    write_canonical_json(
+        &behavior_path,
+        &evaluate_behavior(
+            &project.join("crates/blasphem/tests/fixtures/behavior"),
+            &corpus,
+            &model_manifest,
+            &lexicon,
+        )
+        .expect("behavior evidence"),
+    )
+    .expect("write behavior report");
+    write_canonical_json(
+        &smoke_path,
+        &evaluate_cli_smoke(&model_manifest, &lexicon).expect("smoke evidence"),
+    )
+    .expect("write smoke report");
+
     let validation = parse_canonical_json::<EvaluationEvidence>(
-        &fs::read(reports.join("multilingual-validation.json")).expect("validation report"),
+        &fs::read(validation_path).expect("validation report"),
     )
     .expect("canonical validation report");
     let behavior = parse_canonical_json::<BehaviorEvidence>(
-        &fs::read(reports.join("multilingual-behavior.json")).expect("behavior report"),
+        &fs::read(behavior_path).expect("behavior report"),
     )
     .expect("canonical behavior report");
-    let smoke = parse_canonical_json::<CliSmokeEvidence>(
-        &fs::read(reports.join("multilingual-cli-smoke.json")).expect("smoke report"),
-    )
-    .expect("canonical smoke report");
+    let smoke =
+        parse_canonical_json::<CliSmokeEvidence>(&fs::read(smoke_path).expect("smoke report"))
+            .expect("canonical smoke report");
 
     assert!(validation.passed());
     assert!(behavior.passed());
@@ -385,9 +415,9 @@ fn evidence_digest_hashes_the_exact_input_bytes() {
 #[test]
 fn evidence_inputs_hash_exact_typed_manifest_bytes() {
     let project = project_root();
-    let model_path = project.join("resources/models/multilingual-v2/manifest.json");
+    let model_path = project.join("resources/metadata/model-manifest.json");
 
-    let inputs = load_evidence_inputs(&project.join("corpus"), &model_path)
+    let inputs = load_evidence_inputs(&project.join("resources/corpus"), &model_path)
         .expect("verified evidence inputs");
 
     assert_eq!(inputs.model_manifest.entries.len(), 15);
@@ -397,7 +427,8 @@ fn evidence_inputs_hash_exact_typed_manifest_bytes() {
     );
     assert_eq!(
         inputs.corpus_sha256,
-        blasphem_train::corpus::corpus_digest(&project.join("corpus")).expect("corpus digest"),
+        blasphem_train::corpus::corpus_digest(&project.join("resources/corpus"))
+            .expect("corpus digest"),
     );
 }
 
@@ -797,7 +828,7 @@ fn project_root() -> std::path::PathBuf {
 
 fn detector(language: Language) -> NudgeDetector {
     let path = project_root()
-        .join("lexicon")
+        .join("resources/lexicon")
         .join(format!("{}.tsv", language.storage_code()));
     let bytes = fs::read(path).expect("Lexicon bytes");
     NudgeDetector::from_lexicon_bytes(language, Some(&bytes)).expect("fixed-language detector")

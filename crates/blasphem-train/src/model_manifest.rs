@@ -427,28 +427,28 @@ pub fn rule_pack_version(language: Language) -> u16 {
     word_rules(language)
         .or_else(|| arabic_hindi_rules(language))
         .or_else(|| cjk_rules(language))
-        .expect("every non-Spanish language has a version-two rule pack")
+        .expect("every non-Spanish language has a static rule pack")
         .version
 }
 
 #[must_use]
 pub const fn artifact_relative_path(language: Language) -> &'static str {
     match language {
-        Language::En => "en-sparse-v2.bin",
-        Language::Zh => "zh-sparse-v2.bin",
-        Language::Es => "es-sparse-v2.bin",
-        Language::Ar => "ar-sparse-v2.bin",
-        Language::Ms => "id-sparse-v2.bin",
-        Language::Pt => "pt-sparse-v2.bin",
-        Language::Fr => "fr-sparse-v2.bin",
-        Language::Hi => "hi-sparse-v2.bin",
-        Language::Ru => "ru-sparse-v2.bin",
-        Language::Ja => "ja-sparse-v2.bin",
-        Language::De => "de-sparse-v2.bin",
-        Language::Tr => "tr-sparse-v2.bin",
-        Language::Vi => "vi-sparse-v2.bin",
-        Language::Ko => "ko-sparse-v2.bin",
-        Language::It => "it-sparse-v2.bin",
+        Language::En => "en-sparse.bin",
+        Language::Zh => "zh-sparse.bin",
+        Language::Es => "es-sparse.bin",
+        Language::Ar => "ar-sparse.bin",
+        Language::Ms => "id-sparse.bin",
+        Language::Pt => "pt-sparse.bin",
+        Language::Fr => "fr-sparse.bin",
+        Language::Hi => "hi-sparse.bin",
+        Language::Ru => "ru-sparse.bin",
+        Language::Ja => "ja-sparse.bin",
+        Language::De => "de-sparse.bin",
+        Language::Tr => "tr-sparse.bin",
+        Language::Vi => "vi-sparse.bin",
+        Language::Ko => "ko-sparse.bin",
+        Language::It => "it-sparse.bin",
     }
 }
 

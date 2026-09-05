@@ -43,8 +43,8 @@ fn cli_smoke_writes_canonical_60_case_evidence() {
     let project = project_root();
     let directory = tempdir().expect("temporary directory");
     let report = directory.path().join("nested/smoke.json");
-    let model_manifest = project.join("resources/models/multilingual-v2/manifest.json");
-    let lexicon_root = project.join("lexicon");
+    let model_manifest = project.join("resources/metadata/model-manifest.json");
+    let lexicon_root = project.join("resources/lexicon");
 
     let output = blasphem_train_command(&[
         "cli-smoke",

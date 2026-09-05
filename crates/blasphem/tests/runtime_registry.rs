@@ -4,7 +4,7 @@ use blasphem::{Language, NudgeDetector, PackInput, PackSource, ReplyTarget, Rule
 
 fn lexicon_bytes(language: Language) -> Vec<u8> {
     let path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-        .join("lexicon")
+        .join("resources/lexicon")
         .join(format!("{}.tsv", language.storage_code()));
     std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
 }
@@ -16,15 +16,15 @@ fn detector(language: Language) -> NudgeDetector {
 
 fn sparse_model(language: Language) -> SparseModel {
     let filename = if language == Language::Es {
-        "es-sparse-v2.bin".to_owned()
+        "es-sparse.bin".to_owned()
     } else {
         format!(
-            "{}-sparse-v2.bin",
+            "{}-sparse.bin",
             language.storage_code().to_ascii_lowercase()
         )
     };
     let path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-        .join("resources/models/multilingual-v2")
+        .join("resources/models")
         .join(filename);
     let bytes = std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()));
     SparseModel::from_bytes(&bytes).expect("valid sparse model")
@@ -250,22 +250,22 @@ fn judge_without_detection_scores_every_loaded_locale() {
 
 fn artifact_bytes(language: Language) -> Vec<u8> {
     let filename = if language == Language::Es {
-        "es-sparse-v2.bin".to_owned()
+        "es-sparse.bin".to_owned()
     } else {
         format!(
-            "{}-sparse-v2.bin",
+            "{}-sparse.bin",
             language.storage_code().to_ascii_lowercase()
         )
     };
     let path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-        .join("resources/models/multilingual-v2")
+        .join("resources/models")
         .join(filename);
     std::fs::read(&path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
 }
 
 fn rule_pack_version(language: Language) -> u16 {
     let path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-        .join("resources/models/multilingual-v2/manifest.json");
+        .join("resources/metadata/model-manifest.json");
     let manifest: serde_json::Value =
         serde_json::from_str(&std::fs::read_to_string(&path).expect("model manifest"))
             .expect("valid manifest json");
@@ -298,7 +298,7 @@ fn pack_bytes(language: Language) -> Vec<u8> {
 fn detect_bytes(language: Language) -> Vec<u8> {
     let model = std::fs::read(
         PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-            .join("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
+            .join("crates/blasphem-language/data/blasphem-language-15.bin"),
     )
     .expect("committed language model");
     let code = language.code().to_ascii_lowercase();

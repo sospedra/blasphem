@@ -2,9 +2,9 @@ use thiserror::Error;
 
 use crate::{FeatureProfile, FeatureSchema, Language, NormalizationProfile, extract_feature_bins};
 
-const V2_MAGIC: &[u8; 8] = b"TOXSPRS2";
-const V2_FORMAT_VERSION: u16 = 2;
-const V2_HEADER_LENGTH: usize = 40;
+const SPARSE_MAGIC: &[u8; 8] = b"TOXSPRS2";
+const SPARSE_FORMAT_VERSION: u16 = 2;
+const SPARSE_HEADER_LENGTH: usize = 40;
 const BIN_COUNT: usize = 65_536;
 const PAYLOAD_LENGTH: usize = BIN_COUNT * size_of::<i16>();
 const WEIGHT_SCALE: u16 = 256;
@@ -22,8 +22,8 @@ pub struct SparseModel {
     max_false_warning_basis_points: u16,
 }
 
-/// The complete input for one version-two sparse artifact.
-pub struct SparseV2Input<'a> {
+/// The complete input for one sparse artifact.
+pub struct SparseInput<'a> {
     pub language: Language,
     pub feature_profile: FeatureProfile,
     pub normalization_profile: NormalizationProfile,
@@ -74,13 +74,13 @@ impl SparseModel {
     /// Returns an error when the header or table is invalid.
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, SparseModelError> {
         let magic = bytes
-            .get(..V2_MAGIC.len())
+            .get(..SPARSE_MAGIC.len())
             .ok_or(SparseModelError::InvalidLength {
-                expected: V2_MAGIC.len(),
+                expected: SPARSE_MAGIC.len(),
                 actual: bytes.len(),
             })?;
-        if magic == V2_MAGIC {
-            return parse_v2(bytes);
+        if magic == SPARSE_MAGIC {
+            return parse_sparse_format(bytes);
         }
         Err(SparseModelError::InvalidMagic)
     }
@@ -142,12 +142,12 @@ impl SparseModel {
     }
 }
 
-/// Encodes one validated version-two sparse artifact.
+/// Encodes one validated sparse artifact.
 ///
 /// # Errors
 ///
 /// Returns an error when the input metadata or calibration is invalid.
-pub fn encode_sparse_v2(input: &SparseV2Input<'_>) -> Result<Vec<u8>, SparseModelError> {
+pub fn encode_sparse(input: &SparseInput<'_>) -> Result<Vec<u8>, SparseModelError> {
     if input.weights.len() != BIN_COUNT {
         return Err(SparseModelError::InvalidLength {
             expected: BIN_COUNT,
@@ -172,9 +172,9 @@ pub fn encode_sparse_v2(input: &SparseV2Input<'_>) -> Result<Vec<u8>, SparseMode
         return Err(SparseModelError::ProfileMismatch);
     }
 
-    let mut output = Vec::with_capacity(V2_HEADER_LENGTH + PAYLOAD_LENGTH);
-    output.extend_from_slice(V2_MAGIC);
-    output.extend_from_slice(&V2_FORMAT_VERSION.to_le_bytes());
+    let mut output = Vec::with_capacity(SPARSE_HEADER_LENGTH + PAYLOAD_LENGTH);
+    output.extend_from_slice(SPARSE_MAGIC);
+    output.extend_from_slice(&SPARSE_FORMAT_VERSION.to_le_bytes());
     output.extend_from_slice(input.language.storage_code().as_bytes());
     output.extend_from_slice(&(BIN_COUNT as u32).to_le_bytes());
     output.extend_from_slice(&input.bias.to_le_bytes());
@@ -192,14 +192,14 @@ pub fn encode_sparse_v2(input: &SparseV2Input<'_>) -> Result<Vec<u8>, SparseMode
     Ok(output)
 }
 
-fn parse_v2(bytes: &[u8]) -> Result<SparseModel, SparseModelError> {
-    if bytes.len() < V2_HEADER_LENGTH {
+fn parse_sparse_format(bytes: &[u8]) -> Result<SparseModel, SparseModelError> {
+    if bytes.len() < SPARSE_HEADER_LENGTH {
         return Err(SparseModelError::InvalidLength {
-            expected: V2_HEADER_LENGTH,
+            expected: SPARSE_HEADER_LENGTH,
             actual: bytes.len(),
         });
     }
-    validate_version(bytes, V2_FORMAT_VERSION)?;
+    validate_version(bytes, SPARSE_FORMAT_VERSION)?;
     let language = parse_language(&bytes[10..12])?;
     let feature_profile = parse_feature_profile(bytes[32])?;
     let normalization_profile = parse_normalization_profile(bytes[33])?;
@@ -211,10 +211,10 @@ fn parse_v2(bytes: &[u8]) -> Result<SparseModel, SparseModelError> {
     if usize::try_from(payload_length).ok() != Some(PAYLOAD_LENGTH) {
         return Err(SparseModelError::InvalidPayloadLength(payload_length));
     }
-    validate_exact_length(bytes, V2_HEADER_LENGTH + PAYLOAD_LENGTH)?;
+    validate_exact_length(bytes, SPARSE_HEADER_LENGTH + PAYLOAD_LENGTH)?;
     parse_payload(
         bytes,
-        V2_HEADER_LENGTH,
+        SPARSE_HEADER_LENGTH,
         language,
         feature_profile,
         normalization_profile,
@@ -297,11 +297,11 @@ fn parse_language(bytes: &[u8]) -> Result<Language, SparseModelError> {
 fn parse_feature_profile(value: u8) -> Result<FeatureProfile, SparseModelError> {
     match value {
         1 => Ok(FeatureProfile::SpanishWordChar35),
-        2 => Ok(FeatureProfile::WordChar35V2),
-        3 => Ok(FeatureProfile::Char25V2),
-        4 => Ok(FeatureProfile::TurkishChar35V3),
-        5 => Ok(FeatureProfile::ChineseScriptChar15V3),
-        6 => Ok(FeatureProfile::KoreanWordChar25V3),
+        2 => Ok(FeatureProfile::WordChar35),
+        3 => Ok(FeatureProfile::Char25),
+        4 => Ok(FeatureProfile::TurkishChar35),
+        5 => Ok(FeatureProfile::ChineseScriptChar15),
+        6 => Ok(FeatureProfile::KoreanWordChar25),
         _ => Err(SparseModelError::InvalidFeatureProfile(value)),
     }
 }
@@ -309,21 +309,21 @@ fn parse_feature_profile(value: u8) -> Result<FeatureProfile, SparseModelError> 
 fn parse_normalization_profile(value: u8) -> Result<NormalizationProfile, SparseModelError> {
     match value {
         1 => Ok(NormalizationProfile::SpanishCharabia),
-        2 => Ok(NormalizationProfile::GenericV2),
-        3 => Ok(NormalizationProfile::TurkishV2),
-        4 => Ok(NormalizationProfile::VietnameseV2),
-        5 => Ok(NormalizationProfile::ArabicV2),
-        6 => Ok(NormalizationProfile::HindiV2),
-        7 => Ok(NormalizationProfile::ChineseV2),
-        8 => Ok(NormalizationProfile::JapaneseV2),
-        9 => Ok(NormalizationProfile::KoreanV2),
+        2 => Ok(NormalizationProfile::Generic),
+        3 => Ok(NormalizationProfile::Turkish),
+        4 => Ok(NormalizationProfile::Vietnamese),
+        5 => Ok(NormalizationProfile::Arabic),
+        6 => Ok(NormalizationProfile::Hindi),
+        7 => Ok(NormalizationProfile::Chinese),
+        8 => Ok(NormalizationProfile::Japanese),
+        9 => Ok(NormalizationProfile::Korean),
         _ => Err(SparseModelError::InvalidNormalizationProfile(value)),
     }
 }
 
 fn parse_feature_schema(value: u16) -> Result<FeatureSchema, SparseModelError> {
     match value {
-        2 => Ok(FeatureSchema::SparseV2),
+        2 => Ok(FeatureSchema::Sparse),
         _ => Err(SparseModelError::InvalidFeatureSchema(value)),
     }
 }
@@ -370,8 +370,7 @@ fn read_i32(bytes: &[u8], start: usize) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::{
-        BIN_COUNT, PAYLOAD_LENGTH, SparseV2Input, V2_HEADER_LENGTH, encode_sparse_v2,
-        score_from_raw,
+        BIN_COUNT, PAYLOAD_LENGTH, SPARSE_HEADER_LENGTH, SparseInput, encode_sparse, score_from_raw,
     };
     use crate::{FeatureProfile, FeatureSchema, Language, NormalizationProfile, SparseModel};
 
@@ -381,13 +380,13 @@ mod tests {
     }
 
     #[test]
-    fn a_version_two_artifact_round_trips_through_the_parser() {
+    fn a_sparse_artifact_round_trips_through_the_parser() {
         let weights = vec![7_i16; BIN_COUNT];
-        let bytes = encode_sparse_v2(&SparseV2Input {
+        let bytes = encode_sparse(&SparseInput {
             language: Language::Es,
             feature_profile: FeatureProfile::SpanishWordChar35,
             normalization_profile: NormalizationProfile::SpanishCharabia,
-            feature_schema: FeatureSchema::SparseV2,
+            feature_schema: FeatureSchema::Sparse,
             bias: -13,
             decision_boundary: 10_962,
             score_scale: 27_695,
@@ -395,11 +394,11 @@ mod tests {
             weights: &weights,
         })
         .expect("encodes");
-        assert_eq!(bytes.len(), V2_HEADER_LENGTH + PAYLOAD_LENGTH);
+        assert_eq!(bytes.len(), SPARSE_HEADER_LENGTH + PAYLOAD_LENGTH);
         assert_eq!(&bytes[..8], b"TOXSPRS2");
         let model = SparseModel::from_bytes(&bytes).expect("parses");
         assert_eq!(model.language(), Language::Es);
-        assert_eq!(model.feature_schema(), FeatureSchema::SparseV2);
+        assert_eq!(model.feature_schema(), FeatureSchema::Sparse);
         assert_eq!(model.raw_boundary(), 10_962);
         assert_eq!(model.score_scale(), 27_695);
         assert_eq!(model.feature_profile(), FeatureProfile::SpanishWordChar35);
@@ -413,15 +412,15 @@ mod tests {
     }
 
     #[test]
-    fn re_encoding_a_parsed_version_two_artifact_reproduces_its_bytes() {
-        let artifact = include_bytes!("../../../resources/models/multilingual-v2/es-sparse-v2.bin");
+    fn re_encoding_a_parsed_sparse_artifact_reproduces_its_bytes() {
+        let artifact = include_bytes!("../../../resources/models/es-sparse.bin");
         let model = SparseModel::from_bytes(artifact).expect("Spanish artifact");
 
-        let bytes = encode_sparse_v2(&SparseV2Input {
+        let bytes = encode_sparse(&SparseInput {
             language: Language::Es,
             feature_profile: FeatureProfile::SpanishWordChar35,
             normalization_profile: NormalizationProfile::SpanishCharabia,
-            feature_schema: FeatureSchema::SparseV2,
+            feature_schema: FeatureSchema::Sparse,
             bias: model.bias,
             decision_boundary: model.decision_boundary,
             score_scale: model.score_scale,

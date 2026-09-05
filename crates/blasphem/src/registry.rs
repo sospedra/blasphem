@@ -47,7 +47,7 @@ pub(crate) struct RegistryEntry {
 
 enum RuleCache {
     Spanish(OnceLock<Box<RulePack>>),
-    V2(OnceLock<&'static LanguageRules>),
+    Static(OnceLock<&'static LanguageRules>),
 }
 
 impl RegistryEntry {
@@ -63,7 +63,7 @@ impl RegistryEntry {
             rules: if matches!(language, Language::Es) {
                 RuleCache::Spanish(OnceLock::new())
             } else {
-                RuleCache::V2(OnceLock::new())
+                RuleCache::Static(OnceLock::new())
             },
         }
     }
@@ -105,16 +105,16 @@ impl RegistryEntry {
                     source,
                 })
             }
-            RuleCache::V2(cache) => {
+            RuleCache::Static(cache) => {
                 if cache.get().is_none() {
-                    let rules = resolve_v2_rules(self.language)
-                        .ok_or_else(|| self.invalid_rule_pack("no V2 rule pack exists"))?;
+                    let rules = resolve_static_rules(self.language)
+                        .ok_or_else(|| self.invalid_rule_pack("no static rule pack exists"))?;
                     let _ = cache.set(rules);
                 }
-                RuleChannel::from_cached_v2(
+                RuleChannel::from_cached_static(
                     self.language,
                     lexicon,
-                    cache.get().expect("initialized V2 rule cache"),
+                    cache.get().expect("initialized static rule cache"),
                 )
                 .map_err(|source| RuntimeInitError::RuleChannel {
                     language: self.language,
@@ -129,9 +129,9 @@ impl RegistryEntry {
         if self.language == Language::Es {
             return Ok(1);
         }
-        resolve_v2_rules(self.language)
+        resolve_static_rules(self.language)
             .map(|rules| rules.version)
-            .ok_or_else(|| self.invalid_rule_pack("no V2 rule pack exists"))
+            .ok_or_else(|| self.invalid_rule_pack("no static rule pack exists"))
     }
 
     fn validate_rule_identity(&self) -> Result<(), RuntimeInitError> {
@@ -157,7 +157,7 @@ impl RegistryEntry {
     }
 }
 
-fn resolve_v2_rules(language: Language) -> Option<&'static LanguageRules> {
+fn resolve_static_rules(language: Language) -> Option<&'static LanguageRules> {
     word_rules(language)
         .or_else(|| arabic_hindi_rules(language))
         .or_else(|| cjk_rules(language))

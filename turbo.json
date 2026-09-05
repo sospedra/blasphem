@@ -45,7 +45,7 @@
         "$TURBO_ROOT$/rust-toolchain.toml",
         "$TURBO_ROOT$/.cargo/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/lexicon/**",
+        "$TURBO_ROOT$/resources/lexicon/**",
         "$TURBO_ROOT$/resources/models/**"
       ],
       "outputs": [

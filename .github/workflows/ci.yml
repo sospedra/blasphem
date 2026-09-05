@@ -59,7 +59,7 @@ jobs:
       - name: Verify the corpus
         run: |
           cargo run --release --locked -p blasphem-train -- corpus-verify \
-            --corpus-root corpus \
+            --corpus-root resources/corpus \
             --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json
 
       - name: Install JavaScript dependencies
@@ -257,7 +257,7 @@ jobs:
       - name: Verify the corpus
         run: |
           cargo run --release --locked -p blasphem-train -- corpus-verify \
-            --corpus-root corpus \
+            --corpus-root resources/corpus \
             --evaluation-lock crates/blasphem-train/metadata/evaluation-lock-v1.json
 
       - name: Reproduce without the browser

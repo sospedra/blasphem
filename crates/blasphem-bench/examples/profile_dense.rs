@@ -22,7 +22,7 @@ fn main() -> Result<()> {
             })
             .context("missing dense fixture")?;
         let lexicon_path = root
-            .join("lexicon")
+            .join("resources/lexicon")
             .join(format!("{}.tsv", language.storage_code()));
         let lexicon = fs::read(&lexicon_path)?;
         let entries = parse_lexicon(lexicon.as_slice(), language.storage_code())?
@@ -31,17 +31,15 @@ fn main() -> Result<()> {
             .collect();
         let lexical = Detector::new(entries)?;
         let model_name = if language == Language::Es {
-            "es-sparse-v2.bin".to_owned()
+            "es-sparse.bin".to_owned()
         } else {
             format!(
-                "{}-sparse-v2.bin",
+                "{}-sparse.bin",
                 language.storage_code().to_ascii_lowercase()
             )
         };
-        let model = SparseModel::from_bytes(&fs::read(
-            root.join("resources/models/multilingual-v2")
-                .join(model_name),
-        )?)?;
+        let model =
+            SparseModel::from_bytes(&fs::read(root.join("resources/models").join(model_name))?)?;
         let rules = word_rules(language)
             .or_else(|| arabic_hindi_rules(language))
             .or_else(|| cjk_rules(language));

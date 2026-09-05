@@ -12,10 +12,10 @@ const output = check ? mkdtempSync(resolve(tmpdir(), "blasphem-packs-check-")) :
 try {
   execFileSync("cargo", [
     "run", "--release", "--locked", "-p", "blasphem-train", "--", "pack",
-    "--model-manifest", "resources/models/multilingual-v2/manifest.json",
-    "--model-root", "resources/models/multilingual-v2",
-    "--language-model", "crates/blasphem-language/data/blasphem-language-15-v2.bin",
-    "--lexicon-root", "lexicon", "--output", output,
+    "--model-manifest", "resources/metadata/model-manifest.json",
+    "--model-root", "resources/models",
+    "--language-model", "crates/blasphem-language/data/blasphem-language-15.bin",
+    "--lexicon-root", "resources/lexicon", "--output", output,
   ], { cwd: root, stdio: "inherit" });
   const generated = loadPacks(output);
   if (check) {

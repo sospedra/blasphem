@@ -91,6 +91,6 @@ Run `pnpm packs:check` to verify reproducibility.
 
 ## Contributing and license
 
-[Corpus changes](../../corpus/README.md) and [lexicon changes](../../lexicon/README.md) require regenerated packs.
+[Corpus changes](../../resources/corpus/README.md) and [lexicon changes](../../resources/lexicon/README.md) require regenerated packs.
 Data retains the source terms recorded in [NOTICE](../../NOTICE).
 The first-party build code uses [Apache-2.0](../../LICENSE).

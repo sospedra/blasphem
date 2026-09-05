@@ -1533,7 +1533,7 @@ fn local_lexicon_detector() -> &'static Detector {
         let mut entries = Vec::new();
         for language in ["AR", "DE", "EN", "ES", "FR", "IT", "PT", "RU"] {
             let path = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../.."))
-                .join("lexicon")
+                .join("resources/lexicon")
                 .join(format!("{language}.tsv"));
             let file = File::open(&path).unwrap_or_else(|error| {
                 panic!("cannot open local Lexicon file {}: {error}", path.display())

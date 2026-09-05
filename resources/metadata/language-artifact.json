@@ -1,6 +1,6 @@
 {
   "schema_version": "language-artifact-v1",
-  "artifact_relative_path": "crates/blasphem-language/data/blasphem-language-15-v2.bin",
+  "artifact_relative_path": "crates/blasphem-language/data/blasphem-language-15.bin",
   "artifact_bytes": 5048468,
   "artifact_sha256": "1e741de3313032d19c75d8147d52efbcb19a67aae316e1b702ad7db4c1d8bf24",
   "source_commit": "a0301db809ff2e48a418018aa5359fb0c4354eb8",

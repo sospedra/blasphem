@@ -367,6 +367,7 @@ fn help_exposes_the_task_four_command_contract() {
         "--source-lock",
         "--lexicon-root",
         "--output",
+        "--manifest-output",
     ] {
         assert!(compile_help.contains(argument), "missing {argument}");
     }
@@ -748,7 +749,7 @@ fn write_prepare_fixture(
         DatasetId::Lexicon,
         Language::Es,
         "lexicon-es-clean-room-v1",
-        "lexicon/ES.tsv",
+        "resources/lexicon/ES.tsv",
     );
 
     let observation = SourceObservation {
@@ -934,7 +935,7 @@ fn write_fixture_file(root: &std::path::Path, path: &str, contents: &str) {
 #[test]
 fn corpus_verify_passes_on_the_committed_corpus() {
     let output = std::process::Command::new(env!("CARGO_BIN_EXE_blasphem-train"))
-        .args(["corpus-verify", "--corpus-root", "../../corpus"])
+        .args(["corpus-verify", "--corpus-root", "../../resources/corpus"])
         .args([
             "--evaluation-lock",
             "../../crates/blasphem-train/metadata/evaluation-lock-v1.json",
@@ -953,7 +954,7 @@ fn corpus_verify_passes_on_the_committed_corpus() {
 #[test]
 fn corpus_verify_rejects_an_edited_sealed_row() {
     let directory = tempdir().unwrap();
-    for entry in std::fs::read_dir("../../corpus").unwrap() {
+    for entry in std::fs::read_dir("../../resources/corpus").unwrap() {
         let entry = entry.unwrap();
         std::fs::copy(entry.path(), directory.path().join(entry.file_name())).unwrap();
     }
@@ -989,13 +990,13 @@ fn pack_writes_every_locale_and_a_manifest_that_matches_the_files() {
         .args([
             "pack",
             "--model-manifest",
-            &path("resources/models/multilingual-v2/manifest.json"),
+            &path("resources/metadata/model-manifest.json"),
             "--model-root",
-            &path("resources/models/multilingual-v2"),
+            &path("resources/models"),
             "--language-model",
-            &path("crates/blasphem-language/data/blasphem-language-15-v2.bin"),
+            &path("crates/blasphem-language/data/blasphem-language-15.bin"),
             "--lexicon-root",
-            &path("lexicon"),
+            &path("resources/lexicon"),
             "--output",
             output.to_str().expect("UTF-8 path"),
         ])

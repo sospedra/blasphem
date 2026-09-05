@@ -15,8 +15,8 @@ use thiserror::Error;
 
 use crate::sha256_hex;
 
-pub const CORPUS_ROOT: &str = "corpus";
-pub const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
+pub const CORPUS_ROOT: &str = "resources/corpus";
+pub const MODEL_MANIFEST: &str = "resources/metadata/model-manifest.json";
 pub const EMBEDDED_SOURCE: &str = "crates/blasphem/src/embedded.rs";
 pub const NATIVE_BINARY: &str = "target/release/blasphem";
 pub const VALIDATION_REPORT: &str = "reports/multilingual-validation.json";
@@ -315,7 +315,7 @@ pub fn sync_embedded_digests(root: &Path) -> Result<usize, AccuracyError> {
 }
 
 fn sync_entry(lines: &mut [String], entry: &ManifestEntry) -> Result<usize, AccuracyError> {
-    let needle = format!("multilingual-v2/{}\")", entry.artifact_relative_path);
+    let needle = format!("resources/models/{}\")", entry.artifact_relative_path);
     let start = lines
         .iter()
         .position(|line| line.contains(&needle))

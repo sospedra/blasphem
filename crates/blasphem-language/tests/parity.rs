@@ -106,7 +106,7 @@ fn assert_score(actual: f32, expected: f32, field: &str, context: &str) {
 fn slices_of_the_committed_model_match_the_full_detector() {
     let model = std::fs::read(concat!(
         env!("CARGO_MANIFEST_DIR"),
-        "/data/blasphem-language-15-v2.bin"
+        "/data/blasphem-language-15.bin"
     ))
     .expect("the committed model must be readable");
     let slices = blasphem_language::slice::write_slices(&model).expect("slices");

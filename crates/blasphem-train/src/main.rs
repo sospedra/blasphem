@@ -112,17 +112,22 @@ struct CorpusVerifyArgs {
 
 #[derive(Debug, Args)]
 struct CompileArgs {
-    #[arg(long)]
+    #[arg(long, default_value = "resources/corpus")]
     corpus_root: PathBuf,
-    #[arg(long)]
+    #[arg(
+        long,
+        default_value = "crates/blasphem-train/metadata/source-lock-v1.json"
+    )]
     source_lock: PathBuf,
     /// Directory containing `{STORAGE_CODE}.tsv` lexicon files.
-    #[arg(long)]
+    #[arg(long, default_value = "resources/lexicon")]
     lexicon_root: PathBuf,
     #[arg(long, default_value = "crates/blasphem/tests/fixtures/behavior")]
     behavior_root: PathBuf,
-    #[arg(long)]
+    #[arg(long, default_value = "resources/models")]
     output: PathBuf,
+    #[arg(long, default_value = "resources/metadata/model-manifest.json")]
+    manifest_output: PathBuf,
 }
 
 #[derive(Debug, Args)]
@@ -310,8 +315,8 @@ mod spanish_recall {
 
     use super::EsRecallArgs;
 
-    const BASELINE_ARTIFACT: &str = "resources/models/multilingual-v2/es-sparse-v2.bin";
-    const MODEL_MANIFEST: &str = "resources/models/multilingual-v2/manifest.json";
+    const BASELINE_ARTIFACT: &str = "resources/models/es-sparse.bin";
+    const MODEL_MANIFEST: &str = "resources/metadata/model-manifest.json";
     const SOURCE_LOCK: &str = "crates/blasphem-train/metadata/source-lock-v1.json";
 
     pub(super) fn run(arguments: &EsRecallArgs) -> Result<()> {
@@ -374,8 +379,8 @@ mod spanish_recall {
     impl<'a> Experiment<'a> {
         fn load(output: &'a Path) -> Result<Self> {
             let lock = parse_frozen_source_lock(File::open(SOURCE_LOCK)?)?;
-            let input = load_corpus_language(Path::new("corpus"), Language::Es, &lock)?;
-            let lexicon = fs::read("lexicon/ES.tsv")?;
+            let input = load_corpus_language(Path::new("resources/corpus"), Language::Es, &lock)?;
+            let lexicon = fs::read("resources/lexicon/ES.tsv")?;
             let panel = load_panel(
                 Path::new("crates/blasphem/tests/fixtures/behavior"),
                 Language::Es,
@@ -404,8 +409,8 @@ mod spanish_recall {
         fn write_input_hashes(&self) -> Result<()> {
             let mut hashes = serde_json::Map::new();
             for path in [
-                "corpus/ES.tsv",
-                "lexicon/ES.tsv",
+                "resources/corpus/ES.tsv",
+                "resources/lexicon/ES.tsv",
                 "crates/blasphem-train/metadata/evaluation-lock-v1.json",
                 SOURCE_LOCK,
                 MODEL_MANIFEST,
@@ -429,7 +434,7 @@ mod spanish_recall {
                 "crates/blasphem/src/embedded.rs",
                 "Cargo.lock",
                 "rust-toolchain.toml",
-                "resources/models/multilingual-v2/es-sparse-v2.bin",
+                "resources/models/es-sparse.bin",
             ] {
                 hashes.insert(
                     path.to_owned(),
@@ -820,12 +825,14 @@ fn compile_models(arguments: &CompileArgs) -> Result<()> {
         lexicon_root: arguments.lexicon_root.clone(),
         behavior_root: Some(arguments.behavior_root.clone()),
         output: arguments.output.clone(),
+        manifest_output: arguments.manifest_output.clone(),
     })
     .context("cannot compile the multilingual model set")?;
     println!(
-        "status=compiled languages={} output={}",
+        "status=compiled languages={} output={} manifest={}",
         manifest.entries.len(),
-        one_line(&arguments.output.to_string_lossy())
+        one_line(&arguments.output.to_string_lossy()),
+        one_line(&arguments.manifest_output.to_string_lossy())
     );
     Ok(())
 }

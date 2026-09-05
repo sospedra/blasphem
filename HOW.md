@@ -8,7 +8,7 @@ Detection runs locally without neural networks or cloud inference.
 Blasphem flags a message when either of two channels reaches 50 points. The model channel scores the text. The rule channel reads the lexicon and the sentence around each hit. Everything is compiled into one binary per build.
 
 ```
-                     corpus/XX.tsv                         lexicon/XX.tsv
+                     resources/corpus/XX.tsv                         resources/lexicon/XX.tsv
                 (split, label, text)               (lemma, category, level)
                           |                                    |
           +---------------+---------------+                    |
@@ -35,7 +35,7 @@ Blasphem flags a message when either of two channels reaches 50 points. The mode
 
 ## Corpus
 
-One file per model profile, `corpus/XX.tsv`. Three columns: `split`, `label`, `text`. Labels are `clean` or `toxic`. Sources are textdetox and the community corpora, locked in `crates/blasphem-train/metadata/`.
+One file per model profile, `resources/corpus/XX.tsv`. Three columns: `split`, `label`, `text`. Labels are `clean` or `toxic`. Sources are textdetox and the community corpora, locked in `crates/blasphem-train/metadata/`.
 
 | split | rows do |
 |---|---|
@@ -48,7 +48,7 @@ Use `id` for Indonesian and `ms` for Malay.
 
 ## Lexicon
 
-One file per model profile, `lexicon/XX.tsv`. Columns: `id`, `pos`, `category`, `stereotype`, `lemma`, `level`. Built from Wiktionary, LDNOOBW, washyourmouth, and textdetox.
+One file per model profile, `resources/lexicon/XX.tsv`. Columns: `id`, `pos`, `category`, `stereotype`, `lemma`, `level`. Built from Wiktionary, LDNOOBW, washyourmouth, and textdetox.
 
 `category` is one of 17 codes. Five mark identity groups: `ps`, `rci`, `om`, `ddf`, `ddp`. `level` is `conservative` or `inclusive`. Only conservative rows load. Inclusive rows are inert (`crates/blasphem/src/rules/channel.rs`).
 
@@ -109,9 +109,9 @@ Two engines exist. `uses_policy_rules` in `crates/blasphem/src/rules/channel.rs`
 | engine | model profiles | how the lexicon is used |
 |---|---|---|
 | policy pack (`crates/blasphem/src/rule_pack.rs`, `crates/blasphem/src/policy.rs`) | ES | inside every frame above |
-| V2 tables (`crates/blasphem/src/rules/packs/`) | the other 14 | flat 30-point hit only |
+| static rule tables (`crates/blasphem/src/rules/packs/`) | the other 14 | flat 30-point hit only |
 
-A 30-point hit alone never flags. In the V2 profiles the lexicon changes scores, not verdicts.
+A 30-point hit alone never flags. In the static-rule profiles the lexicon changes scores, not verdicts.
 
 ## Verdict
 
@@ -122,7 +122,7 @@ flag  = score >= 50
 
 ## Build
 
-`blasphem-train regenerate` retrains all 15 models and recalibrates them. It rewrites `resources/models/multilingual-v2/` and `reports/`. `crates/blasphem/src/embedded.rs` pins the artifact and lexicon digests. `crates/blasphem/src/registry.rs` pins the rule identity per language. A digest mismatch fails at start.
+`blasphem-train regenerate` retrains all 15 models and recalibrates them. It rewrites `resources/models/` and `reports/`. `crates/blasphem/src/embedded.rs` pins the artifact and lexicon digests. `crates/blasphem/src/registry.rs` pins the rule identity per language. A digest mismatch fails at start.
 
 ## Benchmark
 

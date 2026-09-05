@@ -18,7 +18,7 @@ const MAX_FEATURES: usize = 500;
 pub mod slice;
 
 #[cfg(feature = "embedded-model")]
-static EMBEDDED_MODEL: &[u8] = include_bytes!("../data/blasphem-language-15-v2.bin");
+static EMBEDDED_MODEL: &[u8] = include_bytes!("../data/blasphem-language-15.bin");
 
 /// A language profile in the compact language model.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

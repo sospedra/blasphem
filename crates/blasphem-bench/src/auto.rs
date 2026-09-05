@@ -378,7 +378,7 @@ pub fn run_auto_validation(
     let lock: LanguageArtifactLock = serde_json::from_slice(&read_file(
         &config
             .project_root
-            .join("resources/models/language-artifact-v1.json"),
+            .join("resources/metadata/language-artifact.json"),
     )?)?;
     let language_model_artifact = record_file(
         &config.language_model_artifact,

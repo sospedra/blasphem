@@ -1029,7 +1029,7 @@ pub fn evaluate_behavior(
         validate_event_distribution(&rows)?;
         panels.insert(language, rows);
     }
-    let provenance = corpus_root.parent().map_or_else(
+    let provenance = corpus_root.parent().and_then(Path::parent).map_or_else(
         || PathBuf::from(BEHAVIOR_PROVENANCE),
         |root| root.join(BEHAVIOR_PROVENANCE),
     );
@@ -1256,8 +1256,10 @@ fn load_model_evidence_input(
     let manifest = parse_model_manifest(bytes.as_slice())?;
     let model_root = model_manifest_path
         .parent()
+        .and_then(Path::parent)
+        .map(|resources| resources.join("models"))
         .ok_or(VerificationError::ModelManifestRoot)?;
-    validate_model_set(model_root, &manifest)?;
+    validate_model_set(&model_root, &manifest)?;
     Ok((manifest, sha256_digest(&bytes)))
 }
 

@@ -29,7 +29,7 @@ The corpora and lexica below keep their own recorded licenses.
 
 ## clean-room-v1 lexica
 
-- The fifteen lexica under `lexicon/` are independent works assembled
+- The fifteen lexica under `resources/lexicon/` are independent works assembled
   from the sources below. The project assigns each lemma a category
   and severity. Each source keeps its recorded license and attribution.
 
@@ -44,7 +44,7 @@ The corpora and lexica below keep their own recorded licenses.
   Indonesian, Vietnamese, Chinese, Arabic, German, and Hindi.
 - Sources: 15
 - Status: share-alike. This repository harvests category listings from
-  Wiktionary into `lexicon/`. Any redistribution of this data,
+  Wiktionary into `resources/lexicon/`. Any redistribution of this data,
   or of a derivative lexicon built from it, must carry the CC BY-SA 4.0
   license and attribution.
 
@@ -154,7 +154,7 @@ The model artifacts under `resources/models/` are weight tables trained on
 the corpora above. They contain no corpus text, but each is a derivative
 work of its training data and inherits that data's license.
 
-The Korean artifact, `resources/models/multilingual-v2/ko-sparse-v2.bin`,
+The Korean artifact, `resources/models/ko-sparse.bin`,
 trains in part on k-mhas data (CC-BY-SA-4.0, share-alike, see above). This
 artifact carries that share-alike obligation. Any redistribution of it, or of
 any artifact trained on k-mhas, must carry the CC-BY-SA-4.0 license and

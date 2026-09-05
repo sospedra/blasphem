@@ -22,7 +22,7 @@ const LEGACY_IDENTITY_MAGIC: &[u8] = b"TOXLEGACY1";
 
 enum ResolvedRules {
     Spanish(SpanishRules),
-    V2(&'static LanguageRules),
+    Static(&'static LanguageRules),
 }
 
 enum SpanishRules {
@@ -97,12 +97,12 @@ impl RuleChannel {
         )
     }
 
-    pub(crate) fn from_cached_v2(
+    pub(crate) fn from_cached_static(
         language: Language,
         lexicon: Option<&[u8]>,
         rules: &'static LanguageRules,
     ) -> Result<Self, RuleChannelError> {
-        Self::from_resolved_rules(language, lexicon, ResolvedRules::V2(rules))
+        Self::from_resolved_rules(language, lexicon, ResolvedRules::Static(rules))
     }
 
     fn from_resolved_rules(
@@ -171,7 +171,7 @@ impl RuleChannel {
     ) -> RuleChannelAnalysis {
         match &self.rules {
             ResolvedRules::Spanish(pack) => self.analyze_spanish(pack.as_ref(), text, reply_target),
-            ResolvedRules::V2(rules) => self.analyze_v2(rules, text, reply_target),
+            ResolvedRules::Static(rules) => self.analyze_static(rules, text, reply_target),
         }
     }
 
@@ -207,7 +207,7 @@ impl RuleChannel {
         }
     }
 
-    fn analyze_v2(
+    fn analyze_static(
         &self,
         rules: &LanguageRules,
         text: &str,
@@ -247,7 +247,7 @@ fn resolve_rules(language: Language) -> Result<ResolvedRules, RuleChannelError> 
     word_rules(language)
         .or_else(|| arabic_hindi_rules(language))
         .or_else(|| cjk_rules(language))
-        .map(ResolvedRules::V2)
+        .map(ResolvedRules::Static)
         .ok_or(RuleChannelError::MissingRules(language.code()))
 }
 
@@ -379,7 +379,7 @@ pub fn canonical_rule_identity(language: Language) -> Vec<u8> {
         let rules = word_rules(language)
             .or_else(|| arabic_hindi_rules(language))
             .or_else(|| cjk_rules(language))
-            .expect("every non-Spanish language has V2 rules");
+            .expect("every non-Spanish language has static rules");
         canonical_rule_identity_for(rules)
     };
     let exclusions = lexical_collision_exclusions(language.storage_code());

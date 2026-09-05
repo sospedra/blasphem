@@ -37,8 +37,8 @@ Read [how Blasphem works](HOW.md) for the architecture.
 | Contribution | Start here |
 | --- | --- |
 | Code, bindings, or documentation | [Development guide](CONTRIBUTING.md#code-and-documentation) |
-| Labeled messages in `corpus/` | [Corpus contribution guide](corpus/README.md#contribute) |
-| Words and categories in `lexicon/` | [Lexicon contribution guide](lexicon/README.md#contribute) |
+| Labeled messages in `resources/corpus/` | [Corpus contribution guide](resources/corpus/README.md#contribute) |
+| Words and categories in `resources/lexicon/` | [Lexicon contribution guide](resources/lexicon/README.md#contribute) |
 
 Report problems through [GitHub issues](https://github.com/sospedra/blasphem/issues).
 Include the language, input text, and expected result.

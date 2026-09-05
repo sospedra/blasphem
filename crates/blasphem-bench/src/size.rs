@@ -140,7 +140,11 @@ pub fn collect_size_evidence(
     }
     let model_root = model_manifest_path
         .parent()
-        .unwrap_or_else(|| Path::new("."));
+        .and_then(Path::parent)
+        .map_or_else(
+            || PathBuf::from("resources/models"),
+            |resources| resources.join("models"),
+        );
     let binary = record_file(binary_path, &binary_path.to_string_lossy(), None, None)?;
     check_binary_size(binary.bytes)?;
 

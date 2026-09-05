@@ -6,7 +6,7 @@ const TABLE_LEN: usize = 64;
 const TABLES_LEN: usize = 15 * 4 + 8_192 + 8_192 + 1_920 * 2;
 const BITMAPS_OFFSET: usize = HEADER_LEN + TABLES_LEN;
 
-/// A version-two header and zeroed unicode tables.
+/// A compact header and zeroed unicode tables.
 fn header(table_len: u32, blob_len: u32) -> Vec<u8> {
     let mut bytes = Vec::with_capacity(BITMAPS_OFFSET + 16);
     bytes.extend_from_slice(b"BLASPHEM");
@@ -363,8 +363,8 @@ fn embedded_model_detects_representative_selected_languages() {
 }
 
 #[test]
-fn the_committed_artifact_uses_the_blasphem_magic_and_version_two() {
-    let bytes = include_bytes!("../data/blasphem-language-15-v2.bin");
+fn the_committed_artifact_uses_the_blasphem_magic_and_compact_format() {
+    let bytes = include_bytes!("../data/blasphem-language-15.bin");
     assert_eq!(&bytes[..8], b"BLASPHEM");
     assert_eq!(u32::from_le_bytes(bytes[8..12].try_into().unwrap()), 2);
 }

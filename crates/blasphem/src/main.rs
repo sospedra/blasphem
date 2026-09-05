@@ -58,7 +58,7 @@ struct CheckArgs {
     language: LanguageSelection,
     #[arg(long)]
     text: String,
-    #[arg(long, default_value = "lexicon")]
+    #[arg(long, default_value = "resources/lexicon")]
     data_dir: PathBuf,
     #[arg(long, value_enum, default_value_t = ReplyTargetArg::Unknown)]
     reply_target: ReplyTargetArg,

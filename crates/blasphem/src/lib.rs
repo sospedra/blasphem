@@ -47,7 +47,7 @@ pub use language_detection::{
 #[cfg(feature = "language-detection")]
 pub use language_detection::{LanguageDetector, LanguageDetectorError};
 pub use lexicon::{LexiconEntry, MatchLevel, ParseLexiconError, parse_lexicon};
-pub use normalization::normalize_v2;
+pub use normalization::normalize;
 pub use pack::{
     DecodedPack, PACK_FORMAT_VERSION, PACK_HEADER_LEN, PACK_MAGIC, PackError, PackInput,
     PackSource, decode_pack, detect_file_name, encode_pack, pack_file_name, parse_sha256,
@@ -65,5 +65,5 @@ pub use rules::{
     canonical_rule_identity, canonical_rule_identity_for, cjk_rules, word_rules,
 };
 pub use runtime::{NudgeDetector, RuntimeInitError};
-pub use sparse::{SparseModel, SparseModelError, SparseV2Input, encode_sparse_v2};
+pub use sparse::{SparseInput, SparseModel, SparseModelError, encode_sparse};
 pub use text::{CandidateView, CandidateViewKind, TextDocument, TextSpan};

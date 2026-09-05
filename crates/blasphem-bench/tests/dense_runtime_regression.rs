@@ -42,7 +42,7 @@ fn dense_messages_meet_the_public_check_latency_gates() {
 
     for language in Language::ALL {
         let lexicon_path = root
-            .join("lexicon")
+            .join("resources/lexicon")
             .join(format!("{}.tsv", language.storage_code()));
         let lexicon = fs::read(lexicon_path).expect("Lexicon data");
         let detector = NudgeDetector::from_lexicon_bytes(language, Some(&lexicon))
