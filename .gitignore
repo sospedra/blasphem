@@ -12,10 +12,6 @@ node_modules/
 .turbo/
 /apps/web/dist/
 /apps/web/.astro/
-/packages/javascript/src/blasphem.js
-/packages/javascript/src/blasphem.d.ts
-/packages/javascript/src/blasphem_bg.wasm
-/packages/javascript/src/blasphem_bg.wasm.d.ts
 /packages/javascript-packs/dist/
 /packages/javascript/src/core/
 /packages/react-native/src/core/

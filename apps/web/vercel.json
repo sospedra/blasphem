@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "BLASPHEM_WASM_PREBUILT=1 pnpm exec turbo run build --filter=web",
   "headers": [
     {
       "source": "/blasphem/(.*)",

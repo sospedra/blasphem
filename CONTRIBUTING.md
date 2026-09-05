@@ -29,7 +29,8 @@ Install only the tools needed for your contribution:
 | Contribution | Tools |
 | --- | --- |
 | Rust engine and command-line interface | Rust |
-| Website and JavaScript packages | Rust, Node, pnpm, wasm-bindgen-cli |
+| Website with committed WASM | Node, pnpm. See the [prebuilt build](packages/javascript/README.md#build-without-rust). |
+| JavaScript packages from source | Rust, Node, pnpm, wasm-bindgen-cli |
 | Go packages | Go. Rust also rebuilds the embedded engine. |
 | Python packages | Rust, Python |
 | Android package | Rust, Node, JDK, Android SDK/NDK, Gradle wrapper |

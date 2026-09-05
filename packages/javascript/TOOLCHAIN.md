@@ -1,6 +1,7 @@
 # Pinned tools
 
-The JavaScript packages build and test only with these versions.
+JavaScript source builds and package checks use these pinned versions.
+The [prebuilt website build](README.md#build-without-rust) needs only Node and pnpm.
 
 | Tool | Version | Source |
 | --- | --- | --- |
@@ -14,4 +15,9 @@ The JavaScript packages build and test only with these versions.
 | Chromium and WebKit | pinned by Playwright 1.62.1 | `pnpm --filter blasphem exec playwright install chromium webkit` |
 | react-native-nitro-modules, nitrogen | 0.37.1 | `packages/react-native/package.json` |
 
-`scripts/build.mjs` copies `packages/javascript-common/src` into `src/core`, reads the crate name and the `wasm-bindgen` pin from the crate manifest, and stops on a CLI mismatch. `scripts/browser-smoke.mjs` launches the browsers Playwright pinned and stops when one is missing. `packages/node/scripts/build.mjs` builds the native binary for the host only; the other six platform packages are filled by CI.
+`scripts/build.mjs` copies `packages/javascript-common/src` into `src/core` and compiles TypeScript.
+The default build reads the crate manifest and rejects a `wasm-bindgen` CLI mismatch.
+With `BLASPHEM_WASM_PREBUILT=1`, it verifies committed artifacts and skips Rust compilation and binding generation.
+`scripts/browser-smoke.mjs` launches the pinned browsers and stops when one is missing.
+`packages/node/scripts/build.mjs` builds the native binary for the host only.
+CI fills the other six platform packages.

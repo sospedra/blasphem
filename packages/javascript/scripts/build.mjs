@@ -1,13 +1,14 @@
 import { copyFileSync, cpSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { packageRoot, projectRoot, readCrate } from "./crate.mjs";
+import { assertPrebuilt, GLUE_FILES, PREBUILT_MANIFEST, writePrebuiltManifest } from "./prebuilt.mjs";
 import { assertWasmBindgen, buildWasm, generateGlue, stream } from "./wasm.mjs";
 
 const distribution = resolve(packageRoot, "dist");
 const sources = resolve(packageRoot, "src");
 const coreSource = resolve(projectRoot, "packages/javascript-common/src");
 const coreCopy = resolve(sources, "core");
-const GLUE_FILES = ["blasphem.js", "blasphem.d.ts", "blasphem_bg.wasm", "blasphem_bg.wasm.d.ts"];
+const prebuilt = process.env.BLASPHEM_WASM_PREBUILT === "1";
 const VERSION_FILE = "version.generated.ts";
 const targetDir = resolve(projectRoot, "target/npm-wasm");
 const REQUIRED_CLASSES = ["class BlasphemEngineBuilder", "class BlasphemEngine"];
@@ -15,7 +16,8 @@ const REQUIRED_CLASSES = ["class BlasphemEngineBuilder", "class BlasphemEngine"]
 function clean() {
   rmSync(distribution, { recursive: true, force: true });
   rmSync(coreCopy, { recursive: true, force: true });
-  for (const file of [...GLUE_FILES, VERSION_FILE]) rmSync(resolve(sources, file), { force: true });
+  const generated = prebuilt ? [VERSION_FILE] : [...GLUE_FILES, PREBUILT_MANIFEST, VERSION_FILE];
+  for (const file of generated) rmSync(resolve(sources, file), { force: true });
 }
 
 /** The one version `assets: "jsdelivr"` pins. Every package in the workspace carries it; the build refuses to ship a mismatch. */
@@ -52,14 +54,16 @@ function copyGlue() {
 }
 
 const crate = readCrate();
-assertWasmBindgen(crate.wasmBindgenVersion);
+if (prebuilt) assertPrebuilt();
+else assertWasmBindgen(crate.wasmBindgenVersion);
 clean();
 const version = writeVersion();
 const coreFiles = inlineCore();
-generateGlue(buildWasm(crate, { targetDir }), sources);
+if (!prebuilt) generateGlue(buildWasm(crate, { targetDir }), sources);
 assertClasses();
 compileTypeScript();
 copyGlue();
+if (!prebuilt) writePrebuiltManifest();
 const wasmBytes = statSync(resolve(distribution, "blasphem_bg.wasm")).size;
 const glueBytes = statSync(resolve(distribution, "blasphem.js")).size;
-console.log(`status=built wasm_bytes=${wasmBytes} wasm_mb=${(wasmBytes / 1048576).toFixed(2)} glue_bytes=${glueBytes} core_files=${coreFiles} version=${version}`);
+console.log(`status=built mode=${prebuilt ? "prebuilt" : "source"} wasm_bytes=${wasmBytes} wasm_mb=${(wasmBytes / 1048576).toFixed(2)} glue_bytes=${glueBytes} core_files=${coreFiles} version=${version}`);

@@ -43,6 +43,7 @@
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prebuilt:check": "node scripts/prebuilt.mjs",
     "prepack": "node ../../scripts/copy-notice.mjs",
     "pack:check": "node scripts/pack-check.mjs",
     "test": "node scripts/pack-check.mjs && node scripts/node-smoke.mjs",

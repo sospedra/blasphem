@@ -63,6 +63,9 @@ jobs:
       - name: Install JavaScript dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Verify committed JavaScript WASM artifacts
+        run: pnpm --filter blasphem prebuilt:check
+
       - name: Check dependency pins
         run: pnpm deps:check
 

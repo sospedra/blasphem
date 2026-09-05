@@ -218,6 +218,30 @@ pnpm --filter blasphem run test:browser
 These checks exercise generated distributions.
 Rebuild after source changes.
 
+### Build without Rust
+
+Vercel uses the committed WASM binary and its three generated binding files.
+The build checks their SHA-256 hashes and the Rust source digest.
+Missing, stale, or changed artifacts stop the build with a rebuild command.
+TypeScript compilation, core copying, and version generation still run.
+
+Run the same website build from the repository root:
+
+```sh
+env BLASPHEM_WASM_PREBUILT=1 pnpm exec turbo run build --filter=web
+```
+
+After Rust source, toolchain, or WASM build script changes, regenerate the artifacts:
+
+```sh
+env -u BLASPHEM_WASM_PREBUILT pnpm --filter blasphem build
+pnpm --filter blasphem prebuilt:check
+```
+
+Commit the four generated `src/blasphem*` files and `src/blasphem.prebuilt.json` together.
+CI checks the committed artifacts before rebuilding them.
+The default package build always compiles Rust and generates new bindings.
+
 [Contribute](../../CONTRIBUTING.md) · [CLI guide](../cli/README.md) · [WASM bindings](../../crates/blasphem-wasm/README.md)
 
 ## License
