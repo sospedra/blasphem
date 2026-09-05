@@ -31,7 +31,7 @@ Install only the tools needed for your contribution:
 | Rust engine and command-line interface | Rust |
 | Website with committed WASM | Node, pnpm. See the [prebuilt build](packages/javascript/README.md#build-without-rust). |
 | JavaScript packages from source | Rust, Node, pnpm, wasm-bindgen-cli |
-| Go packages | Go. Rust also rebuilds the embedded engine. |
+| Go packages | Go, Rust, Node. Generators refresh the engine and embedded locale subpackages. |
 | Python packages | Rust, Python |
 | Android package | Rust, Node, JDK, Android SDK/NDK, Gradle wrapper |
 | Swift and React Native packages | See their package READMEs for platform tools. |
@@ -142,6 +142,22 @@ Review its diff before submission.
 Refresh the artifact and lexicon digests in [embedded.rs](crates/blasphem/src/embedded.rs).
 Use the values from [the model manifest](resources/metadata/model-manifest.json).
 Rebuild affected packages after the runtime changes.
+
+After canonical data changes, refresh each generated distribution:
+
+```sh
+node scripts/generate-packs.mjs
+node packages/android/scripts/sync-packs.mjs
+node packages/apple/scripts/prepare.mjs
+pnpm --filter @blasphem/packs run build
+node packages/react-native/scripts/build.mjs
+```
+
+The canonical generator also refreshes Go locale subpackages through `gofmt`.
+Android and Apple generators pin the exact release manifest.
+React Native copies the platform-owned download stores during its build.
+Check selected bundles, remote bundles, and reduced exports separately.
+Public CDN checks require the exact published release.
 
 Use development data, validation reports, and behavior panels during iteration.
 Reserve [test-split benchmarks](crates/blasphem-bench/README.md) for the agreed final evaluation.

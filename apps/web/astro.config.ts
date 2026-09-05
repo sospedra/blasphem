@@ -5,11 +5,10 @@ import blasphemAssets from "./integrations/blasphem-assets";
 
 const site = process.env.SITE_URL ?? "https://blasphem.sospedra.me";
 const packageDist = fileURLToPath(new URL("../../packages/javascript/dist/", import.meta.url));
-const packsDist = fileURLToPath(new URL("../../resources/packs/", import.meta.url));
 
 export default defineConfig({
   site,
   output: "static",
   compressHTML: true,
-  integrations: [sitemap(), blasphemAssets({ distDir: packageDist, packsDir: packsDist })],
+  integrations: [sitemap(), blasphemAssets({ distDir: packageDist })],
 });

@@ -46,7 +46,8 @@
         "$TURBO_ROOT$/.cargo/**",
         "$TURBO_ROOT$/crates/**",
         "$TURBO_ROOT$/resources/lexicon/**",
-        "$TURBO_ROOT$/resources/models/**"
+        "$TURBO_ROOT$/resources/models/**",
+        "$TURBO_ROOT$/resources/packs/**"
       ],
       "outputs": [
         "npm/*/bin/**"
@@ -67,7 +68,8 @@
         "$TURBO_ROOT$/rust-toolchain.toml",
         "$TURBO_ROOT$/.cargo/**",
         "$TURBO_ROOT$/crates/**",
-        "$TURBO_ROOT$/packages/javascript-common/src/**"
+        "$TURBO_ROOT$/packages/javascript-common/src/**",
+        "$TURBO_ROOT$/resources/packs/manifest.json"
       ],
       "outputs": [
         "dist/**",
@@ -94,10 +96,19 @@
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "$TURBO_ROOT$/packages/javascript-common/src/**"
+        "$TURBO_ROOT$/packages/javascript-common/src/**",
+        "$TURBO_ROOT$/packages/apple/Sources/Blasphem/BlasphemFileIO.swift",
+        "$TURBO_ROOT$/packages/apple/Sources/Blasphem/BlasphemDownloadStore.swift",
+        "$TURBO_ROOT$/packages/android/engine/src/main/kotlin/me/sospedra/blasphem/BlasphemRemoteStore.kt",
+        "$TURBO_ROOT$/resources/packs/manifest.json"
       ],
       "outputs": [
-        "dist/**"
+        "dist/**",
+        "src/version.generated.ts",
+        "ios/BlasphemFileIO.swift",
+        "ios/BlasphemDownloadStore.swift",
+        "android/src/main/java/com/margelo/nitro/blasphem/BlasphemRemoteStore.kt",
+        "android/src/main/java/com/margelo/nitro/blasphem/Release.generated.kt"
       ]
     },
     "web#build": {

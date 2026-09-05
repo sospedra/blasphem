@@ -3,7 +3,7 @@ import { LANGUAGES, normalizeSelection, type Selection } from "../lib/languages"
 import { statusCopy, transition, verdictFor, WAITING, type Phase, type PhaseEvent, type Snapshot } from "./playground-state";
 import { copyText, resetCopy } from "./clipboard";
 
-type Module = { createJudge: (options: JudgeOptions) => Promise<Judge> };
+type Module = typeof import("blasphem");
 
 const BASE = __BLASPHEM_BASE__;
 const MEGABYTES = `${(__BLASPHEM_TOTAL_BYTES__ / 1_048_576).toFixed(2)} MB`;
@@ -99,12 +99,11 @@ async function loadModule(attempt: number): Promise<Module> {
 }
 
 function optionsFor(selection: Selection): JudgeOptions {
-  if (selection === "AUTO") return { locales: ALL_LOCALES, detectLanguage: true, grawlix: true, assets: BASE };
-  return { locales: [selection.toLowerCase()], detectLanguage: false, grawlix: true, assets: BASE };
+  return { locales: [selection.toLowerCase()], detectLanguage: false, grawlix: true };
 }
 
 function snapshot(verdict: Judgement): Snapshot {
-  return { safe: verdict.safe, score: verdict.score, locale: verdict.locale, grawlix: verdict.grawlix };
+  return { ...verdict };
 }
 
 function timeJudge(judge: () => Judgement): { verdict: Judgement; perCallMs: number } {
@@ -188,9 +187,14 @@ function moduleFor(session: Session): Promise<Module> {
 
 async function loadJudge(session: Session, selection: Selection): Promise<Judge> {
   const module = await moduleFor(session);
-  const judge = await module.createJudge(optionsFor(selection));
+  const judge = selection === "AUTO" ? await defaultJudge(module) : await module.createJudge(optionsFor(selection));
   session.judges.set(selection, { status: "ready", judge });
   return judge;
+}
+
+async function defaultJudge(module: Module): Promise<Judge> {
+  await module.init({ grawlix: true });
+  return { locales: ALL_LOCALES, transport: "wasm", judge: module.judge, close: module.close };
 }
 
 function judgeFor(session: Session, selection: Selection): Promise<Judge> {

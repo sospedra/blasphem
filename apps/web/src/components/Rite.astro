@@ -1,7 +1,6 @@
 ---
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import type { Judge, JudgeOptions } from "blasphem";
 import { INSTALLATIONS } from "../lib/installation";
 import { LANGUAGES } from "../lib/languages";
 import CodeBlock from "./CodeBlock.astro";
@@ -10,28 +9,22 @@ import Numeral from "./Numeral.astro";
 import Spread from "./Spread.astro";
 
 const entry = pathToFileURL(resolve(process.cwd(), "../../packages/javascript/dist/node.js")).href;
-const { createJudge } = (await import(/* @vite-ignore */ entry)) as {
-  createJudge: (options: JudgeOptions) => Promise<Judge>;
-};
-const buildJudge = await createJudge({
-  locales: ["en", "es"],
-  grawlix: true,
-  assets: resolve(process.cwd(), "../../resources/packs"),
-});
-const verdict = buildJudge.judge("you are a stupid loser");
-buildJudge.close();
+const api = (await import(/* @vite-ignore */ entry)) as typeof import("blasphem");
+await api.init({ grawlix: true });
+const verdict = api.judge("you are a stupid loser");
+api.close();
 
 const fields = [
   ["safe", "boolean", "True when no warning is due. Unrouted text also returns true."],
   ["score", "number · 0–1", "Evidence strength. A warning starts at 0.5. This is not a probability."],
   ["locale", "string | null", "The language used to judge the message. Null means no language matched."],
-  ["grawlix", "string | null", "The masked message when grawlix is enabled. Otherwise null."],
+  ["grawlix", "string | null", "The masked message for unsafe verdicts when grawlix is enabled. Otherwise null."],
 ];
 const options = [
-  ["locales", "required", "Lowercase language codes. Load only the languages your app needs."],
+  ["locales", "required", "Declare a nonempty locale array or all in application configuration."],
   ["detectLanguage", "true", "Detect the language before judging. If false, score every loaded language and use the highest score."],
-  ["grawlix", "false", "Include a masked version of the message."],
-  ["assets", "automatic", "Browser: jsDelivr, a local URL, or { wasm, packs }. Node: installed packs or a directory."],
+  ["grawlix", "false", "Include a masked message for unsafe verdicts."],
+  ["assets", "bundled", "Client configuration selects bundled data or pinned remote delivery. Node stays local."],
 ];
 const groups = ["Clients", "Servers", "Terminal"] as const;
 ---
@@ -75,9 +68,10 @@ const groups = ["Clients", "Servers", "Terminal"] as const;
             <div class="platform-notes">{runtime.notes.map((note) => <p class="copy">{note}</p>)}</div>
             {runtime.id === "browser" && (
               <details class="reference">
-                <summary>Serve the assets from your own domain</summary>
-                <CodeBlock label="Copy the engine and packs" code={"pnpm add @blasphem/packs\npnpm exec blasphem-assets public/blasphem"} />
-                <CodeBlock label="Point the browser at your assets" lang="typescript" code={'await init({ locales: ["en", "es"], assets: "/blasphem" });'} />
+                <summary>Connect the browser build</summary>
+                <CodeBlock label="vite.config.ts" lang="typescript" code={'import { defineConfig } from "vite";\nimport blasphem from "blasphem/vite";\n\nexport default defineConfig({ plugins: [blasphem()] });'} />
+                <CodeBlock label="Other builds · publish selected assets" code={"pnpm exec blasphem-assets public/blasphem --base /blasphem"} />
+                <CodeBlock label="Other builds · load configuration before your module" lang="html" code={'<script src="/blasphem/config.js"></script>'} />
                 <p class="copy">Serve .wasm files as application/wasm. A Content Security Policy must allow WebAssembly and your asset origin.</p>
               </details>
             )}
@@ -100,7 +94,7 @@ const groups = ["Clients", "Servers", "Terminal"] as const;
     <details class="reference api-reference">
       <summary>Options, results, and supported languages</summary>
       <div class="reference-tables">
-        <Ledger id="options" caption="JavaScript options" columns={["Option", "Default", "Meaning"]} rows={options} prose={[2]} source="https://github.com/sospedra/blasphem/blob/main/packages/javascript-common/src/contract.ts" />
+        <Ledger id="options" caption="Application configuration and runtime behavior" columns={["Option", "Default", "Meaning"]} rows={options} prose={[2]} source="https://github.com/sospedra/blasphem/blob/main/packages/javascript-common/src/contract.ts" />
         <Ledger id="results" caption="Result fields" columns={["Field", "Type", "Meaning"]} rows={fields} prose={[2]} />
       </div>
       <p class="copy"><code>init()</code> installs the module judge. Before initialization and after <code>close()</code>, <code>judge()</code> returns the safe, empty result. Use <code>ready()</code> to check initialization.</p>

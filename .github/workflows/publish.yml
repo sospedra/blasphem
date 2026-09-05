@@ -84,6 +84,18 @@ jobs:
             target
           key: cargo-packs-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
 
+      - name: Read the pinned Go version
+        id: go
+        run: |
+          go_version=$(awk '$1 == "golang" { print $2 }' .tool-versions)
+          test -n "$go_version"
+          echo "version=$go_version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+          cache-dependency-path: packages/go/go.sum
+
       - name: Verify canonical packs
         run: node scripts/generate-packs.mjs --check
 
@@ -253,7 +265,10 @@ jobs:
         run: |
           set -euo pipefail
           tar -czf react-native.tar.gz -C packages/react-native \
-            dist ios/BlasphemFFI.xcframework android/libs cpp/blasphem.h
+            dist ios/BlasphemFFI.xcframework android/libs cpp/blasphem.h \
+            ios/BlasphemFileIO.swift ios/BlasphemDownloadStore.swift \
+            android/src/main/java/com/margelo/nitro/blasphem/BlasphemRemoteStore.kt \
+            android/src/main/java/com/margelo/nitro/blasphem/Release.generated.kt
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -339,7 +354,7 @@ jobs:
 
       - name: Copy the Python notice
         shell: bash
-        run: cp NOTICE packages/python/NOTICE
+        run: cp NOTICE LICENSE packages/python/
 
       - name: Build the wheel
         # pyo3 abi3-py310 means one wheel per platform covers every supported Python.
@@ -371,7 +386,7 @@ jobs:
           python-version-file: .tool-versions
 
       - name: Copy the Python notice
-        run: cp NOTICE packages/python/NOTICE
+        run: cp NOTICE LICENSE packages/python/
 
       - name: Build the blasphem source distribution
         uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1
@@ -475,6 +490,8 @@ jobs:
             echo "packages/go/blasphem_ffi.wasm is not tracked; go get would fail" >&2
             exit 1
           fi
+          node packages/go/scripts/build-locales.mjs --check
+          git ls-files --error-unmatch packages/go/locales/*/*.pack packages/go/locales/*/*.detect
 
       - name: Build and vet the module
         run: |
@@ -547,7 +564,9 @@ jobs:
         run: node packages/apple/scripts/xcframework.mjs
 
       - name: Build the local Swift package
-        run: swift build --package-path packages/apple
+        run: |
+          node packages/apple/scripts/prepare.mjs
+          swift build --package-path packages/apple
 
       - name: Upload the XCFramework to the Release
         if: ${{ !always() }}
@@ -632,9 +651,13 @@ jobs:
       - name: Sync the packs into the asset modules
         run: node packages/android/scripts/sync-packs.mjs
 
-      - name: Build every AAR
+      - name: Build every AAR and the Gradle plugin
         working-directory: packages/android
-        run: ./gradlew assembleRelease --no-daemon
+        run: >-
+          ./gradlew assembleRelease :gradle-plugin:build
+          :gradle-plugin:generatePomFileForPluginMavenPublication
+          :gradle-plugin:generatePomFileForBlasphemPluginMarkerMavenPublication
+          --no-daemon
 
       - name: Enable KVM for the emulator
         run: |
@@ -642,14 +665,113 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run the instrumented smoke test
+      - name: Prepare a local Android consumer
+        run: |
+          node --input-type=module <<'NODE'
+          import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+          import { resolve } from "node:path";
+          const root = process.cwd();
+          const scratch = mkdtempSync(resolve(process.env.RUNNER_TEMP, "blasphem-android-"));
+          const android = resolve(root, "packages/android");
+          const { version } = JSON.parse(readFileSync("packages/javascript/package.json", "utf8"));
+          const manifest = JSON.parse(readFileSync("resources/packs/manifest.json", "utf8"));
+          const codes = Object.keys(manifest.files).filter(name => name.endsWith(".pack")).map(name => name.split(".")[0]);
+          const substitutions = codes.flatMap(code => ["pack", "detect"].map(kind =>
+            `substitute(module("me.sospedra.blasphem:blasphem-${kind}-${code}")).using(project(":packs:${code}:${kind}"))`));
+          const files = {
+            "settings.gradle.kts": `
+              pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+              dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+              rootProject.name = "BlasphemConsumer"
+              include(":app")
+              includeBuild(${JSON.stringify(android)}) { dependencySubstitution {
+                substitute(module("me.sospedra.blasphem:blasphem")).using(project(":engine"))
+                ${substitutions.join("\n")}
+              } }
+            `,
+            "build.gradle.kts": `
+              buildscript { dependencies { classpath(files(${JSON.stringify(`${android}/gradle-plugin/build/libs/gradle-plugin-${version}.jar`)})) } }
+              plugins {
+                id("com.android.application") version "8.13.1" apply false
+                id("org.jetbrains.kotlin.android") version "2.2.21" apply false
+              }
+            `,
+            "app/build.gradle.kts": `
+              plugins {
+                id("com.android.application")
+                id("org.jetbrains.kotlin.android")
+                id("me.sospedra.blasphem")
+              }
+              android {
+                namespace = "me.sospedra.blasphem.consumer"
+                compileSdk = 35
+                defaultConfig { applicationId = "me.sospedra.blasphem.consumer"; minSdk = 24; targetSdk = 35 }
+                compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+                kotlinOptions { jvmTarget = "17" }
+              }
+              blasphem { locales.set(listOf("en", "es")); assets.set(providers.gradleProperty("delivery").orElse("bundled")) }
+            `,
+            "app/src/main/AndroidManifest.xml": `<manifest xmlns:android="http://schemas.android.com/apk/res/android"><application android:theme="@android:style/Theme.Material.Light.NoActionBar"><activity android:name=".MainActivity" android:exported="true" /></application></manifest>`,
+            "app/src/main/kotlin/me/sospedra/blasphem/consumer/MainActivity.kt": `
+              package me.sospedra.blasphem.consumer
+              import android.app.Activity
+              import android.os.Bundle
+              import android.util.Log
+              import kotlinx.coroutines.CoroutineScope
+              import kotlinx.coroutines.Dispatchers
+              import kotlinx.coroutines.launch
+              import me.sospedra.blasphem.Judge
+              class MainActivity : Activity() {
+                override fun onCreate(state: Bundle?) {
+                  super.onCreate(state)
+                  CoroutineScope(Dispatchers.Default).launch {
+                    try {
+                      Judge.create(this@MainActivity).use { judge ->
+                        val verdict = judge.judge("you are a stupid loser")
+                        check(!verdict.safe && verdict.locale == "en" && verdict.score == 0.95)
+                        Log.i("BLASPHEM", "status=verified config_only=true verdict=" + verdict)
+                      }
+                    } catch (error: Throwable) { Log.e("BLASPHEM", "status=failed", error) }
+                    runOnUiThread { finish() }
+                  }
+                }
+              }
+            `,
+          };
+          for (const [name, source] of Object.entries(files)) {
+            const path = resolve(scratch, name);
+            mkdirSync(resolve(path, ".."), { recursive: true });
+            writeFileSync(path, source);
+          }
+          writeFileSync(process.env.GITHUB_ENV, `ANDROID_CONSUMER=${scratch}\n`, { flag: "a" });
+          NODE
+
+      - name: Run the consuming Android app
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
           api-level: 35
           arch: x86_64
           target: google_apis
           working-directory: packages/android
-          script: ./gradlew :engine:connectedDebugAndroidTest --no-daemon
+          script: |
+            ./gradlew -p "$ANDROID_CONSUMER" installDebug --no-daemon
+            adb shell am start -W -n me.sospedra.blasphem.consumer/.MainActivity
+            for attempt in $(seq 1 30); do
+              output=$(adb logcat -d -s BLASPHEM:I)
+              if [[ "$output" == *"status=verified config_only=true"* ]]; then printf '%s\n' "$output"; break; fi
+              if [[ "$output" == *"status=failed"* ]] || [[ "$attempt" == 30 ]]; then printf '%s\n' "$output"; exit 1; fi
+              sleep 1
+            done
+
+      - name: Check the remote consumer APK
+        working-directory: packages/android
+        run: |
+          ./gradlew -p "$ANDROID_CONSUMER" assembleDebug -Pdelivery=remote --no-daemon
+          entries=$(unzip -Z1 "$ANDROID_CONSUMER/app/build/outputs/apk/debug/app-debug.apk")
+          if [[ "$entries" == *".pack"* ]] || [[ "$entries" == *".detect"* ]]; then echo "Remote APK contains language data"; exit 1; fi
+          [[ "$entries" == *"assets/blasphem/bundle.json"* ]]
+          [[ "$entries" == *"lib/x86_64/libblasphem_jni.so"* ]]
+          echo "status=verified remote_packs=0 native_engine=bundled"
 
       - name: Publish to the Central Portal
         if: ${{ !always() }}
@@ -705,13 +827,12 @@ jobs:
       - name: Judge through the published wheel
         if: ${{ !always() }}
         shell: bash
-        # blasphem finds the packs through the installed blasphem-packs, so this
-        # checks that the two distributions work together.
+        # The runtime resolves its exact internal data dependency automatically.
         env:
           VERSION: ${{ needs.plan.outputs.version }}
         run: |
           set -euo pipefail
-          python -m pip install "blasphem==$VERSION" "blasphem-packs==$VERSION"
+          python -m pip install "blasphem==$VERSION"
           python -c "import blasphem; blasphem.init(['en']); v = blasphem.judge('you are a stupid loser'); print(v); assert v.safe is False, v"
 
       - name: Judge through the published Swift package
@@ -732,17 +853,14 @@ jobs:
               targets: [
                   .executableTarget(name: "Scratch", dependencies: [
                       .product(name: "Blasphem", package: "blasphem-swift"),
-                      .product(name: "BlasphemPackEN", package: "blasphem-swift"),
-                      .product(name: "BlasphemPackES", package: "blasphem-swift"),
-                      .product(name: "BlasphemDetectEN", package: "blasphem-swift"),
-                      .product(name: "BlasphemDetectES", package: "blasphem-swift"),
-                  ]),
+                  ], plugins: [.plugin(name: "BlasphemAssets", package: "blasphem-swift")]),
               ]
           )
           EOF
+          printf '%s\n' '{"locales":["en","es"]}' > "$scratch/blasphem.json"
           cat > "$scratch/Sources/Scratch/main.swift" <<'EOF'
           import Blasphem
-          let judge = try Judge(locales: ["en", "es"], detectLanguage: true, grawlix: true)
+          let judge = try await Judge.create(grawlix: true)
           let verdict = try judge.judge("you are a stupid loser")
           print(verdict)
           guard verdict.safe == false, verdict.locale == "en" else { fatalError("unexpected verdict") }
@@ -776,13 +894,12 @@ jobs:
           rootProject.name = "scratch"
           EOF
           cat > "$scratch/build.gradle.kts" <<EOF
-          plugins { id("com.android.application") version "8.13.1" }
-          android { namespace = "me.sospedra.blasphem.scratch"; compileSdk = 35; defaultConfig { minSdk = 24 } }
-          dependencies {
-              implementation(platform("me.sospedra.blasphem:blasphem-bom:$VERSION"))
-              implementation("me.sospedra.blasphem:blasphem")
-              implementation("me.sospedra.blasphem:blasphem-pack-es")
+          plugins {
+              id("com.android.application") version "8.13.1"
+              id("me.sospedra.blasphem") version "$VERSION"
           }
+          android { namespace = "me.sospedra.blasphem.scratch"; compileSdk = 35; defaultConfig { minSdk = 24 } }
+          blasphem { locales.set(listOf("es")) }
           // AGP creates the variant configurations after evaluation, so resolve inside the task.
           tasks.register("listAars") {
               doLast {

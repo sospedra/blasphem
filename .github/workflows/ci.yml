@@ -78,6 +78,18 @@ jobs:
       - name: Verify the Go engine matches source
         run: node packages/go/scripts/build-wasm.mjs --check
 
+      - name: Read the pinned Go version
+        id: go
+        run: |
+          go_version=$(awk '$1 == "golang" { print $2 }' .tool-versions)
+          test -n "$go_version"
+          echo "version=$go_version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+          cache-dependency-path: packages/go/go.sum
+
       - name: Verify canonical packs
         run: node scripts/generate-packs.mjs --check
 
@@ -171,9 +183,9 @@ jobs:
       - name: Judge through the Go package
         working-directory: packages/go
         run: |
-          output=$(go run ./example ../../resources/packs)
+          output=$(go run ./example)
           printf '%s\n' "$output"
-          [[ "$output" == '{Safe:false '* ]]
+          [[ "$output" == '{"Safe":false,'* ]]
 
   python:
     name: Python (${{ matrix.toolchain }})
@@ -218,7 +230,7 @@ jobs:
       - name: Build the Python wheels
         run: |
           python -m pip install --require-hashes -r packages/python/requirements-build.txt
-          cp NOTICE packages/python/NOTICE
+          cp NOTICE LICENSE packages/python/
           python packages/python-packs/sync_packs.py
           python -m pip wheel --no-deps --no-build-isolation --config-settings=build-args=--locked \
             --wheel-dir "$RUNNER_TEMP/python-wheels" ./packages/python ./packages/python-packs
@@ -230,7 +242,7 @@ jobs:
           check-latest: ${{ matrix.toolchain == 'current' }}
 
       - name: Install the built wheels
-        run: python -m pip install --no-index "$RUNNER_TEMP"/python-wheels/*.whl
+        run: python -m pip install --no-index --find-links "$RUNNER_TEMP/python-wheels" blasphem
 
       - name: Judge through the installed Python package
         run: |
@@ -245,6 +257,23 @@ jobs:
           blasphem.close()
           assert not blasphem.ready()
           assert blasphem.judge("you are a stupid loser").safe is True
+          PY
+
+      - name: Verify the reduced Python deployment
+        run: |
+          python -m blasphem export --locales en,es --output "$RUNNER_TEMP/python-export"
+          PYTHONPATH="$RUNNER_TEMP/python-export" python -S - <<'PY'
+          import blasphem
+          blasphem.init(["en", "es"])
+          assert blasphem.judge("you are a stupid loser").safe is False
+          try:
+              blasphem.init("all")
+          except blasphem.BlasphemError as error:
+              assert error.code == "BLASPHEM_LOCALE_MISSING"
+          else:
+              raise AssertionError("A reduced export accepted all")
+          assert blasphem.ready()
+          print("status=verified export=python locales=en,es isolated=true")
           PY
 
   macos:

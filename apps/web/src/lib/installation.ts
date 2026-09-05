@@ -3,7 +3,7 @@ import manifest from "../../../../packages/javascript/package.json";
 type CodeExample = {
   label: string;
   code: string;
-  lang: "bash" | "typescript" | "swift" | "kotlin" | "python" | "go" | "rust";
+  lang: "bash" | "typescript" | "swift" | "kotlin" | "python" | "go" | "rust" | "json" | "toml";
 };
 
 export type Installation = {
@@ -21,104 +21,104 @@ export type Installation = {
 const version = manifest.version;
 const javascript = `import { init, judge } from "blasphem";
 
-await init({ locales: ["en", "es"], grawlix: true });
+await init({ grawlix: true });
 
 const verdict = judge("you are a stupid loser");
 console.log(verdict);`;
+const configuration: CodeExample = {
+  label: "package.json · select once", lang: "json", code: JSON.stringify({
+    blasphem: { locales: ["en", "es"], assets: "bundled", detectLanguage: true },
+  }, null, 2),
+};
 
 export const INSTALLATIONS: readonly Installation[] = [
   {
     id: "browser", name: "Web", group: "Clients", detail: "Browser · WebAssembly",
     install: { label: "Install with pnpm", lang: "bash", code: "pnpm add blasphem" },
+    setup: configuration,
     example: { label: "Initialize once, judge each message", lang: "typescript", code: javascript },
-    notes: ["The browser loads the engine and selected languages from jsDelivr by default.", "After initialization, checks run locally. Your message never leaves the device."],
-    docs: "packages/javascript#where-the-bytes-come-from",
+    notes: ["Register blasphem/vite, or publish assets with blasphem-assets and load its config.js.", "Bundled delivery is the default. Set assets to remote for pinned jsDelivr downloads.", "Use locales: all for every release locale. Message checks stay local."],
+    docs: "packages/javascript#browser-assets",
   },
   {
     id: "react-native", name: "React Native", group: "Clients", detail: "iOS & Android · Nitro Modules",
-    install: { label: "Install the package and its peers", lang: "bash", code: "pnpm add @blasphem/react-native @blasphem/packs react-native-nitro-modules" },
+    install: { label: "Install the package and its Nitro peer", lang: "bash", code: "pnpm add @blasphem/react-native react-native-nitro-modules" },
+    setup: configuration,
     example: { label: "Initialize once, judge each message", lang: "typescript", code: javascript.replace('from "blasphem"', 'from "@blasphem/react-native"') },
     notes: [
-      "Bundle manifest.json, en.pack, es.pack, en.detect, and es.detect from node_modules/@blasphem/packs/dist/.",
-      "iOS: add a blasphem folder reference to the app target. Android: use android/app/src/main/assets/blasphem/.",
+      "CocoaPods and Gradle copy only selected data automatically. Set assets to remote for persistent downloads.",
+      "Expo applications register @blasphem/react-native/app.plugin in app.json.",
       "Install iOS pods and rebuild the native app. Expo requires a development build.",
     ],
-    docs: "packages/react-native#packs-in-the-app-bundle",
+    docs: "packages/react-native#bundle-language-data",
   },
   {
     id: "swift", name: "Swift", group: "Clients", detail: "iOS 15.1+ & macOS 12+ · Swift Package Manager",
     install: { label: "Package.swift · add the dependency", lang: "swift", code: `.package(
   url: "https://github.com/sospedra/blasphem-swift.git",
-  from: "${version}"
+  exact: "${version}"
 )` },
-    setup: { label: "App target · add these products", lang: "swift", code: `.product(name: "Blasphem", package: "blasphem-swift"),
-.product(name: "BlasphemPackEN", package: "blasphem-swift"),
-.product(name: "BlasphemPackES", package: "blasphem-swift"),
-.product(name: "BlasphemDetectEN", package: "blasphem-swift"),
-.product(name: "BlasphemDetectES", package: "blasphem-swift"),` },
-    example: { label: "Create the judge off the main thread", lang: "swift", code: `import Blasphem
+    setup: { label: "blasphem.json · project root", lang: "json", code: '{\n  "locales": ["en", "es"],\n  "assets": "bundled",\n  "detectLanguage": true\n}' },
+    example: { label: "Create the configured judge", lang: "swift", code: `import Blasphem
 
-let judge = try Judge(locales: ["en", "es"], grawlix: true)
+let judge = try await Judge.create(grawlix: true)
 let verdict = try judge.judge("you are a stupid loser")
 print(verdict)` },
-    notes: ["Link one Pack product and one Detect product per language. SwiftPM bundles their data.", "To omit language detection, remove the Detect products and set detectLanguage: false."],
+    notes: ["Add the Blasphem library product and attach the BlasphemAssets build plugin to your target.", "The plugin supports SwiftPM and Xcode application targets. It reads blasphem.json automatically.", "Use locales: all for every release locale. Remote delivery bundles no language data."],
     docs: "packages/apple",
   },
   {
     id: "android", name: "Android", group: "Clients", detail: "Kotlin · Android API 24+ · Maven Central",
-    install: { label: "build.gradle.kts · dependencies", lang: "kotlin", code: `dependencies {
-  implementation(platform("me.sospedra.blasphem:blasphem-bom:${version}"))
-  implementation("me.sospedra.blasphem:blasphem")
-  implementation("me.sospedra.blasphem:blasphem-pack-en")
-  implementation("me.sospedra.blasphem:blasphem-pack-es")
-  implementation("me.sospedra.blasphem:blasphem-detect-en")
-  implementation("me.sospedra.blasphem:blasphem-detect-es")
+    install: { label: "build.gradle.kts · plugin", lang: "kotlin", code: `plugins {
+  id("me.sospedra.blasphem") version "${version}"
 }` },
-    example: { label: "Create the judge off the main thread", lang: "kotlin", code: `import me.sospedra.blasphem.Judge
-import me.sospedra.blasphem.JudgeOptions
+    setup: { label: "build.gradle.kts · selection", lang: "kotlin", code: `blasphem {
+  locales.set(listOf("en", "es")) // Also accepts "all".
+  assets.set("bundled")
+  detectLanguage.set(true)
+}` },
+    example: { label: "Inside a coroutine", lang: "kotlin", code: `import me.sospedra.blasphem.Judge
 
-val judge = Judge.create(
-  context,
-  JudgeOptions(locales = listOf("en", "es"), grawlix = true)
-)
+val judge = Judge.create(context)
 val verdict = judge.judge("you are a stupid loser")` },
-    notes: ["Enable mavenCentral() in your project repositories. Gradle bundles the selected language assets.", "Remove the detect artifacts and set detectLanguage = false to omit detection."],
+    notes: ["Enable mavenCentral() for dependencies and plugins. The plugin adds exact engine and data dependencies.", "Set assets to remote for private-files downloads. Set detectLanguage to false to omit detection files."],
     docs: "packages/android",
   },
   {
     id: "node", name: "Node.js", group: "Servers", detail: "JavaScript & TypeScript · native engine, WASM fallback",
-    install: { label: "Install the engine and language data", lang: "bash", code: "pnpm add blasphem @blasphem/packs" },
+    install: { label: "Install the library", lang: "bash", code: "pnpm add blasphem" },
+    setup: configuration,
     example: { label: "Initialize once, judge each message", lang: "typescript", code: javascript },
-    notes: ["Node reads the installed language packs. No asset URL is required.", "The package selects the native engine for your platform, with WebAssembly as a fallback."],
-    docs: "packages/javascript#nextjs",
+    notes: ["Node reads package.json without a frontend build. Its exact data dependency installs automatically.", "Node uses a native engine with a local WebAssembly fallback. Remote delivery is unsupported.", "Use blasphem-export --locales en,es --output ./vendor for a reduced deployment."],
+    docs: "packages/javascript#node-assets",
   },
   {
     id: "python", name: "Python", group: "Servers", detail: "Python 3.10+ · native Rust extension",
-    install: { label: "Install with pip", lang: "bash", code: "pip install blasphem blasphem-packs" },
+    install: { label: "Install with pip", lang: "bash", code: "python -m pip install blasphem" },
     example: { label: "Initialize once, judge each message", lang: "python", code: `import blasphem
 
 blasphem.init(["en", "es"], grawlix=True)
 verdict = blasphem.judge("you are a stupid loser")
 print(verdict)` },
-    notes: ["The extension reads the installed blasphem-packs data. Each check runs synchronously."],
+    notes: ["The exact internal data dependency installs automatically. init also accepts all.", "Use python -m blasphem export --locales en,es --output ./vendor for a reduced deployment."],
     docs: "packages/python",
   },
   {
     id: "go", name: "Go", group: "Servers", detail: "Go 1.25+ · embedded WebAssembly · no cgo",
     install: { label: "Add the Go module", lang: "bash", code: "go get github.com/sospedra/blasphem/packages/go" },
-    setup: { label: "Export language data during your build", lang: "bash", code: "pnpm add blasphem @blasphem/packs\npnpm exec blasphem-assets ./blasphem-data" },
     example: { label: "main.go", lang: "go", code: `package main
 
 import (
   "fmt"
   "log"
   blasphem "github.com/sospedra/blasphem/packages/go"
+  "github.com/sospedra/blasphem/packages/go/locales/en"
+  "github.com/sospedra/blasphem/packages/go/locales/es"
 )
 
 func main() {
   err := blasphem.Init(blasphem.Options{
-    Locales: []string{"en", "es"},
-    Assets: "./blasphem-data",
+    Locales: []blasphem.Locale{en.Locale, es.Locale},
     Grawlix: true,
   })
   if err != nil {
@@ -127,12 +127,15 @@ func main() {
   defer blasphem.Close()
   fmt.Println(blasphem.Judge("you are a stupid loser"))
 }` },
-    notes: ["Ship blasphem-data beside your app, or supply an embedded fs.FS through Options.Packs.", "Node is only needed for the data export above. The Go runtime uses wazero."],
-    docs: "packages/go#packs",
+    notes: ["Each locale subpackage embeds its own data. The root package references no full catalog.", "Import locales/all and use all.Locales for every release locale. Custom filesystem sources remain available."],
+    docs: "packages/go",
   },
   {
     id: "rust", name: "Rust", group: "Servers", detail: "Native · language data compiled into the crate",
-    install: { label: "Add the crate", lang: "bash", code: "cargo add blasphem" },
+    install: { label: "Cargo.toml · selected data", lang: "toml", code: `[dependencies.blasphem]
+git = "https://github.com/sospedra/blasphem"
+default-features = false
+features = ["embedded", "language-detection", "en", "es"]` },
     example: { label: "src/main.rs", lang: "rust", code: `use blasphem::{Judge, JudgeOptions, Language};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -145,14 +148,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{:?}", verdict);
     Ok(())
 }` },
-    notes: ["Build one Judge and reuse it. The crate includes the language data."],
-    docs: "#rust",
+    notes: ["Locale features gate compiled models, lexicons, rules, and detection data.", "Default features include all locales. Runtime filters cannot remove compiled bytes."],
+    docs: "crates/blasphem",
   },
   {
     id: "cli", name: "CLI", group: "Terminal", detail: "Native binary · command line or stdin",
     install: { label: "Run without a global install", lang: "bash", code: 'npx blasphem judge --locales en,es "hello there"' },
     example: { label: "Read one message per line", lang: "bash", code: 'printf \'hello there\\nyou are a stupid loser\\n\' | npx blasphem judge --locales en --no-detect --json' },
-    notes: ["Exit codes: 0 means no warning, 1 means a warning, and 2 means an error.", "Add --grawlix to return masked text. Use --no-detect when the language is known."],
-    docs: "#command-line",
+    notes: ["Exit codes: 0 means no warning, 1 means a warning, and 2 means an error.", "Prebuilt binaries contain all languages. --locales all loads every release locale.", "Add --grawlix for masked text. --no-detect omits language detection loading."],
+    docs: "packages/cli",
   },
 ];

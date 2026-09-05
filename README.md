@@ -30,6 +30,12 @@ Read [how Blasphem works](HOW.md) for the architecture.
 | Python | [Python package](packages/python/README.md) |
 | Go | [Go module](packages/go/README.md) |
 
+Install one Blasphem library per platform. Internal data dependencies resolve automatically.
+Client applications declare a nonempty locale selection or `"all"` once.
+Bundled delivery is the default. Browser and native clients also support pinned remote delivery.
+Remote clients store verified data across launches. Message checks always run locally.
+Go imports and Rust features select compiled data. Python and Node support reduced deployment exports.
+
 [Language packs](packages/javascript-packs/README.md) · [Python data wheel](packages/python-packs/README.md) · [WASM bindings](crates/blasphem-wasm/README.md)
 
 ## Contribute

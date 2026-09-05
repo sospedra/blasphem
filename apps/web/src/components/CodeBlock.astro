@@ -4,7 +4,7 @@ import { Code } from "astro:components";
 interface Props {
   label: string;
   code: string;
-  lang?: "bash" | "typescript" | "swift" | "kotlin" | "python" | "go" | "rust" | "json";
+  lang?: "bash" | "typescript" | "swift" | "kotlin" | "python" | "go" | "rust" | "json" | "toml" | "html";
 }
 const { label, code, lang = "bash" } = Astro.props;
 ---

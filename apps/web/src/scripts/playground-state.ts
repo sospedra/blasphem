@@ -1,3 +1,5 @@
+import type { Judgement } from "blasphem";
+
 export type Phase =
   | { status: "idle" }
   | { status: "unavailable" }
@@ -27,12 +29,7 @@ export function transition(phase: Phase, event: PhaseEvent): Phase {
   }
 }
 
-export type Snapshot = {
-  safe: boolean;
-  score: number;
-  locale: string | null;
-  grawlix: string | null;
-};
+export type Snapshot = Judgement;
 
 export type Tone = "waiting" | "clean" | "hit" | "unknown";
 export type Verdict = { word: string; tone: Tone; note: string };

@@ -1,12 +1,17 @@
 import type { AstroIntegration } from "astro";
 import { createHash } from "node:crypto";
-import { copyFileSync, createReadStream, existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { browserAssets } from "../../../packages/javascript/integrations/assets.mjs";
 
-const WASM = "blasphem_bg.wasm";
-const CODE = ["browser.js", "wasm-engine.js", "blasphem.js", "version.generated.js", WASM];
-const MANIFEST = "manifest.json";
+const CODE = ["browser.js", "browser-cache.js", "browser-config.js", "wasm-engine.js", "blasphem.js", "version.generated.js"];
+
+interface Located {
+  base: string;
+  files: Map<string, Uint8Array>;
+  totalBytes: number;
+}
 
 function contentType(name: string): string {
   switch (extname(name)) {
@@ -17,41 +22,20 @@ function contentType(name: string): string {
   }
 }
 
-export interface BlasphemAssetsOptions {
-  /** packages/javascript/dist */
-  distDir: string;
-  /** resources/packs */
-  packsDir: string;
-}
-
-interface Located {
-  base: string;
-  /** Served name, such as `core/loader.js` or `en.pack`, to its source path. */
-  files: Map<string, string>;
-  /** Bytes a judge over every locale with detection downloads: wasm plus every pack file. */
-  totalBytes: number;
-}
-
-function locate(distDir: string, packsDir: string): Located | null {
-  const files = new Map<string, string>();
-  for (const name of CODE) files.set(name, resolve(distDir, name));
-  const core = resolve(distDir, "core");
-  if (existsSync(core)) {
-    for (const name of readdirSync(core).filter((entry) => entry.endsWith(".js"))) files.set(`core/${name}`, resolve(core, name));
-  }
-  const manifestPath = resolve(packsDir, MANIFEST);
-  if ([...files.values(), manifestPath].some((path) => !existsSync(path))) return null;
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as { files: Record<string, { bytes: number }> };
-  files.set(MANIFEST, manifestPath);
-  let totalBytes = statSync(resolve(distDir, WASM)).size;
-  for (const [name, record] of Object.entries(manifest.files)) {
-    files.set(name, resolve(packsDir, name));
-    totalBytes += record.bytes;
-  }
-  if ([...files.values()].some((path) => !existsSync(path))) return null;
+function locate(dist: string, project: { root: string; base: string }): Located | null {
+  if (!existsSync(resolve(dist, "browser.js"))) return null;
+  const core = readdirSync(resolve(dist, "core")).filter((name) => name.endsWith(".js")).map((name) => `core/${name}`);
+  const code = [...CODE, ...core].map((name): [string, Uint8Array] => [name, readFileSync(resolve(dist, name))]);
+  const initial = browserAssets(project.root, `${project.base}blasphem`);
   const digest = createHash("sha256");
-  for (const name of [...files.keys()].sort()) digest.update(readFileSync(files.get(name) as string));
-  return { base: `/blasphem/${digest.digest("hex").slice(0, 16)}`, files, totalBytes };
+  for (const [, bytes] of [...code, ...initial.entries]) digest.update(bytes);
+  const base = `${project.base}blasphem/${digest.digest("hex").slice(0, 16)}`;
+  const { bundle, entries } = browserAssets(project.root, base);
+  const generated: [string, Uint8Array] = ["bundle.generated.js", Buffer.from(`export const BUNDLE = ${JSON.stringify(bundle)};\n`)];
+  const files = new Map([...code, ...entries, generated]);
+  const dataFiles = entries.filter(([name]) => [".wasm", ".pack", ".detect"].includes(extname(name)));
+  const totalBytes = dataFiles.reduce((sum, [, bytes]) => sum + bytes.byteLength, 0);
+  return { base, files, totalBytes };
 }
 
 function assetName(url: string | undefined, located: Located): string | null {
@@ -60,42 +44,39 @@ function assetName(url: string | undefined, located: Located): string | null {
   return located.files.has(name) ? name : null;
 }
 
-/** Serves the package, the wasm, and the packs under one hashed base in dev, and copies them there at build. */
-export default function blasphemAssets(options: BlasphemAssetsOptions): AstroIntegration {
-  const located = locate(options.distDir, options.packsDir);
+export default function blasphemAssets(options: { distDir: string }): AstroIntegration {
+  let located: Located | null = null;
   return {
     name: "blasphem-assets",
     hooks: {
-      "astro:config:setup": ({ updateConfig, logger }) => {
-        if (!located) logger.warn("packages/javascript/dist or resources/packs is incomplete; the playground will report that the package is not built");
-        updateConfig({
-          vite: {
-            define: {
-              __BLASPHEM_BASE__: JSON.stringify(located?.base ?? ""),
-              __BLASPHEM_TOTAL_BYTES__: JSON.stringify(located?.totalBytes ?? 0),
-            },
-          },
-        });
+      "astro:config:setup": ({ config, updateConfig, logger }) => {
+        const base = config.base.endsWith("/") ? config.base : `${config.base}/`;
+        located = locate(options.distDir, { root: fileURLToPath(config.root), base });
+        if (!located) logger.warn("Build the blasphem package before the playground.");
+        updateConfig({ vite: { define: {
+          __BLASPHEM_BASE__: JSON.stringify(located?.base ?? ""),
+          __BLASPHEM_TOTAL_BYTES__: JSON.stringify(located?.totalBytes ?? 0),
+        } } });
       },
       "astro:server:setup": ({ server }) => {
-        if (!located) return;
         server.middlewares.use((request, response, next) => {
+          if (!located) return next();
           const name = assetName(request.url, located);
           if (!name) return next();
           response.setHeader("Content-Type", contentType(name));
           response.setHeader("Cache-Control", "no-store");
-          createReadStream(located.files.get(name) as string).pipe(response);
+          response.end(located.files.get(name));
         });
       },
       "astro:build:done": ({ dir, logger }) => {
         if (!located) return;
         const target = resolve(fileURLToPath(dir), located.base.slice(1));
-        for (const [name, source] of located.files) {
+        for (const [name, bytes] of located.files) {
           const destination = resolve(target, name);
           mkdirSync(dirname(destination), { recursive: true });
-          copyFileSync(source, destination);
+          writeFileSync(destination, bytes);
         }
-        logger.info(`copied ${located.files.size} files, ${(located.totalBytes / 1048576).toFixed(2)} MB of wasm and packs, to ${located.base}/`);
+        logger.info(`copied ${located.files.size} selected files to ${located.base}/`);
       },
     },
   };
