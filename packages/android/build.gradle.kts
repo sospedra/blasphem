@@ -1,6 +1,7 @@
 import com.android.build.gradle.LibraryExtension
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import org.gradle.api.tasks.bundling.Jar
 
 buildscript {
     configurations.classpath {
@@ -15,6 +16,11 @@ plugins {
 }
 
 allprojects {
+    tasks.withType<Jar>().configureEach {
+        from(rootProject.file("../../NOTICE")) {
+            into("META-INF")
+        }
+    }
     configurations.configureEach {
         resolutionStrategy.failOnNonReproducibleResolution()
     }

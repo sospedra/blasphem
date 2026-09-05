@@ -488,6 +488,8 @@ jobs:
         run: |
           set -euo pipefail
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            git fetch --no-tags origin "refs/tags/$TAG"
+            git show "FETCH_HEAD:packages/go/NOTICE" | cmp NOTICE -
             echo "status=exists tag=$TAG"
             exit 0
           fi

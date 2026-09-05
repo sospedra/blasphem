@@ -1,4 +1,4 @@
-# Blasphem
+# † Blasphem
 
 Blasphem checks text for toxicity before someone sends it.
 It provides an experimental warning for [16 languages](packages/javascript-packs/README.md#locales).
@@ -46,3 +46,5 @@ Include the language, input text, and expected result.
 ## Evidence and license
 
 [Benchmarks](crates/blasphem-bench/README.md) · [Code license](LICENSE) · [Data notices](NOTICE)
+
+*NIHIL PROFANUM*
