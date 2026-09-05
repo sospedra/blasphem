@@ -16,11 +16,11 @@ use crate::language_detection::{
 /// Options for one judge. Every field has a working default.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct JudgeOptions {
-    /// Locales to load. Empty loads every supported language.
+    /// Locales to load. Empty loads every compiled language.
     pub locales: Vec<Language>,
     /// Route by detected language instead of scoring every loaded locale.
     pub detect_language: bool,
-    /// Populate [`Judgement::grawlix`].
+    /// Populate [`Judgement::grawlix`] for unsafe verdicts.
     pub grawlix: bool,
 }
 
@@ -43,7 +43,8 @@ pub struct Judgement {
     pub score: f64,
     /// The locale that produced the score.
     pub locale: Option<Language>,
-    /// The masked text when [`JudgeOptions::grawlix`] is set.
+    /// The masked text when [`JudgeOptions::grawlix`] is set and the verdict is unsafe.
+    /// Safe verdicts return `None`.
     pub grawlix: Option<String>,
 }
 
@@ -77,6 +78,8 @@ pub enum JudgeError {
     MissingDetect(Language),
     #[error("BLASPHEM_PACK_INVALID: this build has no language detection")]
     DetectionUnavailable,
+    #[error("BLASPHEM_LOCALE_MISSING: {0} is not compiled into this build")]
+    LocaleUnavailable(Language),
 }
 
 /// A reusable judge holding one detector per loaded locale.
@@ -101,15 +104,18 @@ impl Judge {
     /// language detector cannot start.
     #[cfg(feature = "embedded")]
     pub fn new(options: JudgeOptions) -> Result<Self, JudgeError> {
+        #[cfg(not(feature = "language-detection"))]
+        ensure_no_detection(options.detect_language, &[])?;
+        let locales = requested_locales(&options.locales)?;
         let mut detectors = Vec::new();
-        for language in requested_locales(&options.locales) {
+        for &language in &locales {
             detectors.push((language, embedded_detector(language)?));
         }
 
         Ok(Self {
             detectors,
             #[cfg(feature = "language-detection")]
-            identifier: identifier_for(options.detect_language)?,
+            identifier: identifier_for(options.detect_language, &locales)?,
             grawlix: options.grawlix,
         })
     }
@@ -189,7 +195,11 @@ impl Judge {
             safe: !nudge.should_nudge,
             score: f64::from(nudge.score) / 100.0,
             locale: Some(language),
-            grawlix: self.mask(&result),
+            grawlix: if nudge.should_nudge {
+                self.mask(&result)
+            } else {
+                None
+            },
         }
     }
 
@@ -271,20 +281,38 @@ fn ensure_no_detection(detect_language: bool, _slices: &[&[u8]]) -> Result<(), J
 }
 
 #[cfg(all(feature = "language-detection", feature = "embedded"))]
-fn identifier_for(detect_language: bool) -> Result<Option<LanguageDetector>, JudgeError> {
+fn identifier_for(
+    detect_language: bool,
+    locales: &[Language],
+) -> Result<Option<LanguageDetector>, JudgeError> {
     if !detect_language {
         return Ok(None);
     }
-    Ok(Some(LanguageDetector::new()?))
+    let slices: Vec<_> = locales
+        .iter()
+        .copied()
+        .map(crate::embedded::embedded_detect_bytes)
+        .collect();
+    Ok(Some(LanguageDetector::from_slices(&slices)?))
 }
 
 #[cfg(feature = "embedded")]
-fn requested_locales(locales: &[Language]) -> Vec<Language> {
+fn requested_locales(locales: &[Language]) -> Result<Vec<Language>, JudgeError> {
+    let compiled = crate::embedded::compiled_locales();
     if locales.is_empty() {
-        return Language::ALL.to_vec();
+        return if compiled.is_empty() {
+            Err(JudgeError::NoLocales)
+        } else {
+            Ok(compiled)
+        };
+    }
+    for &language in locales {
+        if !compiled.contains(&language) {
+            return Err(JudgeError::LocaleUnavailable(language));
+        }
     }
     let mut requested = locales.to_vec();
     requested.sort_by_key(|language| language.index());
     requested.dedup();
-    requested
+    Ok(requested)
 }

@@ -7,6 +7,15 @@
 use blasphem::{Engine, EngineSource};
 use wasm_bindgen::prelude::*;
 
+// Keep the generated type aligned with packages/javascript-common/src/contract.ts.
+#[wasm_bindgen(typescript_custom_section)]
+const JUDGEMENT_TYPESCRIPT: &str = r#"
+/** One verdict for one message. Safe verdicts never include masked text. */
+export type Judgement =
+  | { safe: true; score: number; locale: string | null; grawlix: null }
+  | { safe: false; score: number; locale: string | null; grawlix: string | null };
+"#;
+
 /// Collects one locale at a time, then builds the engine.
 #[wasm_bindgen(js_name = BlasphemEngineBuilder)]
 pub struct WasmEngineBuilder {
@@ -85,6 +94,7 @@ impl WasmEngine {
     /// # Errors
     ///
     /// Returns an error only when the host rejects a property write.
+    #[wasm_bindgen(unchecked_return_type = "Judgement")]
     pub fn judge(&self, text: &str) -> Result<JsValue, JsValue> {
         let verdict = self.engine.judge(text);
         let object = js_sys::Object::new();

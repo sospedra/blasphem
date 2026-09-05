@@ -184,7 +184,7 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": 774,
+      "boundary": 773,
       "score_scale": 2168,
       "false_warning_limit_basis_points": 300,
       "validation": {
@@ -206,7 +206,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "b31502fde9bfe30b7523be1ba34e71ea5e7ba01a74c4fd3856855dd30a6a42bf"
+      "artifact_sha256": "05f8cb6f13fdb0abfd2d161d5cf6a454cafb068eee2014440f2de6dac5c92772"
     },
     {
       "language": "AR",
@@ -835,21 +835,21 @@
       "duplicate_rows": 0,
       "conflict_rows": 0,
       "excluded_rows": 0,
-      "boundary": 1505,
-      "score_scale": 3637,
+      "boundary": 1500,
+      "score_scale": 3631,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 227,
+        "true_positive": 229,
         "true_negative": 3678,
         "false_positive": 25,
-        "false_negative": 677
+        "false_negative": 675
       },
       "validation_metrics": {
-        "accuracy": 0.8476231821141741,
-        "precision": 0.9007936507936508,
-        "recall": 0.25110619469026546,
+        "accuracy": 0.8480573041024528,
+        "precision": 0.9015748031496063,
+        "recall": 0.25331858407079644,
         "specificity": 0.9932487172562787,
-        "f1": 0.39273356401384085
+        "f1": 0.3955094991364421
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -857,7 +857,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "d99e4a38451a36e8d6d4a3e8589dfa1aea676bbfc6b0ee11dc291804a3be8dfe"
+      "artifact_sha256": "31e71f13e970c0a456bae84ec0cd7a4c20fc6a358c2662b0a17695f0de2de70a"
     },
     {
       "language": "VI",
@@ -991,17 +991,17 @@
       "score_scale": 1536,
       "false_warning_limit_basis_points": 300,
       "validation": {
-        "true_positive": 1938,
+        "true_positive": 1937,
         "true_negative": 4729,
         "false_positive": 146,
-        "false_negative": 1913
+        "false_negative": 1914
       },
       "validation_metrics": {
-        "accuracy": 0.7640385056154022,
-        "precision": 0.9299424184261037,
-        "recall": 0.503245910153207,
+        "accuracy": 0.7639239055695622,
+        "precision": 0.9299087854056649,
+        "recall": 0.5029862373409504,
         "specificity": 0.9700512820512821,
-        "f1": 0.6530749789385004
+        "f1": 0.6528479946073474
       },
       "validation_gates": {
         "false_warning_passed": true,
@@ -1009,7 +1009,7 @@
         "has_true_positive": true
       },
       "artifact_bytes": 131112,
-      "artifact_sha256": "afd29976c6f9dfd57da638fb9dc037e6267ad19717a3417d6dd9614bee4e4b57"
+      "artifact_sha256": "52a5917d5202113cf9bf5dc2c969fc4b91d0cb0357e1d021c4c106e2d63e255c"
     },
     {
       "language": "IT",

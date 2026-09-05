@@ -17,7 +17,9 @@ typedef struct blasphem_judgement {
   bool safe;
   double score;
   char *locale;   /* lowercase code or NULL; free with blasphem_judgement_free */
-  char *grawlix;  /* masked text or NULL; free with blasphem_judgement_free */
+  /* Masked text for unsafe verdicts when requested, otherwise NULL.
+     Free with blasphem_judgement_free. */
+  char *grawlix;
 } blasphem_judgement;
 
 blasphem_builder *blasphem_builder_new(bool detect_language, bool grawlix);

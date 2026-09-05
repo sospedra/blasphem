@@ -1,9 +1,13 @@
 use crate::Language;
 
-use super::super::{LanguageRules, PhraseSet, RuleMatchProfile};
+use super::super::LanguageRules;
+#[cfg(any(feature = "all-rules", feature = "ar", feature = "hi"))]
+use super::super::{PhraseSet, RuleMatchProfile};
 
+#[cfg(any(feature = "all-rules", feature = "ar", feature = "hi"))]
 const EMPTY: PhraseSet = PhraseSet::empty();
 
+#[cfg(any(feature = "all-rules", feature = "ar"))]
 const AR_RULES: LanguageRules = LanguageRules {
     language: Language::Ar,
     version: 2,
@@ -36,6 +40,7 @@ const AR_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "hi"))]
 const HI_RULES: LanguageRules = LanguageRules {
     language: Language::Hi,
     version: 2,
@@ -66,20 +71,10 @@ const HI_RULES: LanguageRules = LanguageRules {
 #[must_use]
 pub const fn arabic_hindi_rules(language: Language) -> Option<&'static LanguageRules> {
     match language {
+        #[cfg(any(feature = "all-rules", feature = "ar"))]
         Language::Ar => Some(&AR_RULES),
+        #[cfg(any(feature = "all-rules", feature = "hi"))]
         Language::Hi => Some(&HI_RULES),
-        Language::En
-        | Language::Zh
-        | Language::Es
-        | Language::Ms
-        | Language::Pt
-        | Language::Fr
-        | Language::Ru
-        | Language::Ja
-        | Language::De
-        | Language::Tr
-        | Language::Vi
-        | Language::Ko
-        | Language::It => None,
+        _ => None,
     }
 }

@@ -11,7 +11,7 @@ license = "Apache-2.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-blasphem = { path = "../blasphem", default-features = false, features = ["language-detection"] }
+blasphem = { path = "../blasphem", default-features = false, features = ["language-detection", "all-rules"] }
 jni = "=0.21.1"
 
 [lints]

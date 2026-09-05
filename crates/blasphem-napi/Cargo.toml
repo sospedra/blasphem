@@ -11,7 +11,7 @@ license = "Apache-2.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-blasphem = { path = "../blasphem", default-features = false, features = ["language-detection"] }
+blasphem = { path = "../blasphem", default-features = false, features = ["language-detection", "all-rules"] }
 napi = { version = "=3.12.2", default-features = false, features = ["napi8"] }
 napi-derive = "=3.6.3"
 

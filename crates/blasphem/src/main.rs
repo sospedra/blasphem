@@ -44,7 +44,7 @@ struct JudgeArgs {
     /// Score every loaded locale instead of routing by detected language.
     #[arg(long)]
     no_detect: bool,
-    /// Add the masked text to each verdict.
+    /// Add masked text to unsafe verdicts.
     #[arg(long)]
     grawlix: bool,
     /// Print one JSON object per verdict: safe, score, locale, grawlix.
@@ -142,6 +142,15 @@ fn judge(arguments: &JudgeArgs) -> Result<bool> {
 }
 
 fn parse_locales(codes: &[String]) -> Result<Vec<Language>> {
+    if codes
+        .iter()
+        .any(|code| code.trim().eq_ignore_ascii_case("all"))
+    {
+        if codes.len() != 1 {
+            return Err(anyhow!("all cannot be combined with individual locales"));
+        }
+        return Ok(Language::ALL.to_vec());
+    }
     codes
         .iter()
         .map(|code| Language::from_str(code).map_err(|_| anyhow!("unsupported locale {code:?}")))

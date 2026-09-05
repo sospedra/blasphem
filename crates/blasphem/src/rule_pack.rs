@@ -1,9 +1,13 @@
 use charabia::Tokenize;
 
 const LEXICAL_COLLISION_EXCLUSIONS: &[(&str, &[&str])] = &[
+    #[cfg(any(feature = "all-rules", feature = "ar"))]
     ("AR", &["فتاة", "عامل", "تجمع"]),
+    #[cfg(any(feature = "all-rules", feature = "de"))]
     ("DE", &["volk", "rock", "hund", "dose"]),
+    #[cfg(any(feature = "all-rules", feature = "en"))]
     ("EN", &["do", "people", "know", "love", "proud"]),
+    #[cfg(any(feature = "all-rules", feature = "es"))]
     (
         "ES",
         &[
@@ -20,14 +24,18 @@ const LEXICAL_COLLISION_EXCLUSIONS: &[(&str, &[&str])] = &[
             "servicio",
         ],
     ),
+    #[cfg(any(feature = "all-rules", feature = "fr"))]
     ("FR", &["gens", "peuple", "police"]),
+    #[cfg(any(feature = "all-rules", feature = "it"))]
     ("IT", &["gente", "popolo", "sito", "arte"]),
+    #[cfg(any(feature = "all-rules", feature = "ja"))]
     (
         "JA",
         &[
             "女", "問題", "下手", "平凡", "初心", "刑事", "婦警", "大衆", "庶民", "平民",
         ],
     ),
+    #[cfg(any(feature = "all-rules", feature = "ko"))]
     (
         "KO",
         &[
@@ -35,8 +43,11 @@ const LEXICAL_COLLISION_EXCLUSIONS: &[(&str, &[&str])] = &[
             "여경", "대중", "민중", "서민",
         ],
     ),
+    #[cfg(any(feature = "all-rules", feature = "pt"))]
     ("PT", &["gente", "povo", "polícia"]),
+    #[cfg(any(feature = "all-rules", feature = "ru"))]
     ("RU", &["девушка", "член", "юбка"]),
+    #[cfg(any(feature = "all-rules", feature = "zh"))]
     (
         "ZH",
         &[
@@ -46,8 +57,10 @@ const LEXICAL_COLLISION_EXCLUSIONS: &[(&str, &[&str])] = &[
     ),
 ];
 
-const LEXICAL_COLLISION_REACTIVATIONS: &[(&str, &str, &[&str])] =
-    &[("DE", "hund", &["du", "hund"])];
+const LEXICAL_COLLISION_REACTIVATIONS: &[(&str, &str, &[&str])] = &[
+    #[cfg(any(feature = "all-rules", feature = "de"))]
+    ("DE", "hund", &["du", "hund"]),
+];
 
 pub(crate) struct RulePack {
     pub(crate) language: &'static str,
@@ -122,6 +135,7 @@ impl RulePack {
     }
 }
 
+#[cfg(any(feature = "all-rules", feature = "es"))]
 fn spanish_semantic_pack() -> SemanticPack {
     SemanticPack {
         implicit_targets: normalize_phrases(&[
@@ -218,6 +232,7 @@ fn focused_semantic_pack(
     }
 }
 
+#[cfg(any(feature = "all-rules", feature = "en"))]
 fn english_semantic_pack() -> SemanticPack {
     let mut pack = focused_semantic_pack(&[], &[], &[], &[]);
     pack.benign_harm_phrases = normalize_phrases(&[
@@ -323,6 +338,7 @@ macro_rules! pack {
 
 pub(crate) fn for_language(language: &str) -> Option<RulePack> {
     Some(match language.trim().to_ascii_uppercase().as_str() {
+        #[cfg(any(feature = "all-rules", feature = "en"))]
         "EN" => pack!(
             "EN",
             &["you", "your", "yours", "yourself"],
@@ -369,6 +385,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["slightly", "somewhat", "maybe"]
         )
         .with_semantic(english_semantic_pack()),
+        #[cfg(any(feature = "all-rules", feature = "es"))]
         "ES" => pack!(
             "ES",
             &[
@@ -439,6 +456,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["algo", "quizá", "quizás"]
         )
         .with_semantic(spanish_semantic_pack()),
+        #[cfg(any(feature = "all-rules", feature = "fr"))]
         "FR" => pack!(
             "FR",
             &["tu", "toi", "vous", "votre", "tes", "te"],
@@ -478,6 +496,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["très", "vraiment", "si"],
             &["légèrement", "peut-être"]
         ),
+        #[cfg(any(feature = "all-rules", feature = "de"))]
         "DE" => pack!(
             "DE",
             &["du", "dich", "ihr", "euch", "sie"],
@@ -521,6 +540,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             ],
             &[],
         )),
+        #[cfg(any(feature = "all-rules", feature = "it"))]
         "IT" => pack!(
             "IT",
             &["tu", "te", "voi", "tua", "tuo", "ti"],
@@ -573,6 +593,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["molto", "davvero", "così"],
             &["poco", "forse"]
         ),
+        #[cfg(any(feature = "all-rules", feature = "pt"))]
         "PT" => pack!(
             "PT",
             &["você", "vocês", "tu", "te", "ti", "seu", "sua"],
@@ -622,6 +643,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["morra", "nunca mais acorde", "não acorde mais"],
             &[],
         )),
+        #[cfg(any(feature = "all-rules", feature = "ru"))]
         "RU" => pack!(
             "RU",
             &["ты", "тебя", "тебе", "вы", "вас", "вам"],
@@ -661,6 +683,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &["больше не проснёшься", "не проснёшься", "сдох"],
             &[],
         )),
+        #[cfg(any(feature = "all-rules", feature = "ar"))]
         "AR" => pack!(
             "AR",
             &["أنت", "انتم", "أنتم", "انت", "أنتِ"],
@@ -691,6 +714,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &["تموت", "تموتوا"],
         )),
+        #[cfg(any(feature = "all-rules", feature = "ms"))]
         "MS" | "ID" => pack!(
             "MS",
             &["kamu", "kau", "anda", "kalian"],
@@ -717,6 +741,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[],
         )),
+        #[cfg(any(feature = "all-rules", feature = "hi"))]
         "HI" => pack!(
             "HI",
             &["तुम", "तुम्हें", "तुम्हारी", "तू", "तुझे", "आप"],
@@ -743,6 +768,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[],
         )),
+        #[cfg(any(feature = "all-rules", feature = "tr"))]
         "TR" => pack!(
             "TR",
             &["sen", "seni", "sana", "siz", "sizi"],
@@ -766,6 +792,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[]
         ),
+        #[cfg(any(feature = "all-rules", feature = "vi"))]
         "VI" => pack!(
             "VI",
             &["mày", "bạn", "mi", "ngươi", "chúng mày"],
@@ -781,6 +808,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[]
         ),
+        #[cfg(any(feature = "all-rules", feature = "zh"))]
         "ZH" => pack!(
             "ZH",
             &["你", "你们", "你家人", "你全家"],
@@ -796,6 +824,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[]
         ),
+        #[cfg(any(feature = "all-rules", feature = "ja"))]
         "JA" => pack!(
             "JA",
             &["お前", "あなた", "あんた", "君", "てめえ", "貴様"],
@@ -811,6 +840,7 @@ pub(crate) fn for_language(language: &str) -> Option<RulePack> {
             &[],
             &[]
         ),
+        #[cfg(any(feature = "all-rules", feature = "ko"))]
         "KO" => pack!(
             "KO",
             &["너", "네가", "널", "너를", "니가", "당신", "너희"],

@@ -28,8 +28,8 @@ type Judgement struct {
 	Score float64
 	// Locale is the lowercase code that produced the score, or "" when nothing routed the text.
 	Locale string
-	// Grawlix is the masked text when Options.Grawlix is set, otherwise "".
-	Grawlix string
+	// Grawlix contains masked text for unsafe verdicts when requested, otherwise nil.
+	Grawlix *string
 }
 
 func failOpen() Judgement {

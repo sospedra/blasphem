@@ -1,9 +1,13 @@
 use crate::Language;
 
-use super::super::{LanguageRules, PhraseSet, RuleMatchProfile};
+use super::super::LanguageRules;
+#[cfg(any(feature = "all-rules", feature = "zh", feature = "ja", feature = "ko"))]
+use super::super::{PhraseSet, RuleMatchProfile};
 
+#[cfg(any(feature = "all-rules", feature = "zh", feature = "ja", feature = "ko"))]
 const EMPTY: PhraseSet = PhraseSet::empty();
 
+#[cfg(any(feature = "all-rules", feature = "zh"))]
 const ZH_RULES: LanguageRules = LanguageRules {
     language: Language::Zh,
     version: 1,
@@ -33,6 +37,7 @@ const ZH_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::CompactClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "ja"))]
 const JA_RULES: LanguageRules = LanguageRules {
     language: Language::Ja,
     version: 1,
@@ -70,6 +75,7 @@ const JA_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::CompactClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "ko"))]
 const KO_RULES: LanguageRules = LanguageRules {
     language: Language::Ko,
     version: 1,
@@ -105,20 +111,12 @@ const KO_RULES: LanguageRules = LanguageRules {
 #[must_use]
 pub const fn cjk_rules(language: Language) -> Option<&'static LanguageRules> {
     match language {
+        #[cfg(any(feature = "all-rules", feature = "zh"))]
         Language::Zh => Some(&ZH_RULES),
+        #[cfg(any(feature = "all-rules", feature = "ja"))]
         Language::Ja => Some(&JA_RULES),
+        #[cfg(any(feature = "all-rules", feature = "ko"))]
         Language::Ko => Some(&KO_RULES),
-        Language::En
-        | Language::Es
-        | Language::Ar
-        | Language::Ms
-        | Language::Pt
-        | Language::Fr
-        | Language::Hi
-        | Language::Ru
-        | Language::De
-        | Language::Tr
-        | Language::Vi
-        | Language::It => None,
+        _ => None,
     }
 }

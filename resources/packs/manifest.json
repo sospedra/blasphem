@@ -31,7 +31,7 @@
     },
     "es.pack": {
       "bytes": 197812,
-      "sha256": "5d818a37bf9ad1d9461b13d55e8377fc942fb312f1dc80474116915390ee166e"
+      "sha256": "cde7a8b85d58490b394f8c1f65e55e37ceab195cc42bc1ff91f46b904ca3cc53"
     },
     "fr.detect": {
       "bytes": 428132,
@@ -71,7 +71,7 @@
     },
     "ko.pack": {
       "bytes": 191451,
-      "sha256": "c4fabada988eb282f13e92c0c93af738844ca0e0ffe1457f9ccf68459ce77d07"
+      "sha256": "be20f98447d269f20fb440ae5f48cc228e7e8462e8190e896e9260508d775d8e"
     },
     "ms.detect": {
       "bytes": 791168,
@@ -103,7 +103,7 @@
     },
     "tr.pack": {
       "bytes": 146471,
-      "sha256": "a2071238c5f071bc1ca837db29f340b146c39d7cf18215bc2e26b7c4d1740f29"
+      "sha256": "a811dc8570921f17345a3736fdf6a0635f2467e26516bfdf0d66b84dd54f07d9"
     },
     "vi.detect": {
       "bytes": 114884,

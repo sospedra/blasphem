@@ -15,11 +15,30 @@ path = "src/main.rs"
 required-features = ["embedded"]
 
 [features]
-default = ["language-detection", "embedded"]
+default = ["language-detection", "embedded", "all-locales"]
 language-detection = ["dep:blasphem-language"]
 # Compiles the sparse artifacts, the lexica, and the language model into the
 # binary. The wasm and napi crates turn it off and load packs at run time.
-embedded = ["blasphem-language?/embedded-model"]
+embedded = []
+# Rule tables for external packs, without locale models or detection payloads.
+all-rules = []
+all-locales = ["en", "zh", "es", "ar", "ms", "pt", "fr", "hi", "ru", "ja", "de", "tr", "vi", "ko", "it"]
+en = []
+zh = []
+es = []
+ar = []
+ms = []
+pt = []
+fr = []
+hi = []
+ru = []
+ja = []
+de = []
+tr = []
+vi = []
+ko = []
+it = []
+id = ["ms"]
 
 [dependencies]
 aho-corasick = "=1.1.5"

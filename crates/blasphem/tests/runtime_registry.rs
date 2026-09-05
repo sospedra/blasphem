@@ -208,16 +208,26 @@ fn judge_reports_unsafe_with_a_normalized_score() {
 }
 
 #[test]
-fn judge_returns_grawlix_only_when_requested() {
+fn judge_returns_grawlix_only_when_requested_and_unsafe() {
     let judge = blasphem::Judge::new(blasphem::JudgeOptions {
         locales: vec![Language::En],
+        detect_language: false,
         grawlix: true,
-        ..blasphem::JudgeOptions::default()
     })
     .expect("judge builds");
     let masked = judge.judge("you are a stupid loser").grawlix;
 
     assert_eq!(masked.as_deref(), Some("you are a @#$%&! @#$%&"));
+
+    for text in [
+        "good morning everyone",
+        "this damn printer is broken again",
+        "",
+    ] {
+        let verdict = judge.judge(text);
+        assert!(verdict.safe, "{text}: {verdict:?}");
+        assert_eq!(verdict.grawlix, None, "{text}: {verdict:?}");
+    }
 }
 
 #[test]

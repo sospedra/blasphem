@@ -121,7 +121,10 @@ func readFile(packs fs.FS, parsed *manifest, name, locale string) ([]byte, strin
 // loadSources reads every file a judge needs. Digests travel with the bytes;
 // the native side verifies them before it parses anything.
 func loadSources(options Options) ([]source, error) {
-	codes, err := normalizeLocales(options.Locales)
+	if len(options.Locales) != 0 {
+		return embeddedSources(options)
+	}
+	codes, err := normalizeLocales(options.LocaleCodes)
 	if err != nil {
 		return nil, err
 	}

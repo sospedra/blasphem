@@ -750,7 +750,9 @@ fn fit_logistic(
     builder
         .parameters()
         .solver_type(SolverType::L2R_LR)
-        .stopping_criterion(0.0001)
+        // Converge before rounding coefficients to 1/256. At 1e-4, platform
+        // arithmetic differences change ES/TR/KO weights after quantization.
+        .stopping_criterion(1e-8)
         .constraints_violation_cost(options.cost);
     if options.class_weighted {
         let total_documents = f64::from(clean_documents) + f64::from(toxic_documents);

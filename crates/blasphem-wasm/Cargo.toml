@@ -15,7 +15,7 @@ default = ["language-detection"]
 language-detection = ["blasphem/language-detection"]
 
 [dependencies]
-blasphem = { path = "../blasphem", default-features = false }
+blasphem = { path = "../blasphem", default-features = false, features = ["all-rules"] }
 js-sys = "=0.3.104"
 wasm-bindgen = "=0.2.127"
 

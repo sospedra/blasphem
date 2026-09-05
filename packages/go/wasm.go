@@ -205,6 +205,18 @@ func (m *module) takeText(ptr uint32) (string, error) {
 	return text, err
 }
 
+// takeOptionalText preserves the difference between a null pointer and an empty string.
+func (m *module) takeOptionalText(ptr uint32) (*string, error) {
+	if ptr == 0 {
+		return nil, nil
+	}
+	text, err := m.takeText(ptr)
+	if err != nil {
+		return nil, err
+	}
+	return &text, nil
+}
+
 // readJudgement decodes the struct the engine wrote at ptr and frees its strings.
 func (m *module) readJudgement(ptr uint32) (Judgement, error) {
 	view, ok := m.memory.Read(ptr, judgementSize)
@@ -221,7 +233,7 @@ func (m *module) readJudgement(ptr uint32) (Judgement, error) {
 	if verdict.Locale, err = m.takeText(localePtr); err != nil {
 		return Judgement{}, err
 	}
-	if verdict.Grawlix, err = m.takeText(grawlixPtr); err != nil {
+	if verdict.Grawlix, err = m.takeOptionalText(grawlixPtr); err != nil {
 		return Judgement{}, err
 	}
 	return verdict, nil

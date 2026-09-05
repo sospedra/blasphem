@@ -1,7 +1,9 @@
 package blasphem
 
 import (
+	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"sort"
 	"strings"
 	"sync"
@@ -17,7 +19,13 @@ var (
 func optionsKey(options Options) string {
 	locales := make([]string, 0, len(options.Locales))
 	for _, locale := range options.Locales {
-		locales = append(locales, strings.ToLower(strings.TrimSpace(locale)))
+		locales = append(locales, fmt.Sprintf("%s:%x:%s:%x:%s",
+			strings.ToLower(strings.TrimSpace(locale.Code)),
+			sha256.Sum256(locale.Pack), locale.PackSHA256,
+			sha256.Sum256(locale.Detect), locale.DetectSHA256))
+	}
+	for _, code := range options.LocaleCodes {
+		locales = append(locales, strings.ToLower(strings.TrimSpace(code)))
 	}
 	sort.Strings(locales)
 	key, _ := json.Marshal(struct {
@@ -38,7 +46,7 @@ func Init(options Options) error {
 	defer initializing.Unlock()
 	key := optionsKey(options)
 	singleton.RLock()
-	same := current != nil && currentKey == key
+	same := current != nil && currentKey == key && options.Packs == nil && options.Assets == ""
 	singleton.RUnlock()
 	if same {
 		return nil

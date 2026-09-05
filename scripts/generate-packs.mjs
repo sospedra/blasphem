@@ -24,6 +24,7 @@ try {
   } else {
     copyFileSync(resolve(root, "NOTICE"), resolve(canonicalPacks, "NOTICE"));
   }
+  execFileSync("node", ["packages/go/scripts/build-locales.mjs", ...(check ? ["--check"] : [])], { cwd: root, stdio: "inherit" });
   console.log(`status=${check ? "verified" : "generated"} files=${generated.files.length} source=resources/packs`);
 } finally {
   if (check) rmSync(output, { recursive: true, force: true });

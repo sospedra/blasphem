@@ -64,8 +64,6 @@ pub struct LanguageDetector {
 #[cfg(feature = "language-detection")]
 #[derive(Debug)]
 enum DetectorKind {
-    #[cfg(feature = "embedded")]
-    Full(blasphem_language::Detector),
     Slices(blasphem_language::slice::SliceDetector),
 }
 
@@ -88,9 +86,11 @@ impl LanguageDetector {
     /// Returns an error when the embedded model is invalid.
     #[cfg(feature = "embedded")]
     pub fn new() -> Result<Self, LanguageDetectorError> {
-        Ok(Self {
-            detector: DetectorKind::Full(blasphem_language::Detector::new()?),
-        })
+        let slices: Vec<_> = crate::embedded::compiled_locales()
+            .into_iter()
+            .map(crate::embedded::embedded_detect_bytes)
+            .collect();
+        Self::from_slices(&slices)
     }
 
     /// Merges per-language detect slices into a detector for those languages.
@@ -108,8 +108,6 @@ impl LanguageDetector {
 
     fn detect(&self, text: &str) -> blasphem_language::Detection {
         match &self.detector {
-            #[cfg(feature = "embedded")]
-            DetectorKind::Full(detector) => detector.detect(text),
             DetectorKind::Slices(detector) => detector.detect(text),
         }
     }

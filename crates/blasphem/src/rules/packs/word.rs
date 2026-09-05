@@ -4,6 +4,7 @@ use super::super::{LanguageRules, PhraseSet, RuleMatchProfile};
 
 const EMPTY: PhraseSet = PhraseSet::empty();
 
+#[cfg(any(feature = "all-rules", feature = "en"))]
 const EN_RULES: LanguageRules = LanguageRules {
     language: Language::En,
     version: 1,
@@ -26,6 +27,7 @@ const EN_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "ms"))]
 const MS_RULES: LanguageRules = LanguageRules {
     language: Language::Ms,
     version: 1,
@@ -53,6 +55,7 @@ const MS_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "pt"))]
 const PT_RULES: LanguageRules = LanguageRules {
     language: Language::Pt,
     version: 1,
@@ -77,6 +80,7 @@ const PT_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "fr"))]
 const FR_RULES: LanguageRules = LanguageRules {
     language: Language::Fr,
     version: 1,
@@ -99,6 +103,7 @@ const FR_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "ru"))]
 const RU_RULES: LanguageRules = LanguageRules {
     language: Language::Ru,
     version: 1,
@@ -123,6 +128,7 @@ const RU_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "de"))]
 const DE_RULES: LanguageRules = LanguageRules {
     language: Language::De,
     version: 1,
@@ -145,6 +151,7 @@ const DE_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "tr"))]
 const TR_RULES: LanguageRules = LanguageRules {
     language: Language::Tr,
     version: 1,
@@ -170,6 +177,7 @@ const TR_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "vi"))]
 const VI_RULES: LanguageRules = LanguageRules {
     language: Language::Vi,
     version: 1,
@@ -192,6 +200,7 @@ const VI_RULES: LanguageRules = LanguageRules {
     matching: RuleMatchProfile::WordClauses,
 };
 
+#[cfg(any(feature = "all-rules", feature = "it"))]
 const IT_RULES: LanguageRules = LanguageRules {
     language: Language::It,
     version: 2,
@@ -218,17 +227,24 @@ const IT_RULES: LanguageRules = LanguageRules {
 #[must_use]
 pub fn word_rules(language: Language) -> Option<&'static LanguageRules> {
     match language {
+        #[cfg(any(feature = "all-rules", feature = "en"))]
         Language::En => Some(&EN_RULES),
+        #[cfg(any(feature = "all-rules", feature = "ms"))]
         Language::Ms => Some(&MS_RULES),
+        #[cfg(any(feature = "all-rules", feature = "pt"))]
         Language::Pt => Some(&PT_RULES),
+        #[cfg(any(feature = "all-rules", feature = "fr"))]
         Language::Fr => Some(&FR_RULES),
+        #[cfg(any(feature = "all-rules", feature = "ru"))]
         Language::Ru => Some(&RU_RULES),
+        #[cfg(any(feature = "all-rules", feature = "de"))]
         Language::De => Some(&DE_RULES),
+        #[cfg(any(feature = "all-rules", feature = "tr"))]
         Language::Tr => Some(&TR_RULES),
+        #[cfg(any(feature = "all-rules", feature = "vi"))]
         Language::Vi => Some(&VI_RULES),
+        #[cfg(any(feature = "all-rules", feature = "it"))]
         Language::It => Some(&IT_RULES),
-        Language::Zh | Language::Es | Language::Ar | Language::Hi | Language::Ja | Language::Ko => {
-            None
-        }
+        _ => None,
     }
 }

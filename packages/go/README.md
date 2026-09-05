@@ -21,10 +21,12 @@ For changes from a local checkout, add a replacement in your application's `go.m
 replace github.com/sospedra/blasphem/packages/go => /path/to/blasphem/packages/go
 ```
 
-Supply the committed [canonical packs](../../resources/packs/README.md) through `Options.Assets`.
-For embedded or custom storage, supply an `fs.FS` through `Options.Packs`.
-Use matching runtime and data release versions.
-Include only the language files your application needs.
+Import locale descriptors from `locales/<code>`.
+Each subpackage embeds its model, lexicon, and detection slice.
+Only referenced locale assets enter the executable.
+The module download contains every locale.
+The shared WASM engine includes common rule code, without embedded locale models or detection payloads.
+Use `locales/all` and `all.Locales` to include every release locale.
 
 ## Example
 
@@ -36,12 +38,13 @@ import (
 	"log"
 
 	blasphem "github.com/sospedra/blasphem/packages/go"
+	"github.com/sospedra/blasphem/packages/go/locales/en"
+	"github.com/sospedra/blasphem/packages/go/locales/es"
 )
 
 func main() {
 	err := blasphem.Init(blasphem.Options{
-		Locales: []string{"en", "es"},
-		Assets:  "/path/to/blasphem/resources/packs",
+		Locales: []blasphem.Locale{en.Locale, es.Locale},
 		Grawlix: true,
 	})
 	if err != nil {
@@ -50,7 +53,9 @@ func main() {
 	defer blasphem.Close()
 
 	verdict := blasphem.Judge("you are a stupid loser")
-	fmt.Printf("%+v\n", verdict)
+	if verdict.Grawlix != nil {
+		fmt.Println(*verdict.Grawlix)
+	}
 }
 ```
 
@@ -75,12 +80,15 @@ A closed `Instance` also returns a safe verdict.
 
 | Field | Default | Meaning |
 | --- | --- | --- |
-| `Locales` | Required | Supported locale codes |
+| `Locales` | Required for embedded data | Typed locale descriptors |
+| `LocaleCodes` | Required for filesystem data | Locale codes from `Assets` or `Packs` |
 | `Assets` | Empty | Directory containing the manifest and packs |
 | `Packs` | `nil` | An `fs.FS` containing the same files |
 | `DisableDetection` | `false` | Score every loaded locale |
-| `Grawlix` | `false` | Return masked text |
+| `Grawlix` | `false` | Return masked text for unsafe verdicts |
 
+For advanced filesystem sources, use `LocaleCodes: []string{"en", "es"}` with `Assets` or `Packs`.
+Do not combine filesystem sources with embedded `Locales`.
 `Packs` takes precedence over `Assets`.
 Its root must contain `manifest.json`.
 An `embed.FS` can include only the language files your application needs.
@@ -90,10 +98,11 @@ See [all 16 supported languages](../javascript-packs/README.md#locales).
 
 ## Results and errors
 
-`Judgement` contains `Safe bool`, `Score float64`, `Locale string`, and `Grawlix string`.
+`Judgement` contains `Safe bool`, `Score float64`, `Locale string`, and `Grawlix *string`.
 The score is ordinal, between 0 and 1.
 An empty locale means the text did not route.
-An empty grawlix means no masked text was requested.
+`Grawlix` contains masked text for unsafe verdicts when requested, otherwise `nil`.
+Check `Grawlix != nil` before reading `*Grawlix`.
 
 `Init` and `New` return `*blasphem.Error` on construction failures.
 Use `errors.As` and its `Code` field to inspect an error.
@@ -104,13 +113,15 @@ See [the error constants](errors.go) and [API source](blasphem.go).
 Run the existing example from this package directory:
 
 ```sh
-go run ./example ../../resources/packs
+go run ./example
 ```
 
 Rebuild the embedded engine from the repository root after Rust changes:
 
 ```sh
 node packages/go/scripts/build-wasm.mjs
+node packages/go/scripts/build-locales.mjs
+node packages/go/scripts/build-locales.mjs --check
 ```
 
 Verify the package from `packages/go`:

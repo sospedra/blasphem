@@ -335,6 +335,7 @@ fn lossy(bytes: &[u8]) -> String {
 fn judge_prints_a_safe_verdict_and_exits_zero() {
     let output = judge(
         &[
+            "--grawlix",
             "--no-detect",
             "--locales",
             "en",

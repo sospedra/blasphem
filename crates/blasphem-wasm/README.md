@@ -88,6 +88,8 @@ Detection-disabled builders do not need detection slices.
 Do not use a builder after `build` or an engine after `free`.
 
 Results contain `safe`, `score`, `locale`, and `grawlix`.
+`grawlix` contains masked text for unsafe verdicts when requested, otherwise `null`.
+The generated `Judgement` type narrows `grawlix` to `null` when `safe` is `true`.
 The score is ordinal, between 0 and 1.
 Errors are strings prefixed with `BLASPHEM_*` contract codes.
 See [the bindings](src/lib.rs) and [engine](../blasphem/src/engine.rs).
