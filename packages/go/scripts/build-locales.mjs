@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,12 +10,23 @@ const check = process.argv.includes("--check");
 if (process.argv.slice(2).some((arg) => arg !== "--check")) {
   throw new Error("Usage: node packages/go/scripts/build-locales.mjs [--check]");
 }
-const registry = execFileSync("cargo", ["run", "--quiet", "-p", "blasphem-train", "--", "locales-table", "--format", "go", "--output", "/dev/stdout"], { cwd: root, encoding: "utf8" });
+const registry = readRegistry();
 const locales = [...registry.matchAll(/code: "([a-z]+)", aliases: \[\]string\{([^}]*)\}/g)].map((match) => ({
   code: match[1], aliases: [...match[2].matchAll(/"([a-z]+)"/g)].map((alias) => alias[1]),
 }));
 const codes = locales.map(({ code }) => code);
 if (codes.length === 0) throw new Error("The Rust registry returned no locales");
+function readRegistry() {
+  // Linux cannot reopen Node's captured stdout socket through /dev/stdout.
+  const directory = mkdtempSync(resolve(tmpdir(), "blasphem-go-locales-"));
+  try {
+    const path = resolve(directory, "locales.go");
+    execFileSync("cargo", ["run", "--quiet", "-p", "blasphem-train", "--", "locales-table", "--format", "go", "--output", path], { cwd: root, stdio: ["ignore", "ignore", "inherit"] });
+    return readFileSync(path, "utf8");
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
 function output(path, bytes) {
   path = resolve(root, "packages/go/locales", path);
   if (check) {
