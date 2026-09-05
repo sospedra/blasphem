@@ -62,8 +62,8 @@ const RUST_CHECKS: [&[&str]; 3] = [
 
 const JAVASCRIPT_CHECKS: [&[&str]; 5] = [
     &["install", "--frozen-lockfile"],
-    &["--filter", "blasphem", "run", "build"],
     &["--filter", "@blasphem/packs", "run", "build"],
+    &["--filter", "blasphem", "run", "build"],
     &["--filter", "blasphem", "run", "pack:check"],
     &["--filter", "blasphem", "run", "test:node"],
 ];

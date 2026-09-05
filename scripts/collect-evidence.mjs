@@ -42,8 +42,8 @@ const [texts, labels] = await Promise.all([
 // Accuracy regenerates validation, behavior, and CLI evidence before judging test rows.
 const benchmark = resolve(reports, "benchmarks/current.json");
 bench(["accuracy", "--output", benchmark]);
-run("pnpm", ["--filter", "blasphem", "build"]);
 run("pnpm", ["--filter", "@blasphem/packs", "build"]);
+run("pnpm", ["--filter", "blasphem", "build"]);
 run("pnpm", ["--filter", "blasphem", "test:browser"]);
 bench(["benchmark", "--fixtures", fixtures, ...modelInputs, ...measured,
   "--output", resolve(reports, "multilingual-performance.json")]);
