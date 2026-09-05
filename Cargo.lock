@@ -170,7 +170,7 @@ checksum = "b588b76d00fde79687d7646a9b5bdf3cc0f655e0bbd080335a95d7e96f3587da"
 
 [[package]]
 name = "blasphem"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "aho-corasick",
  "anyhow",
@@ -192,7 +192,7 @@ dependencies = [
 
 [[package]]
 name = "blasphem-bench"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "anyhow",
  "blasphem",
@@ -209,14 +209,14 @@ dependencies = [
 
 [[package]]
 name = "blasphem-ffi"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "blasphem",
 ]
 
 [[package]]
 name = "blasphem-jni"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "blasphem",
  "jni",
@@ -224,7 +224,7 @@ dependencies = [
 
 [[package]]
 name = "blasphem-language"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -233,7 +233,7 @@ dependencies = [
 
 [[package]]
 name = "blasphem-napi"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "blasphem",
  "napi",
@@ -243,7 +243,7 @@ dependencies = [
 
 [[package]]
 name = "blasphem-train"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "anyhow",
  "blasphem",
@@ -267,7 +267,7 @@ dependencies = [
 
 [[package]]
 name = "blasphem-wasm"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "blasphem",
  "blasphem-language",

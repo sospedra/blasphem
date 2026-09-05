@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "The release tag to publish, for example v1.0.0"
+        description: "The release tag to publish, for example v2.0.0"
         required: true
         type: string
 
@@ -529,9 +529,10 @@ jobs:
           GOFLAGS: -mod=mod
         run: |
           set -euo pipefail
+          module=$(go -C packages/go list -m)
           cd "$(mktemp -d)"
           go mod init warm
-          go get "github.com/sospedra/blasphem/packages/go@v${{ needs.plan.outputs.version }}"
+          go get "$module@v${{ needs.plan.outputs.version }}"
 
   swift:
     name: swift

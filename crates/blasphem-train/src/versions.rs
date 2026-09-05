@@ -59,6 +59,10 @@ fn mirrors(root: &Path) -> Result<Vec<Mirror>, VersionsError> {
 
     let mut found = vec![
         Mirror {
+            path: root.join("apps/web/package.json"),
+            pattern: json(),
+        },
+        Mirror {
             path: root.join("crates/blasphem-python/Cargo.toml"),
             pattern: toml(),
         },

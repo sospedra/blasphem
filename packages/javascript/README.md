@@ -11,7 +11,7 @@ Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
-These registry commands require the published `1.0.0` release.
+These registry commands require the published `2.0.0` release.
 Use [the source build](#build-from-source) for the current checkout.
 
 The release installation command is:

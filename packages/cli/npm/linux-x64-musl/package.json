@@ -1,6 +1,6 @@
 {
   "name": "@blasphem/cli-linux-x64-musl",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "blasphem command-line binary for linux-x64-musl, with the language data embedded. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0 AND CC-BY-NC-SA-4.0",
   "repository": {

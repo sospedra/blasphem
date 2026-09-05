@@ -87,7 +87,7 @@ checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
 name = "blasphem"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "aho-corasick",
  "anyhow",
@@ -108,11 +108,11 @@ dependencies = [
 
 [[package]]
 name = "blasphem-language"
-version = "1.0.0"
+version = "2.0.0"
 
 [[package]]
 name = "blasphem-python"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "blasphem",
  "pyo3",

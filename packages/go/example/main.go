@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"os"
 
-	blasphem "github.com/sospedra/blasphem/packages/go"
-	"github.com/sospedra/blasphem/packages/go/locales/en"
-	"github.com/sospedra/blasphem/packages/go/locales/es"
+	blasphem "github.com/sospedra/blasphem/packages/go/v2"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/en"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/es"
 )
 
 func main() {

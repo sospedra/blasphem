@@ -45,7 +45,7 @@ Apply the plugin and select languages in `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("me.sospedra.blasphem") version "1.0.0"
+    id("me.sospedra.blasphem") version "2.0.0"
 }
 blasphem {
     locales.set(listOf("en", "es")) // Or locales.set("all").
@@ -104,7 +104,7 @@ This advanced overload remains synchronous.
 
 `assets.set("remote")` bundles configuration and the native engine without language data.
 `"jsdelivr"` remains a compatibility alias.
-The factory downloads selected files from the exact `@blasphem/packs@1.0.0` jsDelivr release.
+The factory downloads selected files from the exact `@blasphem/packs@2.0.0` jsDelivr release.
 The build embeds the trusted release manifest length and SHA-256 digest.
 Remote builds make no CDN requests.
 Initialization fails if that exact release is unavailable.

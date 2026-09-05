@@ -105,15 +105,15 @@ print(verdict)` },
   },
   {
     id: "go", name: "Go", group: "Servers", detail: "Go 1.25+ · embedded WebAssembly · no cgo",
-    install: { label: "Add the Go module", lang: "bash", code: "go get github.com/sospedra/blasphem/packages/go" },
+    install: { label: "Add the Go module", lang: "bash", code: "go get github.com/sospedra/blasphem/packages/go/v2" },
     example: { label: "main.go", lang: "go", code: `package main
 
 import (
   "fmt"
   "log"
-  blasphem "github.com/sospedra/blasphem/packages/go"
-  "github.com/sospedra/blasphem/packages/go/locales/en"
-  "github.com/sospedra/blasphem/packages/go/locales/es"
+  blasphem "github.com/sospedra/blasphem/packages/go/v2"
+  "github.com/sospedra/blasphem/packages/go/v2/locales/en"
+  "github.com/sospedra/blasphem/packages/go/v2/locales/es"
 )
 
 func main() {

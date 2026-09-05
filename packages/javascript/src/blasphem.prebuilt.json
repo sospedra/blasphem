@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "source_sha256": "33c4e1a66798f6e6a5335642f93e06084ba966e291d9b456c204a8e0ca5fdcf9",
+  "source_sha256": "b8d4853a58c86024701b55fab6238bff3d08fcdddb3210d0f89d92ecc6347935",
   "artifacts": {
     "blasphem.js": "656e07864c5793dd3e76957c12a1ec04e69f370b82e3f78cb49549d803dc61a0",
     "blasphem.d.ts": "a71b11a52b9cf7a7b5cce774f660451cb03d0eca7999d845e3cb12ad392a8784",
-    "blasphem_bg.wasm": "8132872ece3e7cbae5504aa1927077a2742914e1db39777d1d9bcbb7ac568ed8",
+    "blasphem_bg.wasm": "9f7d0602953398636141c023750be3e0f05ba0cb5ca072d2c81ecb2b75f9fccb",
     "blasphem_bg.wasm.d.ts": "a1b8f314a71b8b0f005a708d21cb0f791e406109c4befdad34b6e38a2958812d"
   }
 }

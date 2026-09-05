@@ -1,6 +1,6 @@
 {
   "name": "@blasphem/node",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Builds the napi binary and the @blasphem/node-<os>-<cpu> platform packages. Never published itself. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference.",
   "license": "Apache-2.0",

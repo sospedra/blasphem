@@ -3,7 +3,7 @@ package ko
 
 import (
 	_ "embed"
-	blasphem "github.com/sospedra/blasphem/packages/go"
+	blasphem "github.com/sospedra/blasphem/packages/go/v2"
 )
 
 //go:embed locale.pack

@@ -62,6 +62,18 @@ Edit third-party attributions in the root [NOTICE](NOTICE) only.
 Package scripts copy it into distribution artifacts.
 Generated NOTICE copies are not tracked.
 
+### Release version
+
+The root `Cargo.toml` `[workspace.package].version` defines every distribution version.
+Run `pnpm versions` to update package manifests and the website mirror.
+Cargo updates its lockfile after the central version changes.
+Refresh the standalone Python crate lockfile with `cargo check --manifest-path crates/blasphem-python/Cargo.toml`.
+Regenerate distribution artifacts with the commands below, then run `pnpm versions:check`.
+Go major releases also require matching module and import paths, such as `/v2`.
+The Go locale generator checks the module path against the central major version.
+The publication workflow reads its exact release version and Go module path from the checkout.
+Update explicit release versions in the READMEs before publication.
+
 ### Dependency versions
 
 Pin registry dependencies to exact versions, including development, build, and peer dependencies.

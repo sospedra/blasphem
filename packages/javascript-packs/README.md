@@ -10,7 +10,7 @@ Detection runs locally without neural networks or cloud inference.
 
 ## Installation
 
-These registry commands require the published `1.0.0` release.
+These registry commands require the published `2.0.0` release.
 Applications install one library. Its exact data dependency resolves automatically:
 
 ```sh

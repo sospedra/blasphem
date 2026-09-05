@@ -4,13 +4,13 @@ build-backend = "maturin"
 
 [project]
 name = "blasphem"
-version = "1.0.0"
+version = "2.0.0"
 description = "Local toxicity checks for Python. Blasphem hashes word and character n-grams into sparse feature vectors. A linear classifier trained offline scores them with 16-bit weights. Lexicons and context rules contribute to the verdict. Detection runs locally without neural networks or cloud inference."
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["NOTICE", "LICENSE"]
 requires-python = ">=3.10"
-dependencies = ["blasphem-packs==1.0.0"]
+dependencies = ["blasphem-packs==2.0.0"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Rust",

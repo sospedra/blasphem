@@ -15,7 +15,7 @@
     "regenerate": "cargo run --release --locked -p blasphem-train -- regenerate && node scripts/generate-packs.mjs",
     "packs:generate": "node scripts/generate-packs.mjs",
     "packs:check": "node scripts/generate-packs.mjs --check",
-    "versions": "cargo run --release --locked -p blasphem-train -- sync-versions",
+    "versions": "cargo run --release -p blasphem-train -- sync-versions",
     "versions:check": "cargo run --release --locked -p blasphem-train -- sync-versions --check",
     "evidence": "node scripts/collect-evidence.mjs",
     "evidence:snapshot": "node scripts/snapshot-evidence.mjs",

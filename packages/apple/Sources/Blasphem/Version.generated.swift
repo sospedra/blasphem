@@ -1,1 +1,1 @@
-let blasphemEngineVersion = "1.0.0"
+let blasphemEngineVersion = "2.0.0"

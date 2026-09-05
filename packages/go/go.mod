@@ -1,4 +1,4 @@
-module github.com/sospedra/blasphem/packages/go
+module github.com/sospedra/blasphem/packages/go/v2
 
 go 1.25.0
 

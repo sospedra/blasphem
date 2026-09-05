@@ -2,22 +2,22 @@
 package all
 
 import (
-	blasphem "github.com/sospedra/blasphem/packages/go"
-	"github.com/sospedra/blasphem/packages/go/locales/ar"
-	"github.com/sospedra/blasphem/packages/go/locales/de"
-	"github.com/sospedra/blasphem/packages/go/locales/en"
-	"github.com/sospedra/blasphem/packages/go/locales/es"
-	"github.com/sospedra/blasphem/packages/go/locales/fr"
-	"github.com/sospedra/blasphem/packages/go/locales/hi"
-	"github.com/sospedra/blasphem/packages/go/locales/it"
-	"github.com/sospedra/blasphem/packages/go/locales/ja"
-	"github.com/sospedra/blasphem/packages/go/locales/ko"
-	"github.com/sospedra/blasphem/packages/go/locales/ms"
-	"github.com/sospedra/blasphem/packages/go/locales/pt"
-	"github.com/sospedra/blasphem/packages/go/locales/ru"
-	"github.com/sospedra/blasphem/packages/go/locales/tr"
-	"github.com/sospedra/blasphem/packages/go/locales/vi"
-	"github.com/sospedra/blasphem/packages/go/locales/zh"
+	blasphem "github.com/sospedra/blasphem/packages/go/v2"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/ar"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/de"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/en"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/es"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/fr"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/hi"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/it"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/ja"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/ko"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/ms"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/pt"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/ru"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/tr"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/vi"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/zh"
 )
 
 // Locales contains every release locale in registry order.

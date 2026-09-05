@@ -12,13 +12,13 @@ Detection runs locally without neural networks or cloud inference.
 ## Installation
 
 ```sh
-go get github.com/sospedra/blasphem/packages/go
+go get github.com/sospedra/blasphem/packages/go/v2
 ```
 
 For changes from a local checkout, add a replacement in your application's `go.mod`:
 
 ```go
-replace github.com/sospedra/blasphem/packages/go => /path/to/blasphem/packages/go
+replace github.com/sospedra/blasphem/packages/go/v2 => /path/to/blasphem/packages/go
 ```
 
 Import locale descriptors from `locales/<code>`.
@@ -37,9 +37,9 @@ import (
 	"fmt"
 	"log"
 
-	blasphem "github.com/sospedra/blasphem/packages/go"
-	"github.com/sospedra/blasphem/packages/go/locales/en"
-	"github.com/sospedra/blasphem/packages/go/locales/es"
+	blasphem "github.com/sospedra/blasphem/packages/go/v2"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/en"
+	"github.com/sospedra/blasphem/packages/go/v2/locales/es"
 )
 
 func main() {

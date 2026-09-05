@@ -30,7 +30,7 @@ Its Swift Package Manager dependency is:
 ```swift
 .package(
     url: "https://github.com/sospedra/blasphem-swift.git",
-    from: "1.0.0"
+    from: "2.0.0"
 )
 ```
 

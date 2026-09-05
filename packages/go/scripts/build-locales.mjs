@@ -27,7 +27,12 @@ function output(path, bytes) {
 function go(path, source) {
   output(path, execFileSync("gofmt", [], { input: source }));
 }
-const module = "github.com/sospedra/blasphem/packages/go";
+const metadata = JSON.parse(execFileSync("cargo", ["metadata", "--format-version", "1", "--no-deps", "--locked"], { cwd: root, encoding: "utf8" }));
+const version = metadata.packages.find(({ name }) => name === "blasphem").version;
+const major = Number(version.split(".")[0]);
+const expectedModule = "github.com/sospedra/blasphem/packages/go" + (major >= 2 ? `/v${major}` : "");
+const module = execFileSync("go", ["list", "-m"], { cwd: resolve(root, "packages/go"), encoding: "utf8" }).trim();
+if (module !== expectedModule) throw new Error(`Go module must be ${expectedModule} for release ${version}`);
 for (const code of codes) {
   const pack = readFileSync(resolve(root, "resources/packs", code + ".pack"));
   const detect = readFileSync(resolve(root, "resources/packs", code + ".detect"));
